@@ -2,3 +2,90 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/*INICIO INPUT*/
+.inputInput {
+  font-size: 11px !important;
+  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  /*height: 55px !important; /*tamaño height de inpul*/
+}
+
+/*FIN INPUT*/
+
+
+/*MAT-TABLE*/
+/* Mantenedores Material*/
+/*Titulo Mantenedores Tablas principales*/
+.content {
+  min-height: calc(100vh - 98px);
+  /* largo de pantalla*/
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #323131;
+  padding: 0 1px !important;
+}
+
+/*Fin Titulo Mantenedores Tablas principales*/
+/* Titulos Mantenedores secundarios */
+.mat-mdc-dialog-container,
+.mdc-dialog__title {
+  display: flex;
+  color: rgb(255, 255, 255) !important;
+  background-color: #0004fd !important;
+  font-size: 16px !important;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;
+  height: 65px;
+}
+
+/* Fin Titulos Mantenedores Secundarios*/
+/*FIN MAT-TABLE*/
+
+/*Cambia color y fondo barra superior del sistema*/
+
+/*Botones*/
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
+  color: white;
+  background-color: black;
+}
+
+.colorFondoBotonCancelar {
+  color: white !important;
+  background-color: #ff0000 !important;
+}
+
+/*
+.mat-raised-button.mat-primary {
+  background-color: black;
+  color:rgb(255, 102, 0);
+}
+*/
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
+  color: white !important;
+  background-color: #be0000 !important;
+}
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
+  color: white !important;
+  background-color: black !important;
+  font-size: 0.7rem;
+}
+
+.colorFondoBotonExTabla {
+  color: white !important;
+  background-color: #17627e !important;
+  font-size: 0.7rem;
+  width: 20%;
+  margin-right: 2px;
+}
+
+/*Fin Botones*/
