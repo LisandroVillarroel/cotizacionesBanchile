@@ -21,3 +21,32 @@
 .mat-mdc-raised-button {
   min-width: 100%;
 }
+
+.centrarBoton{
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 0 2px 0 10px;
+}
+
+.alinear{
+  display: flex;
+      justify-content: space-between;
+}
+.colorFondoBotonSalir {
+  height: 50px;
+  min-width: 100px;
+}
+
+.colorFondoBotonAnular{
+  height: 50px;
+  min-width: 100px;
+}
+
+.colorFondoBotonGrabar{
+height: 50px; /* o cualquier altura deseada */
+  min-width: 200px; /* o cualquier ancho deseado */
+}

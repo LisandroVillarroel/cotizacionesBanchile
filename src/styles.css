@@ -34,33 +34,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 /*Fin Titulo Mantenedores Tablas principales*/
-/* Titulos Mantenedores secundarios */
-.mat-mdc-dialog-container,
-.mdc-dialog__title {
-  display: flex;
-  color: rgb(255, 255, 255) !important;
-  background-color: #0004fd !important;
-  font-size: 16px !important;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;
-  height: 65px;
-}
 
-/* Fin Titulos Mantenedores Secundarios*/
 /*FIN MAT-TABLE*/
 
 /*Cambia color y fondo barra superior del sistema*/
+
 
 /*Botones*/
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
   color: white;
-  background-color: black;
+  background-color: #0a58ca;
 }
 
-.colorFondoBotonCancelar {
-  color: white !important;
-  background-color: #ff0000 !important;
+.colorFondoBotonSalir {
+  color: #234E85 !important;
+  background-color: #ffffff !important;
+}
+
+.colorFondoBotonAnular {
+  color: #234E85 !important;
+  background-color: #ffffff !important;
 }
 
 /*
@@ -71,7 +65,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 */
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   color: white !important;
-  background-color: #be0000 !important;
+  background-color: #0a58ca !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
@@ -80,12 +74,235 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 0.7rem;
 }
 
-.colorFondoBotonExTabla {
+.colorFondoBotonExTabla.mat-mdc-raised-button {
   color: white !important;
   background-color: #17627e !important;
   font-size: 0.7rem;
-  width: 20%;
+  min-width: 20% !important;
   margin-right: 2px;
 }
 
 /*Fin Botones*/
+
+
+/*INICIO INPUT*/
+.inputInput {
+  font-size: 11px !important;
+  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  width:100%;
+  /*height: 55px !important; /*tamaño height de inpul*/
+}
+
+.inputSelectBuscar {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 84%;
+}
+
+.inputSelect {
+  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  width:100%;
+  /*  height: 65px !important; /*tamaño height de inpul*/
+}
+
+.inputBuscar {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 80%;
+  width: 100%;
+  /* height: 55px !important; /*tamaño height de inpul*/
+}
+
+.inputFecha {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 15px !important;
+  ;
+}
+
+.inputFechaForm {
+  font-size: 1px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 15px !important;
+  ;
+}
+
+.mat-mdc-select-value-text {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.labelI {
+  font-size: 11px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  color: black;
+}
+
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 16px;
+}
+
+
+/*FIN INPUT*/
+
+/*MAT-TABLE*/
+/* Mantenedores Material*/
+/*Titulo Mantenedores Tablas principales*/
+.content {
+  min-height: calc(100vh - 98px);
+  /* largo de pantalla*/
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #323131;
+  padding: 0 1px !important;
+}
+
+/*Fin Titulo Mantenedores Tablas principales*/
+/* Titulos Mantenedores secundarios */
+.mat-mdc-dialog-container,
+.mdc-dialog__title {
+
+  /*background-color: #118383 !important;*/
+  font-size: 16px !important;
+  text-align:left !important;
+  color: #002464 !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Fin Titulos Mantenedores Secundarios*/
+
+td.mat-cell:last-of-type {
+  padding-right: 0px;
+}
+
+th.mat-cell:last-of-type {
+  padding-right: 0px;
+}
+
+tr.mat-header-row {
+  height: 45px !important;
+}
+
+/*Cambia color cabecera table*/
+
+.mat-mdc-table {
+  table-layout: fixed !important;
+  /*este permite que la tabla se ajuste*/
+}
+
+.mat-mdc-table .mdc-data-table__header-row {
+  color: rgb(255, 255, 255) !important;
+  background-color: #149DC9 !important;
+  table-layout: none !important;
+  /*este permite que la tabla se ajuste*/
+}
+
+.mat-mdc-table tbody,
+.mat-mdc-table tfoot,
+.mat-mdc-table thead,
+.mat-mdc-cell,
+.mat-mdc-footer-cell,
+.mat-mdc-header-row,
+.mat-mdc-row,
+.mat-mdc-footer-row,
+.mat-mdc-table .mat-mdc-header-cell {
+  background: inherit;
+  font-size: 11px;
+  /*Tamaño letra tabla*/
+}
+
+/*Color Barra hover de la tabla*/
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: rgba(208, 206, 205, 0.686);
+
+  button.tabla {
+    background-color: rgba(208, 206, 205, 0.686);
+  }
+
+}
+
+/* Color Barra Cuando se da Click*/
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #959597;
+}
+
+tr.mat-footer-row,
+tr.mat-row {
+  height: 30px !important;
+}
+
+
+
+/*iconos de tabla*/
+button.nuevo:hover {
+  color: white !important;
+   background-color: #149DC9 !important;
+}
+
+button.nuevo {
+  color: black !important;
+  border: 0;
+  background-color: #149DC9;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+button.tabla:hover {
+  color: black !important;
+ background-color: rgba(208, 206, 205, 0.686) !important;
+}
+
+
+button.tabla {
+  color: #149DC9 !important;
+  border: 0;
+  background-color: white;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/*Fin iconos de tabla*/
+
+/*Icono ordena tabla*/
+.mat-sort-header-arrow {
+  color: #cd1515 !important;
+}
+
+.mat-sort-header-arrow:hover {
+  color: #ffffff !important;
+}
+
+/*Foot Tabla*/
+.mat-mdc-paginator-page-size-select {
+  width: 84px !important;
+}
+
+/* Fin Foot Tabla*/
+/*Fin MAT-TABLE*/

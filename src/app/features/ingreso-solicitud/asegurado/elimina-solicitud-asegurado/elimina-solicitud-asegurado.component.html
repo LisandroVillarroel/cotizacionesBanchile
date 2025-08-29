@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>ELIMINA ASEGURADO</h2>
+
+<mat-dialog-content name="emlimina" class="elimina-container">
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Rut</mat-label>
+    <input matInput  value="{{data.rutAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre</mat-label>
+    <input matInput  value="{{data.nombreAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Paterno</mat-label>
+    <input matInput  value="{{data.apellidoPaternoAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Materno</mat-label>
+    <input matInput  value="{{data.apellidoMaternoAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Región</mat-label>
+    <input matInput  value="{{data.regionAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Ciudad</mat-label>
+    <input matInput  value="{{data.ciudadAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Comuna</mat-label>
+    <input matInput  value="{{data.comunaAsegurado}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput value="{{data.direccionAsegurado}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput value="{{data.telefonoAsegurado}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Correo</mat-label>
+    <input matInput  value="{{data.correoAsegurado}}" disabled='true' >
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="col-md-6">
+      <button mat-raised-button class="colorFondoBotonCancelar"  mat-dialog-close  [disabled]=false>Cancelar</button>
+    </div>
+    <div class="col-md-6">
+      <button class="colorFondoBotonEliminar" mat-raised-button  (click)="eliminar()"  >ELIMINA</button>
+    </div>
+</mat-dialog-actions>

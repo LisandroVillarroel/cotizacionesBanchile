@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>CONSULTA BENEFICIARIO</h2>
+
+<mat-dialog-content  name="consulta" class="consulta-container">
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Rut</mat-label>
+    <input matInput  value="{{data.rutBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre</mat-label>
+    <input matInput  value="{{data.nombreBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Paterno</mat-label>
+    <input matInput  value="{{data.apellidoPaternoBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Materno</mat-label>
+    <input matInput  value="{{data.apellidoMaternoBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Región</mat-label>
+    <input matInput  value="{{data.regionBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Ciudad</mat-label>
+    <input matInput  value="{{data.ciudadBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Comuna</mat-label>
+    <input matInput  value="{{data.comunaBeneficiario}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput value="{{data.direccionBeneficiario}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput value="{{data.telefonoBeneficiario}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Correo</mat-label>
+    <input matInput  value="{{data.correoBeneficiario}}" disabled='true' >
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions class="justify-content-center">
+    <div class="col-md-6">
+      <button mat-raised-button class="colorFondoBotonCancelar"   mat-dialog-close  [disabled]=false>Cerrar</button>
+    </div>
+</mat-dialog-actions>
