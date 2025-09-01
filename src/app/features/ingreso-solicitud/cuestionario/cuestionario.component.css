@@ -1,0 +1,51 @@
+.document-section {
+  margin-bottom: 1.5rem;
+}
+
+.doc-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.doc-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.doc-input {
+  flex: 1;
+}
+
+.same-height {
+  height: 40px;
+  min-height: 40px;
+}
+
+/* Simula un input visualmente */
+.fake-input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #555;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Botones inferiores */
+.alinear {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.botonera-izquierda,
+.botonera-derecha {
+  display: flex;
+  gap: 12px;
+}

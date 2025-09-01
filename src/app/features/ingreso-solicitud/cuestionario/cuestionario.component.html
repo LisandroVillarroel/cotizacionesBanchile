@@ -1,0 +1,45 @@
+<form [formGroup]="documentForm()" novalidate>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let doc of documentos">
+      <div class="document-section">
+        <mat-label class="doc-label">
+          {{ doc.nombre }} <span *ngIf="doc.obligatorio">(obligatorio)</span>
+        </mat-label>
+
+        <div class="doc-actions">
+          <div class="doc-input same-height fake-input">
+            {{ doc.archivoNombre || "Sin documento cargado" }}
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="same-height"
+            (click)="abrirInputArchivo(doc.nombre)"
+          >
+            {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
+          </button>
+
+          <button
+            *ngIf="doc.archivoNombre"
+            mat-icon-button
+            color="warn"
+            (click)="eliminarDocumento(doc)"
+            matTooltip="Eliminar documento"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alinear">
+    <div class="botonera-izquierda">
+      <button mat-raised-button matStepperPrevious>Volver</button>
+    </div>
+    <div class="botonera-derecha">
+      <button mat-raised-button matStepperNext>Guardar solicitud</button>
+    </div>
+  </div>
+</form>
