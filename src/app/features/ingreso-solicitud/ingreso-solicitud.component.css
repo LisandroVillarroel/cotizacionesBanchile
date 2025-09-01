@@ -4,7 +4,7 @@
   padding: 0 10%;
 }
 
-.agrega-container > * {
+.agrega-container>* {
   width: 95%;
 }
 
@@ -14,7 +14,7 @@
 
 }
 
-.mat-dialog-content{
+.mat-dialog-content {
   margin: auto;
 }
 
@@ -22,31 +22,46 @@
   min-width: 100%;
 }
 
-.centrarBoton{
+.centrarBoton {
   display: flex;
   align-items: center;
   align-self: center;
 }
 
-.mdc-data-table__cell, .mdc-data-table__header-cell {
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
   padding: 0 2px 0 10px;
 }
 
-.alinear{
+.alinear {
   display: flex;
-      justify-content: space-between;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
 }
+
+.botonera-izquierda,
+.botonera-derecha {
+  display: flex;
+  gap: 12px;
+}
+
 .colorFondoBotonSalir {
   height: 50px;
   min-width: 100px;
 }
 
-.colorFondoBotonAnular{
+.colorFondoBotonAnular {
   height: 50px;
   min-width: 100px;
 }
 
-.colorFondoBotonGrabar{
-height: 50px; /* o cualquier altura deseada */
-  min-width: 200px; /* o cualquier ancho deseado */
+.colorFondoBotonGuardar {
+  height: 50px;
+  min-width: 100px;
+}
+
+.colorFondoBotonSiguiente {
+  height: 50px;
+  min-width: 100px;
 }

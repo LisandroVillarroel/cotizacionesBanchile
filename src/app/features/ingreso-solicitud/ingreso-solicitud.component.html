@@ -1,9 +1,6 @@
 <div class="container">
   <div class="alinear">
     <h2 mat-dialog-title class="mt-3">Ingresar Nueva Solicitud</h2>
-    <button class="colorFondoBotonAnular" mat-raised-button  (click)="salir()">ANULAR</button>
-    <button class="colorFondoBotonSalir" mat-raised-button  (click)="salir()">SALIR</button>
-
   </div>
   <mat-divider></mat-divider>
 
@@ -74,30 +71,18 @@
   </mat-dialog-actions>
   -->
 
-  <mat-stepper linear  #stepper>
-    <mat-step [stepControl]="agregaSolicitudContratante()" >
-    <!-- <form [formGroup]="agregaSolicitudContratante()">-->
-        <ng-template matStepLabel>Información del contratante</ng-template>
-        <mat-dialog-content
-          [formGroup]="agregaSolicitudContratante()"
-          name="agregaSolicitudContratante"
-          class="agrega-container"
-        >
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="agregaSolicitudContratante()">
+      <!-- <form [formGroup]="agregaSolicitudContratante()">-->
+      <ng-template matStepLabel>Información del contratante</ng-template>
+      <mat-dialog-content [formGroup]="agregaSolicitudContratante()" name="agregaSolicitudContratante"
+        class="agrega-container">
         <div class="row">
           <div class="col-md-6">
             <mat-form-field class="inputInput">
-              <mat-label class="labelI">Rut Cliente</mat-label>
-              <input
-                autofocus
-                id="rutCliente"
-                matInput
-                class="input-rut rut"
-                [formControl]="rutCliente"
-                oninput="this.value = this.value.toUpperCase()"
-                (blur)="onBlurRutCliente($event)"
-                validaRut
-                required
-              />
+              <mat-label class="labelI">RUT</mat-label>
+              <input autofocus id="rutCliente" matInput class="input-rut rut" [formControl]="rutCliente"
+                oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutCliente($event)" validaRut required />
               @if (rutCliente.invalid) {
               <mat-error>{{ getErrorMessage("rut") }}</mat-error>
               }
@@ -106,13 +91,13 @@
           <div class="col-md-6">
             <mat-form-field class="inputInput">
               <mat-label class="labelI">Nombre o Razón Social</mat-label>
-              <input  matInput  disabled [value]="nombreRazonSocial()" />
+              <input matInput disabled [value]="nombreRazonSocial()" />
             </mat-form-field>
           </div>
           <div class="col-md-6">
             <mat-form-field class="inputSelect">
-              <mat-label class="labelI">Rubros</mat-label>
-              <mat-select [formControl]="rubro"  (selectionChange)="seleccionaRubro($event.value)" required>
+              <mat-label class="labelI">Selecciona un rubro</mat-label>
+              <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)" required>
                 @for(_seguros of datoRubros(); track _seguros){
                 <mat-option [value]="_seguros.codigoRubro">
                   {{ _seguros.descripcionRubro }}
@@ -123,8 +108,10 @@
               <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
               }
             </mat-form-field>
+          </div>
+          <div class="col-md-6">
             <mat-form-field class="inputSelect">
-              <mat-label class="labelI">Seguros</mat-label>
+              <mat-label class="labelI">Selecciona un tipo de seguro</mat-label>
               <mat-select [formControl]="seguro" required>
                 @for(_seguros of rescatadoSeguro(); track _seguros){
                 <mat-option [value]="_seguros.codigoSeguro">
@@ -137,16 +124,22 @@
               }
             </mat-form-field>
           </div>
-          <div class="col-md-6 d-flex justify-content-center align-items-center">
+          <div class="col-md-6 d-flex">
             <button mat-button color="primary">
-              <mat-icon>download</mat-icon> Descargar
+              <mat-icon>download</mat-icon> Descargar cuestionario
             </button>
           </div>
         </div>
-
         <div class="alinear">
-          <button mat-button matStepperNext>Siguiente</button>
-          <button class="colorFondoBotonGrabar" mat-raised-button  (click)="guardarBorrador()">GUARDAR BORRADOR</button>
+          <div class="botonera-izquierda">
+            <button mat-raised-button class="colorFondoBotonSalir" (click)="salir()">Salir</button>
+            <button mat-raised-button class="colorFondoBotonAnular" (click)="salir()">Anular</button>
+          </div>
+          <div class="botonera-derecha">
+            <button mat-raised-button class="colorFondoBotonGuardar" (click)="guardarBorrador()">Guardar
+              borrador</button>
+            <button mat-button matStepperNext class="colorFondoBotonSiguiente">Siguiente</button>
+          </div>
         </div>
       </mat-dialog-content>
     </mat-step>
@@ -157,39 +150,26 @@
 
         <div class="row mt-1">
           <div class="col-md-3 d-flex align-items-center justify-content-end">
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="
+            <button mat-raised-button class="colorFondoBotonExTabla" (click)="
                 exporter.exportTable('xlsx', {
                   fileName: nombreArchivoAsegurado,
                   sheet: 'facturas',
                   Props: { Author: 'Silave' },
                   columnWidths: [50, 5, 3]
                 })
-              "
-            >
+              ">
               Excel
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('csv', { fileName: nombreArchivoAsegurado })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('csv', { fileName: nombreArchivoAsegurado })">
               Csv
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('json', { fileName: nombreArchivoAsegurado })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('json', { fileName: nombreArchivoAsegurado })">
               Json
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('txt', { fileName: nombreArchivoAsegurado })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('txt', { fileName: nombreArchivoAsegurado })">
               Txt
             </button>
           </div>
@@ -200,23 +180,11 @@
             </mat-form-field>
           </div>
         </div>
-        <table
-          mat-table
-          [dataSource]="dataSourceAsegurado"
-          matTableExporter
-          #exporter="matTableExporter"
-          multiTemplateDataRows
-          matSort
-        >
+        <table mat-table [dataSource]="dataSourceAsegurado" matTableExporter #exporter="matTableExporter"
+          multiTemplateDataRows matSort>
           <!-- ID Index -->
           <ng-container matColumnDef="index">
-            <th
-              id="indexI"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 4%"
-            >
+            <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
               N°
             </th>
             <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 4%">
@@ -226,13 +194,7 @@
 
 
           <ng-container matColumnDef="rutAsegurado">
-            <th
-              id="_rutAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_rutAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               RUT
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -241,13 +203,7 @@
           </ng-container>
 
           <ng-container matColumnDef="nombreAsegurado">
-            <th
-              id="_nombreAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_nombreAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               NOMBRE
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -256,13 +212,7 @@
           </ng-container>
 
           <ng-container matColumnDef="apellidoPaternoAsegurado">
-            <th
-              id="_apellidoPaternoAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_apellidoPaternoAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               APELLIDO PATERNO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -271,13 +221,7 @@
           </ng-container>
 
           <ng-container matColumnDef="apellidoMaternoAsegurado">
-            <th
-              id="_apellidoMaternoAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_apellidoMaternoAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               APELLIDO MATERNO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -286,13 +230,7 @@
           </ng-container>
 
           <ng-container matColumnDef="regionAsegurado">
-            <th
-              id="_regionAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_regionAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               REGIÓN
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -301,13 +239,7 @@
           </ng-container>
 
           <ng-container matColumnDef="ciudadAsegurado">
-            <th
-              id="_ciudadAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_ciudadAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               CIUDAD
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -316,13 +248,7 @@
           </ng-container>
 
           <ng-container matColumnDef="comunaAsegurado">
-            <th
-              id="_comunaAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_comunaAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               COMUNA
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -331,13 +257,7 @@
           </ng-container>
 
           <ng-container matColumnDef="direccionAsegurado">
-            <th
-              id="_direccionAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 12%"
-            >
+            <th id="_direccionAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
               DIRECCIÓN
             </th>
             <td mat-cell *matCellDef="let row" style="width: 12%">
@@ -347,13 +267,7 @@
 
 
           <ng-container matColumnDef="telefonoAsegurado">
-            <th
-              id="_telefonoAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 7%"
-            >
+            <th id="_telefonoAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 7%">
               TELÉFONO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 7%">
@@ -363,13 +277,7 @@
 
 
           <ng-container matColumnDef="correoAsegurado">
-            <th
-              id="_correoAsegurado"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 7%"
-            >
+            <th id="_correoAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 7%">
               TELÉFONO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 7%">
@@ -378,68 +286,32 @@
           </ng-container>
 
           <ng-container matColumnDef="opciones">
-            <th
-              id="opcionesI"
-              mat-header-cell
-              *matHeaderCellDef
-              style="width: 14%; text-align: center"
-            >
-              <button
-                matTooltip="Agregar"
-                mat-icon-button
-                class="nuevo"
-                (click)="agregaNuevo()"
-              >
+            <th id="opcionesI" mat-header-cell *matHeaderCellDef style="width: 14%; text-align: center">
+              <button matTooltip="Agregar" mat-icon-button class="nuevo" (click)="agregaNuevo()">
                 <mat-icon>add</mat-icon>
               </button>
             </th>
 
-            <td
-              mat-cell
-              *matCellDef="let row; let i = index"
-              style="width: 14%; text-align: center"
-            >
-              <button
-                matTooltip="Modificar"
-                mat-icon-button
-                class="tabla"
-                (click)="modificaAsegurado(row)"
-              >
+            <td mat-cell *matCellDef="let row; let i = index" style="width: 14%; text-align: center">
+              <button matTooltip="Modificar" mat-icon-button class="tabla" (click)="modificaAsegurado(row)">
                 <mat-icon>edit</mat-icon>
               </button>
 
-              <button
-                matTooltip="Consultar"
-                mat-icon-button
-                class="tabla"
-                (click)="consultaAsegurado(row)"
-              >
+              <button matTooltip="Consultar" mat-icon-button class="tabla" (click)="consultaAsegurado(row)">
                 <mat-icon>search</mat-icon>
               </button>
 
-              <button
-                matTooltip="Eliminar"
-                mat-icon-button
-                class="tabla"
-                (click)="eliminaAsegurado(row)"
-              >
+              <button matTooltip="Eliminar" mat-icon-button class="tabla" (click)="eliminaAsegurado(row)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsAsegurado"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumnsAsegurado"
-            class="example-element-row"
-          ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsAsegurado" class="example-element-row"></tr>
         </table>
 
-        <mat-paginator
-          #myPaginator
-          [pageSizeOptions]="[10, 20, 30, 100]"
-        ></mat-paginator>
+        <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
 
         <div>
           <button mat-button matStepperPrevious>Volver</button>
@@ -454,39 +326,26 @@
 
         <div class="row mt-1">
           <div class="col-md-3 d-flex align-items-center justify-content-end">
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="
+            <button mat-raised-button class="colorFondoBotonExTabla" (click)="
                 exporter.exportTable('xlsx', {
                   fileName: nombreArchivoBeneficiario,
                   sheet: 'facturas',
                   Props: { Author: 'Silave' },
                   columnWidths: [50, 5, 3]
                 })
-              "
-            >
+              ">
               Excel
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('csv', { fileName: nombreArchivoBeneficiario })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('csv', { fileName: nombreArchivoBeneficiario })">
               Csv
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('json', { fileName: nombreArchivoBeneficiario })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('json', { fileName: nombreArchivoBeneficiario })">
               Json
             </button>
-            <button
-              mat-raised-button
-              class="colorFondoBotonExTabla"
-              (click)="exporter.exportTable('txt', { fileName: nombreArchivoBeneficiario })"
-            >
+            <button mat-raised-button class="colorFondoBotonExTabla"
+              (click)="exporter.exportTable('txt', { fileName: nombreArchivoBeneficiario })">
               Txt
             </button>
           </div>
@@ -497,23 +356,11 @@
             </mat-form-field>
           </div>
         </div>
-        <table
-          mat-table
-          [dataSource]="dataSourceBeneficiario"
-          matTableExporter
-          #exporter="matTableExporter"
-          multiTemplateDataRows
-          matSort
-        >
+        <table mat-table [dataSource]="dataSourceBeneficiario" matTableExporter #exporter="matTableExporter"
+          multiTemplateDataRows matSort>
           <!-- ID Index -->
           <ng-container matColumnDef="index">
-            <th
-              id="indexI"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 4%"
-            >
+            <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
               N°
             </th>
             <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 4%">
@@ -523,13 +370,7 @@
 
 
           <ng-container matColumnDef="rutBeneficiario">
-            <th
-              id="_rutBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_rutBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               RUT
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -538,13 +379,7 @@
           </ng-container>
 
           <ng-container matColumnDef="nombreBeneficiario">
-            <th
-              id="_nombreBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_nombreBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               NOMBRE
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -553,13 +388,7 @@
           </ng-container>
 
           <ng-container matColumnDef="apellidoPaternoBeneficiario">
-            <th
-              id="_apellidoPaternoBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_apellidoPaternoBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               APELLIDO PATERNO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -568,13 +397,7 @@
           </ng-container>
 
           <ng-container matColumnDef="apellidoMaternoBeneficiario">
-            <th
-              id="_apellidoMaternoBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_apellidoMaternoBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               APELLIDO MATERNO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -583,13 +406,7 @@
           </ng-container>
 
           <ng-container matColumnDef="regionBeneficiario">
-            <th
-              id="_regionBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_regionBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               REGIÓN
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -598,13 +415,7 @@
           </ng-container>
 
           <ng-container matColumnDef="ciudadBeneficiario">
-            <th
-              id="_ciudadBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_ciudadBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               CIUDAD
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -612,17 +423,8 @@
             </td>
           </ng-container>
 
-
-
-
           <ng-container matColumnDef="comunaBeneficiario">
-            <th
-              id="_comunaBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+            <th id="_comunaBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               COMUNA
             </th>
             <td mat-cell *matCellDef="let row" style="width: 8%">
@@ -631,13 +433,7 @@
           </ng-container>
 
           <ng-container matColumnDef="direccionBeneficiario">
-            <th
-              id="_direccionBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 12%"
-            >
+            <th id="_direccionBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
               DIRECCIÓN
             </th>
             <td mat-cell *matCellDef="let row" style="width: 12%">
@@ -647,13 +443,7 @@
 
 
           <ng-container matColumnDef="telefonoBeneficiario">
-            <th
-              id="_telefonoBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 7%"
-            >
+            <th id="_telefonoBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 7%">
               TELÉFONO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 7%">
@@ -663,13 +453,7 @@
 
 
           <ng-container matColumnDef="correoBeneficiario">
-            <th
-              id="_correoBeneficiario"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 7%"
-            >
+            <th id="_correoBeneficiario" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 7%">
               TELÉFONO
             </th>
             <td mat-cell *matCellDef="let row" style="width: 7%">
@@ -678,70 +462,32 @@
           </ng-container>
 
           <ng-container matColumnDef="opciones">
-            <th
-              id="opcionesI"
-              mat-header-cell
-              *matHeaderCellDef
-              style="width: 14%; text-align: center"
-            >
-              <button
-                matTooltip="Agregar"
-                mat-icon-button
-                class="nuevo"
-                (click)="agregaNuevoBeneficiario()"
-              >
+            <th id="opcionesI" mat-header-cell *matHeaderCellDef style="width: 14%; text-align: center">
+              <button matTooltip="Agregar" mat-icon-button class="nuevo" (click)="agregaNuevoBeneficiario()">
                 <mat-icon>add</mat-icon>
               </button>
             </th>
 
-            <td
-              mat-cell
-              *matCellDef="let row; let i = index"
-              style="width: 14%; text-align: center"
-            >
-              <button
-                matTooltip="Modificar"
-                mat-icon-button
-                class="tabla"
-                (click)="modificaBeneficiario(row)"
-              >
+            <td mat-cell *matCellDef="let row; let i = index" style="width: 14%; text-align: center">
+              <button matTooltip="Modificar" mat-icon-button class="tabla" (click)="modificaBeneficiario(row)">
                 <mat-icon>edit</mat-icon>
               </button>
 
-              <button
-                matTooltip="Consultar"
-                mat-icon-button
-                class="tabla"
-                (click)="consultaBeneficiario(row)"
-              >
+              <button matTooltip="Consultar" mat-icon-button class="tabla" (click)="consultaBeneficiario(row)">
                 <mat-icon>search</mat-icon>
               </button>
 
-              <button
-                matTooltip="Eliminar"
-                mat-icon-button
-                class="tabla"
-                (click)="eliminaBeneficiario(row)"
-              >
+              <button matTooltip="Eliminar" mat-icon-button class="tabla" (click)="eliminaBeneficiario(row)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsBeneficiario"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumnsBeneficiario"
-            class="example-element-row"
-          ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsBeneficiario" class="example-element-row"></tr>
         </table>
 
-        <mat-paginator
-          #myPaginator
-          [pageSizeOptions]="[10, 20, 30, 100]"
-        ></mat-paginator>
-
-
+        <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
 
         <div>
           <button mat-button matStepperPrevious>Volver</button>
@@ -749,7 +495,7 @@
         </div>
       </form>
     </mat-step>
-<!--
+    <!--
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <p>You are now done.</p>
