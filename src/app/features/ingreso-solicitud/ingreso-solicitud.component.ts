@@ -48,7 +48,6 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
-    CuestionarioComponent,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
@@ -64,7 +63,8 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
     MatSortModule,
     MatDividerModule,
     MatIconModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    CuestionarioComponent,
   ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',

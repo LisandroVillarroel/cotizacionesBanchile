@@ -35,17 +35,3 @@
   font-size: 14px;
   box-sizing: border-box;
 }
-
-/* Botones inferiores */
-.alinear {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 24px;
-}
-
-.botonera-izquierda,
-.botonera-derecha {
-  display: flex;
-  gap: 12px;
-}

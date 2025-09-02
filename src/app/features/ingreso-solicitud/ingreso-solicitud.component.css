@@ -1,67 +1,17 @@
-.agrega-container {
+.modifica-container {
   display: flex;
   flex-direction: column;
   padding: 0 10%;
 }
 
-.agrega-container>* {
+.modifica-container > * {
   width: 95%;
 }
 
-
-.mat-dialog-container {
-  padding: 50px !important;
-
-}
-
-.mat-dialog-content {
-  margin: auto;
-}
-
-.mat-mdc-raised-button {
-  min-width: 100%;
-}
-
-.centrarBoton {
-  display: flex;
-  align-items: center;
-  align-self: center;
-}
-
+/* Estilos personalizados para las celdas de la tabla de Material Design.
+   Se ajusta el espaciado interno (padding) de las celdas de contenido y encabezado
+   para mejorar la presentación visual y alineación del texto dentro de la tabla. */
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
   padding: 0 2px 0 10px;
-}
-
-.alinear {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 24px;
-}
-
-.botonera-izquierda,
-.botonera-derecha {
-  display: flex;
-  gap: 12px;
-}
-
-.colorFondoBotonSalir {
-  height: 50px;
-  min-width: 100px;
-}
-
-.colorFondoBotonAnular {
-  height: 50px;
-  min-width: 100px;
-}
-
-.colorFondoBotonGuardar {
-  height: 50px;
-  min-width: 100px;
-}
-
-.colorFondoBotonSiguiente {
-  height: 50px;
-  min-width: 100px;
 }
