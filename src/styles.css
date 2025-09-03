@@ -88,7 +88,6 @@ body {
   color: white !important;
 }
 
-
 /* Botones inferiores */
 
 .botones-derecha {
@@ -111,7 +110,6 @@ body {
   text-transform: none;
   line-height: 1;
 }
-
 
 /*Fin Botones*/
 
@@ -146,7 +144,6 @@ body {
 }
 
 .inputSelect {
-
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
@@ -183,7 +180,6 @@ body {
   margin-bottom: 15px !important;
 }
 
-
 .mat-mdc-select-value-text {
   font-size: 13px !important;
   font-family: "Roboto", sans-serif !important;
@@ -197,7 +193,10 @@ body {
   color: black;
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+    .mdc-text-field--textarea
+  )
+  .mat-mdc-form-field-infix {
   padding-top: 10px;
   padding-bottom: 16px;
 }
@@ -246,17 +245,22 @@ tr.mat-header-row {
   height: 45px !important;
 }
 
-/*Cambia color cabecera table*/
-.mat-mdc-table {
-  table-layout: fixed !important;
-  /*este permite que la tabla se ajuste*/
+  /*este permite cambiar el tamaño de las columnas de la tabla*/
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  padding: 0 1px 0 10px !important;
 }
 
+  /*este permite que la tabla se ajuste*/
+.mat-mdc-table {
+  table-layout: fixed !important;
+}
+
+  /*este permite que la tabla se ajuste*/
 .mat-mdc-table .mdc-data-table__header-row {
   color: rgb(255, 255, 255) !important;
   background-color: #149cb9 !important;
   table-layout: none !important;
-  /*este permite que la tabla se ajuste*/
 }
 
 .mat-mdc-table tbody,
@@ -341,7 +345,7 @@ th#opcionesI {
   font-size: 11px !important;
   font-family: "Roboto", sans-serif !important;
   color: white !important;
-  width: 7%;
+  width: 14% !important;
   text-align: center;
   vertical-align: middle;
   height: 45px; /* igual que tr.mat-header-row si lo tienes definido */
