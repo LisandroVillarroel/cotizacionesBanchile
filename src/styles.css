@@ -69,6 +69,19 @@ body {
   display: flex;
   gap: 12px;
 }
+
+/* Botones carga cuestionario */
+.boton-cargar {
+  height: 40px;
+  min-height: 40px;
+  font-size: 11px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 0 16px;
+  line-height: 1;
+  text-transform: none;
+}
+
+
 /*Fin Botones*/
 
 /*INICIO INPUT*/

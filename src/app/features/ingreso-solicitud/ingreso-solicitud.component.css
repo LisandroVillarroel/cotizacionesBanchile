@@ -8,9 +8,7 @@
   width: 95%;
 }
 
-/* Estilos personalizados para las celdas de la tabla de Material Design.
-   Se ajusta el espaciado interno (padding) de las celdas de contenido y encabezado
-   para mejorar la presentación visual y alineación del texto dentro de la tabla. */
+/* Estilos personalizados para las celdas de la tabla de Material Design.*/
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
   padding: 0 2px 0 10px;

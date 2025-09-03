@@ -7,26 +7,19 @@
         </mat-label>
 
         <div class="doc-actions">
-          <div class="doc-input same-height fake-input">
-            {{ doc.archivoNombre || "Sin documento cargado" }}
+          <div class="col-md-8">
+            <div class="inputInput"
+              style="border: 1px solid #ccc; border-radius: 4px; padding-left: 12px; height: 40px; display: flex; align-items: center; background-color: #fff; color: #333;">
+              {{ doc.archivoNombre || "Sin documento cargado" }}
+            </div>
           </div>
 
-          <button
-            mat-raised-button
-            color="primary"
-            class="same-height"
-            (click)="abrirInputArchivo(doc.nombre)"
-          >
+          <button mat-raised-button color="primary" class="boton-cargar" (click)="abrirInputArchivo(doc.nombre)">
             {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
           </button>
 
-          <button
-            *ngIf="doc.archivoNombre"
-            mat-icon-button
-            color="warn"
-            (click)="eliminarDocumento(doc)"
-            matTooltip="Eliminar documento"
-          >
+          <button *ngIf="doc.archivoNombre" mat-icon-button color="warn" (click)="eliminarDocumento(doc)"
+            matTooltip="Eliminar documento">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
