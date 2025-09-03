@@ -4,6 +4,7 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -73,12 +74,11 @@ body {
 /* Botones carga cuestionario */
 .boton-cargar {
   height: 40px;
-  min-height: 40px;
   font-size: 11px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 0 16px;
-  line-height: 1;
   text-transform: none;
+  line-height: 1;
 }
 
 
@@ -93,6 +93,18 @@ body {
   padding-bottom: 5px !important;
   width: 100%;
   /*height: 55px !important; /*tamaño height de inpul*/
+}
+
+.inputDocumentoPendiente {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: #999;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  border-radius: 4px;
+  width: 100%;
+  display: inline-block;
 }
 
 .inputSelectBuscar {
@@ -156,13 +168,11 @@ body {
   color: black;
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-    .mdc-text-field--textarea
-  )
-  .mat-mdc-form-field-infix {
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
   padding-top: 10px;
   padding-bottom: 16px;
 }
+
 /*FIN INPUT*/
 
 /*MAT-TABLE*/
@@ -181,6 +191,7 @@ body {
   color: #323131;
   padding: 0 1px !important;
 }
+
 /*Fin Titulo Mantenedores Tablas principales*/
 
 /* Titulos Mantenedores secundarios */
@@ -192,6 +203,7 @@ body {
   color: #002464 !important;
   font-family: "Roboto", sans-serif;
 }
+
 /* Fin Titulos Mantenedores Secundarios*/
 
 td.mat-cell:last-of-type {
@@ -278,6 +290,7 @@ button.tabla {
   width: 40px !important;
   height: 40px !important;
 }
+
 /*Fin iconos de tabla*/
 
 /*Icono ordena tabla*/
@@ -293,5 +306,6 @@ button.tabla {
 .mat-mdc-paginator-page-size-select {
   width: 84px !important;
 }
+
 /* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/

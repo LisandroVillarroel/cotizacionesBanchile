@@ -6,23 +6,28 @@
           {{ doc.nombre }} <span *ngIf="doc.obligatorio">(obligatorio)</span>
         </mat-label>
 
-        <div class="doc-actions">
+        <div class="row">
           <div class="col-md-8">
-            <div class="inputInput"
-              style="border: 1px solid #ccc; border-radius: 4px; padding-left: 12px; height: 40px; display: flex; align-items: center; background-color: #fff; color: #333;">
+            <div class="inputDocumentoPendiente">
               {{ doc.archivoNombre || "Sin documento cargado" }}
             </div>
           </div>
 
-          <button mat-raised-button color="primary" class="boton-cargar" (click)="abrirInputArchivo(doc.nombre)">
-            {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
-          </button>
+          <div class="col-md-4 d-flex align-items-center gap-2">
+            <button mat-raised-button color="primary" class="boton-cargar" (click)="abrirInputArchivo(doc.nombre)">
+              {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
+            </button>
 
-          <button *ngIf="doc.archivoNombre" mat-icon-button color="warn" (click)="eliminarDocumento(doc)"
-            matTooltip="Eliminar documento">
-            <mat-icon>delete</mat-icon>
-          </button>
+            <button *ngIf="doc.archivoNombre" mat-icon-button color="warn" (click)="eliminarDocumento(doc)"
+              matTooltip="Eliminar documento">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
+
+        <!-- Input file oculto -->
+        <input type="file" accept=".pdf" #fileInputs id="fileInput_{{ doc.nombre }}" style="display: none"
+          (change)="onFileSelected($event, doc)" />
       </div>
     </div>
   </div>

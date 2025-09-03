@@ -97,7 +97,7 @@ export class CuestionarioComponent {
     ElementRef<HTMLInputElement>
   >;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   abrirInputArchivo(nombre: string) {
     const input = this.fileInputs.find(
@@ -110,12 +110,21 @@ export class CuestionarioComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      doc.archivo = file.name;
+
+      // Validación de tipo PDF
+      if (file.type !== 'application/pdf') {
+        alert('Solo se permiten archivos PDF.');
+        input.value = ''; // Limpiar selección
+        return;
+      }
+
+      // Actualizar el signal con el nombre del archivo
+      doc.archivo.set(file.name);
     }
   }
 
   eliminarDocumento(doc: any) {
-    doc.archivo = '';
+    doc.archivo.set('');
   }
 
   guardarSolicitud() {
