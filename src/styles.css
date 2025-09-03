@@ -3,18 +3,6 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/*INICIO INPUT*/
-.inputInput {
-  font-size: 11px !important;
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-  /*height: 55px !important; /*tamaño height de inpul*/
-}
-
-/*FIN INPUT*/
-
 
 /*MAT-TABLE*/
 /* Mantenedores Material*/
@@ -86,31 +74,45 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 /*INICIO INPUT*/
-.inputInput {
+.inputForm {
   font-size: 11px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
-  padding-bottom: 5px !important;
+  padding-bottom: 0px !important;
   width:100%;
-  /*height: 55px !important; /*tamaño height de inpul*/
+  height: 45%;
+
+  .mat-mdc-text-field-wrapper {
+    height: 50px;
+    flex: auto;
+    will-change: auto;
 }
+}
+
+/*Espacio del input */
+.mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: 12px !important;
+    padding-bottom: 6px !important;
+
+}
+
 
 .inputSelectBuscar {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
-  height: 84%;
+  height: 4%;
 }
 
 .inputSelect {
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
+  padding-top: 5px !important;
   padding-bottom: 5px !important;
   width:100%;
-  /*  height: 65px !important; /*tamaño height de inpul*/
+
 }
 
 .inputBuscar {
@@ -306,3 +308,39 @@ button.tabla {
 
 /* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
+
+:root{
+/*NOTIFICACIONES*/
+
+
+.success {
+  --mdc-snackbar-container-color: #4CAF50 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.error {
+  --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.warning {
+  --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.info {
+   --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+/*FIN NOTIFICACIONES*/
+
+
+}

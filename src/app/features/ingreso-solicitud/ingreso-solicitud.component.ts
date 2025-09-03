@@ -31,6 +31,7 @@ import { AgregaSolicitudBeneficiarioComponent } from './beneficiario/agrega-soli
 import { ModificaSolicitudBeneficiarioComponent } from './beneficiario/modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
 import { ConsultaSolicitudBeneficiarioComponent } from './beneficiario/consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
 import { EliminaSolicitudBeneficiarioComponent } from './beneficiario/elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
+import { NotificacionService } from '@shared/service/notificacion';
 
 
 @Component({
@@ -65,6 +66,7 @@ export default class IngresoSolicitudComponent {
   datoSolicitud: ISolicitudContratante | undefined;
   nombreRazonSocial= signal<string>('');
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
+  notificacionService=inject(NotificacionService)
 
    ngAfterViewInit(): void {
       this.dataSourceAsegurado.paginator = this.paginatorAsegurado;
@@ -337,7 +339,7 @@ getErrorMessage(campo: string) {
   }
 
   guardarBorrador(){
-    alert('guardar borrador')
+    this.notificacionService.showSuccess('prueba se mensaje');
   }
 
   async onBlurRutCliente(event: any) {

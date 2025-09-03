@@ -1,14 +1,30 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-   {
+    {
     path: '',
-    pathMatch:'full',
-    redirectTo:'ingreso'
+    pathMatch: 'full',
+    redirectTo: 'inicio',
   },
-
-   {
-    path: 'ingreso',
-    loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
+/*  {
+    path: 'login',
+    loadComponent: () => import('@autentica/pages/login/login'),
+    canActivate: [publicoGuard()],
+  },*/
+  {
+    path: '',
+    loadComponent: () => import('@core/layout/principal.component'),
+   // canActivate: [privadoGuard()],
+    children: [
+      {
+        path: 'inicio',
+        loadComponent: () => import('@features/dashboard/dashboard.component'),
+      },
+      {
+        path: 'ingreso',
+        loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
+      },
+    ],
+    //loadComponent: () => import('./componentes/portada/portada.component'),
   },
 ];
