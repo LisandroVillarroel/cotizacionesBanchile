@@ -7,7 +7,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Roboto", sans-serif !important;
 }
 
 .alinear {
@@ -58,6 +58,37 @@ body {
   border: 1px solid #333334 !important;
 }
 
+.colorFondoBotonDescargar {
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
+}
+
+.colorFondoBotonDescargar:hover {
+  border: 1px solid #333334 !important;
+}
+
+.colorFondoBotonCancelar {
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
+}
+
+.colorFondoBotonCancelar:hover {
+  border: 1px solid #333334 !important;
+}
+
+.colorFondoBotonGrabar {
+  background-color: #234e85 !important;
+  color: white !important;
+}
+
+.colorFondoBotonGrabar:hover {
+  background-color: #002464 !important;
+  color: white !important;
+}
+
+
 /* Botones inferiores */
 
 .botones-derecha {
@@ -74,8 +105,8 @@ body {
 /* Botones carga cuestionario */
 .boton-cargar {
   height: 40px;
-  font-size: 11px;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
   padding: 0 16px;
   text-transform: none;
   line-height: 1;
@@ -86,9 +117,8 @@ body {
 
 /*INICIO INPUT*/
 .inputInput {
-  font-size: 11px !important;
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
@@ -100,24 +130,23 @@ body {
   background-color: #f9f9f9;
   color: #999;
   padding: 10px 16px;
-  font-size: 11px;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   border-radius: 4px;
   width: 100%;
   display: inline-block;
 }
 
 .inputSelectBuscar {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 84%;
 }
 
 .inputSelect {
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
@@ -125,8 +154,8 @@ body {
 }
 
 .inputBuscar {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 80%;
@@ -135,8 +164,8 @@ body {
 }
 
 .inputFecha {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -145,8 +174,8 @@ body {
 }
 
 .inputFechaForm {
-  font-size: 1px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -154,15 +183,15 @@ body {
   margin-bottom: 15px !important;
 }
 
+
 .mat-mdc-select-value-text {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
 }
 
 .labelI {
-  font-size: 11px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: 400;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   font-style: italic;
   text-align: left;
   color: black;
@@ -188,10 +217,10 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+  font-family: "Roboto", sans-serif !important;
   color: #323131;
   padding: 0 1px !important;
 }
-
 /*Fin Titulo Mantenedores Tablas principales*/
 
 /* Titulos Mantenedores secundarios */
@@ -201,9 +230,8 @@ body {
   font-size: 16px !important;
   text-align: left !important;
   color: #002464 !important;
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif !important;
 }
-
 /* Fin Titulos Mantenedores Secundarios*/
 
 td.mat-cell:last-of-type {
@@ -226,7 +254,7 @@ tr.mat-header-row {
 
 .mat-mdc-table .mdc-data-table__header-row {
   color: rgb(255, 255, 255) !important;
-  background-color: #149dc9 !important;
+  background-color: #149cb9 !important;
   table-layout: none !important;
   /*este permite que la tabla se ajuste*/
 }
@@ -241,7 +269,8 @@ tr.mat-header-row {
 .mat-mdc-footer-row,
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
-  font-size: 11px;
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
   /*Tamaño letra tabla*/
 }
 
@@ -267,13 +296,13 @@ tr.mat-row {
 /*iconos de tabla*/
 button.nuevo:hover {
   color: white !important;
-  background-color: #149dc9 !important;
+  background-color: #149cb9 !important;
 }
 
 button.nuevo {
   color: black !important;
   border: 0;
-  background-color: #149dc9;
+  background-color: #149cb9;
   width: 40px !important;
   height: 40px !important;
 }
@@ -284,13 +313,12 @@ button.tabla:hover {
 }
 
 button.tabla {
-  color: #149dc9 !important;
+  color: #149cb9 !important;
   border: 0;
   background-color: white;
   width: 40px !important;
   height: 40px !important;
 }
-
 /*Fin iconos de tabla*/
 
 /*Icono ordena tabla*/
@@ -306,6 +334,29 @@ button.tabla {
 .mat-mdc-paginator-page-size-select {
   width: 84px !important;
 }
-
 /* Fin Foot Tabla*/
+
+/*Columna +AGREGAR*/
+th#opcionesI {
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  color: white !important;
+  width: 7%;
+  text-align: center;
+  vertical-align: middle;
+  height: 45px; /* igual que tr.mat-header-row si lo tienes definido */
+}
+
+.agregar-texto {
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  color: white !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+/*Fin Columna +AGREGAR*/
+
 /*Fin MAT-TABLE*/

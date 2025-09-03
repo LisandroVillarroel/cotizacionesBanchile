@@ -19,6 +19,7 @@ import {
 } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 
@@ -64,6 +65,7 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
     MatDividerModule,
     MatIconModule,
     MatTableExporterModule,
+    MatTooltipModule,
     CuestionarioComponent,
   ],
   templateUrl: './ingreso-solicitud.component.html',
@@ -367,7 +369,7 @@ export default class IngresoSolicitudComponent {
   }
 
   /*Modulo 2 Asegurado*/
-  agregaNuevo() {
+  agregaNuevoAsegurado() {
     //  agregaNuevo(empresaInterface_: EmpresaI) {
     // Nuevo
     const dialogConfig = new MatDialogConfig();
