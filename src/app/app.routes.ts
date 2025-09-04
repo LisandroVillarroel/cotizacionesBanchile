@@ -15,4 +15,8 @@ export const routes: Routes = [
     path: 'inicio',
     loadComponent: () => import('@features/dashboard/dashboard.component'),
   },
+  {
+    path: 'distribucion',
+    loadComponent: () => import('@features/dashboard/distribucion/distribucion.component'),
+  },
 ];
