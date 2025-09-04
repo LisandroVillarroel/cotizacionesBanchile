@@ -1,19 +1,21 @@
-<div class="container">
-  <div class="alinear">
+<div class="container alinear">
     <h1 mat-dialog-title class="mt-3 titulo">Te damos la bienvenida</h1>
-  </div>
 </div>
 
 <div class="container fondoGris flex">
-    <div class="container d-flex justify-around p-2">
-      <h4 mat-dialog-subtitle class="mt-3">Resumen general de solicitudes</h4>
-      <mat-form-field class="fontSmall">
-        <mat-label class="fontSmall">Actualizado el:</mat-label>
-        <input matInput [matDatepicker]="picker" placeholder="{{ fechaActual | date:'yyyy-dd-MM' }}">
-        <mat-hint class="fontSmall">MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <app-resumen-general/>
+  <div class="container d-flex justify-around p-2">
+    <h4 mat-dialog-subtitle class="mt-3">Resumen general de solicitudes</h4>
+    <mat-form-field class="fontSmall">
+      <mat-label class="fontSmall">Actualizado el:</mat-label>
+      <input matInput [matDatepicker]="picker">
+      <mat-hint class="fontSmall">MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
   </div>
+  <app-resumen-general/>
+</div>
+
+<div class="container alinear">
+  <app-solicitudes-gestionadas/>
+</div>

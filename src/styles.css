@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@charset "UTF-8";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 14;}
@@ -10,6 +11,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
+  color: #666668;
   /*height: 55px !important; /*tamaño height de inpul*/
 }
 
@@ -29,7 +31,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  color: #323131;
+  color: #666668;
   padding: 0 1px !important;
 }
 
@@ -44,7 +46,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
   color: white;
-  background-color: #0a58ca;
+  background-color: #6BAA1F;
 }
 
 .colorFondoBotonSalir {
@@ -65,7 +67,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
 */
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   color: white !important;
-  background-color: #0a58ca !important;
+  background-color: #F45516 !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
