@@ -102,8 +102,8 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-between mt-3">
-  <div class="botones-izquierda">
+<mat-dialog-actions class="d-flex justify-content-center">
+  <div class="me-5">
     <button
       mat-raised-button
       class="colorFondoBotonCancelar"
@@ -113,9 +113,8 @@
       Cerrar
     </button>
   </div>
-  <div class="botones-derecha">
+  <div class="ms-5">
     <button
-      class="colorFondoBotonGrabar"
       mat-raised-button
       (click)="grabar()"
       [disabled]="agregaAsegurado().invalid"

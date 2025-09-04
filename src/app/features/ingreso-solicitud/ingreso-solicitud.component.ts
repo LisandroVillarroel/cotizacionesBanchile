@@ -38,8 +38,10 @@ import { AgregaSolicitudBeneficiarioComponent } from './beneficiario/agrega-soli
 import { ModificaSolicitudBeneficiarioComponent } from './beneficiario/modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
 import { ConsultaSolicitudBeneficiarioComponent } from './beneficiario/consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
 import { EliminaSolicitudBeneficiarioComponent } from './beneficiario/elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
-import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { AseguradoComponent } from './asegurado/asegurado.component';
+import { BeneficiarioComponent } from "./beneficiario/beneficiario.component";
+import { CuestionarioComponent } from './cuestionario/cuestionario.component';
+import { MateriaAseguradaComponent } from "./materia-asegurada/materia-asegurada.component";
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -61,9 +63,11 @@ import { AseguradoComponent } from './asegurado/asegurado.component';
     MatIconModule,
     MatTableExporterModule,
     MatTooltipModule,
+    AseguradoComponent,
+    BeneficiarioComponent,
     CuestionarioComponent,
-    AseguradoComponent
-  ],
+    MateriaAseguradaComponent
+],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
   providers: [
@@ -81,45 +85,6 @@ export default class IngresoSolicitudComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-
-
-  /* modulo 3 Beneficiarios*/
-  public nombreArchivoBeneficiario = 'Beneficiario';
-
-  displayedColumnsBeneficiario: string[] = [
-    'index',
-    'rutBeneficiario',
-    'nombreBeneficiario',
-    'apellidoPaternoBeneficiario',
-    'apellidoMaternoBeneficiario',
-    'regionBeneficiario',
-    'ciudadBeneficiario',
-    'comunaBeneficiario',
-    'direccionBeneficiario',
-    'telefonoBeneficiario',
-    'correoBeneficiario',
-    'opciones',
-  ];
-  dataSourceBeneficiario = new MatTableDataSource<ISolicitudBeneficiario>();
-
-  @ViewChild(MatPaginator)
-  paginatorBeneficiario!: MatPaginator;
-  @ViewChild(MatSort) sortBeneficiario!: MatSort;
-
-  applyFilterBeneficiario(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceBeneficiario.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSourceBeneficiario.paginator) {
-      this.dataSourceBeneficiario.paginator.firstPage();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSourceBeneficiario.paginator = this.paginatorBeneficiario;
-    this.dataSourceBeneficiario.sort = this.sortBeneficiario;
-  }
-  /*Fin modulo Beneficiario*/
 
   datoRubros = signal<ITipoRubro[]>([
     {
@@ -172,35 +137,6 @@ export default class IngresoSolicitudComponent {
       codigoSeguro: 8,
       descripcionSeguro: 'Seguro 4 Rubro 2',
       codigoRubro: 2,
-    },
-  ]);
-
-
-
-  datoBeneficiarios = signal<ISolicitudBeneficiario[]>([
-    {
-      rutBeneficiario: '12514508-6',
-      nombreBeneficiario: 'Nombre Beneficiario 1',
-      apellidoPaternoBeneficiario: 'apellido Paterno 1',
-      apellidoMaternoBeneficiario: 'apellido Materno 1',
-      regionBeneficiario: 'Metropolitana 1',
-      ciudadBeneficiario: 'Santiago 1',
-      comunaBeneficiario: 'maipú 1',
-      direccionBeneficiario: 'dirección  1',
-      telefonoBeneficiario: '11111111',
-      correoBeneficiario: 'correo1@gmail.com',
-    },
-    {
-      rutBeneficiario: '14245328-2',
-      nombreBeneficiario: 'Nombre Beneficiario 2',
-      apellidoPaternoBeneficiario: 'apellido Paterno 2',
-      apellidoMaternoBeneficiario: 'apellido Materno 2',
-      regionBeneficiario: 'Metropolitana 2',
-      ciudadBeneficiario: 'Santiago 2',
-      comunaBeneficiario: 'maipú 2',
-      direccionBeneficiario: 'dirección  2',
-      telefonoBeneficiario: '2222222222',
-      correoBeneficiario: 'correo2@gmail.com',
     },
   ]);
 
@@ -257,20 +193,7 @@ export default class IngresoSolicitudComponent {
         (rubro) => rubro.codigoRubro == _codigoRubro
       )
     );
-
-    /*
-    await this.cargaRaza(
-      this.id_EmpresaLaboratorio,
-      this.rescatadoEspecie.nombre,
-      '0'
-    );
-    */
     return;
-  }
-
-  async ngOnInit() {
-    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSourceBeneficiario.data = this.datoBeneficiarios();
   }
 
   enviar() {
@@ -302,102 +225,4 @@ export default class IngresoSolicitudComponent {
     }
     return null as any;
   }
-
-
-  /*Modulo 2 Beneficiario*/
-  agregaNuevoBeneficiario() {
-    //  agregaNuevo(empresaInterface_: EmpresaI) {
-    // Nuevo
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {};
-    //  dialogConfig.data = {
-    //    idProducto: idProdP,
-    //    titulo: tituloP
-    //  };
-
-    this.dialog
-      .open(AgregaSolicitudBeneficiarioComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Dialog output3333:', data);
-        if (data === 1) {
-          this.refreshTableBeneficiario();
-        }
-      });
-  }
-
-  modificaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = datoBeneficiarioPar;
-    this.dialog
-      .open(ModificaSolicitudBeneficiarioComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Dialog output3333:', data);
-        if (data === 1) {
-          this.refreshTableBeneficiario();
-        }
-      });
-  }
-
-  consultaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-
-    dialogConfig.data = datoBeneficiarioPar;
-    this.dialog
-      .open(ConsultaSolicitudBeneficiarioComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Datoas Consulta:', data);
-        if (data === 1) {
-          this.refreshTableBeneficiario();
-        }
-      });
-  }
-
-  eliminaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-
-    dialogConfig.data = datoBeneficiarioPar;
-    this.dialog
-      .open(EliminaSolicitudBeneficiarioComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Datoas Consulta:', data);
-        if (data === 1) {
-          this.refreshTableBeneficiario();
-        }
-      });
-  }
-
-  async refreshTableBeneficiario() {
-    // await this.getListCliente();
-    this.dataSourceBeneficiario.paginator?.pageSize !=
-      this.paginatorBeneficiario.pageSize;
-  }
-  /*Fin Modulo 2 Beneficiario*/
 }

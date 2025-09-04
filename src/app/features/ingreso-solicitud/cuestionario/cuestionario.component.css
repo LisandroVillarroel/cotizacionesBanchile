@@ -14,7 +14,6 @@
   flex-wrap: wrap;
 }
 
-
 .doc-input {
   flex: 1;
 }
@@ -35,4 +34,21 @@
   color: #555;
   font-size: 14px;
   box-sizing: border-box;
+}
+
+/* Botones carga cuestionario */
+.boton-cargar {
+  background-color: #149dc9 !important;
+  color: #f2f2f4 !important;
+  height: 40px;
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  padding: 0 16px;
+  text-transform: none;
+  line-height: 1;
+}
+
+.boton-cargar:hover {
+  background-color: #0f8dba !important;
+  color: #f2f2f4 !important;
 }

@@ -90,25 +90,15 @@ body {
 
 /* Botones inferiores */
 
-.botones-derecha {
-  display: flex;
-  gap: 12px;
-  margin-left: auto;
-}
-
 .botones-izquierda {
   display: flex;
   gap: 12px;
 }
 
-/* Botones carga cuestionario */
-.boton-cargar {
-  height: 40px;
-  font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
-  padding: 0 16px;
-  text-transform: none;
-  line-height: 1;
+.botones-derecha {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
 }
 
 /*Fin Botones*/
@@ -245,18 +235,18 @@ tr.mat-header-row {
   height: 45px !important;
 }
 
-  /*este permite cambiar el tamaño de las columnas de la tabla*/
+/*este permite cambiar el tamaño de las columnas de la tabla*/
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
   padding: 0 1px 0 10px !important;
 }
 
-  /*este permite que la tabla se ajuste*/
+/*este permite que la tabla se ajuste*/
 .mat-mdc-table {
   table-layout: fixed !important;
 }
 
-  /*este permite que la tabla se ajuste*/
+/*este permite que la tabla se ajuste*/
 .mat-mdc-table .mdc-data-table__header-row {
   color: rgb(255, 255, 255) !important;
   background-color: #149cb9 !important;
