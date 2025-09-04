@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+
 import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
 
 
@@ -30,6 +32,7 @@ import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
     MatButtonModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatDatepickerModule,
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
