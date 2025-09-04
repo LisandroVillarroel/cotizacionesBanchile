@@ -13,7 +13,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
-  MatPaginator,
   MatPaginatorIntl,
   MatPaginatorModule,
 } from '@angular/material/paginator';
@@ -26,7 +25,6 @@ import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
-  ISolicitudBeneficiario,
   ISolicitudContratante,
   ITipoRubro,
   ITipoSeguro,
@@ -34,14 +32,11 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
-import { AgregaSolicitudBeneficiarioComponent } from './beneficiario/agrega-solicitud-beneficiario/agrega-solicitud-beneficiario.component';
-import { ModificaSolicitudBeneficiarioComponent } from './beneficiario/modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
-import { ConsultaSolicitudBeneficiarioComponent } from './beneficiario/consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
-import { EliminaSolicitudBeneficiarioComponent } from './beneficiario/elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
 import { AseguradoComponent } from './asegurado/asegurado.component';
-import { BeneficiarioComponent } from "./beneficiario/beneficiario.component";
+import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
-import { MateriaAseguradaComponent } from "./materia-asegurada/materia-asegurada.component";
+import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
+import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -66,8 +61,8 @@ import { MateriaAseguradaComponent } from "./materia-asegurada/materia-asegurada
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
-    MateriaAseguradaComponent
-],
+    MateriaAseguradaComponent,
+  ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
   providers: [
@@ -84,7 +79,6 @@ export default class IngresoSolicitudComponent {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   datoRubros = signal<ITipoRubro[]>([
     {
@@ -224,5 +218,30 @@ export default class IngresoSolicitudComponent {
       return { rutInvalido: true };
     }
     return null as any;
+  }
+
+  abrirDialogoYAvanzar(): void {
+    const dato = {
+      solicitudId: 'ID123456789',
+      fecha: '00 - 00 - 0000',
+      rut: '11.111.111-1',
+      nombre: 'Juan Alberto Muñoz Sepúlveda',
+      ramo: 'Asistencia en viajes',
+      cuestionario: 'CUESTIONARIO_COT192839_ASIS_VIAJE_39912.docx',
+      documentos: 'COMPILADO_DOCU_ADICIONAL_2025.zip',
+    };
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '70%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(ConfirmacionSolicitudDialogComponent, dialogConfig)
+      .afterClosed();
   }
 }

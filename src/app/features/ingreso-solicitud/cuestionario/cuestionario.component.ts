@@ -12,7 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
-import { NgFor, NgIf } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
+import { ICuestionario } from '../modelo/ingreso-solicitud';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -27,83 +29,77 @@ import { NgFor, NgIf } from '@angular/common';
     MatIconModule,
     MatTooltipModule,
     MatStepperModule,
-    NgFor,
-    NgIf,
+    MatInputModule,
   ],
 })
 export class CuestionarioComponent {
   documentForm = signal(this.fb.group({}));
-
-  documentos = [
+  documentos = signal<ICuestionario[]>([
     {
+      id: 1,
       nombre: 'Cuestionario de cotización',
       obligatorio: true,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 2,
       nombre: 'Carta Gantt',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 3,
       nombre: 'Descripción de la obra',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 4,
       nombre: 'Medidas de seguridad',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 5,
       nombre: 'Plano/Layout de la obra',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 6,
       nombre: 'Presupuesto',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
     {
+      id: 7,
       nombre: 'Documentos adicionales',
       obligatorio: false,
-      archivo: signal(''),
-      get archivoNombre() {
-        return this.archivo();
-      },
+      archivo: '',
+      archivoNombre: 'Sin documento cargado',
     },
-  ];
+  ]);
 
   @ViewChildren('fileInputs') fileInputs!: QueryList<
     ElementRef<HTMLInputElement>
   >;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
   abrirInputArchivo(nombre: string) {
-    const input = this.fileInputs.find(
-      (ref) => ref.nativeElement.id === 'fileInput_' + nombre
-    );
+    const id = this.sanitizarNombre(nombre);
+    const input = this.fileInputs.find((ref) => ref.nativeElement.id === id);
     input?.nativeElement.click();
+  }
+
+  sanitizarNombre(nombre: string): string {
+    return 'fileInput_' + nombre.replace(/\s+/g, '_');
   }
 
   onFileSelected(event: Event, doc: any) {
@@ -118,19 +114,43 @@ export class CuestionarioComponent {
         return;
       }
 
-      // Actualizar el signal con el nombre del archivo
-      doc.archivo.set(file.name);
+      // Actualizar el signal completo
+      const nuevosDocumentos = this.documentos().map((d) => {
+        if (d.id === doc.id) {
+          return {
+            ...d,
+            archivo: file.name,
+            archivoNombre: file.name,
+          };
+        }
+        return d;
+      });
+
+      this.documentos.set(nuevosDocumentos);
     }
   }
 
   eliminarDocumento(doc: any) {
-    doc.archivo.set('');
+    const nuevosDocumentos = this.documentos().map((d) => {
+      if (d.id === doc.id) {
+        return {
+          ...d,
+          archivo: '',
+          archivoNombre: 'Sin documento cargado',
+        };
+      }
+      return d;
+    });
+
+    this.documentos.set(nuevosDocumentos);
   }
 
   guardarSolicitud() {
     console.log('Solicitud guardada con los siguientes documentos:');
-    this.documentos.forEach((doc) => {
-      console.log(`${doc.nombre}: ${doc.archivo() || 'No cargado'}`);
+    this.documentos().forEach((doc) => {
+      console.log(`${doc.nombre}: ${doc.archivo || 'No cargado'}`);
     });
   }
+
+
 }

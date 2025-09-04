@@ -23,6 +23,7 @@
       >
         <div class="row">
           <!-- RUT -->
+
           <div class="col-md-6">
             <mat-form-field class="inputInput">
               <mat-label class="labelI">RUT</mat-label>
@@ -44,10 +45,16 @@
           </div>
 
           <!-- Nombre o Razón Social -->
+
           <div class="col-md-6">
             <mat-form-field class="inputInput">
               <mat-label class="labelI">Nombre o Razón Social</mat-label>
-              <input matInput disabled [value]="nombreRazonSocial()" />
+              <input
+                placeholder="."
+                matInput
+                disabled
+                [value]="nombreRazonSocial()"
+              />
             </mat-form-field>
           </div>
 
@@ -71,7 +78,6 @@
             </mat-form-field>
           </div>
 
-          <!-- Correo -->
           <div class="col-md-6">
             <mat-form-field class="inputInput">
               <mat-label class="labelI">Correo</mat-label>
@@ -220,6 +226,25 @@
     <mat-step>
       <ng-template matStepLabel>Cuestionario y Documentos</ng-template>
       <app-cuestionario-documentos />
+      <div class="alinear">
+        <div class="botones-izquierda">
+          <button
+            mat-raised-button
+            matStepperPrevious
+            class="colorFondoBotonSalir"
+          >
+            Volver
+          </button>
+        </div>
+        <div class="botones-derecha">
+          <button (click)="abrirDialogoYAvanzar()"
+            mat-raised-button
+            class="colorFondoBotonSiguiente"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
     </mat-step>
   </mat-stepper>
 </div>

@@ -5,29 +5,29 @@ export interface ISolicitudContratante {
 }
 
 export interface ISolicitudAsegurado {
-  rutAsegurado:string;
-	nombreAsegurado:string;
-	apellidoPaternoAsegurado:string;
-	apellidoMaternoAsegurado:string;
-	regionAsegurado:string;
-	ciudadAsegurado:string;
-	comunaAsegurado:string;
-	direccionAsegurado:string;
-  telefonoAsegurado:string;
-  correoAsegurado:string;
+  rutAsegurado: string;
+  nombreAsegurado: string;
+  apellidoPaternoAsegurado: string;
+  apellidoMaternoAsegurado: string;
+  regionAsegurado: string;
+  ciudadAsegurado: string;
+  comunaAsegurado: string;
+  direccionAsegurado: string;
+  telefonoAsegurado: string;
+  correoAsegurado: string;
 }
 
 export interface ISolicitudBeneficiario {
-  rutBeneficiario:string;
-	nombreBeneficiario:string;
-	apellidoPaternoBeneficiario:string;
-	apellidoMaternoBeneficiario:string;
-	regionBeneficiario:string;
-	ciudadBeneficiario:string;
-	comunaBeneficiario:string;
-	direccionBeneficiario:string;
-  telefonoBeneficiario:string;
-  correoBeneficiario:string;
+  rutBeneficiario: string;
+  nombreBeneficiario: string;
+  apellidoPaternoBeneficiario: string;
+  apellidoMaternoBeneficiario: string;
+  regionBeneficiario: string;
+  ciudadBeneficiario: string;
+  comunaBeneficiario: string;
+  direccionBeneficiario: string;
+  telefonoBeneficiario: string;
+  correoBeneficiario: string;
 }
 
 export interface ITipoRubro {
@@ -39,4 +39,11 @@ export interface ITipoSeguro {
   codigoSeguro: number;
   descripcionSeguro: string;
   codigoRubro: number;
+}
+export interface ICuestionario {
+  id: number;
+  nombre: string;
+  obligatorio: boolean;
+  archivo: string;
+  archivoNombre: string;
 }
