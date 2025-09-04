@@ -22,6 +22,10 @@ p {
   color: #666668;
 }
 
+.info {
+    color: #149DC9;
+}
+
 /*MAT-TABLE*/
 /* Mantenedores Material*/
 /*Titulo Mantenedores Tablas principales*/
@@ -54,13 +58,17 @@ p {
 }
 
 .colorFondoBotonSalir {
-  color: #234E85 !important;
-  background-color: #ffffff !important;
+  color:#666668 !important;
+  background-color: #EEEEF1 !important;
 }
 
 .colorFondoBotonAnular {
-  color: #234E85 !important;
-  background-color: #ffffff !important;
+  color: #666668 !important;
+  background-color: #ffc107 !important;
+}
+.colorFondoBotonSiguiente {
+  color: #ffffff !important;
+  background-color: #234E85 !important;
 }
 
 /*
@@ -133,7 +141,7 @@ p {
   /* height: 55px !important; /*tamaño height de inpul*/
 }
 
-.inputFecha {
+.inputFechaForm {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
@@ -144,21 +152,10 @@ p {
   color: #666668;
 }
 
-.inputFechaForm {
-  font-size: 1px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-  height: 65px !important;
-  /*tamaño height de inpul*/
-  margin-bottom: 15px !important;
-    color: #666668;
-}
-
 .mat-mdc-select-value-text {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-    color: #666668;
+  color: #666668;
 }
 
 .labelI {
@@ -174,9 +171,15 @@ p {
   padding-top: 10px;
   padding-bottom: 16px;
 }
-
-
 /*FIN INPUT*/
+
+/*Caja paara filtros*/
+.box-form-fields {
+  display: flex;
+  align-items: flex-start;
+}
+
+/*fin caja para filtros*/
 
 /*MAT-TABLE*/
 /* Mantenedores Material*/

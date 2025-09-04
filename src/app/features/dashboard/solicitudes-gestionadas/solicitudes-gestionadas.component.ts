@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, ViewChild, inject, signal,} from '@angular/core';
+import { Component, ViewChild, inject, signal,} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,18 +13,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 
 import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
+import { MatTooltip } from "@angular/material/tooltip";
 
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
   standalone: true,
-  providers: [] ,
   imports: [
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
     MatSortModule,
-    MatTableExporterModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
@@ -33,14 +31,15 @@ import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
-  ],
+    MatTooltip
+],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
 })
 
-export class SolicitudesGestionadasComponent implements AfterViewInit {
+export class SolicitudesGestionadasComponent  {
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
-  dataSourceSolicitud = new MatTableDataSource<ISolicitud>();
+
   rubro = new FormControl();
   seguro = new FormControl();
   displayedColumns: string[] = [
@@ -55,14 +54,17 @@ export class SolicitudesGestionadasComponent implements AfterViewInit {
     "accion"
   ];
 
-  @ViewChild(MatPaginator)
-  paginatorSolicitud!: MatPaginator;
-  @ViewChild(MatSort) sortSolicitud!: MatSort;
+  dataSourceSolicitud = new MatTableDataSource<ISolicitud>();
+
+   @ViewChild(MatPaginator)
+    paginatorSolicitud!: MatPaginator;
+    @ViewChild(MatSort) sortSolicitud!: MatSort;
 
   ngAfterViewInit(): void {
     this.dataSourceSolicitud.paginator = this.paginatorSolicitud;
     this.dataSourceSolicitud.sort = this.sortSolicitud;
   }
+
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
@@ -74,6 +76,21 @@ export class SolicitudesGestionadasComponent implements AfterViewInit {
     }
   }
 
+  limpiaFiltros() {
+    this.dataSourceSolicitud.data = this.datosSolicitud();
+  }
+
+    async ngOnInit() {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.dataSourceSolicitud.data = this.datosSolicitud();
+  }
+
+  async seleccionaRubro(_codigoRubro: number) {
+    this.rescatadoSeguro.set(await this.DatoSeguros()
+    .filter((rubro) => rubro.codigoRubro == _codigoRubro));
+  }
+
+/* Llamadas a servicios */
   datosSolicitud = signal<ISolicitud[]>([
     {
       ID: 24592,
@@ -311,17 +328,7 @@ export class SolicitudesGestionadasComponent implements AfterViewInit {
       codigoRubro:2
     },
   ]);
-
-  async ngOnInit() {
-    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSourceSolicitud.data = this.datosSolicitud();
-  }
-
-  async seleccionaRubro(_codigoRubro: number) {
-    this.rescatadoSeguro.set(await this.DatoSeguros().filter(
-    (rubro) => rubro.codigoRubro == _codigoRubro
-  ));
-
+/* Fin llamadas a servicios */
 
      /* consultaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {
 
@@ -338,15 +345,14 @@ export class SolicitudesGestionadasComponent implements AfterViewInit {
         .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
         .afterClosed()
         .subscribe((data) => {
-          console.log('Datoas Consulta:', data);
+          console.log('Datos Consulta:', data);
           if (data === 1) {
-            this.refreshTableAsegurado();
+            this.refreshTableSolicitud();
           }
         });
     }  */
 
-  }
-  verDetalle(ISolicitud: any) {
+  /* verDetalle(ISolicitud: any) {
     throw new Error('Function not implemented.');
-  }
+  } */
 }
