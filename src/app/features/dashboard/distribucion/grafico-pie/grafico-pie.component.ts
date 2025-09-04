@@ -15,6 +15,7 @@ import { MatFormField } from "@angular/material/form-field";
 })
 export class GraficoPieComponent implements OnInit {
   data= signal({});
+  options = signal({});
 
   ngOnInit() {
     this.data.set({
@@ -26,6 +27,13 @@ export class GraficoPieComponent implements OnInit {
           data: [65, 80, 40]
         }
       ]
+    });
+this.options.set({
+      plugins: {
+        legend: {
+          position: 'right' // 👈 Esto mueve las leyendas al lado derecho
+        }
+      }
     });
   }
 }
