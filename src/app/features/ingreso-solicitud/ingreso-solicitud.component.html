@@ -86,34 +86,33 @@ PRUEBA PULL
         >
         <div class="row">
           <div class="col-md-6">
-            <mat-form-field class="inputInput">
+            <mat-form-field class="inputForm">
               <mat-label class="labelI">Rut Cliente</mat-label>
               <input
                 autofocus
                 id="rutCliente"
                 matInput
-                class="input-rut rut"
                 [formControl]="rutCliente"
                 oninput="this.value = this.value.toUpperCase()"
                 (blur)="onBlurRutCliente($event)"
                 validaRut
                 required
-              />
+              />|
               @if (rutCliente.invalid) {
               <mat-error>{{ getErrorMessage("rut") }}</mat-error>
               }
             </mat-form-field>
           </div>
           <div class="col-md-6">
-            <mat-form-field class="inputInput">
+            <mat-form-field class="inputForm">
               <mat-label class="labelI">Nombre o Razón Social</mat-label>
               <input  matInput  disabled [value]="nombreRazonSocial()" />
             </mat-form-field>
           </div>
           <div class="col-md-6">
-            <mat-form-field class="inputSelect">
+            <mat-form-field class="inputForm">
               <mat-label class="labelI">Rubros</mat-label>
-              <mat-select [formControl]="rubro"  (selectionChange)="seleccionaRubro($event.value)" required>
+              <mat-select [formControl]="rubro"   (selectionChange)="seleccionaRubro($event.value)" required>
                 @for(_seguros of datoRubros(); track _seguros){
                 <mat-option [value]="_seguros.codigoRubro">
                   {{ _seguros.descripcionRubro }}
