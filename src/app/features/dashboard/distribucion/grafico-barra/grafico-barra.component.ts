@@ -25,7 +25,15 @@ export class GraficoBarraComponent implements OnInit {
       datasets: [
         {
           //  label: 'My First dataset',
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#FF7043', '#26A69A', '#EF5350'],
+          backgroundColor:
+          [
+            '#002464',
+            '#666668',
+            '#234E85',
+            '#6BAA1F',
+            '#149DC9',
+            '#A6B118',
+            '#89CCE4'],
           data: [65, 59, 80, 81, 56, 55, 40]
         }
       ]

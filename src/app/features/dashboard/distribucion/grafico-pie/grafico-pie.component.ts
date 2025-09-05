@@ -23,7 +23,7 @@ export class GraficoPieComponent implements OnInit {
       datasets: [
         {
           //label: 'My First dataset',
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726'],
+          backgroundColor: ['#F45516', '#DCF0F7', '#D11D1A'],
           data: [65, 80, 40]
         }
       ]

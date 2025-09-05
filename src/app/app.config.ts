@@ -16,7 +16,4 @@ useValue: { appearance: 'outline', floatLabel: 'never', SubscripSizing:'dynamic'
   }
   ]
 };
-function providePrimeNG(arg0: { theme: { preset: any; }; }): import("@angular/core").Provider | import("@angular/core").EnvironmentProviders {
-  throw new Error('Function not implemented.');
-}
 
