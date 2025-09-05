@@ -24,6 +24,6 @@ import DistribucionComponent from "./distribucion/distribucion.component";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export default default class DashboardComponent {
+export default class DashboardComponent {
   fechaActual: Date = new Date();
 }
