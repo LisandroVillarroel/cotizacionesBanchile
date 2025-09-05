@@ -1,14 +1,25 @@
-.cerrar-dialogo {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.acciones-dialogo {
+  margin-top: 30px;
 }
 
-mat-dialog-content {
-  font-size: 14px;
-  line-height: 1.6;
+.alinear {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
-mat-dialog-actions {
-  margin-top: 20px;
+.botones-izquierda,
+.botones-derecha {
+  display: flex;
+  align-items: center;
+}
+
+.colorFondoBotonSalir {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.colorFondoBotonSiguiente {
+  background-color: #1976d2;
+  color: white;
 }

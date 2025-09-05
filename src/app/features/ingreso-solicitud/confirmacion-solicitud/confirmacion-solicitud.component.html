@@ -1,34 +1,51 @@
 <h2 mat-dialog-title>
-  Confirmación de solicitud
-  <button mat-icon-button (click)="cerrar()" class="cerrar-dialogo">
-    <mat-icon>close</mat-icon>
-  </button>
+  <div style="display: flex; align-items: center">
+    <span>Confirmación de solicitud</span>
+    <span style="margin-left: auto">
+      <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </span>
+  </div>
 </h2>
 
-<mat-dialog-content>
-  <div class="info-solicitud">
-    <p><strong>Nueva solicitud:</strong> {{ data.solicitudId }}</p>
+<mat-dialog-content class="contenido-dialogo">
+  <section class="bloque">
+    <h3>Nueva solicitud</h3>
+    <p><strong>ID:</strong> {{ data.solicitudId }}</p>
     <p><strong>Fecha de creación:</strong> {{ data.fecha }}</p>
-  </div>
+  </section>
 
-  <div class="info-contratante">
+  <section class="bloque">
+    <h3>Información del contratante</h3>
     <p><strong>RUT:</strong> {{ data.rut }}</p>
     <p><strong>Nombre o Razón Social:</strong> {{ data.nombre }}</p>
     <p><strong>Ramo seleccionado:</strong> {{ data.ramo }}</p>
-  </div>
+  </section>
 
-  <div class="documentos">
-    <p><strong>Cuestionario de cotización:</strong></p>
-    <p>{{ data.cuestionario }}</p>
-
-    <p><strong>Documentos adicionales:</strong></p>
-    <p>{{ data.documentos }}</p>
-  </div>
+  <section class="bloque">
+    <h3>Documentos asociados</h3>
+    <p><strong>Cuestionario de cotización:</strong> {{ data.cuestionario }}</p>
+    <p><strong>Documentos adicionales:</strong> {{ data.documentos }}</p>
+  </section>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="cerrar()">Cerrar</button>
-  <button mat-raised-button color="primary" (click)="confirmar()">
-    Confirmar y crear nueva solicitud
-  </button>
+<mat-dialog-actions class="acciones-dialogo">
+  <div class="alinear">
+    <div class="botones-izquierda">
+      <button mat-raised-button (click)="cerrar()" class="colorFondoBotonSalir">
+        Cerrar
+      </button>
+    </div>
+    <div class="botones-derecha">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="confirmar()"
+        class="colorFondoBotonSiguiente"
+      >
+        Confirmar y crear nueva solicitud
+      </button>
+    </div>
+  </div>
 </mat-dialog-actions>
