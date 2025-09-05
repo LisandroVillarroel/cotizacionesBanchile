@@ -1,0 +1,14 @@
+.cerrar-dialogo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+mat-dialog-content {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+mat-dialog-actions {
+  margin-top: 20px;
+}
