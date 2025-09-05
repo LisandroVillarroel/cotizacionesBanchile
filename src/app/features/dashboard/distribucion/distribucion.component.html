@@ -1,0 +1,55 @@
+<div class="container d-flex justify-around p-2">
+  <mat-card style="width: 49%;">
+    <mat-card-header>Resumen Solicitudes por Tipo de Seguro &nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- <select class="inputSelect" style="width: 30%;" matNativeControl required>
+        <option value="auto">Automotriz</option>
+        <option value="hogar">Hogar</option>
+        <option value="vida">Vida</option>
+      </select> -->
+
+      <select [(ngModel)]="seleccionada" class="inputSelect" style="width: 30%;" matNativeControl required>
+        <option [value]="null" disabled selected>Seleccione un tipo de seguro</option>
+        <option *ngFor="let opcion of opciones" [value]="opcion.id">
+          {{ opcion.nombre }}
+        </option>
+      </select>
+
+    </mat-card-header>
+    <mat-card-content>
+      <app-grafico-pie />
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="width: 49%;">
+    <mat-card-header>Tiempo promedio en Gestión de Solicitudes (días promedio)</mat-card-header>
+    <mat-card-content>
+      <app-grafico-barra />
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- <div class="container d-flex justify-around p-2">
+  <mat-card style="width: 50%;">
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 16px;">
+      <mat-card-header>Resumen Solicitudes por Tipo de Seguro</mat-card-header>
+      <mat-form-field appearance="fill" style="width: 200px;">
+        <mat-label>Tipo de Seguro</mat-label>
+        <mat-select>
+          <mat-option value="vida">Vida</mat-option>
+          <mat-option value="salud">Salud</mat-option>
+          <mat-option value="vehiculo">Vehículo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-card-content>
+      <app-grafico-pie/>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card style="width: 50%;">
+    <mat-card-header>Tipo de Seguro</mat-card-header>
+    <mat-card-content>
+      <app-grafico-barra/>
+    </mat-card-content>
+  </mat-card>
+</div> -->
