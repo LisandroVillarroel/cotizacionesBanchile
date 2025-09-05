@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 //import { DatePipe } from '@angular/common';
 import { ResumenGeneralComponent } from './resumen-general/resumen-general.component';
 import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solicitudes-gestionadas.component';
+import DistribucionComponent from './distribucion/distribucion.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +23,8 @@ import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solic
     MatCardModule,
     //DatePipe,
     ResumenGeneralComponent,
-    SolicitudesGestionadasComponent
+    SolicitudesGestionadasComponent,
+    DistribucionComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
