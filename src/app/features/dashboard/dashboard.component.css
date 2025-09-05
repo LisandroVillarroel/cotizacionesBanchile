@@ -1,0 +1,50 @@
+.agrega-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10%;
+}
+
+.agrega-container > * {
+  width: 95%;
+}
+
+.mat-dialog-container {
+  padding: 50px !important;
+}
+
+.mat-dialog-content{
+  margin: auto;
+}
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}
+
+.centrarBoton{
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 0 2px 0 10px;
+}
+
+.justify-around{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Esto puede ser de uso general */
+.fondoGris{
+  background-color: #E8E8EA;
+  color: #666668;
+}
+
+.titulo{
+  color: #285B9B
+}
+
+.fontSmall{
+  font-size: 12px;
+}

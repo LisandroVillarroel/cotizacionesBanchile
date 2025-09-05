@@ -27,4 +27,12 @@ export const routes: Routes = [
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
+  {
+    path: 'inicio',
+    loadComponent: () => import('@features/dashboard/dashboard.component'),
+  },
+  {
+    path: 'distribucion',
+    loadComponent: () => import('@features/dashboard/distribucion/distribucion.component'),
+  },
 ];
