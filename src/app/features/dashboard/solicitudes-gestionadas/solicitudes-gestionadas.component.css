@@ -26,6 +26,26 @@ p {
     color: #149DC9;
 }
 
+
+.justify-around{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Esto puede ser de uso general */
+.fondoGris{
+  background-color: #E8E8EA;
+  color: #666668;
+}
+
+.titulo{
+  color: #285B9B
+}
+
+.fontSmall{
+  font-size: 12px;
+}
+
 /*MAT-TABLE*/
 /* Mantenedores Material*/
 /*Titulo Mantenedores Tablas principales*/
@@ -100,7 +120,7 @@ p {
 
 
 /*INICIO INPUT*/
-.inputForm {
+.inputInput {
   font-size: 11px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -123,7 +143,7 @@ p {
 .inputSelect {
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 5px !important;
+  padding-top: 10px !important;
   padding-bottom: 5px !important;
   width:100%;
   color: #666668;
@@ -320,39 +340,3 @@ button.tabla {
 
 /* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
-
-:root{
-/*NOTIFICACIONES*/
-
-
-.success {
-  --mdc-snackbar-container-color: #4CAF50 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-
-.error {
-  --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-
-.warning {
-  --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-
-.info {
-   --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-/*FIN NOTIFICACIONES*/
-
-
-}
