@@ -1,175 +1,231 @@
 /* You can add global styles to this file, and also import other style files */
+@charset "UTF-8";
 
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 14;}
-
-
-
-/*INICIO INPUT*/
-.inputInput {
-  font-size: 11px !important;
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-  /*height: 55px !important; /*tamaño height de inpul*/
+html,
+body {
+  height: 100%;
 }
 
-/*FIN INPUT*/
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif !important;
+}
 
-
-/*MAT-TABLE*/
-/* Mantenedores Material*/
-/*Titulo Mantenedores Tablas principales*/
-.content {
-  min-height: calc(100vh - 98px);
-  /* largo de pantalla*/
-  border-radius: 10px;
-  margin: 16px;
-  margin-left: 32px;
-  /*display: flex;*/
-  justify-content: center;
+.alinear {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  font-size: 2rem;
-  color: #323131;
-  padding: 0 1px !important;
+  margin-top: 24px;
 }
-
-/*Fin Titulo Mantenedores Tablas principales*/
-
-/*FIN MAT-TABLE*/
-
-/*Cambia color y fondo barra superior del sistema*/
-
 
 /*Botones*/
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGuardar {
+  background-color: #eeeff1 !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #666668 !important;
+}
 
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGuardar:hover {
+  background-color: #e0e0e2 !important;
+}
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente {
+  background-color: #234e85 !important;
   color: white;
-  background-color: #0a58ca;
+}
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente:hover {
+  background-color: #002464 !important;
+  color: white;
 }
 
 .colorFondoBotonSalir {
-  color: #234E85 !important;
   background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
+}
+
+.colorFondoBotonSalir:hover {
+  border: 1px solid #333334 !important;
 }
 
 .colorFondoBotonAnular {
-  color: #234E85 !important;
   background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
 }
 
-/*
-.mat-raised-button.mat-primary {
-  background-color: black;
-  color:rgb(255, 102, 0);
-}
-*/
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
-  color: white !important;
-  background-color: #0a58ca !important;
+.colorFondoBotonAnular:hover {
+  border: 1px solid #333334 !important;
 }
 
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
-  color: white !important;
-  background-color: black !important;
-  font-size: 0.7rem;
+.colorFondoBotonDescargar {
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
 }
 
-.colorFondoBotonExTabla.mat-mdc-raised-button {
+.colorFondoBotonDescargar:hover {
+  border: 1px solid #333334 !important;
+}
+
+.colorFondoBotonCancelar {
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
+}
+
+.colorFondoBotonCancelar:hover {
+  border: 1px solid #333334 !important;
+}
+
+.colorFondoBotonGrabar {
+  background-color: #234e85 !important;
   color: white !important;
-  background-color: #17627e !important;
-  font-size: 0.7rem;
-  min-width: 20% !important;
-  margin-right: 2px;
+}
+
+.colorFondoBotonGrabar:hover {
+  background-color: #002464 !important;
+  color: white !important;
+}
+
+/* Botones inferiores */
+
+.botones-izquierda {
+  display: flex;
+  gap: 12px;
+}
+
+.botones-derecha {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
 }
 
 /*Fin Botones*/
 
-
 /*INICIO INPUT*/
-.inputInput {
+.inputForm {
   font-size: 11px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
-  padding-bottom: 5px !important;
+  padding-bottom: 0px !important;
   width:100%;
+  height: 45%;
+
+  .mat-mdc-text-field-wrapper {
+    height: 50px;
+    flex: auto;
+    will-change: auto;
+}
+}
+
+/*Espacio del input */
+.mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: 12px !important;
+    padding-bottom: 6px !important;
+
+}
+
+.inputInput {
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  width: 100%;
   /*height: 55px !important; /*tamaño height de inpul*/
 }
 
+.inputDocumentoPendiente {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: #999;
+  padding: 10px 16px;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
+  border-radius: 4px;
+  width: 100%;
+  display: inline-block;
+}
+
 .inputSelectBuscar {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 84%;
+  color: #666668;
 }
 
 .inputSelect {
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
-  width:100%;
+  width: 100%;
   /*  height: 65px !important; /*tamaño height de inpul*/
 }
 
 .inputBuscar {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 80%;
   width: 100%;
+  color: #666668;
   /* height: 55px !important; /*tamaño height de inpul*/
 }
 
 .inputFecha {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
   /*tamaño height de inpul*/
   margin-bottom: 15px !important;
-  ;
 }
 
 .inputFechaForm {
-  font-size: 1px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
   /*tamaño height de inpul*/
   margin-bottom: 15px !important;
-  ;
 }
 
 .mat-mdc-select-value-text {
-  font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
 }
 
 .labelI {
-  font-size: 11px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: 400;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
   font-style: italic;
   text-align: left;
-  color: black;
+  color: #666668;
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+    .mdc-text-field--textarea
+  )
+  .mat-mdc-form-field-infix {
   padding-top: 10px;
   padding-bottom: 16px;
 }
 
-
 /*FIN INPUT*/
+
+/*Caja paara filtros*/
+.box-form-fields {
+  display: flex;
+  align-items: flex-start;
+}
+
+/*fin caja para filtros*/
 
 /*MAT-TABLE*/
 /* Mantenedores Material*/
@@ -184,22 +240,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+  font-family: "Roboto", sans-serif !important;
   color: #323131;
   padding: 0 1px !important;
 }
-
 /*Fin Titulo Mantenedores Tablas principales*/
+
 /* Titulos Mantenedores secundarios */
 .mat-mdc-dialog-container,
 .mdc-dialog__title {
-
   /*background-color: #118383 !important;*/
   font-size: 16px !important;
-  text-align:left !important;
+  text-align: left !important;
   color: #002464 !important;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif !important;
 }
-
 /* Fin Titulos Mantenedores Secundarios*/
 
 td.mat-cell:last-of-type {
@@ -214,18 +269,22 @@ tr.mat-header-row {
   height: 45px !important;
 }
 
-/*Cambia color cabecera table*/
-
-.mat-mdc-table {
-  table-layout: fixed !important;
-  /*este permite que la tabla se ajuste*/
+/*este permite cambiar el tamaño de las columnas de la tabla*/
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  padding: 0 1px 0 10px !important;
 }
 
+/*este permite que la tabla se ajuste*/
+.mat-mdc-table {
+  table-layout: fixed !important;
+}
+
+/*este permite que la tabla se ajuste*/
 .mat-mdc-table .mdc-data-table__header-row {
   color: rgb(255, 255, 255) !important;
-  background-color: #149DC9 !important;
+  background-color: #149cb9 !important;
   table-layout: none !important;
-  /*este permite que la tabla se ajuste*/
 }
 
 .mat-mdc-table tbody,
@@ -238,7 +297,8 @@ tr.mat-header-row {
 .mat-mdc-footer-row,
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
-  font-size: 11px;
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
   /*Tamaño letra tabla*/
 }
 
@@ -249,7 +309,6 @@ tr.example-element-row:not(.example-expanded-row):hover {
   button.tabla {
     background-color: rgba(208, 206, 205, 0.686);
   }
-
 }
 
 /* Color Barra Cuando se da Click*/
@@ -262,36 +321,32 @@ tr.mat-row {
   height: 30px !important;
 }
 
-
-
 /*iconos de tabla*/
 button.nuevo:hover {
   color: white !important;
-   background-color: #149DC9 !important;
+  background-color: #149cb9 !important;
 }
 
 button.nuevo {
   color: black !important;
   border: 0;
-  background-color: #149DC9;
+  background-color: #149cb9;
   width: 40px !important;
   height: 40px !important;
 }
 
 button.tabla:hover {
   color: black !important;
- background-color: rgba(208, 206, 205, 0.686) !important;
+  background-color: rgba(208, 206, 205, 0.686) !important;
 }
 
-
 button.tabla {
-  color: #149DC9 !important;
+  color: #149cb9 !important;
   border: 0;
   background-color: white;
   width: 40px !important;
   height: 40px !important;
 }
-
 /*Fin iconos de tabla*/
 
 /*Icono ordena tabla*/
@@ -307,6 +362,65 @@ button.tabla {
 .mat-mdc-paginator-page-size-select {
   width: 84px !important;
 }
-
 /* Fin Foot Tabla*/
+
+/*Columna +AGREGAR*/
+th#opcionesI {
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  color: white !important;
+  width: 14% !important;
+  text-align: center;
+  vertical-align: middle;
+  height: 45px; /* igual que tr.mat-header-row si lo tienes definido */
+}
+
+.agregar-texto {
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  color: white !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+/*Fin Columna +AGREGAR*/
+
 /*Fin MAT-TABLE*/
+
+:root{
+/*NOTIFICACIONES*/
+
+
+.success {
+  --mdc-snackbar-container-color: #4CAF50 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.error {
+  --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.warning {
+  --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+
+.info {
+   --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
+  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+}
+/*FIN NOTIFICACIONES*/
+
+
+}

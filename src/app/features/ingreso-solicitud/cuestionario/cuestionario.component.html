@@ -1,0 +1,52 @@
+<form [formGroup]="documentForm()" novalidate>
+  <div class="row">
+    @for(doc of documentos(); track doc.id){
+    <div class="col-md-6">
+      <div class="document-section">
+        <mat-form-field class="inputInput">
+          <mat-label class="labelI"
+            >{{
+              doc.nombre
+            }}
+            @if(doc.obligatorio){<span>(obligatorio)</span>}</mat-label
+          >
+          <input
+            matInput
+            placeholder="."
+            disabled
+            [value]="doc.archivoNombre"
+          />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="boton-cargar"
+          (click)="abrirInputArchivo(doc.nombre)"
+        >
+          {{ doc.archivoNombre ? "Cargar" : "Reemplazar" }}
+        </button>
+
+        <input
+          type="file"
+          hidden
+          [id]="sanitizarNombre(doc.nombre)"
+          #fileInputs
+          (change)="onFileSelected($event, doc)"
+        />
+
+        @if(doc.archivoNombre){
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="eliminarDocumento(doc)"
+          matTooltip="Eliminar documento"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</form>

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>
+  Confirmación de solicitud
+  <button mat-icon-button (click)="cerrar()" class="cerrar-dialogo">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <div class="info-solicitud">
+    <p><strong>Nueva solicitud:</strong> {{ data.solicitudId }}</p>
+    <p><strong>Fecha de creación:</strong> {{ data.fecha }}</p>
+  </div>
+
+  <div class="info-contratante">
+    <p><strong>RUT:</strong> {{ data.rut }}</p>
+    <p><strong>Nombre o Razón Social:</strong> {{ data.nombre }}</p>
+    <p><strong>Ramo seleccionado:</strong> {{ data.ramo }}</p>
+  </div>
+
+  <div class="documentos">
+    <p><strong>Cuestionario de cotización:</strong></p>
+    <p>{{ data.cuestionario }}</p>
+
+    <p><strong>Documentos adicionales:</strong></p>
+    <p>{{ data.documentos }}</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+  <button mat-raised-button color="primary" (click)="confirmar()">
+    Confirmar y crear nueva solicitud
+  </button>
+</mat-dialog-actions>

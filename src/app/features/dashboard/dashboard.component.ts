@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { MatDividerModule } from "@angular/material/divider";
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLabel, MatHint } from "@angular/material/form-field";
+import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+//import { DatePipe } from '@angular/common';
 import { ResumenGeneralComponent } from './resumen-general/resumen-general.component';
-import DistribucionComponent from "./distribucion/distribucion.component";
+import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solicitudes-gestionadas.component';
+import DistribucionComponent from './distribucion/distribucion.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,15 +17,19 @@ import DistribucionComponent from "./distribucion/distribucion.component";
   imports: [
     MatFormFieldModule,
     MatInputModule,
+    MatLabel,
+    MatHint,
     MatDatepickerModule,
     MatCardModule,
-    MatDividerModule,
+    //DatePipe,
     ResumenGeneralComponent,
+    SolicitudesGestionadasComponent,
     DistribucionComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export default class DashboardComponent {
   fechaActual: Date = new Date();
 }
