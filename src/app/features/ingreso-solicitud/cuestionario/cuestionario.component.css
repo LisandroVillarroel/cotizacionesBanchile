@@ -30,3 +30,7 @@
   background-color: #0f8dba !important;
   color: #f2f2f4 !important;
 }
+
+.colorFondoBotonEliminar mat-icon {
+  color: #f45516 !important;
+}

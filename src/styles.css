@@ -335,6 +335,11 @@ button.tabla {
   width: 40px !important;
   height: 40px !important;
 }
+
+.colorFondoBotonEliminar mat-icon {
+  color: #f45516 !important;
+}
+
 /*Fin iconos de tabla*/
 
 /*Icono ordena tabla*/

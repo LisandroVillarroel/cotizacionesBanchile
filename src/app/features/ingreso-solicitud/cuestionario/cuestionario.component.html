@@ -22,7 +22,7 @@
               (change)="onFileSelected($event, doc)" />
 
             @if(doc.archivoNombre) {
-            <button mat-icon-button color="warn" (click)="eliminarDocumento(doc)" matTooltip="Eliminar documento">
+            <button mat-icon-button color="warn" class="colorFondoBotonEliminar" (click)="eliminarDocumento(doc)" matTooltip="Eliminar documento">
               <mat-icon>delete</mat-icon>
             </button>
             }
@@ -54,7 +54,7 @@
             (change)="onFileSelected($event, doc)" />
 
           @if(doc.archivoNombre) {
-          <button mat-icon-button color="warn" (click)="eliminarDocumento(doc)" matTooltip="Eliminar documento">
+          <button mat-icon-button color="warn" class="colorFondoBotonEliminar" (click)="eliminarDocumento(doc)" matTooltip="Eliminar documento">
             <mat-icon>delete</mat-icon>
           </button>
           }
