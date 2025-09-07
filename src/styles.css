@@ -89,6 +89,10 @@ body {
   color: white !important;
 }
 
+.colorFondoBotonConfirmar {
+  color: #6baa1f !important;
+}
+
 /* Botones inferiores */
 
 .botones-izquierda {

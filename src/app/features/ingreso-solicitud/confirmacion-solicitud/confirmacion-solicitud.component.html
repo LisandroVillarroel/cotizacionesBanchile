@@ -32,19 +32,9 @@
 
 <mat-dialog-actions class="acciones-dialogo">
   <div class="alinear">
-    <div class="botones-izquierda">
-      <button mat-raised-button (click)="cerrar()" class="colorFondoBotonSalir">
-        Cerrar
-      </button>
-    </div>
     <div class="botones-derecha">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="confirmar()"
-        class="colorFondoBotonSiguiente"
-      >
-        Confirmar y crear nueva solicitud
+      <button mat-raised-button matStepperNext (click)="confirmar()" class="colorFondoBotonConfirmar">
+        Enviar solicitud
       </button>
     </div>
   </div>
