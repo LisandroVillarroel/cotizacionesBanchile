@@ -108,7 +108,6 @@ body {
 .inputForm {
   font-size: 11px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
   padding-bottom: 0px !important;
   width:100%;
@@ -130,7 +129,6 @@ body {
 
 .inputInput {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
@@ -143,7 +141,6 @@ body {
   color: #999;
   padding: 10px 16px;
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   border-radius: 4px;
   width: 100%;
   display: inline-block;
@@ -151,7 +148,6 @@ body {
 
 .inputSelectBuscar {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 84%;
@@ -167,7 +163,6 @@ body {
 
 .inputBuscar {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 80%;
@@ -178,7 +173,6 @@ body {
 
 .inputFecha {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -188,7 +182,6 @@ body {
 
 .inputFechaForm {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -198,12 +191,10 @@ body {
 
 .mat-mdc-select-value-text {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
 }
 
 .labelI {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   font-style: italic;
   text-align: left;
   color: #666668;
@@ -240,7 +231,6 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  font-family: "Roboto", sans-serif !important;
   color: #323131;
   padding: 0 1px !important;
 }
@@ -253,7 +243,6 @@ body {
   font-size: 16px !important;
   text-align: left !important;
   color: #002464 !important;
-  font-family: "Roboto", sans-serif !important;
 }
 /* Fin Titulos Mantenedores Secundarios*/
 
@@ -298,7 +287,6 @@ tr.mat-header-row {
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   /*Tamaño letra tabla*/
 }
 
@@ -367,7 +355,6 @@ button.tabla {
 /*Columna +AGREGAR*/
 th#opcionesI {
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   color: white !important;
   width: 14% !important;
   text-align: center;
@@ -377,7 +364,6 @@ th#opcionesI {
 
 .agregar-texto {
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   color: white !important;
   cursor: pointer;
   display: inline-flex;

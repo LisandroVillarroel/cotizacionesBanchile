@@ -2,9 +2,10 @@
   <div class="alinear">
     <h2 mat-dialog-title class="mt-3">Ingresar Nueva Solicitud</h2>
     <div class="botones-derecha">
-      <button class="colorFondoBotonAnular" mat-raised-button (click)="salir()">
+      <button mat-raised-button class="colorFondoBotonAnular" (click)="salir()" *ngIf="mostrarAnular">
         Anular
       </button>
+
       <button class="colorFondoBotonSalir" mat-raised-button (click)="salir()">
         Salir
       </button>
@@ -16,27 +17,16 @@
     <mat-step [stepControl]="agregaSolicitudContratante()">
       <!-- <form [formGroup]="agregaSolicitudContratante()">-->
       <ng-template matStepLabel>Información del Contratante</ng-template>
-      <mat-dialog-content
-        [formGroup]="agregaSolicitudContratante()"
-        name="agregaSolicitudContratante"
-        class="modifica-container"
-      >
+      <mat-dialog-content [formGroup]="agregaSolicitudContratante()" name="agregaSolicitudContratante"
+        class="modifica-container">
         <div class="row">
           <!-- RUT -->
 
           <div class="col-md-6">
             <mat-form-field class="inputInput">
               <mat-label class="labelI">RUT</mat-label>
-              <input
-                autofocus
-                id="rutCliente"
-                matInput
-                [formControl]="rutCliente"
-                oninput="this.value = this.value.toUpperCase()"
-                (blur)="onBlurRutCliente($event)"
-                validaRut
-                required
-              />|
+              <input autofocus id="rutCliente" matInput [formControl]="rutCliente"
+                oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutCliente($event)" validaRut required />
               @if (rutCliente.invalid) {
               <mat-error>{{ getErrorMessage("rut") }}</mat-error>
               }
@@ -48,23 +38,14 @@
           <div class="col-md-6">
             <mat-form-field class="inputForm">
               <mat-label class="labelI">Nombre o Razón Social</mat-label>
-              <input
-                placeholder="."
-                matInput
-                disabled
-                [value]="nombreRazonSocial()"
-              />
+              <input placeholder="." matInput disabled [value]="nombreRazonSocial()" />
             </mat-form-field>
           </div>
 
           <div class="col-md-6">
             <mat-form-field class="inputSelect">
               <mat-label class="labelI">Selecciona un rubro</mat-label>
-              <mat-select
-                [formControl]="rubro"
-                (selectionChange)="seleccionaRubro($event.value)"
-                required
-              >
+              <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)" required>
                 @for(_seguros of datoRubros(); track _seguros){
                 <mat-option [value]="_seguros.codigoRubro">
                   {{ _seguros.descripcionRubro }}
@@ -102,9 +83,7 @@
 
           <div class="col-md-6">
             <mat-form-field class="inputInput">
-              <mat-label class="labelI"
-                >Teléfonos (Personal/Comercial)</mat-label
-              >
+              <mat-label class="labelI">Teléfonos (Personal/Comercial)</mat-label>
               <input matInput disabled [value]="nombreRazonSocial()" />
             </mat-form-field>
 
@@ -118,18 +97,10 @@
 
         <div class="alinear">
           <div class="botones-derecha">
-            <button
-              mat-raised-button
-              class="colorFondoBotonGuardar"
-              (click)="guardarBorrador()"
-            >
+            <button mat-raised-button class="colorFondoBotonGuardar" (click)="guardarBorrador()">
               Guardar
             </button>
-            <button
-              mat-raised-button
-              matStepperNext
-              class="colorFondoBotonSiguiente"
-            >
+            <button mat-raised-button matStepperNext class="colorFondoBotonSiguiente">
               Siguiente
             </button>
           </div>
@@ -137,29 +108,18 @@
       </mat-dialog-content>
     </mat-step>
 
-    <mat-step
-      [stepControl]="agregaSolicitudAsegurado()"
-      errorMessage="Valores Requeridos"
-    >
+    <mat-step [stepControl]="agregaSolicitudAsegurado()" errorMessage="Valores Requeridos">
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
         <app-asegurado />
         <div class="alinear">
           <div class="botones-izquierda">
-            <button
-              mat-raised-button
-              matStepperPrevious
-              class="colorFondoBotonSalir"
-            >
+            <button mat-raised-button matStepperPrevious class="colorFondoBotonSalir">
               Volver
             </button>
           </div>
           <div class="botones-derecha">
-            <button
-              mat-raised-button
-              matStepperNext
-              class="colorFondoBotonSiguiente"
-            >
+            <button mat-raised-button matStepperNext class="colorFondoBotonSiguiente">
               Siguiente
             </button>
           </div>
@@ -167,29 +127,18 @@
       </form>
     </mat-step>
 
-    <mat-step
-      [stepControl]="agregaSolicitudBeneficiario()"
-      errorMessage="Valores Requeridos"
-    >
+    <mat-step [stepControl]="agregaSolicitudBeneficiario()" errorMessage="Valores Requeridos">
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
         <app-beneficiario />
         <div class="alinear">
           <div class="botones-izquierda">
-            <button
-              mat-raised-button
-              matStepperPrevious
-              class="colorFondoBotonSalir"
-            >
+            <button mat-raised-button matStepperPrevious class="colorFondoBotonSalir">
               Volver
             </button>
           </div>
           <div class="botones-derecha">
-            <button
-              mat-raised-button
-              matStepperNext
-              class="colorFondoBotonSiguiente"
-            >
+            <button mat-raised-button matStepperNext class="colorFondoBotonSiguiente">
               Siguiente
             </button>
           </div>
@@ -202,20 +151,12 @@
       <app-materia-asegurada />
       <div class="alinear">
         <div class="botones-izquierda">
-          <button
-            mat-raised-button
-            matStepperPrevious
-            class="colorFondoBotonSalir"
-          >
+          <button mat-raised-button matStepperPrevious class="colorFondoBotonSalir">
             Volver
           </button>
         </div>
         <div class="botones-derecha">
-          <button
-            mat-raised-button
-            matStepperNext
-            class="colorFondoBotonSiguiente"
-          >
+          <button mat-raised-button matStepperNext class="colorFondoBotonSiguiente">
             Siguiente
           </button>
         </div>
@@ -227,19 +168,12 @@
       <app-cuestionario-documentos />
       <div class="alinear">
         <div class="botones-izquierda">
-          <button
-            mat-raised-button
-            matStepperPrevious
-            class="colorFondoBotonSalir"
-          >
+          <button mat-raised-button matStepperPrevious class="colorFondoBotonSalir">
             Volver
           </button>
         </div>
         <div class="botones-derecha">
-          <button (click)="abrirDialogoYAvanzar()"
-            mat-raised-button
-            class="colorFondoBotonSiguiente"
-          >
+          <button (click)="abrirDialogoYAvanzar()" mat-raised-button class="colorFondoBotonSiguiente">
             Siguiente
           </button>
         </div>
