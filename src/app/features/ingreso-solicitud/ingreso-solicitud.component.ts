@@ -148,6 +148,9 @@ export default class IngresoSolicitudComponent {
     Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
   ]);*/
 
+
+  // Oculta el botón "Anular" solo en el primer paso del stepper.
+  // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
 
   mostrarAnular: boolean = true;
@@ -170,6 +173,7 @@ export default class IngresoSolicitudComponent {
       this.mostrarAnular = event.selectedIndex !== 0;
     });
   }
+  //
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
