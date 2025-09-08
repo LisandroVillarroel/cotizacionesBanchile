@@ -1,4 +1,5 @@
-import { Component, ViewChild, inject, signal,} from '@angular/core';
+import { Component, ViewChild, inject, signal, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
@@ -13,10 +14,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-
 import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
 import { MatTooltip } from "@angular/material/tooltip";
-
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -35,8 +34,9 @@ import { MatTooltip } from "@angular/material/tooltip";
     MatDatepickerModule,
     MatTooltip,
     MatExpansionModule,
-    MatDividerModule
-],
+    MatDividerModule,
+    CommonModule
+  ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
 })
@@ -44,7 +44,6 @@ import { MatTooltip } from "@angular/material/tooltip";
 export class SolicitudesGestionadasComponent  {
   panelOpenState = false;
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
-
   rubro = new FormControl();
   seguro = new FormControl();
   displayedColumns: string[] = [
@@ -88,7 +87,7 @@ export class SolicitudesGestionadasComponent  {
     this.dataSourceSolicitud.data = this.datosSolicitud();
   }
 
-    async ngOnInit() {
+  async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.dataSourceSolicitud.data = this.datosSolicitud();
   }
@@ -97,6 +96,44 @@ export class SolicitudesGestionadasComponent  {
     this.rescatadoSeguro.set(await this.DatoSeguros()
     .filter((rubro) => rubro.codigoRubro == _codigoRubro));
   }
+
+  getCellClass(value: string): string {
+    if(value=='En edición'){
+      return 'edicion' ;
+    }else if (value == 'En revisión') {
+      return 'revision';
+    } else if(value=='Aprobada'){
+      return 'aprobada';
+    }else if(value=='En cotización'){
+      return 'cotizacion';
+    }else if(value=='Propuesta pendiente'){
+      return 'pendiente';
+    }else if(value=='Propuesta emitida'){
+      return 'emitida';
+    }else if(value=='Terminada'){
+      return 'terminada';
+    }else if(value=='Con observaciones'){
+      return 'observ';
+    }else if(value=='Anulada'){
+      return 'anulada';
+    // }else if(value=='Rechazada'){
+    }else{
+        return 'rechazada';
+    }
+  }
+  /* availableColors: EstadoColor[] = [
+    {estado: 'En edición', color: 'gris', background: 'fondoGris'},
+    {estado: 'En revisión', color: 'revision', background: 'fondoAzul'},
+    {estado: 'Aprobada', color: 'aprobada', background: 'fondoVerde'},
+    {estado: 'En cotización', color: 'contizacion', background: 'fondoAzul'},
+    {estado: 'Propuesta pendiente', color: 'pendiente', background: 'fondoGris'},
+    {estado: 'Propuesta emitida', color: 'emitida', background: 'fondoAzul'},
+    {estado: 'Terminada', color: 'terminada', background: 'fondoVerde'},
+    {estado: 'Con observaciones', color: 'observ', background: 'fondoObs'},
+    {estado: 'Anulada', color: 'anulada', background: 'fondoAnulada'},
+    {estado: 'Rechazada', color: 'rechazada', background: 'fondoAnulada'}
+  ]; */
+
 
 /* Llamadas a servicios */
   datosSolicitud = signal<ISolicitud[]>([
@@ -116,7 +153,7 @@ export class SolicitudesGestionadasComponent  {
       Rubro: 'Vida',
       TipoSeguro: "Asistencia en Viajes",
       Coordinador: "Andrés Salgado Pérez",
-      Estado: "En revisión"
+      Estado: "Anulada"
     },
     {
       ID: 33784,
@@ -152,7 +189,7 @@ export class SolicitudesGestionadasComponent  {
       Rubro: 'Vida',
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Coordinador: "Felipe Hernández García",
-      Estado: "Emitida"
+      Estado: "Propuesta emitida"
     },
     {
       ID: 24592,
@@ -179,7 +216,7 @@ export class SolicitudesGestionadasComponent  {
       Rubro: 'Vida',
       TipoSeguro: "Incendio",
       Coordinador: "Sofía Ramírez",
-      Estado: "Con observaciones"
+      Estado: "Propuesta pendiente"
     },
     {
       ID: 67348,
@@ -243,7 +280,7 @@ export class SolicitudesGestionadasComponent  {
       Rubro: 'Vida',
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Coordinador: "Felipe Hernández García",
-      Estado: "Emitida"
+      Estado: "Propuesta emitida"
     },
     {
       ID: 24592,
