@@ -63,6 +63,7 @@
     </mat-accordion>
   </div>
 
+
   <div class="mat-elevation-z8">
     <table mat-table
           [dataSource]="dataSourceSolicitud"
@@ -81,7 +82,7 @@
           </td>
       </ng-container>
 
-      <ng-container matColumnDef="id">
+      <ng-container matColumnDef="ID">
         <th id="_id"
             mat-header-cell
             *matHeaderCellDef
@@ -91,7 +92,7 @@
         <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="fecha">
+      <ng-container matColumnDef="Fecha">
         <th id="_fecha"
             mat-header-cell
             *matHeaderCellDef
@@ -101,7 +102,7 @@
         <td mat-cell *matCellDef="let element"> {{element.Fecha}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="contratante">
+      <ng-container matColumnDef="Contratante">
         <th
               id="_contratante"
               mat-header-cell
@@ -112,7 +113,7 @@
         <td mat-cell *matCellDef="let element"> {{element.Contratante}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="rubro">
+      <ng-container matColumnDef="Rubro">
         <th
               id="_rubro"
               mat-header-cell
@@ -123,7 +124,7 @@
         <td mat-cell *matCellDef="let element"> {{element.Rubro}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="tipoSeguro">
+      <ng-container matColumnDef="TipoSeguro">
         <th
               id="_tipoSeguro"
               mat-header-cell
@@ -134,7 +135,7 @@
         <td mat-cell *matCellDef="let element"> {{element.TipoSeguro}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="coordinador">
+      <ng-container matColumnDef="Coordinador">
         <th
               id="_coordinador"
               mat-header-cell
@@ -145,7 +146,7 @@
         <td mat-cell *matCellDef="let element"> {{element.Coordinador}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="estado">
+      <ng-container matColumnDef="Estado">
         <th
               id="_estado"
               mat-header-cell

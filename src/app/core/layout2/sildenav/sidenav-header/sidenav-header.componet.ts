@@ -8,6 +8,7 @@ import { Component, computed, inject, input, signal } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
+  <!--
     <div class="pt-6 flex flex-col items-center">
       <img
         class="object-cover object-center rounded-full mb-3 aspect-square"
@@ -21,16 +22,12 @@ import { Component, computed, inject, input, signal } from '@angular/core';
         }}"
       >
         <h2 class="text-[10px]">
-        <!--  {{
-            _storage()?.usuarioLogin?.nombres +
-              ' ' +
-              _storage()?.usuarioLogin?.apellidoPaterno
-          }}
--->
+
         </h2>
         <p class="text-[10px]">{{ 'Supervisor' }}</p>
       </div>
     </div>
+-->
   `,
   styles: `
 

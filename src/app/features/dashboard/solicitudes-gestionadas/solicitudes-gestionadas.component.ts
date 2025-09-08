@@ -48,17 +48,19 @@ export class SolicitudesGestionadasComponent  {
   seguro = new FormControl();
   displayedColumns: string[] = [
     'index',
-    'id',
-    'fecha',
-    'contratante',
-    'rubro',
-    "tipoSeguro",
-    "coordinador",
-    "estado",
+    'ID',
+    'Fecha',
+    'Contratante',
+    'Rubro',
+    "TipoSeguro",
+    "Coordinador",
+    "Estado",
     "accion"
   ];
 
   dataSourceSolicitud = new MatTableDataSource<ISolicitud>();
+
+   @ViewChild('coordinadorInput') inputElement: any;
 
    @ViewChild(MatPaginator)
     paginatorSolicitud!: MatPaginator;
@@ -72,9 +74,18 @@ export class SolicitudesGestionadasComponent  {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  applyFilterSolicitud(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceSolicitud.filter = filterValue.trim().toLowerCase();
+  applyFilterSolicitud(campo:string, valor: String) {
+  //  const filterValue = (valor.target as HTMLInputElement).value;
+     console.log('campo:',campo  + ' Valor Inicial:',valor)
+     this.dataSourceSolicitud.filterPredicate = (data: any, filter: string) => {
+    // Comprueba si el valor de la columna específica incluye el filtro
+    const dataValue = data[campo] ? data[campo].toString() : '';
+    return dataValue.toLowerCase().includes(filter.toLowerCase());
+  };
+
+
+    this.dataSourceSolicitud.filter = valor.trim().toLowerCase();
+
     if (this.dataSourceSolicitud.paginator) {
       this.dataSourceSolicitud.paginator.firstPage();
     }
@@ -90,6 +101,9 @@ export class SolicitudesGestionadasComponent  {
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.dataSourceSolicitud.data = this.datosSolicitud();
+
+
+
   }
 
   async seleccionaRubro(_codigoRubro: number) {
@@ -329,6 +343,10 @@ export class SolicitudesGestionadasComponent  {
       codigoRubro: 2,
       descripcionRubro: 'Rubro 2',
     },
+    {
+      codigoRubro: 3,
+      descripcionRubro: 'Vehículo',
+    },
   ]);
 
   DatoSeguros = signal<ITipoSeguro[]>([
@@ -372,7 +390,18 @@ export class SolicitudesGestionadasComponent  {
       descripcionSeguro: 'Seguro 4 Rubro 2',
       codigoRubro:2
     },
+     {
+      codigoSeguro: 9,
+      descripcionSeguro: 'Vehículo Liviano',
+      codigoRubro:3
+    },
+    {
+      codigoSeguro: 10,
+      descripcionSeguro: 'Vehiculo prueba',
+      codigoRubro:3
+    },
   ]);
+
 /* Fin llamadas a servicios */
 
      /* consultaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {

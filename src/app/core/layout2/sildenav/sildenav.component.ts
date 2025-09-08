@@ -27,6 +27,8 @@ import SidenavHeaderComponent from './sidenav-header/sidenav-header.componet';
         transition-duration: 500ms;
         transition-timing-function: ease-in-out;
       }
+
+
     `,
   ],
   standalone: true,
