@@ -12,12 +12,12 @@ export const menuItems: MenuItem[] = [
   {
     iconoNombre: 'dashboard',
     despliegaNombre: 'Panel',
-    route: 'inicio',
+    route: 'secundario/inicio2',
   },
   {
     iconoNombre: 'emoji_objects',
     despliegaNombre: 'Ingreso',
-    route: 'ingreso',
+    route: 'secundario/ingreso2',
   },
 
 ];

@@ -12,7 +12,7 @@ export const routes: Routes = [
     canActivate: [publicoGuard()],
   },*/
   {
-    path: '',
+    path: 'principal',
     loadComponent: () => import('@core/layout/principal.component'),
    // canActivate: [privadoGuard()],
     children: [
@@ -27,12 +27,21 @@ export const routes: Routes = [
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
-  {
-    path: 'inicio',
-    loadComponent: () => import('@features/dashboard/dashboard.component'),
-  },
-  {
-    path: 'distribucion',
-    loadComponent: () => import('@features/dashboard/distribucion/distribucion.component'),
+
+   {
+    path: 'secundario',
+    loadComponent: () => import('@core/layout2/principal.component'),
+   // canActivate: [privadoGuard()],
+    children: [
+      {
+        path: 'inicio2',
+        loadComponent: () => import('@features/dashboard/dashboard.component'),
+      },
+      {
+        path: 'ingreso2',
+        loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
+      },
+    ],
+    //loadComponent: () => import('./componentes/portada/portada.component'),
   },
 ];

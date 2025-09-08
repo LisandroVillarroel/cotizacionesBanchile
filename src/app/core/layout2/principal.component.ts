@@ -64,6 +64,7 @@ import { SidenavComponent } from './sildenav/sildenav.component';
       mat-sidenav {
         --mat-sidenav-container-divider-color: var(--mat-sys-outline-variant);
         --mat-sidenav-container-shape: 0px;
+        background-color: #cccacaff;
       }
 
   `,
