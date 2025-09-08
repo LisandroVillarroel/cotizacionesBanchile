@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <div style="display: flex; align-items: center">
+  <div class="barra-titulo">
     <span>Confirmación de solicitud</span>
     <span style="margin-left: auto">
       <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
@@ -33,7 +33,12 @@
 <mat-dialog-actions class="acciones-dialogo">
   <div class="alinear">
     <div class="botones-derecha">
-      <button mat-raised-button matStepperNext (click)="confirmar()" class="colorFondoBotonConfirmar">
+      <button
+        mat-raised-button
+        matStepperNext
+        (click)="confirmar()"
+        class="colorFondoBotonConfirmar"
+      >
         Enviar
       </button>
     </div>

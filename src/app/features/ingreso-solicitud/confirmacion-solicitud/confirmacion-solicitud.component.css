@@ -1,7 +1,32 @@
-.acciones-dialogo {
-  margin-top: 30px;
+.mat-dialog-container {
+  padding: 0 !important;
+  background-color: #234e85 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  color: white !important;
 }
 
+.mat-dialog-content,
+.mat-dialog-actions {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+/* Barra de título azul */
+.barra-titulo {
+  background-color: #234e85;
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenido del diálogo con fondo azul */
+.contenido-dialogo {
+  padding: 16px;
+}
+
+/* Alineación de botones */
 .alinear {
   display: flex;
   justify-content: space-between;
@@ -14,7 +39,9 @@
   align-items: center;
 }
 
+/* Botón de confirmar */
 .colorFondoBotonConfirmar {
   background-color: #6baa1f !important;
   color: white !important;
+  border: none;
 }
