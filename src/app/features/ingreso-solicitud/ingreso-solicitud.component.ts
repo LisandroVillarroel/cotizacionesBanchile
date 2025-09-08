@@ -140,7 +140,7 @@ export default class IngresoSolicitudComponent {
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
-  flagAsegurado = new FormControl(true, [Validators.required]);
+  flagAsegurado = new FormControl(false, [Validators.required]);
   flagBeneficiario = new FormControl(true, [Validators.required]);
   /*  email = new FormControl('', [
     Validators.required,

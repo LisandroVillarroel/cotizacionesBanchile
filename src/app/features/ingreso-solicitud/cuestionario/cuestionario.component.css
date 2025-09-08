@@ -1,5 +1,5 @@
 .fondoGris {
-  background-color: #E8E8EA;
+  background-color: #e8e8ea;
   color: #666668;
 }
 
@@ -15,6 +15,11 @@
 .document-section {
   display: flex;
   align-items: center;
+}
+
+.obligatorio {
+  color: #f45516;
+  font-weight: 600; /* semibold */
 }
 
 /* Botones carga cuestionario */
