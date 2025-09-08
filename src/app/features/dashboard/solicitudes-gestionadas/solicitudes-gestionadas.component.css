@@ -339,3 +339,10 @@ button.tabla {
 
 /* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
+.border-none {
+  border-radius: 0px;
+}
+
+.danger {
+    color: #F45516;
+}

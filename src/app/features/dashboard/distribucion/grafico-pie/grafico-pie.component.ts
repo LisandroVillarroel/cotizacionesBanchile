@@ -9,7 +9,7 @@ import { MatFormField } from "@angular/material/form-field";
 @Component({
   selector: 'app-grafico-pie',
   standalone: true,
-  imports: [MatCardModule, ChartModule, MatFormField],
+  imports: [MatCardModule, ChartModule],
   templateUrl: './grafico-pie.component.html',
   styleUrls: ['./grafico-pie.component.css'],
 })

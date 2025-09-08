@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-grafico-barra',
   standalone: true,
-  imports: [MatCardModule, ChartModule, MatFormField],
+  imports: [MatCardModule, ChartModule],
   templateUrl: './grafico-barra.component.html',
   styleUrls: ['./grafico-barra.component.css'],
 })

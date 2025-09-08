@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
 import { MatTooltip } from "@angular/material/tooltip";
@@ -31,13 +33,16 @@ import { MatTooltip } from "@angular/material/tooltip";
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatTooltip
+    MatTooltip,
+    MatExpansionModule,
+    MatDividerModule
 ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
 })
 
 export class SolicitudesGestionadasComponent  {
+  panelOpenState = false;
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
 
   rubro = new FormControl();
@@ -77,6 +82,9 @@ export class SolicitudesGestionadasComponent  {
   }
 
   limpiaFiltros() {
+    this.dataSourceSolicitud.data = this.datosSolicitud();
+  }
+  buscar() {
     this.dataSourceSolicitud.data = this.datosSolicitud();
   }
 
