@@ -220,8 +220,8 @@ export default class IngresoSolicitudComponent {
     alert('Salir');
   }
 
-  guardarBorrador() {
-    alert('guardar borrador');
+  grabarBorrador() {
+    alert('grabar borrador');
   }
 
   async onBlurRutCliente(event: any) {

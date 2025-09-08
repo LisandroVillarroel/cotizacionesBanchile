@@ -1,6 +1,10 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,7 +20,6 @@ import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegur
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
 import { ISolicitudAsegurado } from '../modelo/ingreso-solicitud';
-
 
 @Component({
   selector: 'app-asegurado',
@@ -43,24 +46,24 @@ export class AseguradoComponent {
     {
       rutAsegurado: '12514508-6',
       nombreAsegurado: 'Nombre Asegurado 1',
-      apellidoPaternoAsegurado: 'apellido Paterno 1',
-      apellidoMaternoAsegurado: 'apellido Materno 1',
+      apellidoPaternoAsegurado: 'Apellido Paterno 1',
+      apellidoMaternoAsegurado: 'Apellido Materno 1',
       regionAsegurado: 'Metropolitana 1',
       ciudadAsegurado: 'Santiago 1',
-      comunaAsegurado: 'maipú 1',
-      direccionAsegurado: 'dirección  1',
+      comunaAsegurado: 'Maipú 1',
+      direccionAsegurado: 'Dirección  1',
       telefonoAsegurado: '11111111',
       correoAsegurado: 'correo1@gmail.com',
     },
     {
       rutAsegurado: '14245328-2',
       nombreAsegurado: 'Nombre Asegurado 2',
-      apellidoPaternoAsegurado: 'apellido Paterno 2',
-      apellidoMaternoAsegurado: 'apellido Materno 2',
+      apellidoPaternoAsegurado: 'Apellido Paterno 2',
+      apellidoMaternoAsegurado: 'Apellido Materno 2',
       regionAsegurado: 'Metropolitana 2',
       ciudadAsegurado: 'Santiago 2',
-      comunaAsegurado: 'maipú 2',
-      direccionAsegurado: 'dirección  2',
+      comunaAsegurado: 'Maipú 2',
+      direccionAsegurado: 'Dirección  2',
       telefonoAsegurado: '2222222222',
       correoAsegurado: 'correo2@gmail.com',
     },
@@ -72,10 +75,10 @@ export class AseguradoComponent {
     'nombreAsegurado',
     'apellidoPaternoAsegurado',
     'apellidoMaternoAsegurado',
-    'regionAsegurado',
-    'ciudadAsegurado',
-    'comunaAsegurado',
-    'direccionAsegurado',
+    //'regionAsegurado',
+    //'ciudadAsegurado',
+    //'comunaAsegurado',
+    //'direccionAsegurado',
     'telefonoAsegurado',
     'correoAsegurado',
     'opciones',
