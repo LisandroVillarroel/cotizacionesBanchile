@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -23,7 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   ISolicitudContratante,
   ITipoRubro,
@@ -42,6 +43,7 @@ import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/c
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
@@ -79,6 +81,7 @@ export default class IngresoSolicitudComponent {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
+
 
   datoRubros = signal<ITipoRubro[]>([
     {
@@ -145,6 +148,14 @@ export default class IngresoSolicitudComponent {
     Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
   ]);*/
 
+
+  // Oculta el botón "Anular" solo en el primer paso del stepper.
+  // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
+  @ViewChild('stepper') stepper!: MatStepper;
+
+  mostrarAnular: boolean = true;
+  pasoActivoLabel: string = '';
+
   agregaSolicitudContratante = signal<FormGroup>(
     new FormGroup({
       rutCliente: this.rutCliente,
@@ -152,6 +163,17 @@ export default class IngresoSolicitudComponent {
       seguro: this.seguro,
     })
   );
+
+  ngAfterViewInit(): void {
+    // Establecer estado inicial
+    this.mostrarAnular = this.stepper.selectedIndex !== 0;
+
+    // Escuchar cambios posteriores
+    this.stepper.selectionChange.subscribe((event) => {
+      this.mostrarAnular = event.selectedIndex !== 0;
+    });
+  }
+  //
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -170,8 +192,8 @@ export default class IngresoSolicitudComponent {
       return this.rutCliente.hasError('required')
         ? 'Debes ingresar rut Cliente'
         : this.rutCliente.hasError('rutInvalido')
-        ? 'rut Cliente Inválido'
-        : '';
+          ? 'rut Cliente Inválido'
+          : '';
     }
 
     if (campo === 'seguro') {

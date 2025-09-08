@@ -15,11 +15,16 @@
 }
 
 .colorFondoBotonSalir {
-  background-color: #e0e0e0;
-  color: #333;
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d4 !important;
+  color: #234e85 !important;
 }
 
-.colorFondoBotonSiguiente {
-  background-color: #1976d2;
-  color: white;
+.colorFondoBotonSalir:hover {
+  border: 1px solid #333334 !important;
+}
+
+.colorFondoBotonConfirmar {
+  background-color: #6baa1f !important;
+  color: white !important;
 }

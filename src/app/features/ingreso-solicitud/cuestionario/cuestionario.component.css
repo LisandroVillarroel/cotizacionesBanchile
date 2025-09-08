@@ -1,3 +1,17 @@
+.fondoGris {
+  background-color: #E8E8EA;
+  color: #666668;
+}
+
+.justify-around {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .document-section {
   display: flex;
   align-items: center;
@@ -15,4 +29,8 @@
 .boton-cargar:hover {
   background-color: #0f8dba !important;
   color: #f2f2f4 !important;
+}
+
+.colorFondoBotonEliminar mat-icon {
+  color: #f45516 !important;
 }
