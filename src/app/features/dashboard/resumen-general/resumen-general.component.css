@@ -16,3 +16,15 @@
 .fontSmall{
   font-size: 12px;
 }
+
+.alinea-cards{
+  align-content: center;
+  justify-content: start;
+  width: 60%;
+}
+
+.alinea-cards-2{
+  align-content: center;
+  justify-content: start;
+  width: 15%;
+}
