@@ -90,7 +90,8 @@ body {
 }
 
 .colorFondoBotonConfirmar {
-  color: #6baa1f !important;
+  background-color: #6baa1f !important;
+  color: white !important;
 }
 
 /* Botones inferiores */
