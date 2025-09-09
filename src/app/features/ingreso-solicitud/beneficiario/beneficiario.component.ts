@@ -1,6 +1,10 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -42,24 +46,24 @@ export class BeneficiarioComponent {
     {
       rutBeneficiario: '12514508-6',
       nombreBeneficiario: 'Nombre Beneficiario 1',
-      apellidoPaternoBeneficiario: 'apellido Paterno 1',
-      apellidoMaternoBeneficiario: 'apellido Materno 1',
+      apellidoPaternoBeneficiario: 'Apellido Paterno 1',
+      apellidoMaternoBeneficiario: 'Apellido Materno 1',
       regionBeneficiario: 'Metropolitana 1',
       ciudadBeneficiario: 'Santiago 1',
-      comunaBeneficiario: 'maipú 1',
-      direccionBeneficiario: 'dirección  1',
+      comunaBeneficiario: 'Maipú 1',
+      direccionBeneficiario: 'Dirección  1',
       telefonoBeneficiario: '11111111',
       correoBeneficiario: 'correo1@gmail.com',
     },
     {
       rutBeneficiario: '14245328-2',
       nombreBeneficiario: 'Nombre Beneficiario 2',
-      apellidoPaternoBeneficiario: 'apellido Paterno 2',
-      apellidoMaternoBeneficiario: 'apellido Materno 2',
+      apellidoPaternoBeneficiario: 'Apellido Paterno 2',
+      apellidoMaternoBeneficiario: 'Apellido Materno 2',
       regionBeneficiario: 'Metropolitana 2',
       ciudadBeneficiario: 'Santiago 2',
-      comunaBeneficiario: 'maipú 2',
-      direccionBeneficiario: 'dirección  2',
+      comunaBeneficiario: 'Maipú 2',
+      direccionBeneficiario: 'Dirección  2',
       telefonoBeneficiario: '2222222222',
       correoBeneficiario: 'correo2@gmail.com',
     },
@@ -69,12 +73,12 @@ export class BeneficiarioComponent {
     'index',
     'rutBeneficiario',
     'nombreBeneficiario',
-    'apellidoPaternoBeneficiario',
-    'apellidoMaternoBeneficiario',
-    'regionBeneficiario',
-    'ciudadBeneficiario',
-    'comunaBeneficiario',
-    'direccionBeneficiario',
+    //'apellidoPaternoBeneficiario',
+    //'apellidoMaternoBeneficiario',
+    //'regionBeneficiario',
+    //'ciudadBeneficiario',
+    //'comunaBeneficiario',
+    //'direccionBeneficiario',
     'telefonoBeneficiario',
     'correoBeneficiario',
     'opciones',

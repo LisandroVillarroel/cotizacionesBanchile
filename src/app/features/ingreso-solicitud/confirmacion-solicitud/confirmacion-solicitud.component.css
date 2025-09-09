@@ -1,14 +1,47 @@
-.cerrar-dialogo {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.mat-dialog-container {
+  padding: 0 !important;
+  background-color: #234e85 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  color: white !important;
 }
 
-mat-dialog-content {
-  font-size: 14px;
-  line-height: 1.6;
+.mat-dialog-content,
+.mat-dialog-actions {
+  background-color: transparent !important;
+  color: white !important;
 }
 
-mat-dialog-actions {
-  margin-top: 20px;
+/* Barra de título azul */
+.barra-titulo {
+  background-color: #234e85;
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenido del diálogo con fondo azul */
+.contenido-dialogo {
+  padding: 16px;
+}
+
+/* Alineación de botones */
+.alinear {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.botones-izquierda,
+.botones-derecha {
+  display: flex;
+  align-items: center;
+}
+
+/* Botón de confirmar */
+.colorFondoBotonConfirmar {
+  background-color: #6baa1f !important;
+  color: white !important;
+  border: none;
 }

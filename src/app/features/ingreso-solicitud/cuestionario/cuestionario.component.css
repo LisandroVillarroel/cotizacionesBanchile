@@ -1,6 +1,25 @@
+.fondoGris {
+  background-color: #e8e8ea;
+  color: #666668;
+}
+
+.justify-around {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .document-section {
   display: flex;
   align-items: center;
+}
+
+.obligatorio {
+  color: #f45516;
+  font-weight: 600; /* semibold */
 }
 
 /* Botones carga cuestionario */
@@ -15,4 +34,8 @@
 .boton-cargar:hover {
   background-color: #0f8dba !important;
   color: #f2f2f4 !important;
+}
+
+.colorFondoBotonEliminar mat-icon {
+  color: #f45516 !important;
 }
