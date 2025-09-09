@@ -38,7 +38,7 @@ import HeaderComponent from './header/header.component';
   background-color: #f0f0f0; /* Ejemplo de color de fondo */
   padding: 10px; /* Espaciado interno */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional */
-  z-index: 1000000; /* Asegura que el encabezado esté por encima del contenido */
+  z-index: 100; /* Asegura que el encabezado esté por encima del contenido */
 }
 
 
