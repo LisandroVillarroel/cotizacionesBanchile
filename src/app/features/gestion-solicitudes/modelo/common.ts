@@ -19,8 +19,13 @@ export interface ITipoSeguro {
   codigoRubro: number;
 }
 
-export interface EstadoColor {
+export interface IEstado {
+  codigoEstado: number;
+  descripcionEstado: string;
+}
+
+/* export interface IEstadoColor {
   estado: string;
   color: string;
   background: string;
-}
+} */

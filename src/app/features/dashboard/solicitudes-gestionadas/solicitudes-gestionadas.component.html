@@ -5,19 +5,18 @@
     <mat-accordion class="border-none">
       <mat-expansion-panel (opened)="panelOpenState = true"
                           (closed)="panelOpenState = false"  class="border-0">
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header  style="padding: 12px;">
           <mat-panel-title class="gris"> Filtrar por: </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="box-form-fields gap-2" style="align-items: center;">
-          <div>
-            <mat-form-field class="inputFechaForm">
-            <mat-label class="fontSmall gris">Fecha</mat-label>
-              <input matInput [matDatepicker]="picker">
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+
+          <div style="width: 20%;">
+            <mat-form-field class="inputBuscar">
+              <mat-label class="labelI">Coordinador</mat-label>
+              <mat-icon matSuffix class="gris">search</mat-icon>
+              <input matInput #coordinadorInput (keyup)="applyFilterSolicitud('Coordinador',coordinadorInput.value)" />
             </mat-form-field>
           </div>
-
           <div style="width: 20%;">
             <mat-form-field class="inputSelect">
               <mat-label class="labelI">Rubro</mat-label>
@@ -46,10 +45,25 @@
           </div>
 
           <div style="width: 20%;">
-            <mat-form-field class="inputBuscar">
-              <mat-label class="labelI">Coordinador</mat-label>
-              <mat-icon matSuffix class="gris">search</mat-icon>
-              <input matInput #coordinadorInput (keyup)="applyFilterSolicitud('Coordinador',coordinadorInput.value)" />
+            <mat-form-field class="inputSelect">
+              <mat-label class="labelI">Estado</mat-label>
+              <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('Estado',$event.value)">
+                @for(_seguros of rescatadoSeguro(); track _seguros){
+                  <mat-option [value]="_seguros.descripcionSeguro">
+                    {{ _seguros.descripcionSeguro }}
+                  </mat-option>
+                }
+                <input matInput  />
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field class="inputFechaForm">
+              <mat-label class="fontSmall gris">Fecha</mat-label>
+              <input matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div>
 
@@ -62,7 +76,6 @@
         </mat-expansion-panel>
     </mat-accordion>
   </div>
-
 
   <div class="mat-elevation-z8">
     <table mat-table

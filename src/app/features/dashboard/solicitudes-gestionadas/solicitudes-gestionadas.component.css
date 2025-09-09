@@ -71,42 +71,6 @@ p {
 
 /*Botones*/
 
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
-  color: white;
-  background-color: #6BAA1F;
-}
-
-.colorFondoBotonSalir {
-  color:#666668 !important;
-  background-color: #EEEEF1 !important;
-}
-
-.colorFondoBotonAnular {
-  color: #666668 !important;
-  background-color: #ffc107 !important;
-}
-.colorFondoBotonSiguiente {
-  color: #ffffff !important;
-  background-color: #234E85 !important;
-}
-
-/*
-.mat-raised-button.mat-primary {
-  background-color: black;
-  color:rgb(255, 102, 0);
-}
-*/
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
-  color: white !important;
-  background-color: #F45516 !important;
-}
-
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
-  color: white !important;
-  background-color: black !important;
-  font-size: 0.7rem;
-}
-
 .colorFondoBotonExTabla.mat-mdc-raised-button {
   color: white !important;
   background-color: #17627e !important;
@@ -163,7 +127,7 @@ p {
 .inputFechaForm {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
+  padding-top: 3px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
   /*tamaño height de inpul*/

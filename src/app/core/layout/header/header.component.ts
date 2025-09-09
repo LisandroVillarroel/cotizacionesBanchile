@@ -24,7 +24,7 @@ import { MatDividerModule } from '@angular/material/divider';
             <img src="./../../../../assets/logo/bancochile.png" alt="Logo" class="logo-img me-2" />
           </a>
 <mat-divider [vertical]="true" ></mat-divider>
-          <span class="titulo mb-0">
+          <span class="titulo mb-0" style="color: white;">
                 Plataforma Cotizaciones Seguros Empresa
           </span>
         </div>

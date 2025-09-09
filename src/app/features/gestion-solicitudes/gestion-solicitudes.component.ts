@@ -1,4 +1,11 @@
 import { Component, ViewChild, inject, signal, NgModule } from '@angular/core';
+import { MatLabel, MatHint } from "@angular/material/form-field";
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,21 +14,21 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-import { ISolicitud, ITipoRubro, ITipoSeguro, IEstado } from './modelo/common';
+import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/common';
 
+
+//import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-solicitudes-gestionadas',
+  selector: 'app-gestion-solicitudes',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatTableModule,
     MatPaginatorModule,
@@ -37,18 +44,19 @@ import { ISolicitud, ITipoRubro, ITipoSeguro, IEstado } from './modelo/common';
     MatTooltipModule,
     MatExpansionModule,
     MatDividerModule,
+    MatTabsModule,
     CommonModule
   ],
-  templateUrl: './solicitudes-gestionadas.component.html',
-  styleUrl: './solicitudes-gestionadas.component.css'
+  templateUrl: './gestion-solicitudes.component.html',
+  styleUrl: './gestion-solicitudes.component.css'
 })
+export default class GestionSolicitudesComponent {
+  fechaActual: Date = new Date();
 
-export class SolicitudesGestionadasComponent  {
-  panelOpenState = false;
+    panelOpenState = false;
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
   rubro = new FormControl();
   seguro = new FormControl();
-  estado = new FormControl();
   displayedColumns: string[] = [
     'index',
     'ID',
@@ -104,8 +112,6 @@ export class SolicitudesGestionadasComponent  {
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.dataSourceSolicitud.data = this.datosSolicitud();
-
-
 
   }
 
@@ -391,24 +397,5 @@ export class SolicitudesGestionadasComponent  {
       codigoRubro:3
     },
   ]);
-
-    datoEstados = signal<IEstado[]>([
-    {
-      codigoEstado: 1,
-      descripcionEstado: 'Rubro 1',
-    },
-    {
-      codigoRubro: 2,
-      descripcionRubro: 'Rubro 2',
-    },
-    {
-      codigoRubro: 3,
-      descripcionRubro: 'Vehículo',
-    },
-  ]);
-
-  /* Fin llamadas a servicios */
-    /* verDetalle(ISolicitud: any) {
-      throw new Error('Function not implemented.');
-    } */
 }
+

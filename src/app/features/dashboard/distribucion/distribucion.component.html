@@ -1,7 +1,7 @@
 <div class="container-fluid justify-around p-2" >
   <mat-card style="width: 49%;">
-    <mat-card-header>Resumen Solicitudes por Tipo de Seguro &nbsp;&nbsp;&nbsp;&nbsp;
-      <select [(ngModel)]="seleccionada" class="inputSelect" style="width: 30%;" matNativeControl required>
+    <mat-card-header class="justify-around">Resumen Solicitudes por Tipo de Seguro &nbsp;&nbsp;&nbsp;&nbsp;
+      <select [(ngModel)]="seleccionada" class="inputSelect gris" style="width: 30%;" matNativeControl required>
         <option [value]="null" disabled selected>Seleccione un tipo de seguro</option>
         <option *ngFor="let opcion of opciones" [value]="opcion.id">
           {{ opcion.nombre }}
