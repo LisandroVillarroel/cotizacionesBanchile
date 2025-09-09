@@ -206,24 +206,23 @@ export default class IngresoSolicitudComponent {
         },
       ]);
 */
-
+mostrarAnular: boolean = true;
+pasoActivoLabel: string = '';
 
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
   tipoContratante = new FormControl('', Validators.required);
-  flagAsegurado = new FormControl(false, [Validators.required]);
-  flagBeneficiario = new FormControl(true, [Validators.required]);
+ flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
+  flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
 
-  mostrarAnular: boolean = true;
-  pasoActivoLabel: string = '';
-  flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVrdadero]);
-  flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVrdadero]);
+
+
   /*  email = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -356,7 +355,7 @@ export default class IngresoSolicitudComponent {
       .afterClosed();
   }
 
-  validaQueSeaVrdadero(control: AbstractControl): ValidationErrors | null {
+  validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
         if (control.value !== true) {
             return { isTrue: true }; // La clave del error es 'isTrue'
         }
