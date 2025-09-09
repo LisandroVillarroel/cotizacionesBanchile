@@ -15,7 +15,7 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { ISolicitud, ITipoRubro, ITipoSeguro } from './modelo/solicitud';
-import { MatTooltip } from "@angular/material/tooltip";
+import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -32,7 +32,7 @@ import { MatTooltip } from "@angular/material/tooltip";
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatTooltip,
+    MatTooltipModule,
     MatExpansionModule,
     MatDividerModule,
     CommonModule
