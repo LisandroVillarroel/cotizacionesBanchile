@@ -48,4 +48,8 @@ export const routes: Routes = [
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
+  {
+    path: 'detalle',
+    loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
+  },
 ];
