@@ -9,11 +9,12 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -25,7 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
@@ -36,6 +37,8 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
@@ -47,6 +50,7 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
@@ -63,6 +67,8 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
     MatIconModule,
     MatTableExporterModule,
     MatTooltipModule,
+    FormsModule,
+    MatRadioModule,
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
@@ -206,6 +212,16 @@ export default class IngresoSolicitudComponent {
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
+  tipoContratante = new FormControl('', Validators.required);
+  flagAsegurado = new FormControl(false, [Validators.required]);
+  flagBeneficiario = new FormControl(true, [Validators.required]);
+
+  // Oculta el botón "Anular" solo en el primer paso del stepper.
+  // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
+  @ViewChild('stepper') stepper!: MatStepper;
+
+  mostrarAnular: boolean = true;
+  pasoActivoLabel: string = '';
   flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVrdadero]);
   flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVrdadero]);
   /*  email = new FormControl('', [
@@ -219,8 +235,19 @@ export default class IngresoSolicitudComponent {
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
+      tipoContratante: this.tipoContratante,
     })
   );
+
+  ngAfterViewInit(): void {
+    // Establecer estado inicial
+    this.mostrarAnular = this.stepper.selectedIndex !== 0;
+
+    // Escuchar cambios posteriores
+    this.stepper.selectionChange.subscribe((event) => {
+      this.mostrarAnular = event.selectedIndex !== 0;
+    });
+  }
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -266,16 +293,22 @@ export default class IngresoSolicitudComponent {
     return;
   }
 
+  get esPersona(): boolean {
+    return this.tipoContratante.value === 'persona';
+  }
+
   enviar() {
+    const tipo = this.tipoContratante.value; // 'persona' o 'empresa'
     alert('Grabar');
+    //alert(`Grabar solicitud para tipo de contratante: ${tipo}`);
   }
 
   salir() {
     alert('Salir');
   }
 
-  guardarBorrador() {
-    alert('guardar borrador');
+  grabarBorrador() {
+    alert('grabar borrador');
   }
 
   async onBlurRutCliente(event: any) {
@@ -311,9 +344,11 @@ export default class IngresoSolicitudComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
     this.dialog

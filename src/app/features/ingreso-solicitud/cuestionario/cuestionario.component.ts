@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
 import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
 
@@ -30,6 +31,7 @@ import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
     MatTooltipModule,
     MatStepperModule,
     MatInputModule,
+    MatCardModule
   ],
 })
 export class CuestionarioComponent {

@@ -5,6 +5,8 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 export interface ConfirmacionSolicitudData {
   solicitudId: string;
@@ -21,7 +23,7 @@ export interface ConfirmacionSolicitudData {
   standalone: true,
   templateUrl: './confirmacion-solicitud.component.html',
   styleUrls: ['./confirmacion-solicitud.component.scss'],
-  imports: [MatIconModule, MatDialogModule],
+  imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule],
 })
 export class ConfirmacionSolicitudDialogComponent {
   constructor(

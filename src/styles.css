@@ -89,6 +89,11 @@ body {
   color: white !important;
 }
 
+.colorFondoBotonConfirmar {
+  background-color: #6baa1f !important;
+  color: white !important;
+}
+
 /* Botones inferiores */
 
 .botones-izquierda {
@@ -108,29 +113,27 @@ body {
 .inputForm {
   font-size: 11px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 10px !important;
   padding-bottom: 0px !important;
-  width:100%;
+  width: 100%;
   height: 45%;
 
   .mat-mdc-text-field-wrapper {
     height: 50px;
     flex: auto;
     will-change: auto;
-}
+  }
 }
 
 /*Espacio del input */
-.mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
-    padding-top: 12px !important;
-    padding-bottom: 6px !important;
-
+.mdc-text-field--outlined .mat-mdc-form-field-infix,
+.mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding-top: 12px !important;
+  padding-bottom: 6px !important;
 }
 
 .inputInput {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
@@ -143,7 +146,6 @@ body {
   color: #999;
   padding: 10px 16px;
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   border-radius: 4px;
   width: 100%;
   display: inline-block;
@@ -151,7 +153,6 @@ body {
 
 .inputSelectBuscar {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 84%;
@@ -167,7 +168,6 @@ body {
 
 .inputBuscar {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 80%;
@@ -178,7 +178,6 @@ body {
 
 .inputFecha {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -188,7 +187,6 @@ body {
 
 .inputFechaForm {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -198,12 +196,10 @@ body {
 
 .mat-mdc-select-value-text {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
 }
 
 .labelI {
   font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
   font-style: italic;
   text-align: left;
   color: #666668;
@@ -240,7 +236,6 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  font-family: "Roboto", sans-serif !important;
   color: #323131;
   padding: 0 1px !important;
 }
@@ -253,7 +248,6 @@ body {
   font-size: 16px !important;
   text-align: left !important;
   color: #002464 !important;
-  font-family: "Roboto", sans-serif !important;
 }
 /* Fin Titulos Mantenedores Secundarios*/
 
@@ -298,7 +292,6 @@ tr.mat-header-row {
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   /*Tamaño letra tabla*/
 }
 
@@ -347,6 +340,11 @@ button.tabla {
   width: 40px !important;
   height: 40px !important;
 }
+
+.colorFondoBotonEliminar mat-icon {
+  color: #f45516 !important;
+}
+
 /*Fin iconos de tabla*/
 
 /*Icono ordena tabla*/
@@ -367,7 +365,6 @@ button.tabla {
 /*Columna +AGREGAR*/
 th#opcionesI {
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   color: white !important;
   width: 14% !important;
   text-align: center;
@@ -377,7 +374,6 @@ th#opcionesI {
 
 .agregar-texto {
   font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
   color: white !important;
   cursor: pointer;
   display: inline-flex;
@@ -386,41 +382,48 @@ th#opcionesI {
   height: 100%;
 }
 /*Fin Columna +AGREGAR*/
-
 /*Fin MAT-TABLE*/
 
-:root{
-/*NOTIFICACIONES*/
+:root {
+  /*NOTIFICACIONES*/
 
-
-.success {
-  --mdc-snackbar-container-color: #4CAF50 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
+  .success {
+    --mdc-snackbar-container-color: #4caf50 !important; /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
     text-align: center; /*Centra el mensaje*/
+  }
+
+  .error {
+    --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+  }
+
+  .warning {
+    --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+  }
+
+  .info {
+    --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
+    text-align: center; /*Centra el mensaje*/
+  }
+  /*FIN NOTIFICACIONES*/
 }
 
-.error {
-  --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
+  /*MODAL DE CONFIRMACION*/
 
-.warning {
-  --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-
-.info {
-   --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
-  --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-  --mdc-snackbar-supporting-text-color: white  !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
-}
-/*FIN NOTIFICACIONES*/
-
-
+/* Elimina el fondo blanco y ajusta el borde del contenedor del diálogo */
+.custom-dialog-container .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
 }

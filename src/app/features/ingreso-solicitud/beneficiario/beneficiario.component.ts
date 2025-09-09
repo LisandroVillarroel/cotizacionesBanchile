@@ -1,6 +1,10 @@
 import { Component, effect, inject, input, model, output, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -47,12 +51,12 @@ export class BeneficiarioComponent {
     'index',
     'rutBeneficiario',
     'nombreBeneficiario',
-    'apellidoPaternoBeneficiario',
-    'apellidoMaternoBeneficiario',
-    'regionBeneficiario',
-    'ciudadBeneficiario',
-    'comunaBeneficiario',
-    'direccionBeneficiario',
+    //'apellidoPaternoBeneficiario',
+    //'apellidoMaternoBeneficiario',
+    //'regionBeneficiario',
+    //'ciudadBeneficiario',
+    //'comunaBeneficiario',
+    //'direccionBeneficiario',
     'telefonoBeneficiario',
     'correoBeneficiario',
     'opciones',
