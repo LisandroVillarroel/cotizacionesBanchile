@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingreso-solicitud';
+import { ISolicitudBeneficiario } from '@shared/modelo/ingreso-solicitud';
 
 
 @Component({

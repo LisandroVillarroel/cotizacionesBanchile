@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingreso-solicitud';
+import { ISolicitudAsegurado } from '@shared/modelo/ingreso-solicitud';
 
 
 @Component({
@@ -133,6 +133,6 @@ export class ModificaSolicitudAseguradoComponent {
   }
 
   modificar() {
-     this.dialogRef.close(1);
+     this.dialogRef.close(this.modificaAsegurado().value);
   }
 }

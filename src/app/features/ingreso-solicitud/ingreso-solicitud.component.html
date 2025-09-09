@@ -143,7 +143,7 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado />
+        <app-asegurado [datoAseguradosRecibe]="datoAsegurados()" (datoAseguradosRecibeModificado)="actualizarAsegurado($event)" [(flagAsegurado)]="flagAseguradoRescata" (flagAseguradoModel)="cambioAseguradoFlag()"/>
         <div class="alinear">
           <div class="botones-izquierda">
             <button
@@ -173,7 +173,7 @@
     >
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
-        <app-beneficiario />
+        <app-beneficiario [datoBeneficiariosRecibe]="datoBeneficiarios()" (datoBeneficiariosRecibeModificado)="actualizarBeneficiario($event)" [(flagBeneficiario)]="flagBeneficiarioRescata" (flagBeneficiarioModel)="cambioBeneficiarioFlag()"/>
         <div class="alinear">
           <div class="botones-izquierda">
             <button

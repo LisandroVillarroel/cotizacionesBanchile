@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingreso-solicitud';
+import { ISolicitudAsegurado } from '@shared/modelo/ingreso-solicitud';
 
 @Component({
   selector: 'app-elimina-solicitud-asegurado',

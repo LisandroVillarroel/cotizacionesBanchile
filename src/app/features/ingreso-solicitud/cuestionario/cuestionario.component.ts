@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
-import { ICuestionario } from '../modelo/ingreso-solicitud';
+import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
 
 @Component({
   selector: 'app-cuestionario-documentos',

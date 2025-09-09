@@ -130,6 +130,6 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
   grabar() {
-     this.dialogRef.close(1);
+     this.dialogRef.close(this.agregaAsegurado().value);
   }
 }
