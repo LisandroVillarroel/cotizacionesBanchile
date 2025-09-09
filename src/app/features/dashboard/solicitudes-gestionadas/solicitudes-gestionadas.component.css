@@ -343,6 +343,10 @@ button.tabla {
   border-radius: 0px;
 }
 
+.danger{
+  color: #F45516;
+}
+
 .edicion{
   color:#666668;
   background-color: #E8E8EA;
