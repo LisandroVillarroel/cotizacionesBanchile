@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -33,6 +33,8 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
@@ -60,6 +62,8 @@ import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/c
     MatIconModule,
     MatTableExporterModule,
     MatTooltipModule,
+    FormsModule,
+    MatRadioModule,
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
@@ -81,7 +85,6 @@ export default class IngresoSolicitudComponent {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   datoRubros = signal<ITipoRubro[]>([
     {
@@ -140,14 +143,9 @@ export default class IngresoSolicitudComponent {
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
+  tipoContratante = new FormControl('', Validators.required);
   flagAsegurado = new FormControl(false, [Validators.required]);
   flagBeneficiario = new FormControl(true, [Validators.required]);
-  /*  email = new FormControl('', [
-    Validators.required,
-    Validators.email,
-    Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
-  ]);*/
-
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
@@ -161,6 +159,7 @@ export default class IngresoSolicitudComponent {
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
+      tipoContratante: this.tipoContratante,
     })
   );
 
@@ -173,7 +172,6 @@ export default class IngresoSolicitudComponent {
       this.mostrarAnular = event.selectedIndex !== 0;
     });
   }
-  //
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -192,8 +190,8 @@ export default class IngresoSolicitudComponent {
       return this.rutCliente.hasError('required')
         ? 'Debes ingresar rut Cliente'
         : this.rutCliente.hasError('rutInvalido')
-          ? 'rut Cliente Inválido'
-          : '';
+        ? 'rut Cliente Inválido'
+        : '';
     }
 
     if (campo === 'seguro') {
@@ -212,8 +210,14 @@ export default class IngresoSolicitudComponent {
     return;
   }
 
+  get esPersona(): boolean {
+    return this.tipoContratante.value === 'persona';
+  }
+
   enviar() {
+    const tipo = this.tipoContratante.value; // 'persona' o 'empresa'
     alert('Grabar');
+    //alert(`Grabar solicitud para tipo de contratante: ${tipo}`);
   }
 
   salir() {
@@ -257,13 +261,13 @@ export default class IngresoSolicitudComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog
-      .open(ConfirmacionSolicitudDialogComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConfirmacionSolicitudDialogComponent, dialogConfig);
   }
 }

@@ -416,3 +416,14 @@ th#opcionesI {
   }
   /*FIN NOTIFICACIONES*/
 }
+
+  /*MODAL DE CONFIRMACION*/
+
+/* Elimina el fondo blanco y ajusta el borde del contenedor del diálogo */
+.custom-dialog-container .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
