@@ -398,12 +398,12 @@ export class SolicitudesGestionadasComponent  {
       descripcionEstado: 'Rubro 1',
     },
     {
-      codigoRubro: 2,
-      descripcionRubro: 'Rubro 2',
+      codigoEstado: 2,
+      descripcionEstado: 'Rubro 2',
     },
     {
-      codigoRubro: 3,
-      descripcionRubro: 'Vehículo',
+      codigoEstado: 3,
+      descripcionEstado: 'Vehículo',
     },
   ]);
 
