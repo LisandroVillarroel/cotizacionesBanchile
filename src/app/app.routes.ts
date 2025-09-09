@@ -28,6 +28,7 @@ export const routes: Routes = [
         path: 'gestion',
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
+
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
