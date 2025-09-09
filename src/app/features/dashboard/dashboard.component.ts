@@ -18,7 +18,7 @@ import DistribucionComponent from './distribucion/distribucion.component';
     MatFormFieldModule,
     MatInputModule,
     MatLabel,
-    MatHint,
+    // MatHint,
     MatDatepickerModule,
     MatCardModule,
     //DatePipe,

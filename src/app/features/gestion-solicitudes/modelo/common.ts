@@ -18,3 +18,14 @@ export interface ITipoSeguro {
   descripcionSeguro: string;
   codigoRubro: number;
 }
+
+export interface IEstado {
+  codigoEstado: number;
+  descripcionEstado: string;
+}
+
+/* export interface IEstadoColor {
+  estado: string;
+  color: string;
+  background: string;
+} */

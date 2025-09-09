@@ -1,32 +1,38 @@
-<div class="container d-flex justify-around p-2">
-  <!-- <mat-grid-list cols="4" rowHeight="4:1" gutterSize="10px" style="background-color: white;">
-    <mat-grid-tile>Solicitudes en proceso</mat-grid-tile>
-    <mat-grid-tile>Solicitudes esperando respuesta</mat-grid-tile>
-    <mat-grid-tile>Solicitudes aprobadas</mat-grid-tile>
-    <mat-grid-tile>Solicitudes con observaciones</mat-grid-tile>
-  </mat-grid-list> -->
-  <mat-card style="width: 23%;">
-    <mat-card-header>Solicitudes en proceso</mat-card-header>
-    <mat-card-content>
-      <p class="titulo">{{enProceso}}</p>
-   </mat-card-content>
-  </mat-card>
-  <mat-card style="width: 23%;">
-    <mat-card-header>Solicitudes esperando respuesta</mat-card-header>
-    <mat-card-content>
-      <p class="titulo">{{enEspera}}</p>
+<div class="container-fluid d-flex justify-around p-2">
+  <mat-card class="d-flex" style="width: 24%;">
+    <mat-card-content class="d-flex" style="justify-content: start; padding: 10px;">
+      <div class="container-fluid alinea-cards">
+        <p>En proceso:</p></div>
+      <div class="container-fluid alinea-cards-2">
+       <h2 class="titulo">{{enProceso}}</h2>
+      </div>
     </mat-card-content>
   </mat-card>
-  <mat-card style="width: 23%;">
-    <mat-card-header>Solicitudes aprobadas</mat-card-header>
-    <mat-card-content>
-      <p class="titulo">{{aprobadas}}</p>
+  <mat-card class="d-flex" style="width: 24%;">
+    <mat-card-content class="d-flex" style="justify-content: start; padding: 10px;">
+      <div class="container-fluid alinea-cards">
+        <p>Esperando respuesta</p></div>
+      <div class="container-fluid alinea-cards-2">
+       <h2 class="titulo">{{enEspera}}</h2>
+      </div>
     </mat-card-content>
   </mat-card>
-  <mat-card style="width: 23%;">
-    <mat-card-header>Solicitudes con observaciones</mat-card-header>
-    <mat-card-content>
-      <p class="titulo">{{conObs}}</p>
+  <mat-card class="d-flex" style="width: 24%;">
+    <mat-card-content class="d-flex" style="justify-content: start; padding: 10px;">
+      <div class="container-fluid alinea-cards">
+        <p>Aprobadas</p></div>
+      <div class="container-fluid  alinea-cards-2">
+       <h2 class="titulo">{{aprobadas}}</h2>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="d-flex" style="width: 24%;">
+    <mat-card-content class="d-flex" style="justify-content: start; padding: 10px;">
+      <div class="container-fluid alinea-cards">
+        <p>Con observaciones</p></div>
+      <div class="container-fluid alinea-cards-2">
+       <h2 class="titulo">{{conObs}}</h2>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

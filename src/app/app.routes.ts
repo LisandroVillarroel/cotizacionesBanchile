@@ -24,6 +24,10 @@ export const routes: Routes = [
         path: 'ingreso',
         loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
       },
+      {
+        path: 'gestion',
+        loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
+      },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },

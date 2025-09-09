@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-grafico-barra',
   standalone: true,
-  imports: [MatCardModule, ChartModule, MatFormField],
+  imports: [MatCardModule, ChartModule],
   templateUrl: './grafico-barra.component.html',
   styleUrls: ['./grafico-barra.component.css'],
 })
@@ -20,13 +20,26 @@ export class GraficoBarraComponent implements OnInit {
 
   ngOnInit() {
     this.data.set({
-      labels: ['Ingreso de solicitud', 'Envío al coordinador', 'Gestión con compañías de seguros'
-        , 'Recepción de la respuesta', 'Generación de la propuesta', 'Envío de la propuesta firmada', 'Proceso de emisión'],
+      labels: ['En edición', 'En revisión', 'Con observaciones', 'En cotización'
+        , 'Aprobadas', 'Propuestas pendientes', 'Propuestas Emitidas'
+        , 'Propuestas firmadas', 'Teminadas', 'Anuladas', 'Rechazadas'],
       datasets: [
         {
           //  label: 'My First dataset',
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#FF7043', '#26A69A', '#EF5350'],
-          data: [65, 59, 80, 81, 56, 55, 40]
+          backgroundColor:
+          [
+            '#666668',
+            '#149DC9',
+            '#FFC725',
+            '#234E85',
+            '#6BAA1F',
+            '#776D92',
+            '#002464',
+            '#A6B118',
+            '#C21589',
+            '#F45516',
+            '#D11D1A'],
+          data: [2, 4, 1, 3, 6, 1, 2, 0, 0, 1, 1]
         }
       ]
     });
@@ -35,10 +48,10 @@ export class GraficoBarraComponent implements OnInit {
       responsive: true,
       plugins: {
         legend: {
-          position: 'top'
+          position: 'none'
         },
         title: {
-          display: true,
+          display: false,
           //text: 'Gráfico de Barras Horizontal'
         }
       }

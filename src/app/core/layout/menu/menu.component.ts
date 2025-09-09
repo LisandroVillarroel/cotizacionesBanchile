@@ -25,13 +25,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
               <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
             </li>
             <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link"  routerLink="ingreso">Ingresar Solicitud</a>
+              <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
             </li>
             <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="eje">Ejecutivo Banco</a>
+              <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>
             <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="crt">Contro de Emisión</a>
+              <a class="nav-link" routerLink="crt">Generación de Informes</a>
             </li>
             <li class="nav-item dropdown" [routerLinkActive]="['active']">
               <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">

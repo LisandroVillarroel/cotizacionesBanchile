@@ -45,7 +45,6 @@ p {
 .fontSmall{
   font-size: 12px;
 }
-
 /*MAT-TABLE*/
 /* Mantenedores Material*/
 /*Titulo Mantenedores Tablas principales*/
@@ -71,42 +70,6 @@ p {
 
 
 /*Botones*/
-
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
-  color: white;
-  background-color: #6BAA1F;
-}
-
-.colorFondoBotonSalir {
-  color:#666668 !important;
-  background-color: #EEEEF1 !important;
-}
-
-.colorFondoBotonAnular {
-  color: #666668 !important;
-  background-color: #ffc107 !important;
-}
-.colorFondoBotonSiguiente {
-  color: #ffffff !important;
-  background-color: #234E85 !important;
-}
-
-/*
-.mat-raised-button.mat-primary {
-  background-color: black;
-  color:rgb(255, 102, 0);
-}
-*/
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
-  color: white !important;
-  background-color: #F45516 !important;
-}
-
-.mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
-  color: white !important;
-  background-color: black !important;
-  font-size: 0.7rem;
-}
 
 .colorFondoBotonExTabla.mat-mdc-raised-button {
   color: white !important;
@@ -164,7 +127,7 @@ p {
 .inputFechaForm {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 10px !important;
+  padding-top: 3px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
   /*tamaño height de inpul*/
@@ -340,3 +303,109 @@ button.tabla {
 
 /* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
+.border-none {
+  border-radius: 0px;
+}
+
+.danger{
+  color: #F45516;
+}
+
+.edicion{
+  color:#666668;
+  background-color: #E8E8EA;
+  border: 1px solid #666668;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.revision{
+  color: #149DC9;
+  background-color: #D0EBF4;
+  border: 1px solid #149DC9;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.observ{
+  color: #FFC725;
+  background-color: #FFF7DF;
+  border: 1px solid #FFC725;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.cotizacion{
+  color: #234E85;
+  background-color: #D0EBF4;
+  border: 1px solid #234E85;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.pendiente{
+  color:#776D92;
+  background-color: #E8E8EA;
+  border: 1px solid #776D92;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.emitida{
+  color: #002464;
+  background-color: #D0EBF4;
+  border: 1px solid #002464;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.anulada {
+  color: #F45516;
+  background-color: #FDE6DC;
+  border: 1px solid #F45516;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.aprobada{
+  color: #6BAA1F;
+  background-color: #E9F2DE;
+  border: 1px solid #6BAA1F;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.firmada{
+  color: #A6B118;
+  background-color: #E9F2DE;
+  border: 1px solid #A6B118;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.terminada{
+  color: #C21589;
+  background-color: lightpink;
+  border: 1px solid #C21589;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.rechazada{
+  color: #D11D1A;
+  background-color: #FDE6DC;
+  border: 1px solid #D11D1A;
+  width: fit-content;
+  padding-left: 5%;
+  padding-right: 5%;
+}
