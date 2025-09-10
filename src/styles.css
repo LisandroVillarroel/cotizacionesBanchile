@@ -109,6 +109,13 @@ body {
 
 /*Fin Botones*/
 
+/*Boton Limpiar Filtros*/
+.botonLimpiarFiltros {
+  background-color: #6baa1f !important;
+  color: white !important;
+  font-size: 11px !important;
+}
+
 /*INICIO INPUT*/
 .inputForm {
   font-size: 11px !important;

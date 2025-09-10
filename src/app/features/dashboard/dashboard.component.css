@@ -16,3 +16,13 @@
 .fontSmall{
   font-size: 12px;
 }
+
+.picker {
+  margin-top: 15px; /* Ajusta este valor según lo que necesites */
+}
+
+
+mat-form-field {
+  margin-left: auto; /* empuja el picker hacia la derecha */
+}
+
