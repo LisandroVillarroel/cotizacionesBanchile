@@ -38,13 +38,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
-import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 import { SolicitudesService } from '@shared/service/solicitudes.service';
+import { MatCardContent, MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -68,11 +68,12 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
     MatTableExporterModule,
     MatTooltipModule,
     FormsModule,
-    MatRadioModule,
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
     MateriaAseguradaComponent,
+    MatCardContent,
+    MatCard,
   ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
@@ -90,8 +91,8 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  datoAsegurados=signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios=signal<ISolicitudBeneficiario[] | undefined>(undefined);
+  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
@@ -151,7 +152,7 @@ export default class IngresoSolicitudComponent {
       codigoRubro: 2,
     },
   ]);
-/*
+  /*
     datoAsegurados = signal<ISolicitudAsegurado[]>([
       {
         rutAsegurado: '12514508-6',
@@ -206,22 +207,24 @@ export default class IngresoSolicitudComponent {
         },
       ]);
 */
-mostrarAnular: boolean = true;
-pasoActivoLabel: string = '';
-
+  mostrarAnular: boolean = true;
+  pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
-  tipoContratante = new FormControl('', Validators.required);
- flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
-  flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
+  flagAsegurado = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
+  flagBeneficiario = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
-
-
 
   /*  email = new FormControl('', [
     Validators.required,
@@ -234,7 +237,6 @@ pasoActivoLabel: string = '';
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
-      tipoContratante: this.tipoContratante,
     })
   );
 
@@ -276,12 +278,10 @@ pasoActivoLabel: string = '';
     return '';
   }
 
-
-  async ngOnInit(){
-      this.datoAsegurados.set(this.solicitudesService.getSolicitudId('1'))
-      this.datoBeneficiarios.set(this.solicitudesService.getBeneficiarioId('1'))
+  async ngOnInit() {
+    this.datoAsegurados.set(this.solicitudesService.getSolicitudId('1'));
+    this.datoBeneficiarios.set(this.solicitudesService.getBeneficiarioId('1'));
   }
-
 
   async seleccionaRubro(_codigoRubro: number) {
     this.rescatadoSeguro.set(
@@ -292,14 +292,8 @@ pasoActivoLabel: string = '';
     return;
   }
 
-  get esPersona(): boolean {
-    return this.tipoContratante.value === 'persona';
-  }
-
   enviar() {
-    const tipo = this.tipoContratante.value; // 'persona' o 'empresa'
     alert('Grabar');
-    //alert(`Grabar solicitud para tipo de contratante: ${tipo}`);
   }
 
   salir() {
@@ -356,29 +350,29 @@ pasoActivoLabel: string = '';
   }
 
   validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-        if (control.value !== true) {
-            return { isTrue: true }; // La clave del error es 'isTrue'
-        }
-        return null;
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
     }
+    return null;
+  }
 
-    cambioAseguradoFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagAsegurado.setValue(this.flagAseguradoRescata)
-    }
+  cambioAseguradoFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagAsegurado.setValue(this.flagAseguradoRescata);
+  }
 
   actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoAsegurados())
+    console.log('arreglo actualizado:', this.datoAsegurados());
   }
 
-  cambioBeneficiarioFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagBeneficiario.setValue(this.flagBeneficiarioRescata)
-    }
+  cambioBeneficiarioFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
+  }
 
   actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
     this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoBeneficiarios())
+    console.log('arreglo actualizado:', this.datoBeneficiarios());
   }
 }

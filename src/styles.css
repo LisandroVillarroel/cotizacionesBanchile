@@ -18,7 +18,7 @@ body {
   margin-top: 24px;
 }
 
-/*Botones*/
+/* Botones */
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGuardar {
   background-color: #eeeff1 !important;
   border: 1px solid #d2d2d4 !important;
