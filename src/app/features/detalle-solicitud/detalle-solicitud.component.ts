@@ -5,18 +5,19 @@ import { DocumentosAsociadosComponent } from "./documentosasociados/documentosas
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
+import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
-  imports: [MatFormField, InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule, DevolverConObservacionesComponent],
+  imports: [MatFormField, InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule, DevolverConObservacionesComponent, AceptarSolicitudDetalleComponent],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
 })
 export default class DetalleSolicitudComponent {
   private readonly dialog = inject(MatDialog);
-  abrirDialogoYAvanzar(): void {
+  devolverConObs(): void {
     const dato = {
       solicitudId: 'ID123456789',
       fecha: '00 - 00 - 0000',
@@ -36,6 +37,27 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(DevolverConObservacionesComponent, dialogConfig)
+      .afterClosed();
+  }
+
+  aceptarSolDetalle(): void {
+    const dato = {
+      solicitudId: 'ID123456789'
+    };
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AceptarSolicitudDetalleComponent, dialogConfig)
       .afterClosed();
   }
 }
