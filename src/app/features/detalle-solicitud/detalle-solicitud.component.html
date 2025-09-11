@@ -1,26 +1,26 @@
-<div class="container-fluid">
-  <div class="container-fluid fondoGris flex">
-  <div class="container d-flex justify-around p-2">
-    <h4 mat-dialog-subtitle class="mt-3">Detalle de solicitud - COT1234041123</h4>
+<div class="container-fluid card-borde">
+  <div class="titulo">
+    <h2 class="titulo">
+    Detalle de solicitud - COT1234041123
+  </h2>
+    <!-- <h4 mat-dialog-subtitle class="mt-3">Detalle de solicitud - COT1234041123</h4> -->
   </div>
-  <app-informacion-general/>
-</div>
-
-<div class="container-fluid fondoGris flex">
-  <app-documentos-asociados/>
-</div>
-
-
-
-<div class="container-fluid fondoGris flex">
-      <div class="container d-flex justify-between p-2">
-        <div class="botones-izquierda">
-          <button mat-raised-button class="colorFondoBotonSalir">Volver</button>
-        </div>
-        <div class="botones-derecha">
-          <button mat-raised-button class="colorFondoBotonGuardar">Devolver con Observaciones</button>
-          <button mat-raised-button class="colorFondoBotonConfirmar">Aceptar Solicitud</button>
-        </div>
+  <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
+    style="width: 98%; margin-left: 1%">
+    <app-informacion-general />
+  </div>
+  <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
+    style="width: 98%; margin-left: 1%">
+    <app-documentos-asociados />
+  </div>
+  <div class="container-fluid fondoGris flex">
+    <div class="container d-flex justify-between p-2">
+      <div class="botones-izquierda">
+        <button mat-raised-button class="colorFondoBotonSalir">Volver</button>
       </div>
-</div>
-
+      <div class="botones-derecha">
+        <button mat-raised-button class="colorFondoBotonGuardar" (click)="abrirDialogoYAvanzar()">Devolver con Observaciones</button>
+        <button mat-raised-button class="colorFondoBotonConfirmar">Aceptar Solicitud</button>
+      </div>
+    </div>
+  </div>

@@ -1,1 +1,83 @@
-<p>devolver-con-observaciones works!</p>
+<div class="dialog-container">
+  <div class="barra-titulo">
+    <span class="titulomodal">Devolver con observaciones</span>
+    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- <div class="contenido-dialogo">
+    <section class="bloque">
+      <h3>Nueva solicitud</h3>
+      <div>{{ data.solicitudId }}</div>
+    </section>
+    <section class="bloque">
+      <h3>Nueva solicitud</h3>
+      <div>{{ data.fecha }}</div>
+    </section>
+
+    <section class="bloque">
+      <h3>Ejecutivo</h3>
+      <div>{{ data.ejecutivo }}</div>
+    </section>
+  </div> -->
+
+ <div class="contenido-horizontal fondoGris">
+  <section>
+    <h3>Nueva solicitud</h3>
+    <div>{{ data.solicitudId }}</div>
+  </section>
+
+  <mat-divider vertical></mat-divider>
+
+  <section>
+    <h3>Fecha</h3>
+    <div>{{ data.fecha }}</div>
+  </section>
+
+  <mat-divider vertical></mat-divider>
+
+  <section>
+    <h3>Ejecutivo</h3>
+    <div>{{ data.ejecutivo }}</div>
+  </section>
+</div>
+
+
+ <div class="contenido-dialogo">
+    <section>
+      <h3 class="titulo">Estás por devolver esta solicitud al ejecutivo con observaciones</h3>
+
+        <mat-label>Por favor, indica el motivo de la devolución para que el ejecutivo
+          pueda realizar los ajustes necesarios.
+        </mat-label>
+
+    </section>
+  </div>
+
+
+  <div class="contenido-dialogo">
+  <section>
+    <h3>Observaciones</h3>
+    <mat-form-field appearance="fill" class="textarea-grande col-md-12">
+      <textarea
+        matInput
+        placeholder="Ingrese el motivo de devolución"
+        rows="6"
+        maxlength="500"
+        [(ngModel)]="observaciones"
+      ></textarea>
+    </mat-form-field>
+    <div class="contador-caracteres">
+      {{ observaciones?.length || 0 }}/500 caracteres
+    </div>
+  </section>
+</div>
+
+
+  <div class="acciones-dialogo">
+    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="confirmar()">
+      Enviar
+    </button>
+  </div>
+</div>
