@@ -1,11 +1,12 @@
-export interface ISolicitud {
-  ID: number;
-  Fecha: string;
+export interface ISolicitudG {
+  Sla: number;
+  ID: string;
+  Rut: string;
   Contratante: string;
   Rubro: string;
   TipoSeguro: string;
-  Coordinador: string;
-  Estado: string;
+  Fecha: string;
+  Observaciones: Array<IObservacion>;
 }
 
 export interface ITipoRubro {
@@ -29,3 +30,9 @@ export interface IEstado {
   color: string;
   background: string;
 } */
+export interface IObservacion {
+  iteracion: number;
+  descripcionObs: string;
+  fechaObs: string;
+}
+

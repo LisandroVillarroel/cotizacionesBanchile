@@ -1,1 +1,228 @@
-<p>nuevas works!</p>
+<div class="container-fluid p-2">
+  <div class="box-form-fields gap-2 fontSmall" style="align-items: center;">
+    <span> Filtrar por: </span>
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="labelI">ID, Nombre o Razón social</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+        <input matInput #buscarInput (keyup)="applyFilterIDNombre('Coordinador', buscarInput.value)" />
+      </mat-form-field>
+    </div>
+
+    <div style="width: 15%;">
+      <mat-form-field class="inputSelect">
+        <mat-label class="labelI">Rubro</mat-label>
+        <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+          @for(_seguros of datoRubros(); track _seguros){
+            <mat-option [value]="_seguros.codigoRubro">
+              {{ _seguros.descripcionRubro }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div style="width: 20%;">
+      <mat-form-field class="inputSelect">
+        <mat-label class="labelI">Tipo de seguro</mat-label>
+        <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('TipoSeguro',$event.value)">
+          @for(_seguros of rescatadoSeguro(); track _seguros){
+            <mat-option [value]="_seguros.descripcionSeguro">
+              {{ _seguros.descripcionSeguro }}
+            </mat-option>
+          }
+          <input matInput  />
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="inputFechaForm">
+        <mat-label class="fontSmall gris">Fecha</mat-label>
+          <input matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-raised-button (click)="limpiaFiltros()" class="button-link"> Limpiar filtros
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!--     @for(item of datosSolicitud(); track $index){
+      <mat-card class="alinea-card-gestion">
+        <mat-card-content class="d-flex">
+          <div class="fondoGris" style="width: 5%; align-content: center;">
+            <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <h5 matColumnDef="ID">ID solicitud</h5>
+            <h3>{{item.ID}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <h5 matColumnDef="Rut">RUT contratante</h5>
+            <h3>{{item.Rut}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 25%;">
+            <h5 matColumnDef="Contratante">Nombre o Razón social</h5>
+            <h3>{{item.Contratante}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 15%;">
+            <h5 matColumnDef="Rubro">Rubro</h5>
+            <h3>{{item.Rubro}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 20%;">
+            <h5 matColumnDef="TipoSeguro">Tipo de Seguro</h5>
+            <h3>{{item.TipoSeguro}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <h5 matColumnDef="Fecha">Fecha de solicitud</h5>
+            <h3>{{item.Fecha}}</h3>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 5%; align-content: center;">
+            <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    }
+    <mat-paginator
+      #myPaginator
+      [pageSizeOptions]="[10, 20, 30, 100]"
+      [pageSize]="5"
+    ></mat-paginator>
+ -->
+<div class="mat-elevation-z8">
+  <table mat-table
+      [dataSource]="dataSourceSolicitud"
+      multiTemplateDataRows
+      matSort>
+
+      <ng-container matColumnDef="Sla">
+        <th
+          id="slaI"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 4%"
+        >
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="gris"
+          style="width: 4%; background-color: #E8E8EA; text-justify: center;"
+        >
+            <mat-icon [ngClass]="getCellClass(element.Sla)">traffic</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ID">
+        <th id="_id"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 5%"
+          > ID solicitud</th>
+        <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Rut">
+        <th id="_rut"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 5%"
+          > Rut contratante </th>
+        <td mat-cell *matCellDef="let element"> {{element.Rut}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Contratante">
+        <th
+          id="_contratante"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 15%"
+        >
+          Nombre o Razón social
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Contratante }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Rubro">
+        <th
+          id="_rubro"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 10%"
+        >
+          Rubro
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Rubro }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="TipoSeguro">
+        <th
+          id="_tipoSeguro"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 8%"
+        >
+          Tipo Seguro
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.TipoSeguro }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Fecha">
+        <th
+          id="_fecha|"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 8%"
+        >
+          Fecha de solicitud
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Fecha }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="accion">
+        <th
+          id="accionI"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 8%; text-align: center"
+        >
+          Acción
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row; let i = index"
+          style="width: 8%; text-align: center"
+        >
+          <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
+        </td></ng-container
+      >
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      #myPaginator
+      [pageSizeOptions]="[10, 20, 30, 100]"
+    ></mat-paginator>
+  </div>

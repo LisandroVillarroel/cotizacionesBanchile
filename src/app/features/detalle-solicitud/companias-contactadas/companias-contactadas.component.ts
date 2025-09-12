@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
 
 import { MatTooltip } from "@angular/material/tooltip";
-import { ISolicitud, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitudes/modelo/common';
+import { ISolicitud, ITipoRubro, ITipoSeguro } from '@features/dashboard/solicitudes-gestionadas/modelo/common';
 
 @Component({
   selector: 'app-companias-contactadas',
