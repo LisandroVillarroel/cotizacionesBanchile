@@ -30,9 +30,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
-  ISolicitudContratante,
-  ITipoRubro,
-  ITipoSeguro,
+  ISolicitudContratante
 } from '../../shared/modelo/ingreso-solicitud';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
@@ -45,6 +43,10 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 import { SolicitudesService } from '@shared/service/solicitudes.service';
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { IRubro } from '@shared/modelo/rubro';
+import { ITipoSeguro } from '@shared/modelo/tipo-seguro';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -86,31 +88,25 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
 export default class IngresoSolicitudComponent {
   datoSolicitud: ISolicitudContratante | undefined;
   nombreRazonSocial = signal<string>('');
-  rescatadoSeguro = signal<ITipoSeguro[]>([]);
+
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
   datoAsegurados=signal<ISolicitudAsegurado[] | undefined>(undefined);
   datoBeneficiarios=signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
+  rubroService = inject(RubroService);
+  tipoSeguroService = inject(TipoSeguroService);
+
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
   solicitudesService = inject(SolicitudesService);
 
-  datoRubros = signal<ITipoRubro[]>([
-    {
-      codigoRubro: 1,
-      descripcionRubro: 'Rubro 1',
-    },
-    {
-      codigoRubro: 2,
-      descripcionRubro: 'Rubro 2',
-    },
-  ]);
+  datoRubros = signal<IRubro[]>([]);
 
-  DatoSeguros = signal<ITipoSeguro[]>([
-    {
+  rescatadoSeguro = signal<ITipoSeguro[]>([]);
+   /* {
       codigoSeguro: 1,
       descripcionSeguro: 'Seguro 1 Rubro 1',
       codigoRubro: 1,
@@ -151,6 +147,7 @@ export default class IngresoSolicitudComponent {
       codigoRubro: 2,
     },
   ]);
+  */
 /*
     datoAsegurados = signal<ISolicitudAsegurado[]>([
       {
@@ -280,20 +277,51 @@ pasoActivoLabel: string = '';
   async ngOnInit(){
       this.datoAsegurados.set(this.solicitudesService.getSolicitudId('1'))
       this.datoBeneficiarios.set(this.solicitudesService.getBeneficiarioId('1'))
+      this.cargaRubro();
   }
 
 
-  async seleccionaRubro(_codigoRubro: number) {
-    this.rescatadoSeguro.set(
-      await this.DatoSeguros().filter(
-        (rubro) => rubro.codigoRubro == _codigoRubro
-      )
-    );
-    return;
-  }
 
   get esPersona(): boolean {
     return this.tipoContratante.value === 'persona';
+  }
+
+  cargaRubro() {
+   this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.datoRubros.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+  async seleccionaRubro(_codigoRubro: string) {
+   this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.rescatadoSeguro.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
   enviar() {
