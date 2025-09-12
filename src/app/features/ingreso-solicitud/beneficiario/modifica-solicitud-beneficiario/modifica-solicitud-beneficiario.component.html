@@ -1,25 +1,14 @@
-<h2 mat-dialog-title>Modifica Beneficiario</h2>
+<div class="barra-titulo">
+  <h2 class="titulo">Modifica Beneficiario</h2>
+</div>
 
-<mat-dialog-content
-  [formGroup]="modificaBeneficiario()"
-  name="modificaBeneficiario"
-  class="modifica-container"
->
-  <div class="row">
+<mat-dialog-content [formGroup]="modificaBeneficiario()" name="modificaBeneficiario" class="modifica-container">
+  <div class="row contenido-form  form-con-titulo mat-elevation-z6" data-titulo="Modifica Datos del Beneficiario" style="margin-top: 32px;">
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input
-          autofocus
-          id="rutBeneficiario"
-          matInput
-          class="input-rut rut"
-          [formControl]="rutBeneficiario"
-          oninput="this.value = this.value.toUpperCase()"
-          (blur)="onBlurRutBeneficiario($event)"
-          validaRut
-          required
-        />
+        <input autofocus id="rutBeneficiario" matInput class="input-rut rut" [formControl]="rutBeneficiario"
+          oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutBeneficiario($event)" validaRut required />
         @if (rutBeneficiario.invalid) {
         <mat-error>{{ getErrorMessage("rutBeneficiario") }}</mat-error>
         }
@@ -39,7 +28,7 @@
         @if (apellidoPaternoBeneficiario.invalid) {
         <mat-error>{{
           getErrorMessage("apellidoPaternoBeneficiario")
-        }}</mat-error>
+          }}</mat-error>
         }
       </mat-form-field>
 
@@ -49,7 +38,7 @@
         @if (apellidoMaternoBeneficiario.invalid) {
         <mat-error>{{
           getErrorMessage("apellidoMaternoBeneficiario")
-        }}</mat-error>
+          }}</mat-error>
         }
       </mat-form-field>
 
@@ -108,21 +97,12 @@
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button
-      mat-raised-button
-      class="colorFondoBotonCancelar"
-      mat-dialog-close
-      [disabled]="false"
-    >
+    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]="false">
       Cerrar
     </button>
   </div>
   <div class="ms-5">
-    <button
-      mat-raised-button
-      (click)="modificar()"
-      [disabled]="modificaBeneficiario().invalid"
-    >
+    <button mat-raised-button (click)="modificar()" [disabled]="modificaBeneficiario().invalid">
       GRABAR
     </button>
   </div>

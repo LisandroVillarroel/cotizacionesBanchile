@@ -38,18 +38,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 import { SolicitudesService } from '@shared/service/solicitudes.service';
-import { MatCardContent, MatCard } from '@angular/material/card';
+import { MatCardContent, MatCard, MatCardHeader, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    MatCardModule,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -73,8 +76,8 @@ import { MatCardContent, MatCard } from '@angular/material/card';
     CuestionarioComponent,
     MateriaAseguradaComponent,
     MatCardContent,
-    MatCard,
-  ],
+    MatCard
+],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
   providers: [
@@ -96,6 +99,7 @@ export default class IngresoSolicitudComponent {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
+  private readonly router = inject(Router);
 
   solicitudesService = inject(SolicitudesService);
 
@@ -297,7 +301,7 @@ export default class IngresoSolicitudComponent {
   }
 
   salir() {
-    alert('Salir');
+    this.router.navigate(['/principal/inicio']);
   }
 
   grabarBorrador() {

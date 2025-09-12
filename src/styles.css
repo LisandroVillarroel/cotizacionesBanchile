@@ -39,14 +39,14 @@ body {
   color: white;
 }
 
-.colorFondoBotonSalir {
-  background-color: #ffffff !important;
-  border: 1px solid #d2d2d4 !important;
-  color: #234e85 !important;
+.colorFondoBotonAtras {
+  background-color: #149dc9 !important;
+  color: white !important;
 }
 
-.colorFondoBotonSalir:hover {
-  border: 1px solid #333334 !important;
+.colorFondoBotonAtras:hover {
+  background-color: #0F8dba !important;
+  color: white !important;
 }
 
 .colorFondoBotonAnular {
@@ -69,13 +69,13 @@ body {
   border: 1px solid #333334 !important;
 }
 
-.colorFondoBotonCancelar {
+.colorFondoBotonVolver {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
 }
 
-.colorFondoBotonCancelar:hover {
+.colorFondoBotonVolver:hover {
   border: 1px solid #333334 !important;
 }
 
@@ -137,7 +137,6 @@ body {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
-  /*height: 55px !important; /*tamaño height de inpul*/
 }
 
 .inputDocumentoPendiente {
@@ -205,10 +204,7 @@ body {
   color: #666668;
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-    .mdc-text-field--textarea
-  )
-  .mat-mdc-form-field-infix {
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
   padding-top: 10px;
   padding-bottom: 16px;
 }
@@ -239,6 +235,7 @@ body {
   color: #323131;
   padding: 0 1px !important;
 }
+
 /*Fin Titulo Mantenedores Tablas principales*/
 
 /* Titulos Mantenedores secundarios */
@@ -249,8 +246,8 @@ body {
   text-align: left !important;
   color: #002464 !important;
 }
-/* Fin Titulos Mantenedores Secundarios*/
 
+/* Fin Titulos Mantenedores Secundarios*/
 td.mat-cell:last-of-type {
   padding-right: 0px;
 }
@@ -262,6 +259,35 @@ th.mat-cell:last-of-type {
 tr.mat-header-row {
   height: 45px !important;
 }
+
+/* Fondo para table con título */
+.table-con-titulo {
+  background-color: white;
+  /* color suave, profesional */
+  border: 1px solid #285b9b !important;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Título flotante integrado */
+.table-con-titulo::before {
+  content: attr(data-titulo);
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  background-color: white;
+  /* mismo fondo que el card */
+  padding: 0 10px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif !important;
+  color: #285b9b;
+  border-radius: 4px;
+}
+
 
 /*este permite cambiar el tamaño de las columnas de la tabla*/
 .mdc-data-table__cell,
@@ -360,6 +386,7 @@ button.tabla {
 .mat-mdc-paginator-page-size-select {
   width: 84px !important;
 }
+
 /* Fin Foot Tabla*/
 
 /*Columna +AGREGAR*/
@@ -369,7 +396,8 @@ th#opcionesI {
   width: 14% !important;
   text-align: center;
   vertical-align: middle;
-  height: 45px; /* igual que tr.mat-header-row si lo tienes definido */
+  height: 45px;
+  /* igual que tr.mat-header-row si lo tienes definido */
 }
 
 .agregar-texto {
@@ -381,49 +409,190 @@ th#opcionesI {
   justify-content: center;
   height: 100%;
 }
+
 /*Fin Columna +AGREGAR*/
 /*Fin MAT-TABLE*/
 
 :root {
   /*NOTIFICACIONES*/
 
+  /*FORMS*/
+  /* Fondo para table con título */
+  .form-con-titulo {
+    background-color: #f0f4fa;
+    /* color suave, profesional */
+    border: 1px solid #285b9b !important;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Título flotante integrado */
+  .form-con-titulo::before {
+    content: attr(data-titulo);
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background-color: #f0f4fa;
+    /* mismo fondo que el card */
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: "Roboto", sans-serif !important;
+    color: #285b9b;
+    border-radius: 4px;
+  }
+
+  .contenido-form {
+    background-color: #f0f4fa !important;
+  }
+
+  /* Fondo blanco para inputs de forms */
+  .contenido-form-field input {
+    background-color: white !important;
+    padding: 17, 11px !important;
+  }
+
+  /* Fondo blanco para select de forms */
+  .contenido-form-field .mat-select-trigger {
+    background-color: white !important;
+    padding: 11px !important;
+  }
+
+
   .success {
-    --mdc-snackbar-container-color: #4caf50 !important; /* Color de fondo */
-    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
+    --mdc-snackbar-container-color: #4caf50 !important;
+    /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important;
+    /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important;
+    /*Color del texto*/
+    text-align: center;
+    /*Centra el mensaje*/
   }
 
   .error {
-    --mdc-snackbar-container-color: #ef4444 !important; /* Color de fondo */
-    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
+    --mdc-snackbar-container-color: #ef4444 !important;
+    /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important;
+    /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important;
+    /*Color del texto*/
+    text-align: center;
+    /*Centra el mensaje*/
   }
 
   .warning {
-    --mdc-snackbar-container-color: #ff9800 !important; /* Color de fondo */
-    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
+    --mdc-snackbar-container-color: #ff9800 !important;
+    /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important;
+    /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important;
+    /*Color del texto*/
+    text-align: center;
+    /*Centra el mensaje*/
   }
 
   .info {
-    --mdc-snackbar-container-color: #858585 !important; /* Color de fondo */
-    --mat-snack-bar-button-color: #000000 !important; /*Color de boton cerrar*/
-    --mdc-snackbar-supporting-text-color: white !important; /*Color del texto*/
-    text-align: center; /*Centra el mensaje*/
+    --mdc-snackbar-container-color: #858585 !important;
+    /* Color de fondo */
+    --mat-snack-bar-button-color: #000000 !important;
+    /*Color de boton cerrar*/
+    --mdc-snackbar-supporting-text-color: white !important;
+    /*Color del texto*/
+    text-align: center;
+    /*Centra el mensaje*/
   }
+
   /*FIN NOTIFICACIONES*/
 }
 
-  /*MODAL DE CONFIRMACION*/
+/*CARDS*/
+/* Cards que encierran contendidos */
+.form-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
 
-/* Elimina el fondo blanco y ajusta el borde del contenedor del diálogo */
-.custom-dialog-container .mat-dialog-container {
-  padding: 0 !important;
-  border-radius: 8px !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  overflow: hidden !important;
+.card-borde {
+  position: relative;
+  border: 2px solid #285b9b !important;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background-color: #fff;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Fondo para cards con título */
+.card-con-titulo {
+  background-color: #f0f4fa;
+  /* color suave, profesional */
+  border: 1px solid #285b9b !important;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Título flotante integrado */
+.card-con-titulo::before {
+  content: attr(data-titulo);
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  background-color: #f0f4fa;
+  /* mismo fondo que el card */
+  padding: 0 10px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif !important;
+  color: #285b9b;
+  border-radius: 4px;
+}
+
+.contenido-card {
+  background-color: #f0f4fa !important;
+}
+
+/* Contenedor flexible */
+.modifica-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
+.modifica-container>* {
+  width: 100%;
+  padding-top: 16px;
+}
+
+.espacio-superior {
+  margin-top: 16px !important;
+}
+
+/* Estilos personalizados para las celdas de la tabla de Material Design */
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  padding: 0 2px 0 10px;
+}
+
+/*MODAL DE CONFIRMACION*/
+
+/* Contenedor principal del diálogo */
+.dialog-container {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #333;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
 }
