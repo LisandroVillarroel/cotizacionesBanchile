@@ -30,13 +30,13 @@ body {
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente {
-  background-color: #234e85 !important;
-  color: white;
+  background-color: #149dc9 !important;
+  color: white !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente:hover {
-  background-color: #002464 !important;
-  color: white;
+  background-color: #0F8dba !important;
+  color: white !important;
 }
 
 .colorFondoBotonAtras {
@@ -60,13 +60,13 @@ body {
 }
 
 .colorFondoBotonDescargar {
-  background-color: #ffffff !important;
-  border: 1px solid #d2d2d4 !important;
-  color: #234e85 !important;
+  background-color: #234e85 !important;
+  color: white !important;
 }
 
 .colorFondoBotonDescargar:hover {
-  border: 1px solid #333334 !important;
+  background-color: #002464 !important;
+  color: white !important;
 }
 
 .colorFondoBotonVolver {
@@ -558,56 +558,6 @@ th#opcionesI {
   background-color: #f0f4fa !important;
 }
 
-/* Input directo */
-::ng-deep input.mat-mdc-input-element {
-  color: white !important;
-  background-color: white !important;
-  border: none !important;
-}
-
-/* Placeholder */
-::ng-deep input.mat-mdc-input-element::placeholder {
-  color: white !important;
-  opacity: 1 !important;
-}
-
-/* Etiqueta del campo */
-::ng-deep .mat-mdc-floating-label {
-  color: white !important;
-}
-
-/* Fondo del contenedor del input */
-::ng-deep .mat-mdc-form-field-infix {
-  background-color: white !important;
-  color: white !important;
-}
-
-/* Contenedor general del input */
-::ng-deep .mat-mdc-text-field-wrapper {
-  background-color: white !important;
-}
-
-/* Borde del input (outline) */
-::ng-deep .mdc-notched-outline {
-  border-color: white !important;
-}
-
-/* Línea inferior (si aplica) */
-::ng-deep .mat-mdc-form-field-bottom-align {
-  color: white !important;
-}
-
-/* Mensajes de error o ayuda */
-::ng-deep .mat-mdc-form-field-subscript-wrapper {
-  color: white !important;
-}
-
-/* Iconos dentro del input */
-::ng-deep .mat-mdc-form-field-icon-prefix,
-::ng-deep .mat-mdc-form-field-icon-suffix {
-  color: white !important;
-}
-
 /* Contenedor flexible */
 .modifica-container {
   display: flex;
@@ -644,8 +594,82 @@ th#opcionesI {
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
 }
-=======
+
+/* CORRECCIÓN DE COLORES EN ELEMENTOS SOBRE FONDO DE OTRO COLOR */
+
+/* Input directo */
+input.mat-mdc-input-element {
+  color: #323131 !important;
+  /* Texto oscuro */
+  background-color: #ffffff !important;
+  border: none !important;
 }
->>>>>>> ed539e7952f6fe5e753913c69fb827a2775daa41
+
+/* Placeholder */
+input.mat-mdc-input-element::placeholder {
+  color: #888 !important;
+  /* Gris suave */
+  opacity: 1 !important;
+}
+
+/* Etiqueta del campo */
+.mat-mdc-floating-label {
+  color: #323131 !important;
+  /* Texto oscuro */
+}
+
+/* Fondo del contenedor del input */
+.mat-mdc-form-field-infix {
+  background-color: #ffffff !important;
+  color: #323131 !important;
+}
+
+/* Contenedor general del input */
+.mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+}
+
+/* Borde del input (outline) */
+.mdc-notched-outline {
+  border-color: #ffffff !important;
+}
+
+/* Mensajes de error */
+.mat-mdc-form-field-error {
+  color: red !important;
+}
+
+/* Mensajes de ayuda (hint) */
+.mat-mdc-form-field-hint {
+  color: #888 !important;
+}
+
+/* Iconos dentro del input */
+.mat-mdc-form-field-icon-prefix,
+.mat-mdc-form-field-icon-suffix {
+  color: #323131 !important;
+}
+
+/* Texto del radio button */
+mat-radio-button {
+  color: #323131 !important;
+}
+
+/* Círculo exterior MDC: borde gris oscuro, fondo blanco */
+.mdc-radio__outer-circle {
+  background-color: #ffffff !important;
+  border: 2px solid #323131 !important;
+  box-shadow: none !important;
+}
+
+/* Círculo interior MDC: invisible si no está seleccionado */
+.mdc-radio__inner-circle {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Cuando está seleccionado: círculo interior oscuro */
+.mat-radio-checked .mdc-radio__inner-circle {
+  background-color: #323131 !important;
+}

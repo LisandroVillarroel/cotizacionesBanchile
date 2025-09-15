@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, inject, signal, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -22,9 +21,7 @@ import {
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
@@ -39,7 +36,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
@@ -47,7 +44,7 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 import { SolicitudesService } from '@shared/service/solicitudes.service';
-import { MatCardContent, MatCard, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatCardContent, MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -82,6 +79,7 @@ import { MatCardContent, MatCard, MatCardHeader, MatCardTitle } from '@angular/m
 ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
@@ -215,7 +213,7 @@ export default class IngresoSolicitudComponent {
         },
       ]);
 */
-  mostrarAnular: boolean = true;
+  //mostrarAnular: boolean = true;
   pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
@@ -248,7 +246,7 @@ export default class IngresoSolicitudComponent {
     })
   );
 
-  ngAfterViewInit(): void {
+  /*  ngAfterViewInit(): void {
     // Establecer estado inicial
     this.mostrarAnular = this.stepper.selectedIndex !== 0;
 
@@ -256,7 +254,7 @@ export default class IngresoSolicitudComponent {
     this.stepper.selectionChange.subscribe((event) => {
       this.mostrarAnular = event.selectedIndex !== 0;
     });
-  }
+  }*/
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
