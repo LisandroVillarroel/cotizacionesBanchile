@@ -1,15 +1,14 @@
 <div class="container-fluid">
-  <div class="alinear">
+  <div class="d-flex justify-content-between align-items-center px-3 mt-3">
     <h2 mat-dialog-title class="mt-3">Ingresar Nueva Solicitud</h2>
     <div class="botones-derecha">
-      @if (mostrarAnular) {
+      <!-- @if (mostrarAnular) {
       <button mat-raised-button class="colorFondoBotonAnular" (click)="salir()">
         Anular
       </button>
-      }
-
-      <button class="colorFondoBotonSalir" mat-raised-button (click)="salir()">
-        Salir
+      }-->
+      <button class="colorFondoBotonVolver" mat-raised-button (click)="salir()">
+        Volver
       </button>
     </div>
   </div>
@@ -24,40 +23,38 @@
         name="agregaSolicitudContratante"
         class="modifica-container"
       >
-        <div class="row">
-          <div class="col-md-12">
-            <!-- Tipo de contratante -->
-            <div class="col-md-6 tipo-contratante" style="margin-bottom: 10px">
-              <label class="labelI">Tipo de contratante:</label>
-
-              <mat-radio-group [formControl]="tipoContratante">
-                <mat-radio-button value="persona">Persona</mat-radio-button>
-                <mat-radio-button value="empresa">Empresa</mat-radio-button>
-              </mat-radio-group>
-
-              @if (tipoContratante.invalid) {
-              <mat-error> Debes seleccionar un tipo de contratante </mat-error>
-              }
-            </div>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">RUT</mat-label>
-              <input
-                autofocus
-                id="rutCliente"
-                matInput
-                [formControl]="rutCliente"
-                oninput="this.value = this.value.toUpperCase()"
-                (blur)="onBlurRutCliente($event)"
-                validaRut
-                required
-              />
-
-              @if (rutCliente.invalid) {
-              <mat-error>{{ getErrorMessage("rut") }}</mat-error>
-              }
-            </mat-form-field>
+        <mat-card class="card-borde form-card mat-elevation-z6">
+          <mat-card-content>
+            <div class="row d-flex flex-wrap justify-around">
+              <!-- Sección 1: RUT, Rubro, Tipo de Seguro -->
+              <mat-card
+                class="col-md-6 form-card mat-elevation-z6 contenido-card card-con-titulo"
+                data-titulo="Ingreso de datos"
+                style="width: 48%; margin-left: 1%"
+              >
+                <mat-card-content>
+                  <div class="col-md-12">
+                    <mat-form-field
+                      appearance="outline"
+                      class="campo-blanco inputInput"
+                    >
+                      <mat-label class="labelI">RUT</mat-label>
+                      <input
+                        class="input-blanco"
+                        autofocus
+                        id="rutCliente"
+                        matInput
+                        [formControl]="rutCliente"
+                        oninput="this.value = this.value.toUpperCase()"
+                        (blur)="onBlurRutCliente($event)"
+                        validaRut
+                        required
+                      />
+                      @if (rutCliente.invalid) {
+                      <mat-error>{{ getErrorMessage("rut") }}</mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
 
             <mat-form-field class="inputSelect">
               <mat-label class="labelI">Selecciona un rubro</mat-label>
@@ -77,95 +74,107 @@
               }
             </mat-form-field>
 
-            <mat-form-field class="inputSelect">
-              <mat-label class="labelI">Selecciona un tipo de seguro</mat-label>
-              <mat-select [formControl]="seguro" required>
-                @for(_seguros of rescatadoSeguro(); track _seguros){
-                <mat-option [value]="_seguros.id_tipo_seguro">
-                  {{ _seguros.nombre_tipo_seguro }}
-                </mat-option>
-                }
-              </mat-select>
-              @if(seguro.invalid){
-              <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
-              }
-            </mat-form-field>
-          </div>
+                  <div class="col-md-12">
+                    <mat-form-field class="inputSelect">
+                      <mat-label class="labelI"
+                        >Selecciona un tipo de seguro</mat-label
+                      >
+                      <mat-select [formControl]="seguro" required>
+                        @for(_seguros of rescatadoSeguro(); track _seguros){
+                        <mat-option [value]="_seguros.id_tipo_seguro">
+                          {{ _seguros.nombre_tipo_seguro }}
+                        </mat-option>
+                        }
+                      </mat-select>
+                      @if(seguro.invalid){
+                      <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
+                </mat-card-content>
+              </mat-card>
 
-          <div class="col-md-4">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">Nombre o Razón Social</mat-label>
-              <input
-                placeholder="."
-                matInput
-                disabled
-                [value]="nombreRazonSocial()"
-              />
-            </mat-form-field>
-
-            @if (esPersona) {
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">Apellido Paterno</mat-label>
-              <input
-                placeholder="."
-                matInput
-                disabled
-                [value]="nombreRazonSocial()"
-              />
-            </mat-form-field>
-
-            } @if (esPersona) {
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">Apellido Materno</mat-label>
-              <input
-                placeholder="."
-                matInput
-                disabled
-                [value]="nombreRazonSocial()"
-              />
-            </mat-form-field>
-            }
-          </div>
-
-          <div class="col-md-4">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">Correo</mat-label>
-              <input matInput disabled [value]="nombreRazonSocial()" />
-            </mat-form-field>
-
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI"
-                >Teléfonos (Personal/Comercial)</mat-label
+              <!-- Sección 2: Nombre, Correo, Teléfonos -->
+              <mat-card
+                class="col-md-6 form-card mat-elevation-z6 contenido-card card-con-titulo"
+                data-titulo="Datos del contratante"
+                style="width: 48%; margin-left: 1%"
               >
-              <input matInput disabled [value]="nombreRazonSocial()" />
-            </mat-form-field>
-          </div>
+                <mat-card-content>
+                  <div class="col-md-12">
+                    <mat-form-field class="inputInput">
+                      <mat-label class="labelI"
+                        >Nombre o Razón Social</mat-label
+                      >
+                      <input
+                        placeholder="."
+                        matInput
+                        disabled
+                        [value]="nombreRazonSocial()"
+                      />
+                    </mat-form-field>
+                  </div>
 
-          <div class="d-flex justify-content-start mt-2">
-            <button class="colorFondoBotonDescargar" mat-raised-button disabled>
-              <mat-icon>download</mat-icon> Descargar
-            </button>
-          </div>
-        </div>
+                  <div class="col-md-12">
+                    <mat-form-field class="inputInput">
+                      <mat-label class="labelI">Correo</mat-label>
+                      <input matInput disabled [value]="nombreRazonSocial()" />
+                    </mat-form-field>
+                  </div>
 
-        <div class="alinear">
-          <div class="botones-derecha">
-            <button
-              mat-raised-button
-              class="colorFondoBotonGuardar"
-              (click)="grabarBorrador()"
+                  <div class="col-md-12">
+                    <mat-form-field class="inputInput">
+                      <mat-label class="labelI"
+                        >Teléfonos (Personal/Comercial)</mat-label
+                      >
+                      <input matInput disabled [value]="nombreRazonSocial()" />
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-12" style="margin-top: 16px">
+                    <mat-radio-group
+                      [(ngModel)]="esIgualAlAsegurado"
+                      class="inputInput"
+                    >
+                      <mat-radio-button value="true" class="inputInput">
+                        El contratante es igual al asegurado
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+            <!-- Contenedor de botones en una sola fila -->
+            <div
+              class="d-flex justify-content-between align-items-center mt-2"
             >
-              Grabar
-            </button>
-            <button
-              mat-raised-button
-              matStepperNext
-              class="colorFondoBotonSiguiente"
-            >
-              Siguiente
-            </button>
-          </div>
-        </div>
+              <!-- Botón Descargar -->
+              <button
+                mat-raised-button
+                (click)="('')"
+                [disabled]="agregaSolicitudContratante().invalid"
+                [ngClass]="{
+                  colorFondoBotonDescargar:
+                    !agregaSolicitudContratante().invalid
+                }"
+              >
+                <mat-icon>download</mat-icon> Descargar Cuestionario
+              </button>
+
+              <!-- Botón Siguiente alineado a la derecha -->
+              <div class="px-3 mt-3">
+                <button
+                  mat-raised-button
+                  matStepperNext
+                  class="colorFondoBotonSiguiente"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </mat-dialog-content>
     </mat-step>
 
@@ -175,25 +184,30 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado [datoAseguradosRecibe]="datoAsegurados()" (datoAseguradosRecibeModificado)="actualizarAsegurado($event)" [(flagAsegurado)]="flagAseguradoRescata" (flagAseguradoModel)="cambioAseguradoFlag()"/>
-        <div class="alinear">
+        <app-asegurado
+          [datoAseguradosRecibe]="datoAsegurados()"
+          (datoAseguradosRecibeModificado)="actualizarAsegurado($event)"
+          [(flagAsegurado)]="flagAseguradoRescata"
+          (flagAseguradoModel)="cambioAseguradoFlag()"
+        />
+        <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
               mat-raised-button
               matStepperPrevious
-              class="colorFondoBotonSalir"
+              class="colorFondoBotonAtras"
             >
-              Volver
+              Atrás
             </button>
           </div>
           <div class="botones-derecha">
-            <button
-              mat-raised-button
-              class="colorFondoBotonGuardar"
-              (click)="grabarBorrador()"
-            >
-              Grabar
-            </button>
+            <!--><button
+            mat-raised-button
+            class="colorFondoBotonGuardar"
+            (click)="grabarBorrador()"
+          >
+            Grabar
+          </button>-->
             <button
               mat-raised-button
               matStepperNext
@@ -212,25 +226,30 @@
     >
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
-        <app-beneficiario [datoBeneficiariosRecibe]="datoBeneficiarios()" (datoBeneficiariosRecibeModificado)="actualizarBeneficiario($event)" [(flagBeneficiario)]="flagBeneficiarioRescata" (flagBeneficiarioModel)="cambioBeneficiarioFlag()"/>
-        <div class="alinear">
+        <app-beneficiario
+          [datoBeneficiariosRecibe]="datoBeneficiarios()"
+          (datoBeneficiariosRecibeModificado)="actualizarBeneficiario($event)"
+          [(flagBeneficiario)]="flagBeneficiarioRescata"
+          (flagBeneficiarioModel)="cambioBeneficiarioFlag()"
+        />
+        <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
               mat-raised-button
               matStepperPrevious
-              class="colorFondoBotonSalir"
+              class="colorFondoBotonAtras"
             >
-              Volver
+              Atrás
             </button>
           </div>
           <div class="botones-derecha">
-            <button
-              mat-raised-button
-              class="colorFondoBotonGuardar"
-              (click)="grabarBorrador()"
-            >
-              Grabar
-            </button>
+            <!--><button
+            mat-raised-button
+            class="colorFondoBotonGuardar"
+            (click)="grabarBorrador()"
+          >
+            Grabar
+          </button>-->
             <button
               mat-raised-button
               matStepperNext
@@ -246,24 +265,24 @@
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
       <app-materia-asegurada />
-      <div class="alinear">
+      <div class="alinear-botones">
         <div class="botones-izquierda">
           <button
             mat-raised-button
             matStepperPrevious
-            class="colorFondoBotonSalir"
+            class="colorFondoBotonAtras"
           >
-            Volver
+            Atrás
           </button>
         </div>
         <div class="botones-derecha">
-          <button
+          <!--><button
             mat-raised-button
             class="colorFondoBotonGuardar"
             (click)="grabarBorrador()"
           >
             Grabar
-          </button>
+          </button>-->
           <button
             mat-raised-button
             matStepperNext
@@ -278,30 +297,26 @@
     <mat-step>
       <ng-template matStepLabel>Cuestionario y Documentos</ng-template>
       <app-cuestionario-documentos />
-      <div class="alinear">
+      <div class="alinear-botones">
         <div class="botones-izquierda">
           <button
             mat-raised-button
             matStepperPrevious
-            class="colorFondoBotonSalir"
+            class="colorFondoBotonAtras"
           >
-            Volver
+            Atrás
           </button>
         </div>
         <div class="botones-derecha">
-          <button
-            mat-raised-button
-            class="colorFondoBotonGuardar"
-            (click)="grabarBorrador()"
-          >
+          <!--<button mat-raised-button class="colorFondoBotonGuardar" (click)="grabarBorrador()">
             Grabar
-          </button>
+          </button>-->
           <button
             (click)="abrirDialogoYAvanzar()"
             mat-raised-button
             class="colorFondoBotonConfirmar"
           >
-            Enviar a Coordinador
+            Enviar
           </button>
         </div>
       </div>

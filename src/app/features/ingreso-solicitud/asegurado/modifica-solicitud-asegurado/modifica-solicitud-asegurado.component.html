@@ -1,25 +1,15 @@
-<h2 mat-dialog-title>Modifica Asegurado</h2>
+<div class="barra-titulo">
+  <h2 class="titulo">Modifica Asegurado</h2>
+</div>
 
-<mat-dialog-content
-  [formGroup]="modificaAsegurado()"
-  name="modificaAsegurado"
-  class="modifica-container"
->
-  <div class="row">
+<mat-dialog-content [formGroup]="modificaAsegurado()" name="modificaAsegurado" class="modifica-container">
+  <div class="row contenido-form  form-con-titulo mat-elevation-z6" data-titulo="Modifica Datos del Asegurado"
+    style="margin-top: 32px;">
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input
-          autofocus
-          id="rutAsegurado"
-          matInput
-          class="input-rut rut"
-          [formControl]="rutAsegurado"
-          oninput="this.value = this.value.toUpperCase()"
-          (blur)="onBlurRutAsegurado($event)"
-          validaRut
-          required
-        />
+        <input autofocus id="rutAsegurado" matInput class="input-rut rut" [formControl]="rutAsegurado"
+          oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutAsegurado($event)" validaRut required />
         @if (rutAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("rutAsegurado") }}</mat-error>
         }
@@ -104,22 +94,13 @@
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button
-      mat-raised-button
-      class="colorFondoBotonCancelar"
-      mat-dialog-close
-      [disabled]="false"
-    >
+    <button mat-raised-button mat-dialog-close class="colorFondoBotonCerrar" [disabled]="false">
       Cerrar
     </button>
   </div>
   <div class="ms-5">
-    <button
-      mat-raised-button
-      (click)="modificar()"
-      [disabled]="modificaAsegurado().invalid"
-    >
-      GRABAR
+    <button mat-raised-button class="colorFondoBotonGrabar" (click)="modificar()" [disabled]="modificaAsegurado().invalid">
+      Grabar
     </button>
   </div>
 </mat-dialog-actions>

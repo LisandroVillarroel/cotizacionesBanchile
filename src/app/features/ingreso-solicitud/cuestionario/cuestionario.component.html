@@ -1,109 +1,135 @@
-<form [formGroup]="documentForm()" novalidate>
-  <div class="container-fluid fondoGris p-3">
-    <div class="container d-flex justify-around p-2 flex-wrap">
-      <!-- Card izquierda: primeros 4 documentos -->
-      <mat-card style="width: 48%; margin-right: 1%">
+<form [formGroup]="documentForm()" novalidate style="margin-top: 32px">
+  <mat-card
+    class="card-borde form-card mat-elevation-z6 card-con-titulo-principal"
+    data-titulo="Documentos Asociados"
+  >
+    <div
+      class="modifica-container-cuestionario d-flex justify-content-between p-2"
+      style="gap: 2%"
+    >
+      <!-- Columna izquierda: primeros 4 documentos -->
+      <mat-card
+        class="card-borde form-card mat-elevation-z6 card-con-titulo-principal"
+        style="width: 49%"
+      >
         <mat-card-content>
-          @for(doc of documentos(); track doc.id) { @if($index < 4) {
-          <div class="document-section mb-3">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">
-                {{ doc.nombre }}
-                @if(doc.obligatorio) {
-                <span class="obligatorio">(* Obligatorio)</span>
+          @for (doc of documentos(); track doc.id) { @if ($index < 4) {
+          <!-- Card por documento -->
+          <mat-card
+            class="form-card-cuestionario mat-elevation-z6 contenido-card card-con-titulo mb-3"
+            style="width: 100%"
+            [attr.data-titulo]="
+              doc.obligatorio ? doc.nombre + ' (* Obligatorio)' : doc.nombre
+            "
+          >
+            <mat-card-content>
+              <div class="document-section">
+                <mat-form-field class="inputInput" appearance="outline">
+                  <mat-label class="labelI"></mat-label>
+                  <input
+                    matInput
+                    placeholder="No hay documento"
+                    disabled
+                    [value]="doc.archivoNombre || ''"
+                  />
+                </mat-form-field>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="boton-cargar"
+                  (click)="abrirInputArchivo(doc.nombre)"
+                >
+                  {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
+                </button>
+
+                <input
+                  type="file"
+                  hidden
+                  [id]="sanitizarNombre(doc.nombre)"
+                  #fileInputs
+                  (change)="onFileSelected($event, doc)"
+                />
+
+                @if (doc.archivoNombre) {
+                <button
+                  mat-icon-button
+                  color="warn"
+                  class="boton-eliminar"
+                  (click)="eliminarDocumento(doc)"
+                  matTooltip="Eliminar documento"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
                 }
-              </mat-label>
-              <input
-                matInput
-                placeholder="."
-                disabled
-                [value]="doc.archivoNombre"
-              />
-            </mat-form-field>
-
-            <button
-              mat-raised-button
-              color="primary"
-              class="boton-cargar"
-              (click)="abrirInputArchivo(doc.nombre)"
-            >
-              {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
-            </button>
-
-            <input
-              type="file"
-              hidden
-              [id]="sanitizarNombre(doc.nombre)"
-              #fileInputs
-              (change)="onFileSelected($event, doc)"
-            />
-
-            @if(doc.archivoNombre) {
-            <button
-              mat-icon-button
-              color="warn"
-              class="colorFondoBotonEliminar"
-              (click)="eliminarDocumento(doc)"
-              matTooltip="Eliminar documento"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            }
-          </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
           } }
         </mat-card-content>
       </mat-card>
 
-      <!-- Card derecha: últimos 3 documentos -->
-      <mat-card style="width: 48%; margin-left: 1%">
+      <!-- Columna derecha: últimos documentos -->
+      <mat-card
+        class="card-borde form-card mat-elevation-z6 card-con-titulo-principal"
+        style="width: 49%"
+      >
         <mat-card-content>
-          @for(doc of documentos(); track doc.id) { @if($index >= 4) {
-          <div class="document-section mb-3">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">
-                {{ doc.nombre }}
-                @if(doc.obligatorio) { <span>(obligatorio)</span> }
-              </mat-label>
-              <input
-                matInput
-                placeholder="."
-                disabled
-                [value]="doc.archivoNombre"
-              />
-            </mat-form-field>
+          @for (doc of documentos(); track doc.id) { @if ($index >= 4) {
+          <!-- Card por documento -->
+          <mat-card
+            class="form-card-cuestionario mat-elevation-z6 contenido-card card-con-titulo mb-3"
+            style="width: 100%"
+            [attr.data-titulo]="
+              doc.obligatorio ? doc.nombre + ' (* Obligatorio)' : doc.nombre
+            "
+          >
+            <mat-card-content>
+              <div class="document-section">
+                <mat-form-field class="inputInput" appearance="outline">
+                  <mat-label class="labelI"></mat-label>
+                  <input
+                    matInput
+                    placeholder="No hay documento"
+                    disabled
+                    [value]="doc.archivoNombre || ''"
+                  />
+                </mat-form-field>
 
-            <button
-              mat-raised-button
-              color="primary"
-              class="boton-cargar"
-              (click)="abrirInputArchivo(doc.nombre)"
-            >
-              {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
-            </button>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="boton-cargar"
+                  (click)="abrirInputArchivo(doc.nombre)"
+                >
+                  {{ doc.archivoNombre ? "Reemplazar" : "Cargar" }}
+                </button>
 
-            <input
-              type="file"
-              hidden
-              [id]="sanitizarNombre(doc.nombre)"
-              #fileInputs
-              (change)="onFileSelected($event, doc)"
-            />
+                <input
+                  type="file"
+                  hidden
+                  [id]="sanitizarNombre(doc.nombre)"
+                  #fileInputs
+                  (change)="onFileSelected($event, doc)"
+                />
 
-            @if(doc.archivoNombre) {
-            <button
-              mat-icon-button
-              color="warn"
-              class="colorFondoBotonEliminar"
-              (click)="eliminarDocumento(doc)"
-              matTooltip="Eliminar documento"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            }
-          </div>
+                @if (doc.archivoNombre) {
+                <button
+                  mat-icon-button
+                  color="warn"
+                  class="boton-eliminar"
+                  (click)="eliminarDocumento(doc)"
+                  matTooltip="Eliminar documento"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
           } }
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+  </mat-card>
 </form>

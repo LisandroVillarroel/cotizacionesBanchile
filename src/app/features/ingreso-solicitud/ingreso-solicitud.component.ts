@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, inject, signal, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -22,9 +21,7 @@ import {
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
@@ -36,6 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
@@ -47,11 +46,14 @@ import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { MatCardContent, MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    MatRadioModule,
+    MatCardModule,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -70,14 +72,16 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     MatTableExporterModule,
     MatTooltipModule,
     FormsModule,
-    MatRadioModule,
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
     MateriaAseguradaComponent,
-  ],
+    MatCardContent,
+    MatCard
+],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
@@ -97,9 +101,14 @@ export default class IngresoSolicitudComponent {
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
+  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+
+  esIgualAlAsegurado: boolean = false;
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
+  private readonly router = inject(Router);
 
   solicitudesService = inject(SolicitudesService);
 
@@ -147,8 +156,7 @@ export default class IngresoSolicitudComponent {
       codigoRubro: 2,
     },
   ]);
-  */
-/*
+  /*
     datoAsegurados = signal<ISolicitudAsegurado[]>([
       {
         rutAsegurado: '12514508-6',
@@ -203,22 +211,24 @@ export default class IngresoSolicitudComponent {
         },
       ]);
 */
-mostrarAnular: boolean = true;
-pasoActivoLabel: string = '';
-
+  //mostrarAnular: boolean = true;
+  pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
-  tipoContratante = new FormControl('', Validators.required);
- flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
-  flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
+  flagAsegurado = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
+  flagBeneficiario = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
-
-
 
   /*  email = new FormControl('', [
     Validators.required,
@@ -231,11 +241,10 @@ pasoActivoLabel: string = '';
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
-      tipoContratante: this.tipoContratante,
     })
   );
 
-  ngAfterViewInit(): void {
+  /*  ngAfterViewInit(): void {
     // Establecer estado inicial
     this.mostrarAnular = this.stepper.selectedIndex !== 0;
 
@@ -243,7 +252,7 @@ pasoActivoLabel: string = '';
     this.stepper.selectionChange.subscribe((event) => {
       this.mostrarAnular = event.selectedIndex !== 0;
     });
-  }
+  }*/
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -281,10 +290,6 @@ pasoActivoLabel: string = '';
   }
 
 
-
-  get esPersona(): boolean {
-    return this.tipoContratante.value === 'persona';
-  }
 
   cargaRubro() {
    this.rubroService.postRubro().subscribe({
@@ -326,13 +331,11 @@ pasoActivoLabel: string = '';
   }
 
   enviar() {
-    const tipo = this.tipoContratante.value; // 'persona' o 'empresa'
     alert('Grabar');
-    //alert(`Grabar solicitud para tipo de contratante: ${tipo}`);
   }
 
   salir() {
-    alert('Salir');
+    this.router.navigate(['/principal/inicio']);
   }
 
   grabarBorrador() {
@@ -385,29 +388,33 @@ pasoActivoLabel: string = '';
   }
 
   validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-        if (control.value !== true) {
-            return { isTrue: true }; // La clave del error es 'isTrue'
-        }
-        return null;
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
     }
+    return null;
+  }
 
-    cambioAseguradoFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagAsegurado.setValue(this.flagAseguradoRescata)
-    }
+  get mostrarDatosAsegurado(): boolean {
+    return !this.esIgualAlAsegurado;
+  }
+
+  cambioAseguradoFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagAsegurado.setValue(this.flagAseguradoRescata);
+  }
 
   actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoAsegurados())
+    console.log('arreglo actualizado:', this.datoAsegurados());
   }
 
-  cambioBeneficiarioFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagBeneficiario.setValue(this.flagBeneficiarioRescata)
-    }
+  cambioBeneficiarioFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
+  }
 
   actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
     this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoBeneficiarios())
+    console.log('arreglo actualizado:', this.datoBeneficiarios());
   }
 }

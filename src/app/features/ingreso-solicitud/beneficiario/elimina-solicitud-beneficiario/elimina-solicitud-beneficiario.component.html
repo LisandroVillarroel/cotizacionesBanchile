@@ -1,7 +1,10 @@
-<h2 mat-dialog-title>Elimina Beneficiario</h2>
+<div class="barra-titulo">
+  <h2 class="titulo">Elimina Beneficiario</h2>
+</div>
 
 <mat-dialog-content name="emlimina" class="elimina-container">
-  <div class="row">
+  <div class="row contenido-form  form-con-titulo mat-elevation-z6" data-titulo="Eliminar Beneficiario"
+    style="margin-top: 32px;">
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
@@ -15,20 +18,12 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Paterno</mat-label>
-        <input
-          matInput
-          value="{{ data.apellidoPaternoBeneficiario }}"
-          disabled="true"
-        />
+        <input matInput value="{{ data.apellidoPaternoBeneficiario }}" disabled="true" />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Materno</mat-label>
-        <input
-          matInput
-          value="{{ data.apellidoMaternoBeneficiario }}"
-          disabled="true"
-        />
+        <input matInput value="{{ data.apellidoMaternoBeneficiario }}" disabled="true" />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
@@ -50,20 +45,12 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Dirección</mat-label>
-        <input
-          matInput
-          value="{{ data.direccionBeneficiario }}"
-          disabled="true"
-        />
+        <input matInput value="{{ data.direccionBeneficiario }}" disabled="true" />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input
-          matInput
-          value="{{ data.telefonoBeneficiario }}"
-          disabled="true"
-        />
+        <input matInput value="{{ data.telefonoBeneficiario }}" disabled="true" />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
@@ -76,21 +63,12 @@
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button
-      mat-raised-button
-      class="colorFondoBotonCancelar"
-      mat-dialog-close
-      [disabled]="false"
-    >
+    <button mat-raised-button mat-dialog-close class="colorFondoBotonCerrar" [disabled]="false">
       Cancelar
     </button>
   </div>
   <div class="ms-5">
-    <button
-      class="colorFondoBotonEliminar"
-      mat-raised-button
-      (click)="eliminar()"
-    >
+    <button class="colorFondoBotonEliminar" mat-raised-button (click)="eliminar()">
       Eliminar
     </button>
   </div>

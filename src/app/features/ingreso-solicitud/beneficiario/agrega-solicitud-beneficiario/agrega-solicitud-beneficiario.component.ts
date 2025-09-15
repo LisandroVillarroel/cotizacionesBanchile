@@ -5,15 +5,17 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-agrega-solicitud-beneficiario',
   standalone: true,
-  imports: [ MatFormFieldModule,
-  ReactiveFormsModule,
-  MatInputModule,
-  MatDialogModule,
-  MatButtonModule],
+  imports: [CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule],
   templateUrl: './agrega-solicitud-beneficiario.component.html',
   styleUrl: './agrega-solicitud-beneficiario.component.css'
 })
@@ -32,7 +34,7 @@ export class AgregaSolicitudBeneficiarioComponent {
   telefonoBeneficiario = new FormControl('', [Validators.required]);
   correoBeneficiario = new FormControl('', [Validators.required]);
 
-   agregaBeneficiario = signal<FormGroup>(
+  agregaBeneficiario = signal<FormGroup>(
     new FormGroup({
       rutBeneficiario: this.rutBeneficiario,
       nombreBeneficiario: this.nombreBeneficiario,
@@ -53,8 +55,8 @@ export class AgregaSolicitudBeneficiarioComponent {
       return this.rutBeneficiario.hasError('required')
         ? 'Debes ingresar Rut Beneficiario'
         : this.rutBeneficiario.hasError('rutInvalido')
-        ? 'Rut Inválido'
-        : '';
+          ? 'Rut Inválido'
+          : '';
     }
     if (campo === 'nombreBeneficiario') {
       return this.nombreBeneficiario.hasError('required')
@@ -130,6 +132,6 @@ export class AgregaSolicitudBeneficiarioComponent {
   }
 
   grabar() {
-     this.dialogRef.close(1);
+    this.dialogRef.close(1);
   }
 }
