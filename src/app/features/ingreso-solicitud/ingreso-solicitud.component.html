@@ -132,14 +132,10 @@
                   </div>
 
                   <div class="col-md-12" style="margin-top: 16px">
-                    <mat-radio-group
-                      [(ngModel)]="esIgualAlAsegurado"
-                      class="inputInput"
-                    >
-                      <mat-radio-button value="true" class="inputInput">
-                        El contratante es igual al asegurado
-                      </mat-radio-button>
-                    </mat-radio-group>
+
+
+                        <mat-checkbox [formControl]="aseguradeCheck">El contratante es igual al asegurado</mat-checkbox>
+
                   </div>
                 </mat-card-content>
               </mat-card>

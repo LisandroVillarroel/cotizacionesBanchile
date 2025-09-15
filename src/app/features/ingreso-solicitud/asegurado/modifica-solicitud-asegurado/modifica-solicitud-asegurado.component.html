@@ -23,21 +23,6 @@
         }
       </mat-form-field>
 
-      <mat-form-field class="inputInput">
-        <mat-label class="labelI">Apellido Paterno</mat-label>
-        <input matInput [formControl]="apellidoPaternoAsegurado" required />
-        @if (apellidoPaternoAsegurado.invalid) {
-        <mat-error>{{ getErrorMessage("apellidoPaternoAsegurado") }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field class="inputInput">
-        <mat-label class="labelI">Apellido Materno</mat-label>
-        <input matInput [formControl]="apellidoMaternoAsegurado" required />
-        @if (apellidoMaternoAsegurado.invalid) {
-        <mat-error>{{ getErrorMessage("apellidoMaternoAsegurado") }}</mat-error>
-        }
-      </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>

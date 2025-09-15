@@ -6,6 +6,7 @@ import { ISolicitudAsegurado, ISolicitudBeneficiario } from '@features/ingreso-s
   providedIn: 'root'
 })
 export class SolicitudesService {
+  /*
  private _http = inject(HttpClient);
   private datoAsegurados = signal<ISolicitudAsegurado[]>([
         {
@@ -68,4 +69,5 @@ export class SolicitudesService {
   getBeneficiarioId(id: string): ISolicitudBeneficiario[] | undefined {
     return this.datoBeneficiarios();
   }
+    */
 }

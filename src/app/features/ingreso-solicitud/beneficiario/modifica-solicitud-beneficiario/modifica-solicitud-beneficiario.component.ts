@@ -24,23 +24,20 @@ export class ModificaSolicitudBeneficiarioComponent {
   readonly dialogRef = inject(MatDialogRef<ModificaSolicitudBeneficiarioComponent>);
   readonly data = inject<ISolicitudBeneficiario>(MAT_DIALOG_DATA);
 
-  rutBeneficiario = new FormControl(this.data.rutBeneficiario, [Validators.required, this.validaRut]);
-  nombreBeneficiario = new FormControl(this.data.nombreBeneficiario, [Validators.required]);
-  apellidoPaternoBeneficiario = new FormControl(this.data.apellidoPaternoBeneficiario, [Validators.required]);
-  apellidoMaternoBeneficiario = new FormControl(this.data.apellidoMaternoBeneficiario, [Validators.required]);
-  regionBeneficiario = new FormControl(this.data.regionBeneficiario, [Validators.required]);
-  ciudadBeneficiario = new FormControl(this.data.ciudadBeneficiario, [Validators.required]);
-  comunaBeneficiario = new FormControl(this.data.comunaBeneficiario, [Validators.required]);
-  direccionBeneficiario = new FormControl(this.data.direccionBeneficiario, [Validators.required]);
-  telefonoBeneficiario = new FormControl(this.data.telefonoBeneficiario, [Validators.required]);
-  correoBeneficiario = new FormControl(this.data.correoBeneficiario, [Validators.required]);
+  rutBeneficiario = new FormControl(this.data.rut_beneficiario, [Validators.required, this.validaRut]);
+  nombreBeneficiario = new FormControl(this.data.nombre_razon_social_beneficiario, [Validators.required]);
+
+  regionBeneficiario = new FormControl(this.data.region_beneficiario, [Validators.required]);
+  ciudadBeneficiario = new FormControl(this.data.ciudad_beneficiario, [Validators.required]);
+  comunaBeneficiario = new FormControl(this.data.comuna_beneficiario, [Validators.required]);
+  direccionBeneficiario = new FormControl(this.data.direccion_beneficiario, [Validators.required]);
+  telefonoBeneficiario = new FormControl(this.data.numero_dir_beneficiario, [Validators.required]);
+  correoBeneficiario = new FormControl(this.data.mail_beneficiario, [Validators.required]);
 
    modificaBeneficiario = signal<FormGroup>(
     new FormGroup({
       rutBeneficiario: this.rutBeneficiario,
       nombreBeneficiario: this.nombreBeneficiario,
-      apellidoPaternoBeneficiario: this.apellidoPaternoBeneficiario,
-      apellidoMaternoBeneficiario: this.apellidoMaternoBeneficiario,
       regionBeneficiario: this.regionBeneficiario,
       ciudadBeneficiario: this.ciudadBeneficiario,
       comunaBeneficiario: this.comunaBeneficiario,
@@ -62,18 +59,6 @@ export class ModificaSolicitudBeneficiarioComponent {
     if (campo === 'nombreBeneficiario') {
       return this.nombreBeneficiario.hasError('required')
         ? 'Debes ingresar Nombre'
-        : '';
-    }
-
-    if (campo === 'apellidoPaternoBeneficiario') {
-      return this.apellidoPaternoBeneficiario.hasError('required')
-        ? 'Debes ingresar Apellido Paterno'
-        : '';
-    }
-
-    if (campo === 'apellidoMaternoBeneficiario') {
-      return this.apellidoMaternoBeneficiario.hasError('required')
-        ? 'Debes ingresar Apellido Materno'
         : '';
     }
 

@@ -49,16 +49,14 @@ export class BeneficiarioComponent {
 
   displayedColumnsBeneficiario: string[] = [
     'index',
-    'rutBeneficiario',
-    'nombreBeneficiario',
-    //'apellidoPaternoBeneficiario',
-    //'apellidoMaternoBeneficiario',
-    //'regionBeneficiario',
-    //'ciudadBeneficiario',
-    //'comunaBeneficiario',
-    //'direccionBeneficiario',
-    'telefonoBeneficiario',
-    'correoBeneficiario',
+    'rut_beneficiario',
+    'nombre_razon_social_beneficiario',
+    //'region_beneficiario',
+    //'ciudad_beneficiario',
+    //'comuna_beneficiario',
+    //'direccion_beneficiario',
+    'telefono_beneficiario',
+    'mail_beneficiario',
     'opciones',
   ];
   dataSourceBeneficiario = new MatTableDataSource<ISolicitudBeneficiario>();
@@ -130,7 +128,7 @@ export class BeneficiarioComponent {
       .afterClosed()
       .subscribe((data) => {
          if (data !== '') {
-        const    arregloActualizado =[...this.datoBeneficiariosRecibe()!.filter(valor=> valor.rutBeneficiario!=datoBeneficiarioPar.rutBeneficiario),data]; // Copia y agrega un elemento
+        const    arregloActualizado =[...this.datoBeneficiariosRecibe()!.filter(valor=> valor.rut_beneficiario!=datoBeneficiarioPar.rut_beneficiario),data]; // Copia y agrega un elemento
          this.datoBeneficiariosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
           this.flagBeneficiario.set(true);
         }
@@ -167,7 +165,7 @@ export class BeneficiarioComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 1) {
-          const arregloActualizado = this.datoBeneficiariosRecibe()!.filter(valor=> valor.rutBeneficiario!=datoBeneficiarioPar.rutBeneficiario); // Copia y agrega un elemento
+          const arregloActualizado = this.datoBeneficiariosRecibe()!.filter(valor=> valor.rut_beneficiario!=datoBeneficiarioPar.rut_beneficiario); // Copia y agrega un elemento
          console.log('datos agregados hijo:',arregloActualizado)
          this.datoBeneficiariosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }

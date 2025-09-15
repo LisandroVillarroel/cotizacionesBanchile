@@ -15,7 +15,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import {
-  MatPaginatorIntl,
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -41,12 +40,13 @@ import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
-import { SolicitudesService } from '@shared/service/solicitudes.service';
+
 import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -77,7 +77,8 @@ import { MatCardContent, MatCard } from '@angular/material/card';
     CuestionarioComponent,
     MateriaAseguradaComponent,
     MatCardContent,
-    MatCard
+    MatCard,
+    MatCheckboxModule
 ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
@@ -101,122 +102,26 @@ export default class IngresoSolicitudComponent {
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
-  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+
 
   esIgualAlAsegurado: boolean = false;
 
   private readonly dialog = inject(MatDialog);
-  private matPaginatorIntl = inject(MatPaginatorIntl);
   private readonly router = inject(Router);
 
-  solicitudesService = inject(SolicitudesService);
 
   datoRubros = signal<IRubro[]>([]);
 
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
-   /* {
-      codigoSeguro: 1,
-      descripcionSeguro: 'Seguro 1 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 2,
-      descripcionSeguro: 'Seguro 2 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 3,
-      descripcionSeguro: 'Seguro 3 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 4,
-      descripcionSeguro: 'Seguro 4 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 5,
-      descripcionSeguro: 'Seguro 1 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 6,
-      descripcionSeguro: 'Seguro 2 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 7,
-      descripcionSeguro: 'Seguro 3 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 8,
-      descripcionSeguro: 'Seguro 4 Rubro 2',
-      codigoRubro: 2,
-    },
-  ]);
-  /*
-    datoAsegurados = signal<ISolicitudAsegurado[]>([
-      {
-        rutAsegurado: '12514508-6',
-        nombreAsegurado: 'Nombre Asegurado 1',
-        apellidoPaternoAsegurado: 'apellido Paterno 1',
-        apellidoMaternoAsegurado: 'apellido Materno 1',
-        regionAsegurado: 'Metropolitana 1',
-        ciudadAsegurado: 'Santiago 1',
-        comunaAsegurado: 'maipú 1',
-        direccionAsegurado: 'dirección  1',
-        telefonoAsegurado: '11111111',
-        correoAsegurado: 'correo1@gmail.com',
-      },
-      {
-        rutAsegurado: '14245328-2',
-        nombreAsegurado: 'Nombre Asegurado 2',
-        apellidoPaternoAsegurado: 'apellido Paterno 2',
-        apellidoMaternoAsegurado: 'apellido Materno 2',
-        regionAsegurado: 'Metropolitana 2',
-        ciudadAsegurado: 'Santiago 2',
-        comunaAsegurado: 'maipú 2',
-        direccionAsegurado: 'dirección  2',
-        telefonoAsegurado: '2222222222',
-        correoAsegurado: 'correo2@gmail.com',
-      },
-    ]);
 
-    datoBeneficiarios = signal<ISolicitudBeneficiario[]>([
-        {
-          rutBeneficiario: '12514508-6',
-          nombreBeneficiario: 'Nombre Beneficiario 1',
-          apellidoPaternoBeneficiario: 'apellido Paterno 1',
-          apellidoMaternoBeneficiario: 'apellido Materno 1',
-          regionBeneficiario: 'Metropolitana 1',
-          ciudadBeneficiario: 'Santiago 1',
-          comunaBeneficiario: 'maipú 1',
-          direccionBeneficiario: 'dirección  1',
-          telefonoBeneficiario: '11111111',
-          correoBeneficiario: 'correo1@gmail.com',
-        },
-        {
-          rutBeneficiario: '14245328-2',
-          nombreBeneficiario: 'Nombre Beneficiario 2',
-          apellidoPaternoBeneficiario: 'apellido Paterno 2',
-          apellidoMaternoBeneficiario: 'apellido Materno 2',
-          regionBeneficiario: 'Metropolitana 2',
-          ciudadBeneficiario: 'Santiago 2',
-          comunaBeneficiario: 'maipú 2',
-          direccionBeneficiario: 'dirección  2',
-          telefonoBeneficiario: '2222222222',
-          correoBeneficiario: 'correo2@gmail.com',
-        },
-      ]);
-*/
   //mostrarAnular: boolean = true;
   pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
+  aseguradeCheck = new FormControl(false, [Validators.required]);
+
   flagAsegurado = new FormControl(true, [
     Validators.required,
     this.validaQueSeaVerdadero,
@@ -225,6 +130,8 @@ export default class IngresoSolicitudComponent {
     Validators.required,
     this.validaQueSeaVerdadero,
   ]);
+
+
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
@@ -241,6 +148,8 @@ export default class IngresoSolicitudComponent {
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
+      aseguradeCheck: this.aseguradeCheck
+
     })
   );
 
@@ -284,8 +193,7 @@ export default class IngresoSolicitudComponent {
 
 
   async ngOnInit(){
-      this.datoAsegurados.set(this.solicitudesService.getSolicitudId('1'))
-      this.datoBeneficiarios.set(this.solicitudesService.getBeneficiarioId('1'))
+
       this.cargaRubro();
   }
 
