@@ -12,6 +12,7 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
+import DetalleSolicitudComponent from '../detalle-solicitud.component';
 
 export interface DevolverConObservacionesData {
   solicitudId: string;
@@ -32,7 +33,7 @@ export interface DevolverConObservacionesData {
 export class AceptarSolicitudDetalleComponent {
 constructor(
     public dialogRef: MatDialogRef<AceptarSolicitudDetalleComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
+    @Inject(MAT_DIALOG_DATA) public data: DetalleSolicitudComponent
   ) {}
 
   cerrar(): void {

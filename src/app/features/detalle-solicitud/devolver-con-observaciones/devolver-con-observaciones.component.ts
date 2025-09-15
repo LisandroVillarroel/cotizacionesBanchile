@@ -4,6 +4,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
+  MatDialogConfig,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +13,7 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
+import { SolicitudCorregidaComponent } from '../corregir-solicitud/solicitud-corregida/solicitud-corregida.component';
 
 export interface DevolverConObservacionesData {
   solicitudId: string;
@@ -31,6 +33,7 @@ export interface DevolverConObservacionesData {
 
 
 export class DevolverConObservacionesComponent {
+  dialog: any;
   constructor(
     public dialogRef: MatDialogRef<DevolverConObservacionesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
@@ -43,6 +46,30 @@ export class DevolverConObservacionesComponent {
   confirmar(): void {
     this.dialogRef.close('confirmado');
   }
+
+  // devolverConObs(): void {
+  //     const dato = {
+  //       rutContratante: '00.000.000-0',
+  //       nomContratante: 'Felipe Medina Suárez',
+  //       rubro: 'VIDA',
+  //     };
+
+
+  //     const dialogConfig = new MatDialogConfig();
+
+  //     dialogConfig.disableClose = true;
+  //     dialogConfig.autoFocus = true;
+
+  //     //Ajustes clave para evitar espacio en blanco
+  //     dialogConfig.width = '600px'; // Tamaño fijo y controlado
+  //     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+  //     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+  //     dialogConfig.data = dato;
+
+  //     this.dialog
+  //       .open(DevolverConObservacionesComponent, dialogConfig)
+  //       .afterClosed();
+  //   }
 
   observaciones: string = '';
 }

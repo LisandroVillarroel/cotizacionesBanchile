@@ -1,45 +1,29 @@
 <div class="dialog-container">
   <div class="barra-titulo">
-    <span class="titulomodal">Devolver con observaciones</span>
+    <span class="titulomodal">Corregir Solicitud</span>
     <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <!-- <div class="contenido-dialogo">
-    <section class="bloque">
-      <h3>Nueva solicitud</h3>
-      <div>{{ data.solicitudId }}</div>
-    </section>
-    <section class="bloque">
-      <h3>Nueva solicitud</h3>
-      <div>{{ data.fecha }}</div>
-    </section>
-
-    <section class="bloque">
-      <h3>Ejecutivo</h3>
-      <div>{{ data.ejecutivo }}</div>
-    </section>
-  </div> -->
-
  <div class="contenido-horizontal fondoGris">
   <section>
-    <h3>Nueva solicitud</h3>
-    <div>{{ data.solicitudId }}</div>
+    <h3>Rut Contratante</h3>
+    <div>{{ data.rutContratante }}</div>
   </section>
 
   <mat-divider vertical></mat-divider>
 
   <section>
-    <h3>Fecha</h3>
-    <div>{{ data.fecha }}</div>
+    <h3>Nombre Contratante</h3>
+    <div>{{ data.nomContratante }}</div>
   </section>
 
   <mat-divider vertical></mat-divider>
 
   <section>
-    <h3>Ejecutivo</h3>
-    <div>{{ data.ejecutivo }}</div>
+    <h3>Rubro</h3>
+    <div>{{ data.rubro }}</div>
   </section>
 </div>
 
@@ -76,11 +60,11 @@
 
 
   <div class="botones-derecha">
-    <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" (click)="confirmar()">
-      Cancelar
+    <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" (click)="cerrar()">
+      Cerrar
     </button>
-    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="confirmar()"> <!--devolverConObs()-->
-      Devolver con Observaciones
+    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="corregirYEnviar()">
+      Corregir y enviar solicitud
     </button>
   </div>
 </div>

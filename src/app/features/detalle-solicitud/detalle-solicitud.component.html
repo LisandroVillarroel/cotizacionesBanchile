@@ -1,8 +1,8 @@
 <div class="container-fluid card-borde">
   <div class="titulo">
     <h2 class="titulo">
-    Detalle de solicitud - COT1234041123
-  </h2>
+      Detalle de solicitud - COT1234041123
+    </h2>
     <!-- <h4 mat-dialog-subtitle class="mt-3">Detalle de solicitud - COT1234041123</h4> -->
   </div>
   <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
@@ -19,8 +19,21 @@
         <button mat-raised-button class="colorFondoBotonSalir">Volver</button>
       </div>
       <div class="botones-derecha">
-        <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverConObs()">Devolver con Observaciones</button>
-        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="aceptarSolDetalle()">Aceptar Solicitud</button>
+        <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverConObs()">Devolver con
+          Observaciones</button>
+        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="aceptarSolDetalle()">Aceptar
+          Solicitud</button>
       </div>
     </div>
+  </div>
+  <div class="container-fluid fondoGris flex">
+      <div class="container d-flex justify-between p-2">
+      <div class="botones-izquierda">
+        <!-- <button mat-raised-button class="colorFondoBotonSalir">Volver</button> -->
+      </div>
+    <div class="botones-derecha">
+        <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverConObs()">Anular Solicitud</button>
+        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="corregirSolicitud()">Corregir
+          Solicitud</button>
+      </div>
   </div>

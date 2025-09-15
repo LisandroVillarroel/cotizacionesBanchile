@@ -29,11 +29,10 @@
 
 /* Contenido del diálogo */
 .contenido-dialogo {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  overflow: visible;      /* Evita que se corte el contenido */
-}}
+  padding: 24px 16px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
 
 /* Bloques con separación visual */
 .bloque {
@@ -110,12 +109,5 @@
 
 .textarea-grande.mat-form-field.mat-focused {
   --mat-form-field-outline-color: #0056b3; /* color al enfocar */
-}
-
-.icono-verde-grande {
-  color: #4CAF50;         /* Verde Material Design */
-  font-size: 26px;        /* Tamaño grande */
-  vertical-align: middle; /* Centrado vertical */
-  line-height: 1;
 }
 
