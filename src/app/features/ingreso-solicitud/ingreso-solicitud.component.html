@@ -120,7 +120,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div class="alinear">
+        <div class="alinear-botones">
           <div class="botones-derecha">
             <!--><button
             mat-raised-button
@@ -143,7 +143,7 @@
         <app-asegurado [datoAseguradosRecibe]="datoAsegurados()"
           (datoAseguradosRecibeModificado)="actualizarAsegurado($event)" [(flagAsegurado)]="flagAseguradoRescata"
           (flagAseguradoModel)="cambioAseguradoFlag()" />
-        <div class="alinear">
+        <div class="alinear-botones">
           <div class="botones-izquierda">
             <button mat-raised-button matStepperPrevious class="colorFondoBotonAtras">
               Atrás
@@ -171,7 +171,7 @@
         <app-beneficiario [datoBeneficiariosRecibe]="datoBeneficiarios()"
           (datoBeneficiariosRecibeModificado)="actualizarBeneficiario($event)"
           [(flagBeneficiario)]="flagBeneficiarioRescata" (flagBeneficiarioModel)="cambioBeneficiarioFlag()" />
-        <div class="alinear">
+        <div class="alinear-botones">
           <div class="botones-izquierda">
             <button mat-raised-button matStepperPrevious class="colorFondoBotonAtras">
               Atrás
@@ -196,7 +196,7 @@
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
       <app-materia-asegurada />
-      <div class="alinear">
+      <div class="alinear-botones">
         <div class="botones-izquierda">
           <button mat-raised-button matStepperPrevious class="colorFondoBotonAtras">
             Atrás
@@ -220,7 +220,7 @@
     <mat-step>
       <ng-template matStepLabel>Cuestionario y Documentos</ng-template>
       <app-cuestionario-documentos />
-      <div class="alinear">
+      <div class="alinear-botones">
         <div class="botones-izquierda">
           <button mat-raised-button matStepperPrevious class="colorFondoBotonAtras">
             Atrás

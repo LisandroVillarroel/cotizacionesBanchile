@@ -97,13 +97,13 @@
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]="false">
+    <button mat-raised-button mat-dialog-close class="colorFondoBotonCerrar" [disabled]="false">
       Cerrar
     </button>
   </div>
   <div class="ms-5">
-    <button mat-raised-button (click)="modificar()" [disabled]="modificaBeneficiario().invalid">
-      GRABAR
+    <button mat-raised-button class="colorFondoBotonGrabar" (click)="modificar()" [disabled]="modificaBeneficiario().invalid">
+      Grabar
     </button>
   </div>
 </mat-dialog-actions>

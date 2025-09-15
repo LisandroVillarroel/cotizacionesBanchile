@@ -98,7 +98,9 @@
     </button>
   </div>
   <div class="ms-5">
-    <button mat-raised-button (click)="grabar()" [disabled]="agregaAsegurado().invalid">
+    <button mat-raised-button (click)="grabar()" [disabled]="agregaAsegurado().invalid" [ngClass]="{
+      'colorFondoBotonGrabar': !agregaAsegurado().invalid
+    }">
       Grabar
     </button>
   </div>
