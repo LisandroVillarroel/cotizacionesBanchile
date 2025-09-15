@@ -40,6 +40,7 @@ import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
@@ -52,6 +53,7 @@ import { MatCardContent, MatCard, MatCardHeader, MatCardTitle } from '@angular/m
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    MatRadioModule,
     MatCardModule,
     CommonModule,
     MatFormFieldModule,
@@ -96,6 +98,8 @@ export default class IngresoSolicitudComponent {
 
   datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
   datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+
+  esIgualAlAsegurado: boolean = false;
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
@@ -358,6 +362,10 @@ export default class IngresoSolicitudComponent {
       return { isTrue: true }; // La clave del error es 'isTrue'
     }
     return null;
+  }
+
+  get mostrarDatosAsegurado(): boolean {
+    return !this.esIgualAlAsegurado;
   }
 
   cambioAseguradoFlag() {
