@@ -118,8 +118,8 @@ export default class IngresoSolicitudComponent {
   pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
-  rubro = new FormControl('', [Validators.required]);
-  seguro = new FormControl('', [Validators.required]);
+  rubro = new FormControl('');
+  seguro = new FormControl('');
   aseguradeCheck = new FormControl(false, [Validators.required]);
 
   flagAsegurado = new FormControl(true, [
