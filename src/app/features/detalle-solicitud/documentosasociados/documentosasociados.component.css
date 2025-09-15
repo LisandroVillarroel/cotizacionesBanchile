@@ -46,7 +46,13 @@ hr {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 10px;
+  border-top: #0f8dba 4px solid;
   padding: 15px;
   margin-bottom: 20px;
-  height: 100px;
+  height: 90px;
+  line-height: 1;
+}
+
+.altocard {
+  height: 80px;
 }
