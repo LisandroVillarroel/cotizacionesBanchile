@@ -31,7 +31,7 @@ import {
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
   ISolicitudContratante
-} from '../../shared/modelo/ingreso-solicitud';
+} from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -45,8 +45,8 @@ import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/c
 import { SolicitudesService } from '@shared/service/solicitudes.service';
 import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { IRubro } from '@shared/modelo/rubro';
-import { ITipoSeguro } from '@shared/modelo/tipo-seguro';
+import { IRubro } from '@shared/modelo/rubro-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -306,7 +306,8 @@ pasoActivoLabel: string = '';
   }
 
   async seleccionaRubro(_codigoRubro: string) {
-   this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
+    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
+   this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
            this.rescatadoSeguro.set(dato.items);

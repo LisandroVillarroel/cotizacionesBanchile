@@ -21,9 +21,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rutAsegurado">
+    <ng-container matColumnDef="rut_asegurado">
       <th
-        id="_rutAsegurado"
+        id="_rut_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -32,13 +32,13 @@
         Rut
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.rutAsegurado }}
+        {{ row.rut_asegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nombreAsegurado">
+    <ng-container matColumnDef="nombre_razon_social_asegurado">
       <th
-        id="_nombreAsegurado"
+        id="_nombre_razon_social_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -47,37 +47,37 @@
         Nombre/Razón Social
       </th>
       <td mat-cell *matCellDef="let row" style="width: 33%">
-        {{ row.nombreAsegurado + ' ' + row.apellidoPaternoAsegurado + ' ' +  row.apellidoMaternoAsegurado }}
+        {{ row.nombre_razon_social_asegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="apellidoPaternoAsegurado">
+    <ng-container matColumnDef="nombre_razon_social_asegurado">
       <th
-        id="_apellidoPaternoAsegurado"
+        id="_nombre_razon_social_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Apellido Paterno
+        nombre_razon_social_asegurado
       </th>
       <td mat-cell *matCellDef="let row" style="width: 0%">
         {{ row.apellidoPaternoAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="apellidoMaternoAsegurado">
+    <ng-container matColumnDef="nombre_razon_social_asegurado">
       <th
-        id="_apellidoMaternoAsegurado"
+        id="_nombre_razon_social_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Apellido Materno
+        nombre_razon_social_asegurado
       </th>
       <td mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.apellidoMaternoAsegurado }}
+        {{ row.nombre_razon_social_asegurado }}
       </td>
     </ng-container>
 

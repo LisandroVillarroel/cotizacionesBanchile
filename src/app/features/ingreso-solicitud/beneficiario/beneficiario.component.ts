@@ -19,7 +19,7 @@ import { AgregaSolicitudBeneficiarioComponent } from './agrega-solicitud-benefic
 import { ModificaSolicitudBeneficiarioComponent } from './modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
 import { ConsultaSolicitudBeneficiarioComponent } from './consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
 import { EliminaSolicitudBeneficiarioComponent } from './elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
-import { ISolicitudBeneficiario } from '../../../shared/modelo/ingreso-solicitud';
+import { ISolicitudBeneficiario } from '../modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-beneficiario',

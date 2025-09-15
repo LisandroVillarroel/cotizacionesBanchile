@@ -15,7 +15,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
-import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
+import { ICuestionario } from '../modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-cuestionario-documentos',

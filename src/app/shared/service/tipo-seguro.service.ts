@@ -1,8 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { ITipoSeguro } from '@shared/modelo/ingreso-solicitud';
-import { InterfazTipoSeguro } from '@shared/modelo/tipo-seguro';
+import { InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 
 @Injectable({
@@ -20,7 +19,7 @@ export class TipoSeguroService {
   constructor() { }
 
 
-  postTipoSeguro(idRubro: string): Observable<InterfazTipoSeguro> {
+  postTipoSeguro(idRubro: any): Observable<InterfazTipoSeguro> {
     return this.http
       .post<InterfazTipoSeguro>(`${environment.apiUrl}/lista-productos`, idRubro,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));

@@ -19,7 +19,7 @@ import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
-import { ISolicitudAsegurado } from '../../../shared/modelo/ingreso-solicitud';
+import { ISolicitudAsegurado } from '../modelo/ingresoSolicitud-Interface';
 
 
 @Component({
@@ -49,16 +49,16 @@ export class AseguradoComponent {
 
   displayedColumnsAsegurado: string[] = [
     'index',
-    'rutAsegurado',
-    'nombreAsegurado',
+    'rut_asegurado',
+    'nombre_razon_social_asegurado',
     //'apellidoPaternoAsegurado',
     //'apellidoMaternoAsegurado',
     //'regionAsegurado',
     //'ciudadAsegurado',
     //'comunaAsegurado',
     //'direccionAsegurado',
-    'telefonoAsegurado',
-    'correoAsegurado',
+    'telefono_asegurado',
+    'mail_asegurado',
     'opciones',
   ];
   dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
@@ -140,7 +140,7 @@ console.log('flag aseguradoooooo:')
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
-        const    arregloActualizado =[...this.datoAseguradosRecibe()!.filter(valor=> valor.rutAsegurado!=datoAseguradoPar.rutAsegurado),data]; // Copia y agrega un elemento
+        const    arregloActualizado =[...this.datoAseguradosRecibe()!.filter(valor=> valor.rut_asegurado!=datoAseguradoPar.rut_asegurado),data]; // Copia y agrega un elemento
          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }
         }
@@ -178,7 +178,7 @@ console.log('flag aseguradoooooo:')
       .afterClosed()
       .subscribe((data) => {
         if (data === 1) {
-          const arregloActualizado = this.datoAseguradosRecibe()!.filter(valor=> valor.rutAsegurado!=datoAseguradoPar.rutAsegurado); // Copia y agrega un elemento
+          const arregloActualizado = this.datoAseguradosRecibe()!.filter(valor=> valor.rut_asegurado!=datoAseguradoPar.rut_asegurado); // Copia y agrega un elemento
          console.log('datos agregados hijo:',arregloActualizado)
          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }
