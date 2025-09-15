@@ -33,7 +33,7 @@
   align-items: center;
   padding: 8px;
   overflow: visible;      /* Evita que se corte el contenido */
-}}
+}
 
 /* Bloques con separación visual */
 .bloque {
