@@ -11,14 +11,16 @@ body {
   font-family: "Roboto", sans-serif !important;
 }
 
+/* CONTENEDOR DE TITULO PRINCIPAL */
 .alinear {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
 }
+/* FIN CONTENEDOR DE TITULO PRINCIPAL */
 
-/* Botones */
+/* BOTONES */
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGuardar {
   background-color: #eeeff1 !important;
   border: 1px solid #d2d2d4 !important;
@@ -94,8 +96,7 @@ body {
   color: white !important;
 }
 
-/* Botones inferiores */
-
+/* BOTONES INFERIORES */
 .botones-izquierda {
   display: flex;
   gap: 12px;
@@ -106,10 +107,10 @@ body {
   gap: 12px;
   margin-left: auto;
 }
+/* FIN BOTONES INFERIORES */
+/* FIN BOTONES */
 
-/*Fin Botones*/
-
-/*INICIO INPUT*/
+/* INICIO INPUT */
 .inputForm {
   font-size: 14px !important;
   font-size: var(--mdc-typography-body1-font-size, 14px) !important;
