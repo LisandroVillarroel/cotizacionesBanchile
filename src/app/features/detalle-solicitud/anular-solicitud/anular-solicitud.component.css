@@ -119,3 +119,10 @@
   line-height: 1;
 }
 
+.icono-amarillo-grande {
+  color: #f45517;         /* color Material Design */
+  font-size: 26px;        /* Tamaño grande */
+  vertical-align: middle; /* Centrado vertical */
+  line-height: 1;
+}
+

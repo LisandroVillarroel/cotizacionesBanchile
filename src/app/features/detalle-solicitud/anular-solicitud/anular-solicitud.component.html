@@ -6,21 +6,24 @@
     </button>
   </div>
   <div class="d-flex justify-content-center align-items-center">
-    <mat-icon class="icono-verde-grande" fontIcon="task_alt"></mat-icon>
+    <mat-icon class="icono-amarillo-grande">warning</mat-icon>
   </div>
   <div class="contenido-dialogo">
     <section>
-      <h3 class="titulo">La solicitud ha sido Devuelta con observaciones</h3>
+      <h3 class="titulo">La solicitud {{ data.solicitudId }} quedará anulada</h3>
       <mat-label>
-        LA solicitud {{data.solicitudId}} ha sido devuelta al ejecutivo para realizar
-        los cambios requeridos. Una vez corregida, recibirás una notificación para revisarla
-        y enviarla a las compañías.
+        Ten en cuenta que esta acción es irreversible una vez confirmada.<br>
+        ¿Deseas continuar?.
       </mat-label>
     </section>
+    <section></section>
   </div>
   <div class="botones-derecha">
     <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" (click)="confirmar()">
-      Ir a gestión de Solicitudes
+      Volver
+    </button>
+    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="confirmar()">
+      Confirmar Anulación
     </button>
   </div>
 </div>

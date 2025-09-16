@@ -7,6 +7,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
+import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -18,8 +19,9 @@ import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solici
 })
 export default class DetalleSolicitudComponent {
   private readonly dialog = inject(MatDialog);
-solicitudId: any;
-  devolverConObs(): void {
+
+   solicitudId: any;
+  devolverSolicitud(): void {
     const dato = {
       solicitudId: 'ID123456789',
       fecha: '00 - 00 - 0000',
@@ -61,6 +63,27 @@ solicitudId: any;
 
     this.dialog
       .open(AceptarSolicitudDetalleComponent, dialogConfig)
+      .afterClosed();
+  }
+
+   anularSol(): void {
+    const dato = {
+      solicitudId: 'ID COT_Anular_123412'
+    };
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AnularSolicitudComponent, dialogConfig)
       .afterClosed();
   }
 

@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { SolicitudCorregidaComponent } from './solicitud-corregida/solicitud-corregida.component';
+import { DocumentosAsociadosService } from '../documentosasociados/documentosasociados.service';
+import { MatButton } from '@angular/material/button';
 
 export interface CorregirSolicitudData {
 rubro: string;
@@ -27,7 +29,7 @@ rutContratante: string;
   selector: 'corregir-solicitud',
   standalone: true,
   imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
-    MatFormField, MatInputModule, FormsModule, MatDivider],
+    MatFormField, MatInputModule, FormsModule, MatDivider, MatButton],
   templateUrl: './corregir-solicitud.component.html',
   styleUrl: './corregir-solicitud.component.css'
 })
@@ -41,7 +43,8 @@ export class CorregirSolicitudComponent {
   constructor(
   private dialog: MatDialog,
   public dialogRef: MatDialogRef<CorregirSolicitudComponent>,
-  @Inject(MAT_DIALOG_DATA) public data: CorregirSolicitudData
+  @Inject(MAT_DIALOG_DATA) public data: CorregirSolicitudData,
+  private documentosService: DocumentosAsociadosService
 ) {}
 
 
@@ -77,5 +80,14 @@ export class CorregirSolicitudComponent {
       .afterClosed();
   }
 observaciones: string = '';
+
+
+registros: any[] = [];
+
+  // constructor(private documentosService: DocumentosAsociadosService) {}
+
+  ngOnInit(): void {
+    this.registros = this.documentosService.obtenerRegistrosConDocumentos();
+  }
 
 }
