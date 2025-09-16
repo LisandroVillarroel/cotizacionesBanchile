@@ -56,30 +56,29 @@
                     </mat-form-field>
                   </div>
 
-            <mat-form-field class="inputSelect">
-              <mat-label class="labelI">Selecciona un rubro</mat-label>
-              <mat-select
-                [formControl]="rubro"
-                (selectionChange)="seleccionaRubro($event.value)"
-
-              >
-                @for(_rubros of datoRubros(); track _rubros){
-                <mat-option [value]="_rubros.id_rubro">
-                  {{ _rubros.nombre_rubro }}
-                </mat-option>
-                }
-              </mat-select>
-              @if(seguro.invalid){
-              <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
-              }
-            </mat-form-field>
+                  <mat-form-field class="inputSelect">
+                    <mat-label class="labelI">Selecciona un rubro</mat-label>
+                    <mat-select
+                      [formControl]="rubro"
+                      (selectionChange)="seleccionaRubro($event.value)"
+                    >
+                      @for(_rubros of datoRubros(); track _rubros){
+                      <mat-option [value]="_rubros.id_rubro">
+                        {{ _rubros.nombre_rubro }}
+                      </mat-option>
+                      }
+                    </mat-select>
+                    @if(seguro.invalid){
+                    <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
+                    }
+                  </mat-form-field>
 
                   <div class="col-md-12">
                     <mat-form-field class="inputSelect">
                       <mat-label class="labelI"
                         >Selecciona un tipo de seguro</mat-label
                       >
-                      <mat-select [formControl]="seguro" >
+                      <mat-select [formControl]="seguro">
                         @for(_seguros of rescatadoSeguro(); track _seguros){
                         <mat-option [value]="_seguros.id_tipo_seguro">
                           {{ _seguros.nombre_tipo_seguro }}
@@ -132,19 +131,16 @@
                   </div>
 
                   <div class="col-md-12" style="margin-top: 16px">
-
-
-                        <mat-checkbox [formControl]="aseguradeCheck">El contratante es igual al asegurado</mat-checkbox>
-
+                    <mat-checkbox [formControl]="aseguradeCheck"
+                      >El contratante es igual al asegurado</mat-checkbox
+                    >
                   </div>
                 </mat-card-content>
               </mat-card>
             </div>
 
             <!-- Contenedor de botones en una sola fila -->
-            <div
-              class="d-flex justify-content-between align-items-center mt-2"
-            >
+            <div class="d-flex justify-content-between align-items-center mt-2">
               <!-- Botón Descargar -->
               <button
                 mat-raised-button
@@ -309,9 +305,12 @@
             Grabar
           </button>-->
           <button
-            (click)="abrirDialogoYAvanzar()"
             mat-raised-button
-            class="colorFondoBotonConfirmar"
+            (click)="abrirDialogoYAvanzar()"
+            [disabled]="!puedeEnviar()"
+            [ngClass]="{
+              colorFondoBotonConfirmar: puedeEnviar()
+            }"
           >
             Enviar
           </button>
