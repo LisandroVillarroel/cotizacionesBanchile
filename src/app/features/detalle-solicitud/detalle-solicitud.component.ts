@@ -3,7 +3,7 @@ import { MatFormField } from "@angular/material/form-field";
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
@@ -12,14 +12,16 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
-  imports: [MatFormField, InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule, DevolverConObservacionesComponent, AceptarSolicitudDetalleComponent],
+  imports: [InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule,
+       MatDialogModule,
+       MatButtonModule],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
 })
 export default class DetalleSolicitudComponent {
   private readonly dialog = inject(MatDialog);
-
+private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
    solicitudId: any;
   devolverSolicitud(): void {
     const dato = {

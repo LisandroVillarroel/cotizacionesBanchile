@@ -15,15 +15,17 @@
   </div>
   <div class="container-fluid fondoGris flex">
     <div class="container d-flex justify-between p-2">
-      <div class="botones-izquierda">
-        <button mat-raised-button class="colorFondoBotonSalir">Volver</button>
-      </div>
-      <div class="botones-derecha">
-        <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverSolicitud()">Devolver con
-          Observaciones</button>
-        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="aceptarSolDetalle()">Aceptar
-          Solicitud</button>
-      </div>
+      <mat-dialog-actions align="end" style="width: 100%;">
+        <div class="botones-izquierda">
+          <button mat-raised-button class="colorFondoBotonSalir" mat-dialog-close [disabled]="false">Cerrar</button>
+        </div>
+        <div class="botones-derecha">
+          <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverSolicitud()">Devolver con
+            Observaciones</button>
+          <button mat-raised-button class="colorFondoBotonConfirmar" (click)="aceptarSolDetalle()">Aceptar
+            Solicitud</button>
+        </div>
+      </mat-dialog-actions>
     </div>
   </div>
   <div class="container-fluid fondoGris flex">
