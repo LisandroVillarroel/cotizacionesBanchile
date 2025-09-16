@@ -17,12 +17,13 @@
   font-size: 12px;
 }
 
-.picker {
-  margin-top: 15px; /* Ajusta este valor según lo que necesites */
+.inputFechaForm {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 3px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 0px !important;
+  color: #666668;
 }
-
-
-mat-form-field {
-  margin-left: auto; /* empuja el picker hacia la derecha */
-}
-

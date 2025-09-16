@@ -1,1 +1,263 @@
-<p>con-observaciones works!</p>
+<div class="container-fluid p-2">
+  <div class="box-form-fields gap-2 fontSmall" style="align-items: center;">
+    <span> Filtrar por: </span>
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="labelI">ID, Nombre o Razón social</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+        <input matInput #buscarInput (keyup)="applyFilterIDNombre('Coordinador', buscarInput.value)" />
+      </mat-form-field>
+    </div>
+
+    <div style="width: 15%;">
+      <mat-form-field class="inputSelect">
+        <mat-label class="labelI">Rubro</mat-label>
+        <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+          @for(_seguros of datoRubros(); track _seguros){
+            <mat-option [value]="_seguros.codigoRubro">
+              {{ _seguros.descripcionRubro }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div style="width: 20%;">
+      <mat-form-field class="inputSelect">
+        <mat-label class="labelI">Tipo de seguro</mat-label>
+        <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('TipoSeguro',$event.value)">
+          @for(_seguros of rescatadoSeguro(); track _seguros){
+            <mat-option [value]="_seguros.descripcionSeguro">
+              {{ _seguros.descripcionSeguro }}
+            </mat-option>
+          }
+          <input matInput  />
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="inputFechaForm">
+        <mat-label class="fontSmall gris">Fecha</mat-label>
+          <input matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-raised-button (click)="limpiaFiltros()" class="button-link"> Limpiar filtros
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="container-fluid p-2">
+  <!-- <table style="border: none; width: 100%;"> -->
+    @for(item of datosSolicitud(); track $index){
+      <mat-card class="alinea-card-gestion">
+        <mat-card-content class="d-flex p-0">
+          <div class="fondoGris" style="width: 5%; align-content: center; text-indent: 15%;">
+            <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
+            <p class="fontLarge">{{item.ID}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
+            <p class="fontLarge">{{item.Rut}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 25%;">
+            <p class="fontSmall" matColumnDef="Contratante">Nombre o Razón social</p>
+            <p class="fontLarge">{{item.Contratante}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 15%;">
+            <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
+            <p class="fontLarge">{{item.Rubro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 20%;">
+            <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
+            <p class="fontLarge">{{item.TipoSeguro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
+            <p class="fontLarge">{{item.Fecha}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 5%; align-content: center;">
+            <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    }
+  <!-- </table> -->
+  <mat-paginator
+    #myPaginator
+    [pageSizeOptions]="[5, 10, 15, 100]"
+    [pageSize]="5"
+  ></mat-paginator>
+</div>
+<!--  <div class="mat-elevation-z8">
+  <table mat-table
+      [dataSource]="dataSourceSolicitud"
+      multiTemplateDataRows
+      matSort>
+      <ng-container matColumnDef="Sla">
+        <th
+          id="slaI"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 4%"
+        >
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="gris"
+          style="width: 4%; background-color: #E8E8EA; text-justify: center;"
+        >
+            <mat-icon [ngClass]="getCellClass(element.Sla)">traffic</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ID">
+        <th id="_id"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 5%"
+          > ID solicitud</th>
+        <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Rut">
+        <th id="_rut"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 5%"
+          > Rut contratante </th>
+        <td mat-cell *matCellDef="let element"> {{element.Rut}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Contratante">
+        <th
+          id="_contratante"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 15%"
+        >
+          Nombre o Razón social
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Contratante }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Rubro">
+        <th
+          id="_rubro"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 10%"
+        >
+          Rubro
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Rubro }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="TipoSeguro">
+        <th
+          id="_tipoSeguro"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 8%"
+        >
+          Tipo Seguro
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.TipoSeguro }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Fecha">
+        <th
+          id="_fecha|"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 8%"
+        >
+          Fecha de solicitud
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.Fecha }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="accion">
+        <th
+          id="accionI"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 4%; text-align: center"
+        >
+          Acción
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row; let i = index"
+          style="width: 4%; text-align: center"
+        >
+          <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
+        </td></ng-container
+      >
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef style="width: 4%; text-align: center">&nbsp;</th>
+        <td mat-cell *matCellDef="let element" style="width: 4%; text-align: center">
+          <button mat-icon-button (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+            @if (expandedElement === element) {
+              <mat-icon class="destacado">keyboard_arrow_up</mat-icon>
+            } @else {
+              <mat-icon class="destacado">keyboard_arrow_down</mat-icon>
+            }
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="expandColumns.length"
+          style="width: 4%; text-align: center">
+          <div [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              @for(item of element.Observaciones; track item){
+                <div class="container-fluid d-flex justify-around">
+                  <div> <span>Iteración: {{item.iteracion}}</span> </div>
+                  <div> <span>Fecha: {{item.fechaObs}} </span></div>
+                  <div> <span>Observación: {{item.descripcionObs}} </span></div>
+                </div>
+              }
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: expandColumns;"
+          class="element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+    </table>
+
+    <mat-paginator
+      #myPaginator
+      [pageSizeOptions]="[10, 20, 30, 100]"
+    ></mat-paginator>
+  </div>
+ -->
