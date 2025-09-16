@@ -1,4 +1,10 @@
-import { Component, ViewEncapsulation, inject, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -14,9 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import {
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -26,7 +30,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
-  ISolicitudContratante
+  ISolicitudContratante,
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
@@ -46,7 +50,7 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -78,8 +82,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MateriaAseguradaComponent,
     MatCardContent,
     MatCard,
-    MatCheckboxModule
-],
+    MatCheckboxModule,
+  ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -97,18 +101,16 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  datoAsegurados=signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios=signal<ISolicitudBeneficiario[] | undefined>(undefined);
+  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
-
 
   esIgualAlAsegurado: boolean = false;
 
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
-
 
   datoRubros = signal<IRubro[]>([]);
 
@@ -131,7 +133,8 @@ export default class IngresoSolicitudComponent {
     this.validaQueSeaVerdadero,
   ]);
 
-
+  @ViewChild(CuestionarioComponent)
+  cuestionarioComponent!: CuestionarioComponent;
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
@@ -148,8 +151,7 @@ export default class IngresoSolicitudComponent {
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
-      aseguradeCheck: this.aseguradeCheck
-
+      aseguradeCheck: this.aseguradeCheck,
     })
   );
 
@@ -191,22 +193,18 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-
-  async ngOnInit(){
-
-      this.cargaRubro();
+  async ngOnInit() {
+    this.cargaRubro();
   }
 
-
-
   cargaRubro() {
-   this.rubroService.postRubro().subscribe({
+    this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.datoRubros.set(dato.items);
+          this.datoRubros.set(dato.items);
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:',dato.mensaje);
+            console.log('Error:', dato.mensaje);
           } else {
             console.log('ERROR DE SISTEMA:');
           }
@@ -219,14 +217,14 @@ export default class IngresoSolicitudComponent {
   }
 
   async seleccionaRubro(_codigoRubro: string) {
-    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
-   this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.items);
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:',dato.mensaje);
+            console.log('Error:', dato.mensaje);
           } else {
             console.log('ERROR DE SISTEMA:');
           }
@@ -266,6 +264,10 @@ export default class IngresoSolicitudComponent {
       return { rutInvalido: true };
     }
     return null as any;
+  }
+
+  puedeEnviar(): boolean {
+    return this.cuestionarioComponent?.archivoObligatorioCargado() ?? false;
   }
 
   abrirDialogoYAvanzar(): void {

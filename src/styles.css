@@ -35,6 +35,9 @@ h3[mat-dialog-title] {
   background-color: #eeeff1 !important;
   border: 1px solid #d2d2d4 !important;
   color: #666668 !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar:hover {
@@ -44,6 +47,9 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente {
   background-color: #149dc9 !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente:hover {
@@ -54,6 +60,9 @@ h3[mat-dialog-title] {
 .colorFondoBotonAtras {
   background-color: #149dc9 !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonAtras:hover {
@@ -65,6 +74,9 @@ h3[mat-dialog-title] {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonAnular:hover {
@@ -74,6 +86,9 @@ h3[mat-dialog-title] {
 .colorFondoBotonDescargar {
   background-color: #234e85 !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonDescargar:hover {
@@ -85,6 +100,9 @@ h3[mat-dialog-title] {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonVolver:hover {
@@ -94,6 +112,9 @@ h3[mat-dialog-title] {
 .colorFondoBotonGrabar {
   background-color: #234e85 !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonGrabar:hover {
@@ -104,11 +125,17 @@ h3[mat-dialog-title] {
 .colorFondoBotonConfirmar {
   background-color: #6baa1f !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonEliminar {
   background-color: #f45516 !important;
   color: white !important;
+  padding: 8px 20px !important;
+  font-size: 15px !important;
+  min-width: 120px !important;
 }
 
 .colorFondoBotonEliminar:hover {
@@ -655,6 +682,20 @@ th#opcionesI {
   color: #f2f2f4 !important;
 }
 
+.boton-eliminar {
+  background-color: #149dc9 !important;
+  color: #f2f2f4 !important;
+  font-size: 11px !important;
+  font-family: "Roboto", sans-serif !important;
+  margin-left: 12px;
+}
+
+.boton-eliminar:hover {
+  background-color: #0f8dba !important;
+  color: #f2f2f4 !important;
+}
+/* Fin Botones carga cuestionario */
+
 .form-card-cuestionario {
   border-radius: 12px;
   padding: 0.1rem 0.1rem !important; /* menos espacio arriba/abajo */
@@ -667,9 +708,6 @@ th#opcionesI {
   padding-top: 16px;
 }
 
-.modifica-container-cuestionario > * {
-  width: 49%;
-}
 /* FIN CUESTIONARIO Y DOCUMENTOS */
 
 /* MODAL DE CONFIRMACION */
@@ -763,7 +801,6 @@ mat-radio-button {
   background-color: #323131 !important;
 }
 
-
 /* Cards que encierran contendidos */
 .form-card {
   border-radius: 12px;
@@ -811,8 +848,8 @@ mat-radio-button {
   width: 100%;
 }
 
-.fondoGris{
-  background-color: #E8E8EA;
+.fondoGris {
+  background-color: #e8e8ea;
   color: #666668;
 }
 
@@ -820,8 +857,8 @@ mat-radio-button {
 .contenido-horizontal {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
-  gap: 16px;               /* Espacio entre secciones y divisores */
+  align-items: center; /* Centra verticalmente */
+  gap: 16px; /* Espacio entre secciones y divisores */
   padding: 16px;
 }
 
@@ -829,4 +866,3 @@ mat-divider[vertical] {
   height: auto;
   align-self: stretch;
 }
-
