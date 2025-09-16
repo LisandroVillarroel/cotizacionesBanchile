@@ -57,7 +57,7 @@ h3[mat-dialog-title] {
   color: white !important;
 }
 
-.colorFondoBotonAtras {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras {
   background-color: #149dc9 !important;
   color: white !important;
   padding: 8px 20px !important;
@@ -65,12 +65,12 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonAtras:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras:hover {
   background-color: #0f8dba !important;
   color: white !important;
 }
 
-.colorFondoBotonAnular {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAnular {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
@@ -79,11 +79,11 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonAnular:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAnular:hover {
   border: 1px solid #333334 !important;
 }
 
-.colorFondoBotonDescargar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar {
   background-color: #234e85 !important;
   color: white !important;
   padding: 8px 20px !important;
@@ -91,12 +91,12 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonDescargar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar:hover {
   background-color: #002464 !important;
   color: white !important;
 }
 
-.colorFondoBotonVolver {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonVolver {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
@@ -105,11 +105,11 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonVolver:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonVolver:hover {
   border: 1px solid #333334 !important;
 }
 
-.colorFondoBotonGrabar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
   background-color: #234e85 !important;
   color: white !important;
   padding: 8px 20px !important;
@@ -117,12 +117,12 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonGrabar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar:hover {
   background-color: #002464 !important;
   color: white !important;
 }
 
-.colorFondoBotonConfirmar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonConfirmar {
   background-color: #6baa1f !important;
   color: white !important;
   padding: 8px 20px !important;
@@ -130,7 +130,7 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonEliminar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   background-color: #f45516 !important;
   color: white !important;
   padding: 8px 20px !important;
@@ -138,7 +138,7 @@ h3[mat-dialog-title] {
   min-width: 120px !important;
 }
 
-.colorFondoBotonEliminar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar:hover {
   background-color: #d11d1a !important;
   color: white !important;
 }
