@@ -24,6 +24,7 @@ import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
+  IIngresoSolicitud,
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
   ISolicitudContratante
@@ -47,6 +48,7 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -91,7 +93,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   ],
 })
 export default class IngresoSolicitudComponent {
-  datoSolicitud: ISolicitudContratante | undefined;
+
+  ingresoSolicitud!:IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
 
   flagAseguradoRescata: boolean = false;
@@ -102,6 +105,7 @@ export default class IngresoSolicitudComponent {
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
+  ingresoSolicitudService= inject(IngresoSolicitudService);
 
 
   esIgualAlAsegurado: boolean = false;
@@ -193,13 +197,13 @@ export default class IngresoSolicitudComponent {
 
 
   async ngOnInit(){
-
+//this.seleccionaRubro("AUTOMOTRIZ")
       this.cargaRubro();
   }
 
 
-
   cargaRubro() {
+
    this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -238,8 +242,50 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  enviar() {
-    alert('Grabar');
+  grabaConratante() {
+    console.log('form contratante:',this.agregaSolicitudContratante().value);
+
+    this.ingresoSolicitud={
+      id_ejecutivo_banco:'LISANDRO VILLARROEL',
+      contratante:{
+      rut_contratante:this.agregaSolicitudContratante().get('rutCliente')!.value,
+      nombre_razon_social_contratante:this.nombreRazonSocial(),
+      mail_contratante:'mail_contratante',
+      telefono_contratante:'telefono_contratante',
+      region_contratante:'region_contratante',
+      ciudad_contratante:'ciudad_contratante',
+      comuna_contratante:'comuna_contratante',
+      direccion_contratante:'direccion_contratante',
+      numero_dir_contratante:'n',
+      departamento_block_contratante:'a',
+      casa_contratante:'c'
+      },
+    id_rubro:this.agregaSolicitudContratante().get('rubro')!.value,
+    id_tipo_seguro:this.agregaSolicitudContratante().get('seguro')!.value,
+    asegurados: [],
+    beneficiarios:[]
+    }
+    console.log('ingreso solicitud:',this.ingresoSolicitud);
+    /*this.ingresoSolicitud?.asegurados=this.datoAsegurados() as ISolicitudAsegurado[]; */
+    this.ingresoSolicitudService.postIngresoSolicitud(this.ingresoSolicitud).subscribe({
+      next: (dato) => {
+        console.log('dato:',dato);
+        if (dato.codigo === 200) {
+           alert('Grabó bien');
+        } else {
+          if (dato.codigo != 500) {
+            alert('Error:'+dato.mensaje);
+            console.log('Error:',dato.mensaje);
+          } else {
+            alert('Error:'+dato.mensaje);
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
   salir() {
@@ -257,7 +303,7 @@ export default class IngresoSolicitudComponent {
       await this.agregaSolicitudContratante()
         .get('rutCliente')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-      await this.nombreRazonSocial.set('Nombre de prueba');
+      await this.nombreRazonSocial.set('Nombre de prueba22222');
     }
   }
 

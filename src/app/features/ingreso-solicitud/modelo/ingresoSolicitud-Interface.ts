@@ -60,3 +60,10 @@ export interface IIngresoSolicitud {
   asegurados: ISolicitudAsegurado[],
   beneficiarios: ISolicitudBeneficiario[]
 }
+
+export interface IEstadoIngresoSolicitud {
+  codigo: number;
+  mensaje: string;
+  estado: string;
+  estado_creacion: string
+}
