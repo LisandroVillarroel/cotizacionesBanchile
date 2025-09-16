@@ -28,3 +28,9 @@
   justify-content: start;
   width: 15%;
 }
+
+.alinea-card-gestion{
+  margin-bottom: 0.5rem;
+  /* padding-bottom: 0px; */
+  padding: 10px 16px 0px;
+}

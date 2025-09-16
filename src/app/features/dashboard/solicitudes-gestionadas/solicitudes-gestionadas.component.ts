@@ -15,9 +15,11 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
+import { MatCardModule } from '@angular/material/card';
+
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
 import { ISolicitud, ITipoRubro, ITipoSeguro, IEstado } from './modelo/common';
-
+import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -37,7 +39,9 @@ import { ISolicitud, ITipoRubro, ITipoSeguro, IEstado } from './modelo/common';
     MatTooltipModule,
     MatExpansionModule,
     MatDividerModule,
-    CommonModule
+    MatCardModule,
+    CommonModule,
+
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
@@ -411,7 +415,17 @@ export class SolicitudesGestionadasComponent  {
   ]);
 
   /* Fin llamadas a servicios */
-    /* verDetalle(ISolicitud: any) {
-      throw new Error('Function not implemented.');
-    } */
+     verDetalle(IdSolicitud: number) {
+       const dialogConfig = new MatDialogConfig();
+
+          dialogConfig.disableClose = true;
+          dialogConfig.autoFocus = true;
+          dialogConfig.width = '70%';
+          dialogConfig.height = '90%';
+          dialogConfig.position = { top: '3%' };
+          dialogConfig.data = IdSolicitud;
+          this.dialog
+            .open(DetalleSolicitudComponent, dialogConfig)
+            .afterClosed()
+        }
 }

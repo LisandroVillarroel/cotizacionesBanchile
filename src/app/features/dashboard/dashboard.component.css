@@ -16,3 +16,14 @@
 .fontSmall{
   font-size: 12px;
 }
+
+.inputFechaForm {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 3px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 0px !important;
+  color: #666668;
+}
