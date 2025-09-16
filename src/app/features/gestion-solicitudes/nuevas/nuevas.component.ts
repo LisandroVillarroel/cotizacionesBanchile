@@ -1,6 +1,6 @@
 import { Component, ViewChild, inject, signal, NgModule } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerInputEvent, MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,11 +55,13 @@ export class NuevasComponent {
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
   rubro = new FormControl();
   seguro = new FormControl();
-  estado = new FormControl();
+  nombre = new FormControl();
+  dateControl = new FormControl();
+
   displayedColumns: string[] = [
     "Sla", "ID", "Rut", "Contratante", "Rubro", "TipoSeguro", "Fecha", "accion" ];
 
-  dataSourceSolicitud = new MatTableDataSource<ISolicitudG>();
+  dataSourceSolicitud = signal<ISolicitudG[]>([]);
 
   @ViewChild('buscarInput') inputElement: any;
 
@@ -68,14 +70,13 @@ export class NuevasComponent {
   @ViewChild(MatSort) sortSolicitud!: MatSort;
 
   ngAfterViewInit(): void {
-    this.dataSourceSolicitud.paginator = this.paginatorSolicitud;
-    this.dataSourceSolicitud.sort = this.sortSolicitud;
+    // this.dataSourceSolicitud.paginator = this.paginatorSolicitud;
 }
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  applyFilterSolicitud(campo:string, valor: String) {
+ /*  applyFilterSolicitud(campo:string, valor: String) {
   //  const filterValue = (valor.target as HTMLInputElement).value;
     console.log('campo:',campo  + ' Valor Inicial:',valor)
     this.dataSourceSolicitud.filterPredicate = (data: any, filter: string) => {
@@ -90,43 +91,37 @@ export class NuevasComponent {
       this.dataSourceSolicitud.paginator.firstPage();
     }
   }
+ */
 
-  applyFilterIDNombre(campo:string, valor: String) {
-  //  const filterValue = (valor.target as HTMLInputElement).value;
-    console.log('campo:',campo  + ' Valor Inicial:',valor)
-    this.dataSourceSolicitud.filterPredicate = (data: any, filter: string) => {
-      // Comprueba si el valor de la columna específica incluye el filtro
-      const dataValue = data[campo] ? data[campo].toString() : '';
-      return dataValue.toLowerCase().includes(filter.toLowerCase());
-    };
-
-    this.dataSourceSolicitud.filter = valor.trim().toLowerCase();
-
-    if (this.dataSourceSolicitud.paginator) {
-      this.dataSourceSolicitud.paginator.firstPage();
-    }
-  }
-
-
-  limpiaFiltros() {
-    this.rubro.reset();
-    this.seguro.reset();
-    this.estado.reset();
-    this.dataSourceSolicitud.data = this.datosSolicitud();
-  }
-
-  buscar() {
-    this.dataSourceSolicitud.data = this.datosSolicitud();
-  }
-
-  async ngOnInit() {
-    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSourceSolicitud.data = this.datosSolicitud();
+  async filtrarNombre(inNombre: string) {
+    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.Contratante == inNombre));
   }
 
   async seleccionaRubro(_codigoRubro: number) {
     this.rescatadoSeguro.set(await this.DatoSeguros()
     .filter((rubro) => rubro.codigoRubro == _codigoRubro));
+    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.IdRubro == _codigoRubro));
+  }
+
+  async filtrarTipoSeguro(inTipoSeguro: number) {
+    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.IdTipoSeguro == inTipoSeguro));
+  }
+
+  async filtrarFecha() {
+    this.dataSourceSolicitud.set(await this.dataSourceSolicitud()
+    .filter((item) => item.Fecha == this.dateControl.value.toString()));
+  }
+
+  limpiaFiltros() {
+    this.rubro.reset();
+    this.seguro.reset();
+    this.nombre.reset();
+    this.dataSourceSolicitud.set(this.datosSolicitud);
+  }
+
+  async ngOnInit() {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.dataSourceSolicitud.set(this.datosSolicitud);
   }
 
   getCellClass(value: number): string {
@@ -140,13 +135,15 @@ export class NuevasComponent {
   }
 
 /* Llamadas a servicios */
-  datosSolicitud = signal<ISolicitudG[]>([
+  datosSolicitud =<ISolicitudG[]>([
     {
       Sla: 1,
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 1,
       TipoSeguro: "Vehículo Liviano",
       Fecha: '15/03/2023',
       Observaciones:[],
@@ -156,7 +153,9 @@ export class NuevasComponent {
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 1,
       TipoSeguro: "Asistencia en Viajes",
       Fecha: '22/07/2023',
       Observaciones:[],
@@ -166,7 +165,9 @@ export class NuevasComponent {
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 2,
       TipoSeguro: "Responsabilidad Civil Médica",
       Fecha: '30/09/2023',
       Observaciones:[],
@@ -176,7 +177,9 @@ export class NuevasComponent {
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 2,
       TipoSeguro: "Transporte Terrestre",
       Fecha: '05/12/2023',
       Observaciones:[],
@@ -186,7 +189,9 @@ export class NuevasComponent {
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
+      IdRubro: 1,
       Rubro: 'Crédito',
+      IdTipoSeguro: 1,
       TipoSeguro: "Seguro de Crédito Interno",
       Fecha: '18/02/2023',
       Observaciones:[],
@@ -196,7 +201,9 @@ export class NuevasComponent {
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 3,
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Fecha: '27/04/2023',
       Observaciones:[],
@@ -206,7 +213,9 @@ export class NuevasComponent {
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
+      IdRubro: 2,
       Rubro: 'Inmuebles',
+      IdTipoSeguro: 1,
       TipoSeguro: "Todo Seguro y Construcción",
       Fecha: '11/06/2023',
       Observaciones:[],
@@ -216,7 +225,9 @@ export class NuevasComponent {
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 1,
       TipoSeguro: "Vehículo Liviano",
       Fecha: '15/03/2023',
       Observaciones:[],
@@ -226,7 +237,9 @@ export class NuevasComponent {
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 1,
       TipoSeguro: "Asistencia en Viajes",
       Fecha: '22/07/2023',
       Observaciones:[],
@@ -236,7 +249,9 @@ export class NuevasComponent {
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 2,
       TipoSeguro: "Responsabilidad Civil Médica",
       Fecha: '30/09/2023',
       Observaciones:[],
@@ -246,7 +261,9 @@ export class NuevasComponent {
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 2,
       TipoSeguro: "Transporte Terrestre",
       Fecha: '05/12/2023',
       Observaciones:[],
@@ -256,7 +273,9 @@ export class NuevasComponent {
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
+      IdRubro: 1,
       Rubro: 'Crédito',
+      IdTipoSeguro: 1,
       TipoSeguro: "Seguro de Crédito Interno",
       Fecha: '18/02/2023',
       Observaciones:[],
@@ -266,7 +285,9 @@ export class NuevasComponent {
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 3,
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Fecha: '27/04/2023',
       Observaciones:[],
@@ -276,7 +297,9 @@ export class NuevasComponent {
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
+      IdRubro: 2,
       Rubro: 'Inmuebles',
+      IdTipoSeguro: 1,
       TipoSeguro: "Todo Seguro y Construcción",
       Fecha: '11/06/2023',
       Observaciones:[],

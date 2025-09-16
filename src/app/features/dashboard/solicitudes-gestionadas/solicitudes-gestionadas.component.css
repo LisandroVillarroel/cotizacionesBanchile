@@ -135,6 +135,17 @@ p {
   color: #666668;
 }
 
+.button-link {
+  background-color: #ffffff !important;
+  color: #234e85 !important;
+  font-size: 12px;
+}
+
+.button-link:hover {
+  background-color: #ffffff !important;
+  color: #0F8DBA !important;
+}
+
 .mat-mdc-select-value-text {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;

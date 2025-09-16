@@ -3,7 +3,9 @@ export interface ISolicitudG {
   ID: string;
   Rut: string;
   Contratante: string;
+  IdRubro: number;
   Rubro: string;
+  IdTipoSeguro: number;
   TipoSeguro: string;
   Fecha: string;
   Observaciones: Array<IObservacion>;

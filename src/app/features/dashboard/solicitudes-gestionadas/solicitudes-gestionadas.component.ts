@@ -56,7 +56,6 @@ export class SolicitudesGestionadasComponent  {
     'Contratante',
     'Rubro',
     "TipoSeguro",
-    "Coordinador",
     "Estado",
     "accion"
   ];
@@ -95,6 +94,10 @@ export class SolicitudesGestionadasComponent  {
   }
 
   limpiaFiltros() {
+    this.rubro.reset();
+    this.seguro.reset();
+    this.estado.reset();
+
     this.dataSourceSolicitud.data = this.datosSolicitud();
   }
   buscar() {

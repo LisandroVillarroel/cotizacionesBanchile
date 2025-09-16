@@ -3,9 +3,9 @@
     <span> Filtrar por: </span>
     <div style="width: 20%;">
       <mat-form-field class="inputBuscar">
-        <mat-label class="labelI">ID, Nombre o Razón social</mat-label>
+        <mat-label class="labelI">Nombre o Razón social</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
-        <input matInput #buscarInput (keyup)="applyFilterIDNombre('Coordinador', buscarInput.value)" />
+        <input matInput #buscarInput (keyup)="filtrarNombre(buscarInput.value)" />
       </mat-form-field>
     </div>
 
@@ -13,9 +13,9 @@
       <mat-form-field class="inputSelect">
         <mat-label class="labelI">Rubro</mat-label>
         <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
-          @for(_seguros of datoRubros(); track _seguros){
-            <mat-option [value]="_seguros.codigoRubro">
-              {{ _seguros.descripcionRubro }}
+          @for(_rubros of datoRubros(); track _rubros){
+            <mat-option [value]="_rubros.codigoRubro">
+              {{ _rubros.descripcionRubro }}
             </mat-option>
           }
         </mat-select>
@@ -25,9 +25,9 @@
     <div style="width: 20%;">
       <mat-form-field class="inputSelect">
         <mat-label class="labelI">Tipo de seguro</mat-label>
-        <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('TipoSeguro',$event.value)">
+        <mat-select [formControl]="seguro" (selectionChange)="filtrarTipoSeguro($event.value)">
           @for(_seguros of rescatadoSeguro(); track _seguros){
-            <mat-option [value]="_seguros.descripcionSeguro">
+            <mat-option [value]="_seguros.codigoSeguro">
               {{ _seguros.descripcionSeguro }}
             </mat-option>
           }
@@ -39,9 +39,9 @@
     <div>
       <mat-form-field class="inputFechaForm">
         <mat-label class="fontSmall gris">Fecha</mat-label>
-          <input matInput [matDatepicker]="picker">
+          <input matInput [matDatepicker]="picker" [formControl]="dateControl">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker (dateChange)="filtrarFecha()"></mat-datepicker>
       </mat-form-field>
     </div>
 
@@ -53,42 +53,43 @@
   </div>
 </div>
 
-
-<!--     @for(item of datosSolicitud(); track $index){
+<div class="container-fluid p-2">
+  <!-- <table style="border: none; width: 100%;"> -->
+    @for(item of dataSourceSolicitud(); track $index){
       <mat-card class="alinea-card-gestion">
-        <mat-card-content class="d-flex">
-          <div class="fondoGris" style="width: 5%; align-content: center;">
+        <mat-card-content class="d-flex p-0">
+          <div class="fondoGris" style="width: 5%; align-content: center; text-indent: 15%;">
             <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
-            <h5 matColumnDef="ID">ID solicitud</h5>
-            <h3>{{item.ID}}</h3>
+            <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
+            <p class="fontLarge">{{item.ID}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
-            <h5 matColumnDef="Rut">RUT contratante</h5>
-            <h3>{{item.Rut}}</h3>
+            <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
+            <p class="fontLarge">{{item.Rut}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 25%;">
-            <h5 matColumnDef="Contratante">Nombre o Razón social</h5>
-            <h3>{{item.Contratante}}</h3>
+            <p class="fontSmall" matColumnDef="Contratante">Nombre o Razón social</p>
+            <p class="fontLarge">{{item.Contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 15%;">
-            <h5 matColumnDef="Rubro">Rubro</h5>
-            <h3>{{item.Rubro}}</h3>
+            <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
+            <p class="fontLarge">{{item.Rubro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 20%;">
-            <h5 matColumnDef="TipoSeguro">Tipo de Seguro</h5>
-            <h3>{{item.TipoSeguro}}</h3>
+            <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
+            <p class="fontLarge">{{item.TipoSeguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
-            <h5 matColumnDef="Fecha">Fecha de solicitud</h5>
-            <h3>{{item.Fecha}}</h3>
+            <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
+            <p class="fontLarge">{{item.Fecha}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class="p-2" style="width: 5%; align-content: center;">
@@ -98,13 +99,14 @@
         </mat-card-content>
       </mat-card>
     }
-    <mat-paginator
-      #myPaginator
-      [pageSizeOptions]="[10, 20, 30, 100]"
-      [pageSize]="5"
-    ></mat-paginator>
- -->
-<div class="mat-elevation-z8">
+  <!-- </table> -->
+  <mat-paginator
+    #myPaginator
+    [pageSizeOptions]="[5, 10, 15, 100]"
+    [pageSize]="5"
+  ></mat-paginator>
+</div>
+<!-- <div class="mat-elevation-z8">
   <table mat-table
       [dataSource]="dataSourceSolicitud"
       multiTemplateDataRows
@@ -225,4 +227,4 @@
       #myPaginator
       [pageSizeOptions]="[10, 20, 30, 100]"
     ></mat-paginator>
-  </div>
+  </div> -->

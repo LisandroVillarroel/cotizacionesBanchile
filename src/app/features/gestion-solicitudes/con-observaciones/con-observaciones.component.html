@@ -53,71 +53,60 @@
   </div>
 </div>
 
-<!-- <div class="container-fluid fondoGris">
-  @for(item of datosSolicitud(); track $index){
-    <mat-accordion>
-      <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-          <div class="container-fluid d-flex">
-              <div class="fondoGris" style="width: 5%; align-content: center;">
-                <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 10%;">
-                <h5 matColumnDef="ID">ID solicitud</h5>
-                <h3>{{item.ID}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 15%;">
-                <h5 matColumnDef="Rut">RUT contratante</h5>
-                <h3>{{item.Rut}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 25%;">
-                <h5 matColumnDef="Contratante">Nombre o Razón social</h5>
-                <h3>{{item.Contratante}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 15%;">
-                <h5 matColumnDef="Rubro">Rubro</h5>
-                <h3>{{item.Rubro}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 20%;">
-                <h5 matColumnDef="TipoSeguro">Tipo de Seguro</h5>
-                <h3>{{item.TipoSeguro}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class ="p-2" style="width: 10%;">
-                <h5 matColumnDef="Fecha">Fecha de solicitud</h5>
-                <h3>{{item.Fecha}}</h3>
-              </div>
-              <mat-divider [vertical]="true"></mat-divider>
-              <div class="p-2" style="width: 5%; align-content: center;">
-                <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
-              </div>
+<div class="container-fluid p-2">
+  <!-- <table style="border: none; width: 100%;"> -->
+    @for(item of datosSolicitud(); track $index){
+      <mat-card class="alinea-card-gestion">
+        <mat-card-content class="d-flex p-0">
+          <div class="fondoGris" style="width: 5%; align-content: center; text-indent: 15%;">
+            <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
           </div>
-        </mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                            (closed)="panelOpenState = false">
-          @for(obs of item.Observaciones; track obs){
-            <div class="container-fluid d-flex justify-around">
-              <div> <span>Iteración: {{obs.iteracion}}</span> </div>
-              <div> <span>Fecha: {{obs.fechaObs}} </span></div>
-              <div> <span>Observación: {{obs.descripcionObs}} </span></div>
-            </div>
-          }
-      </mat-expansion-panel>
-    </mat-accordion>
-  }
-    <mat-paginator
-      #myPaginator
-      [pageSizeOptions]="[10, 20, 30, 100]"
-      [pageSize]="5"
-    ></mat-paginator>
-</div> -->
-<div class="mat-elevation-z8">
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
+            <p class="fontLarge">{{item.ID}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
+            <p class="fontLarge">{{item.Rut}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 25%;">
+            <p class="fontSmall" matColumnDef="Contratante">Nombre o Razón social</p>
+            <p class="fontLarge">{{item.Contratante}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 15%;">
+            <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
+            <p class="fontLarge">{{item.Rubro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 20%;">
+            <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
+            <p class="fontLarge">{{item.TipoSeguro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
+            <p class="fontLarge">{{item.Fecha}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 5%; align-content: center;">
+            <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    }
+  <!-- </table> -->
+  <mat-paginator
+    #myPaginator
+    [pageSizeOptions]="[5, 10, 15, 100]"
+    [pageSize]="5"
+  ></mat-paginator>
+</div>
+<!--  <div class="mat-elevation-z8">
   <table mat-table
       [dataSource]="dataSourceSolicitud"
       multiTemplateDataRows
@@ -271,3 +260,4 @@
       [pageSizeOptions]="[10, 20, 30, 100]"
     ></mat-paginator>
   </div>
+ -->

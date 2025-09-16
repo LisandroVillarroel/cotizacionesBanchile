@@ -156,7 +156,9 @@ export class ConObservacionesComponent {
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 1,
       TipoSeguro: "Vehículo Liviano",
       Fecha: '15/03/2023',
       Observaciones: [{
@@ -170,7 +172,9 @@ export class ConObservacionesComponent {
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 1,
       TipoSeguro: "Asistencia en Viajes",
       Fecha: '22/07/2023',
       Observaciones: [{
@@ -189,7 +193,9 @@ export class ConObservacionesComponent {
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 2,
       TipoSeguro: "Responsabilidad Civil Médica",
       Fecha: '30/09/2023',
       Observaciones: [{
@@ -208,7 +214,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 2,
       TipoSeguro: "Transporte Terrestre",
       Fecha: '05/12/2023',
       Observaciones: [{
@@ -232,7 +240,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
+      IdRubro: 1,
       Rubro: 'Crédito',
+      IdTipoSeguro: 1,
       TipoSeguro: "Seguro de Crédito Interno",
       Fecha: '18/02/2023',
       Observaciones: [{
@@ -256,7 +266,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 3,
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Fecha: '27/04/2023',
       Observaciones: [{
@@ -270,7 +282,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
+      IdRubro: 2,
       Rubro: 'Inmuebles',
+      IdTipoSeguro: 1,
       TipoSeguro: "Todo Seguro y Construcción",
       Fecha: '11/06/2023',
       Observaciones: [{
@@ -289,7 +303,9 @@ export class ConObservacionesComponent {
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 1,
       TipoSeguro: "Vehículo Liviano",
       Fecha: '15/03/2023',
       Observaciones: [{
@@ -312,7 +328,9 @@ export class ConObservacionesComponent {
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 1,
       TipoSeguro: "Asistencia en Viajes",
       Fecha: '22/07/2023',
       Observaciones: [{
@@ -331,7 +349,9 @@ export class ConObservacionesComponent {
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 2,
       TipoSeguro: "Responsabilidad Civil Médica",
       Fecha: '30/09/2023',
       Observaciones: [{
@@ -345,7 +365,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
+      IdRubro: 3,
       Rubro: 'Vehículo',
+      IdTipoSeguro: 2,
       TipoSeguro: "Transporte Terrestre",
       Fecha: '05/12/2023',
       Observaciones: [{
@@ -359,7 +381,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
+      IdRubro: 1,
       Rubro: 'Crédito',
+      IdTipoSeguro: 1,
       TipoSeguro: "Seguro de Crédito Interno",
       Fecha: '18/02/2023',
       Observaciones: [{
@@ -378,7 +402,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
+      IdRubro: 4,
       Rubro: 'Vida',
+      IdTipoSeguro: 3,
       TipoSeguro: "Asiento Pasajero/Vida Conductor",
       Fecha: '27/04/2023',
       Observaciones: [{
@@ -397,7 +423,9 @@ export class ConObservacionesComponent {
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
+      IdRubro: 2,
       Rubro: 'Inmuebles',
+      IdTipoSeguro: 1,
       TipoSeguro: "Todo Seguro y Construcción",
       Fecha: '11/06/2023',
       Observaciones: [{

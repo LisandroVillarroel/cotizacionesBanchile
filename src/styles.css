@@ -291,7 +291,7 @@ tr.mat-header-row {
 .mat-mdc-footer-row,
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
-  font-size: 11px !important;
+  font-size: 12px !important;
   /*Tamaño letra tabla*/
 }
 
