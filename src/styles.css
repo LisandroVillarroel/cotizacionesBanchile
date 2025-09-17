@@ -778,7 +778,7 @@ input.mat-mdc-input-element::placeholder {
 
 /* Mensajes de ayuda (hint) */
 .mat-mdc-form-field-hint {
-  color: #888 !important;
+  color: #285b9b !important;
 }
 
 /* Iconos dentro del input */
@@ -787,27 +787,35 @@ input.mat-mdc-input-element::placeholder {
   color: #323131 !important;
 }
 
-/* Texto del radio button */
-mat-radio-button {
+/* Texto del checkbox */
+mat-checkbox {
   color: #323131 !important;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
 }
 
-/* Círculo exterior MDC: borde gris oscuro, fondo blanco */
-.mdc-radio__outer-circle {
+/* Caja del checkbox (no seleccionada) */
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__background {
   background-color: #ffffff !important;
-  border: 2px solid #323131 !important;
+  border: 2px solid #285b9b !important;
   box-shadow: none !important;
 }
 
-/* Círculo interior MDC: invisible si no está seleccionado */
-.mdc-radio__inner-circle {
-  background-color: transparent !important;
-  box-shadow: none !important;
+/* Caja del checkbox (seleccionada) */
+.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #285b9b !important;
+  border-color: #285b9b !important;
 }
 
-/* Cuando está seleccionado: círculo interior oscuro */
-.mat-radio-checked .mdc-radio__inner-circle {
-  background-color: #323131 !important;
+/* Checkmark (ícono de tilde) */
+.mat-mdc-checkbox-checked .mdc-checkbox__checkmark {
+  color: #285b9b !important;
+}
+
+/* Hover y focus */
+.mat-mdc-checkbox:hover .mdc-checkbox__background,
+.mat-mdc-checkbox:focus-within .mdc-checkbox__background {
+  border-color: #285b9b !important;
 }
 
 /* Contenedor para alinear bloques horizontalmente */
