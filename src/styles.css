@@ -31,13 +31,18 @@ h3[mat-dialog-title] {
   margin-top: 24px;
 }
 
+/* Tamaño general de todos los botones mat-mdc-raised-button */
+.mat-mdc-raised-button.mdc-button {
+  padding: 26px 26px !important;     /* Más alto y más ancho */
+  font-size: 16px !important;        /* Texto ligeramente más grande */
+  min-width: 140px !important;       /* Asegura buen ancho mínimo */
+  border-radius: 2px !important;     /* Opcional: suaviza el borde */
+}
+
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar {
   background-color: #eeeff1 !important;
   border: 1px solid #d2d2d4 !important;
   color: #666668 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar:hover {
@@ -47,9 +52,6 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente {
   background-color: #149dc9 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente:hover {
@@ -60,9 +62,6 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras {
   background-color: #149dc9 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras:hover {
@@ -74,9 +73,6 @@ h3[mat-dialog-title] {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonAnular:hover {
@@ -86,9 +82,6 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar {
   background-color: #234e85 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar:hover {
@@ -100,9 +93,6 @@ h3[mat-dialog-title] {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonVolver:hover {
@@ -112,9 +102,6 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
   background-color: #234e85 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar:hover {
@@ -125,17 +112,11 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonConfirmar {
   background-color: #6baa1f !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   background-color: #f45516 !important;
-  color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
+  color: white !important;  
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar:hover {
