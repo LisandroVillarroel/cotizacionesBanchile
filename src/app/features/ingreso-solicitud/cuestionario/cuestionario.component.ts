@@ -14,9 +14,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
 import { ICuestionario } from '../modelo/ingresoSolicitud-Interface';
 import { MatDivider } from '@angular/material/divider';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -24,6 +24,7 @@ import { MatDivider } from '@angular/material/divider';
   templateUrl: './cuestionario.component.html',
   styleUrls: ['./cuestionario.component.css'],
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -91,13 +92,12 @@ export class CuestionarioComponent {
     },
   ]);
 
-  bloquearSeccion2 = true;
+  // Estado reactivo para habilitar/deshabilitar sección 2
+  bloquearSeccion2 = signal(true);
 
-  @ViewChildren('fileInputs') fileInputs!: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
+  @ViewChildren('fileInputs') fileInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog) {}
+  constructor(private fb: FormBuilder, private dialog: MatDialog) { }
 
   abrirInputArchivo(nombre: string) {
     const id = this.sanitizarNombre(nombre);
@@ -109,32 +109,27 @@ export class CuestionarioComponent {
     return 'fileInput_' + nombre.replace(/\s+/g, '_');
   }
 
-  onFileSelected(event: Event, doc: any) {
+  onFileSelected(event: Event, doc: ICuestionario) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      const nuevosDocumentos = this.documentos().map((d) => {
-        if (d.id === doc.id) {
-          return {
-            ...d,
-            archivo: file.name,
-            archivoNombre: file.name,
-          };
-        }
-        return d;
-      });
+      const nuevosDocumentos = this.documentos().map((d) =>
+        d.id === doc.id
+          ? { ...d, archivo: file.name, archivoNombre: file.name }
+          : d
+      );
 
       this.documentos.set(nuevosDocumentos);
 
-      // Si se cargó el documento obligatorio (id 1), bloquear sección 2
-      if (doc.id === 1) {
-        this.bloquearSeccion2 = false;
+      // Habilitar sección 2 si se cargó el documento obligatorio
+      if (doc.id === 1 && file.name) {
+        this.bloquearSeccion2.set(false);
       }
     }
   }
 
-  eliminarDocumento(doc: any) {
+  eliminarDocumento(doc: ICuestionario) {
     const nuevosDocumentos = this.documentos().map((d) => {
       if (d.id === doc.id) {
         return {
@@ -143,18 +138,28 @@ export class CuestionarioComponent {
           archivoNombre: 'Sin documento cargado',
         };
       }
+
+      // Si se eliminó el obligatorio, también limpiar los opcionales
+      if (doc.id === 1 && d.id !== 1) {
+        return {
+          ...d,
+          archivo: '',
+          archivoNombre: 'Sin documento cargado',
+        };
+      }
+
       return d;
     });
 
     this.documentos.set(nuevosDocumentos);
 
-    // Si se eliminó el documento obligatorio (id 1), desbloquear sección 2
+    // Deshabilitar sección 2 si se eliminó el obligatorio
     if (doc.id === 1) {
-      this.bloquearSeccion2 = true;
+      this.bloquearSeccion2.set(true);
     }
   }
 
-  public archivoObligatorioCargado(): boolean {
+  archivoObligatorioCargado(): boolean {
     const doc = this.documentos().find((d) => d.id === 1);
     return !!doc?.archivo;
   }
@@ -166,3 +171,4 @@ export class CuestionarioComponent {
     });
   }
 }
+
