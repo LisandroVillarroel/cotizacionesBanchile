@@ -18,6 +18,7 @@
 }
 
 .alinea-cards{
+  margin-top: 14px;
   align-content: center;
   justify-content: start;
   width: 60%;
@@ -25,9 +26,12 @@
 }
 
 .alinea-cards-2{
+  margin-top: 9px;
   align-content: center;
   justify-content: start;
   width: 15%;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .alinea-card-gestion{
