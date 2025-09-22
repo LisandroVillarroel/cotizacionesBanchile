@@ -23,6 +23,7 @@ export default class DetalleSolicitudComponent {
   private readonly dialog = inject(MatDialog);
 private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
    solicitudId: any;
+  DetalleSolicitudComponent: any;
   devolverSolicitud(): void {
     const dato = {
       solicitudId: 'ID123456789',
