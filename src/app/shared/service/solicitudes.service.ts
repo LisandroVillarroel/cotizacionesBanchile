@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { ISolicitudAsegurado, ISolicitudBeneficiario } from '@shared/modelo/ingreso-solicitud';
+import { ISolicitudAsegurado, ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitudesService {
+  /*
  private _http = inject(HttpClient);
   private datoAsegurados = signal<ISolicitudAsegurado[]>([
         {
@@ -68,4 +69,5 @@ export class SolicitudesService {
   getBeneficiarioId(id: string): ISolicitudBeneficiario[] | undefined {
     return this.datoBeneficiarios();
   }
+    */
 }

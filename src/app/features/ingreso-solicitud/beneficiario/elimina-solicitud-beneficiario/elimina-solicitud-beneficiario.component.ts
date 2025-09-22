@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ISolicitudBeneficiario } from '@shared/modelo/ingreso-solicitud';
+import { ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-elimina-solicitud-beneficiario',

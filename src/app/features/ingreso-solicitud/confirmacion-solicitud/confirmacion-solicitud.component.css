@@ -1,80 +1,89 @@
-/* Contenedor principal del diálogo */
-.dialog-container {
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  color: #333;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-}
+  /* Contenedor principal del diálogo */
+  .dialog-container {
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      color: #333;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+  }
 
-/* Barra azul con título */
-.barra-titulo {
-  background-color: #234e85;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-}
+  /* Barra azul con título */
+  .barra-titulo {
+      background-color: #234e85;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+  }
 
-.titulo {
-  font-size: 18px;
-  font-weight: bold;
-}
+    .titulo {
+        font-size: 18px;
+        font-weight: bold;
+    }
 
-/* Contenido del diálogo */
-.contenido-dialogo {
-  padding: 24px 16px;
-  overflow-y: auto;
-  flex-grow: 1;
-}
+  /* Contenido del diálogo */
+  .contenido-dialogo {
+      padding: 24px 16px;
+      overflow-y: auto;
+      flex-grow: 1;
+  }
 
-/* Bloques con separación visual */
-.bloque {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #ccc;
-}
+  /* Bloques con separación visual */
+  .bloque {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ccc;
+  }
 
-.bloque h3 {
-  margin-bottom: 8px;
-  color: #234e85;
-}
+  .bloque h3 {
+      margin-bottom: 8px;
+      color: #234e85;
+  }
 
-.bloque p {
-  margin: 4px 0;
-}
+  .bloque p {
+      margin: 4px 0;
+  }
 
-/* Acciones del diálogo */
-.acciones-dialogo {
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
-  background-color: #e0e0e0;
-  border-top: 1px solid #ccc;
-}
+  /* Acciones del diálogo */
+  .acciones-dialogo {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px;
+      background-color: #e0e0e0;
+      border-top: 1px solid #ccc;
+  }
 
-/* Alineación de botones */
-.alinear {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
+  /* Alineación de botones */
+  .alinear {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+  }
 
-.botones-izquierda,
-.botones-derecha {
-  display: flex;
-  align-items: center;
-}
+  .botones-izquierda,
+  .botones-derecha {
+      display: flex;
+      align-items: center;
+  }
 
-/* Botón de confirmar */
-.colorFondoBotonConfirmar {
-  background-color: #6baa1f !important;
-  color: white !important;
-  border: none;
-}
+  /* Botón de confirmar */
+  .colorFondoBotonConfirmar {
+      background-color: #6baa1f !important;
+      color: white !important;
+      border: none;
+  }
+
+  /* Elimina el fondo blanco y ajusta el borde del contenedor del diálogo */
+  .custom-dialog-container .mat-dialog-container {
+      padding: 0 !important;
+      border-radius: 8px !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      overflow: hidden !important;
+  }

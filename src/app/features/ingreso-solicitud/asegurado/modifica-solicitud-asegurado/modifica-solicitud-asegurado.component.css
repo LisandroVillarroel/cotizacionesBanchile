@@ -4,10 +4,9 @@
   padding: 0 10%;
 }
 
-.modifica-container > * {
+.modifica-container>* {
   width: 95%;
 }
-
 
 .mat-mdc-raised-button {
   min-width: 100%;
@@ -18,6 +17,20 @@
 
 }
 
-.mat-dialog-content{
+.mat-dialog-content {
   margin: auto;
+}
+
+.barra-titulo {
+  background-color: #234e85;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.titulo {
+  font-size: 18px;
+  font-weight: bold;
 }

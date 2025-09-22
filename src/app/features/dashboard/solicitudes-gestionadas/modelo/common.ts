@@ -8,16 +8,7 @@ export interface ISolicitud {
   Estado: string;
 }
 
-export interface ITipoRubro {
-  codigoRubro: number;
-  descripcionRubro: string;
-}
 
-export interface ITipoSeguro {
-  codigoSeguro: number;
-  descripcionSeguro: string;
-  codigoRubro: number;
-}
 
 export interface IEstado {
   codigoEstado: number;

@@ -5,15 +5,17 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-agrega-solicitud-asegurado',
   standalone: true,
-  imports: [ MatFormFieldModule,
-  ReactiveFormsModule,
-  MatInputModule,
-  MatDialogModule,
-  MatButtonModule],
+  imports: [CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css'
 })
@@ -32,7 +34,7 @@ export class AgregaSolicitudAseguradoComponent {
   telefonoAsegurado = new FormControl('', [Validators.required]);
   correoAsegurado = new FormControl('', [Validators.required]);
 
-   agregaAsegurado = signal<FormGroup>(
+  agregaAsegurado = signal<FormGroup>(
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
@@ -53,8 +55,8 @@ export class AgregaSolicitudAseguradoComponent {
       return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
-        ? 'Rut Inválido'
-        : '';
+          ? 'Rut Inválido'
+          : '';
     }
     if (campo === 'nombreAsegurado') {
       return this.nombreAsegurado.hasError('required')
@@ -130,6 +132,6 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
   grabar() {
-     this.dialogRef.close(this.agregaAsegurado().value);
+    this.dialogRef.close(this.agregaAsegurado().value);
   }
 }

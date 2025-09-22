@@ -18,8 +18,12 @@ import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
 
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-import { ISolicitud, ITipoRubro, ITipoSeguro, IEstado } from './modelo/common';
+import { ISolicitud, IEstado } from './modelo/common';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
+import { RubroService } from '@shared/service/rubro.service';
+import { IRubro } from '@shared/modelo/rubro-interface';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -48,8 +52,12 @@ import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solic
 })
 
 export class SolicitudesGestionadasComponent  {
+ rubroService = inject(RubroService);
+ tipoSeguroService = inject(TipoSeguroService);
+ datoRubros = signal<IRubro[]>([]);
+ rescatadoSeguro = signal<ITipoSeguro[]>([]);
+
   panelOpenState = false;
-  rescatadoSeguro=signal<ITipoSeguro[]>([]);
   rubro = new FormControl();
   seguro = new FormControl();
   estado = new FormControl();
@@ -111,14 +119,46 @@ export class SolicitudesGestionadasComponent  {
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.dataSourceSolicitud.data = this.datosSolicitud();
-
-
-
+    this.cargaRubros();
   }
 
-  async seleccionaRubro(_codigoRubro: number) {
-    this.rescatadoSeguro.set(await this.DatoSeguros()
-    .filter((rubro) => rubro.codigoRubro == _codigoRubro));
+  cargaRubros() {
+    this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.datoRubros.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+  async seleccionaRubro(_codigoRubro: string) {
+    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
+   this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.rescatadoSeguro.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
   getCellClass(value: string): string {
@@ -330,7 +370,7 @@ export class SolicitudesGestionadasComponent  {
       Estado: "Aprobada"
     },
   ]);
-
+/*
   datoRubros = signal<ITipoRubro[]>([
     {
       codigoRubro: 1,
@@ -398,7 +438,7 @@ export class SolicitudesGestionadasComponent  {
       codigoRubro:3
     },
   ]);
-
+*/
     datoEstados = signal<IEstado[]>([
     {
       codigoEstado: 1,

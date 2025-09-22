@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { ISolicitudAsegurado } from '@shared/modelo/ingreso-solicitud';
+import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 
 @Component({
@@ -24,23 +24,19 @@ export class ModificaSolicitudAseguradoComponent {
   readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
   readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
 
-  rutAsegurado = new FormControl(this.data.rutAsegurado, [Validators.required, this.validaRut]);
-  nombreAsegurado = new FormControl(this.data.nombreAsegurado, [Validators.required]);
-  apellidoPaternoAsegurado = new FormControl(this.data.apellidoPaternoAsegurado, [Validators.required]);
-  apellidoMaternoAsegurado = new FormControl(this.data.apellidoMaternoAsegurado, [Validators.required]);
-  regionAsegurado = new FormControl(this.data.regionAsegurado, [Validators.required]);
-  ciudadAsegurado = new FormControl(this.data.ciudadAsegurado, [Validators.required]);
-  comunaAsegurado = new FormControl(this.data.comunaAsegurado, [Validators.required]);
-  direccionAsegurado = new FormControl(this.data.direccionAsegurado, [Validators.required]);
-  telefonoAsegurado = new FormControl(this.data.telefonoAsegurado, [Validators.required]);
-  correoAsegurado = new FormControl(this.data.correoAsegurado, [Validators.required]);
+  rutAsegurado = new FormControl(this.data.rut_asegurado, [Validators.required, this.validaRut]);
+  nombreAsegurado = new FormControl(this.data.nombre_razon_social_asegurado, [Validators.required]);
+  regionAsegurado = new FormControl(this.data.region_asegurado, [Validators.required]);
+  ciudadAsegurado = new FormControl(this.data.ciudad_asegurado, [Validators.required]);
+  comunaAsegurado = new FormControl(this.data.comuna_asegurado, [Validators.required]);
+  direccionAsegurado = new FormControl(this.data.direccion_asegurado, [Validators.required]);
+  telefonoAsegurado = new FormControl(this.data.telefono_asegurado, [Validators.required]);
+  correoAsegurado = new FormControl(this.data.mail_asegurado, [Validators.required]);
 
    modificaAsegurado = signal<FormGroup>(
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
-      apellidoPaternoAsegurado: this.apellidoPaternoAsegurado,
-      apellidoMaternoAsegurado: this.apellidoMaternoAsegurado,
       regionAsegurado: this.regionAsegurado,
       ciudadAsegurado: this.ciudadAsegurado,
       comunaAsegurado: this.comunaAsegurado,
@@ -65,17 +61,6 @@ export class ModificaSolicitudAseguradoComponent {
         : '';
     }
 
-    if (campo === 'apellidoPaternoAsegurado') {
-      return this.apellidoPaternoAsegurado.hasError('required')
-        ? 'Debes ingresar Apellido Paterno'
-        : '';
-    }
-
-    if (campo === 'apellidoMaternoAsegurado') {
-      return this.apellidoMaternoAsegurado.hasError('required')
-        ? 'Debes ingresar Apellido Materno'
-        : '';
-    }
 
     if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')

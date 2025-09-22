@@ -1,4 +1,10 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -8,48 +14,52 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import {
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
+  IIngresoSolicitud,
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
   ISolicitudContratante,
-  ITipoRubro,
-  ITipoSeguro,
-} from '../../shared/modelo/ingreso-solicitud';
+} from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
-import { SolicitudesService } from '@shared/service/solicitudes.service';
+
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { IRubro } from '@shared/modelo/rubro-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { MatCardContent, MatCard } from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 
 @Component({
   selector: 'app-ingreso-solicitud',
   standalone: true,
   imports: [
+    MatRadioModule,
+    MatCardModule,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -68,14 +78,17 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
     MatTableExporterModule,
     MatTooltipModule,
     FormsModule,
-    MatRadioModule,
     AseguradoComponent,
     BeneficiarioComponent,
     CuestionarioComponent,
     MateriaAseguradaComponent,
+    MatCardContent,
+    MatCard,
+    MatCheckboxModule,
   ],
   templateUrl: './ingreso-solicitud.component.html',
   styleUrl: './ingreso-solicitud.component.css',
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
@@ -84,144 +97,53 @@ import { SolicitudesService } from '@shared/service/solicitudes.service';
   ],
 })
 export default class IngresoSolicitudComponent {
-  datoSolicitud: ISolicitudContratante | undefined;
+
+  ingresoSolicitud!:IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
-  rescatadoSeguro = signal<ITipoSeguro[]>([]);
+
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  datoAsegurados=signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios=signal<ISolicitudBeneficiario[] | undefined>(undefined);
+  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+
+  rubroService = inject(RubroService);
+  tipoSeguroService = inject(TipoSeguroService);
+  ingresoSolicitudService= inject(IngresoSolicitudService);
+
+
+  esIgualAlAsegurado: boolean = false;
 
   private readonly dialog = inject(MatDialog);
-  private matPaginatorIntl = inject(MatPaginatorIntl);
+  private readonly router = inject(Router);
 
-  solicitudesService = inject(SolicitudesService);
+  datoRubros = signal<IRubro[]>([]);
 
-  datoRubros = signal<ITipoRubro[]>([
-    {
-      codigoRubro: 1,
-      descripcionRubro: 'Rubro 1',
-    },
-    {
-      codigoRubro: 2,
-      descripcionRubro: 'Rubro 2',
-    },
-  ]);
+  rescatadoSeguro = signal<ITipoSeguro[]>([]);
 
-  DatoSeguros = signal<ITipoSeguro[]>([
-    {
-      codigoSeguro: 1,
-      descripcionSeguro: 'Seguro 1 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 2,
-      descripcionSeguro: 'Seguro 2 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 3,
-      descripcionSeguro: 'Seguro 3 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 4,
-      descripcionSeguro: 'Seguro 4 Rubro 1',
-      codigoRubro: 1,
-    },
-    {
-      codigoSeguro: 5,
-      descripcionSeguro: 'Seguro 1 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 6,
-      descripcionSeguro: 'Seguro 2 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 7,
-      descripcionSeguro: 'Seguro 3 Rubro 2',
-      codigoRubro: 2,
-    },
-    {
-      codigoSeguro: 8,
-      descripcionSeguro: 'Seguro 4 Rubro 2',
-      codigoRubro: 2,
-    },
-  ]);
-/*
-    datoAsegurados = signal<ISolicitudAsegurado[]>([
-      {
-        rutAsegurado: '12514508-6',
-        nombreAsegurado: 'Nombre Asegurado 1',
-        apellidoPaternoAsegurado: 'apellido Paterno 1',
-        apellidoMaternoAsegurado: 'apellido Materno 1',
-        regionAsegurado: 'Metropolitana 1',
-        ciudadAsegurado: 'Santiago 1',
-        comunaAsegurado: 'maipú 1',
-        direccionAsegurado: 'dirección  1',
-        telefonoAsegurado: '11111111',
-        correoAsegurado: 'correo1@gmail.com',
-      },
-      {
-        rutAsegurado: '14245328-2',
-        nombreAsegurado: 'Nombre Asegurado 2',
-        apellidoPaternoAsegurado: 'apellido Paterno 2',
-        apellidoMaternoAsegurado: 'apellido Materno 2',
-        regionAsegurado: 'Metropolitana 2',
-        ciudadAsegurado: 'Santiago 2',
-        comunaAsegurado: 'maipú 2',
-        direccionAsegurado: 'dirección  2',
-        telefonoAsegurado: '2222222222',
-        correoAsegurado: 'correo2@gmail.com',
-      },
-    ]);
-
-    datoBeneficiarios = signal<ISolicitudBeneficiario[]>([
-        {
-          rutBeneficiario: '12514508-6',
-          nombreBeneficiario: 'Nombre Beneficiario 1',
-          apellidoPaternoBeneficiario: 'apellido Paterno 1',
-          apellidoMaternoBeneficiario: 'apellido Materno 1',
-          regionBeneficiario: 'Metropolitana 1',
-          ciudadBeneficiario: 'Santiago 1',
-          comunaBeneficiario: 'maipú 1',
-          direccionBeneficiario: 'dirección  1',
-          telefonoBeneficiario: '11111111',
-          correoBeneficiario: 'correo1@gmail.com',
-        },
-        {
-          rutBeneficiario: '14245328-2',
-          nombreBeneficiario: 'Nombre Beneficiario 2',
-          apellidoPaternoBeneficiario: 'apellido Paterno 2',
-          apellidoMaternoBeneficiario: 'apellido Materno 2',
-          regionBeneficiario: 'Metropolitana 2',
-          ciudadBeneficiario: 'Santiago 2',
-          comunaBeneficiario: 'maipú 2',
-          direccionBeneficiario: 'dirección  2',
-          telefonoBeneficiario: '2222222222',
-          correoBeneficiario: 'correo2@gmail.com',
-        },
-      ]);
-*/
-mostrarAnular: boolean = true;
-pasoActivoLabel: string = '';
-
+  //mostrarAnular: boolean = true;
+  pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
-  rubro = new FormControl('', [Validators.required]);
-  seguro = new FormControl('', [Validators.required]);
-  tipoContratante = new FormControl('', Validators.required);
- flagAsegurado = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
-  flagBeneficiario = new FormControl(true, [Validators.required,this.validaQueSeaVerdadero]);
+  rubro = new FormControl('');
+  seguro = new FormControl('');
+  aseguradeCheck = new FormControl(false, [Validators.required]);
+
+  flagAsegurado = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
+  flagBeneficiario = new FormControl(true, [
+    Validators.required,
+    this.validaQueSeaVerdadero,
+  ]);
+
+  @ViewChild(CuestionarioComponent)
+  cuestionarioComponent!: CuestionarioComponent;
 
   // Oculta el botón "Anular" solo en el primer paso del stepper.
   // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
-
-
 
   /*  email = new FormControl('', [
     Validators.required,
@@ -234,11 +156,11 @@ pasoActivoLabel: string = '';
       rutCliente: this.rutCliente,
       rubro: this.rubro,
       seguro: this.seguro,
-      tipoContratante: this.tipoContratante,
+      aseguradeCheck: this.aseguradeCheck,
     })
   );
 
-  ngAfterViewInit(): void {
+  /*  ngAfterViewInit(): void {
     // Establecer estado inicial
     this.mostrarAnular = this.stepper.selectedIndex !== 0;
 
@@ -246,7 +168,7 @@ pasoActivoLabel: string = '';
     this.stepper.selectionChange.subscribe((event) => {
       this.mostrarAnular = event.selectedIndex !== 0;
     });
-  }
+  }*/
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -276,34 +198,99 @@ pasoActivoLabel: string = '';
     return '';
   }
 
-
-  async ngOnInit(){
-      this.datoAsegurados.set(this.solicitudesService.getSolicitudId('1'))
-      this.datoBeneficiarios.set(this.solicitudesService.getBeneficiarioId('1'))
+  async ngOnInit() {
+    this.cargaRubro();
   }
 
 
-  async seleccionaRubro(_codigoRubro: number) {
-    this.rescatadoSeguro.set(
-      await this.DatoSeguros().filter(
-        (rubro) => rubro.codigoRubro == _codigoRubro
-      )
-    );
-    return;
+  cargaRubro() {
+
+   this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datoRubros.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
-  get esPersona(): boolean {
-    return this.tipoContratante.value === 'persona';
+  async seleccionaRubro(_codigoRubro: string) {
+    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.rescatadoSeguro.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
-  enviar() {
-    const tipo = this.tipoContratante.value; // 'persona' o 'empresa'
-    alert('Grabar');
-    //alert(`Grabar solicitud para tipo de contratante: ${tipo}`);
+  grabaConratante() {
+    console.log('form contratante:',this.agregaSolicitudContratante().value);
+
+    this.ingresoSolicitud={
+      id_ejecutivo_banco:'LISANDRO VILLARROEL',
+      contratante:{
+      rut_contratante:this.agregaSolicitudContratante().get('rutCliente')!.value,
+      nombre_razon_social_contratante:this.nombreRazonSocial(),
+      mail_contratante:'mail_contratante',
+      telefono_contratante:'telefono_contratante',
+      region_contratante:'region_contratante',
+      ciudad_contratante:'ciudad_contratante',
+      comuna_contratante:'comuna_contratante',
+      direccion_contratante:'direccion_contratante',
+      numero_dir_contratante:'n',
+      departamento_block_contratante:'a',
+      casa_contratante:'c'
+      },
+    id_rubro:this.agregaSolicitudContratante().get('rubro')!.value,
+    id_tipo_seguro:this.agregaSolicitudContratante().get('seguro')!.value,
+    asegurados: [],
+    beneficiarios:[]
+    }
+    console.log('ingreso solicitud:',this.ingresoSolicitud);
+    /*this.ingresoSolicitud?.asegurados=this.datoAsegurados() as ISolicitudAsegurado[]; */
+    this.ingresoSolicitudService.postIngresoSolicitud(this.ingresoSolicitud).subscribe({
+      next: (dato) => {
+        console.log('dato:',dato);
+        if (dato.codigo === 200) {
+           alert('Grabó bien');
+        } else {
+          if (dato.codigo != 500) {
+            alert('Error:'+dato.mensaje);
+            console.log('Error:',dato.mensaje);
+          } else {
+            alert('Error:'+dato.mensaje);
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
   salir() {
-    alert('Salir');
+    this.router.navigate(['/principal/inicio']);
   }
 
   grabarBorrador() {
@@ -317,7 +304,7 @@ pasoActivoLabel: string = '';
       await this.agregaSolicitudContratante()
         .get('rutCliente')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-      await this.nombreRazonSocial.set('Nombre de prueba');
+      await this.nombreRazonSocial.set('Nombre de prueba22222');
     }
   }
 
@@ -326,6 +313,10 @@ pasoActivoLabel: string = '';
       return { rutInvalido: true };
     }
     return null as any;
+  }
+
+  puedeEnviar(): boolean {
+    return this.cuestionarioComponent?.archivoObligatorioCargado() ?? false;
   }
 
   abrirDialogoYAvanzar(): void {
@@ -356,29 +347,33 @@ pasoActivoLabel: string = '';
   }
 
   validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-        if (control.value !== true) {
-            return { isTrue: true }; // La clave del error es 'isTrue'
-        }
-        return null;
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
     }
+    return null;
+  }
 
-    cambioAseguradoFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagAsegurado.setValue(this.flagAseguradoRescata)
-    }
+  get mostrarDatosAsegurado(): boolean {
+    return !this.esIgualAlAsegurado;
+  }
+
+  cambioAseguradoFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagAsegurado.setValue(this.flagAseguradoRescata);
+  }
 
   actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoAsegurados())
+    console.log('arreglo actualizado:', this.datoAsegurados());
   }
 
-  cambioBeneficiarioFlag(){
-      console.log('ver flag',this.flagAseguradoRescata)
-      this.flagBeneficiario.setValue(this.flagBeneficiarioRescata)
-    }
+  cambioBeneficiarioFlag() {
+    console.log('ver flag', this.flagAseguradoRescata);
+    this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
+  }
 
   actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
     this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:',this.datoBeneficiarios())
+    console.log('arreglo actualizado:', this.datoBeneficiarios());
   }
 }

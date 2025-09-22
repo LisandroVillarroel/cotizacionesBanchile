@@ -12,10 +12,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { ConfirmacionSolicitudDialogComponent } from '../confirmacion-solicitud/confirmacion-solicitud.component';
-import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
+import { ICuestionario } from '../modelo/ingresoSolicitud-Interface';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -31,11 +32,13 @@ import { ICuestionario } from '../../../shared/modelo/ingreso-solicitud';
     MatTooltipModule,
     MatStepperModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    MatDivider,
   ],
 })
 export class CuestionarioComponent {
   documentForm = signal(this.fb.group({}));
+
   documentos = signal<ICuestionario[]>([
     {
       id: 1,
@@ -88,6 +91,8 @@ export class CuestionarioComponent {
     },
   ]);
 
+  bloquearSeccion2 = true;
+
   @ViewChildren('fileInputs') fileInputs!: QueryList<
     ElementRef<HTMLInputElement>
   >;
@@ -109,14 +114,6 @@ export class CuestionarioComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      // Validación de tipo PDF
-      if (file.type !== 'application/pdf') {
-        alert('Solo se permiten archivos PDF.');
-        input.value = ''; // Limpiar selección
-        return;
-      }
-
-      // Actualizar el signal completo
       const nuevosDocumentos = this.documentos().map((d) => {
         if (d.id === doc.id) {
           return {
@@ -129,6 +126,11 @@ export class CuestionarioComponent {
       });
 
       this.documentos.set(nuevosDocumentos);
+
+      // Si se cargó el documento obligatorio (id 1), bloquear sección 2
+      if (doc.id === 1) {
+        this.bloquearSeccion2 = false;
+      }
     }
   }
 
@@ -145,6 +147,16 @@ export class CuestionarioComponent {
     });
 
     this.documentos.set(nuevosDocumentos);
+
+    // Si se eliminó el documento obligatorio (id 1), desbloquear sección 2
+    if (doc.id === 1) {
+      this.bloquearSeccion2 = true;
+    }
+  }
+
+  public archivoObligatorioCargado(): boolean {
+    const doc = this.documentos().find((d) => d.id === 1);
+    return !!doc?.archivo;
   }
 
   guardarSolicitud() {
@@ -153,6 +165,4 @@ export class CuestionarioComponent {
       console.log(`${doc.nombre}: ${doc.archivo || 'No cargado'}`);
     });
   }
-
-
 }

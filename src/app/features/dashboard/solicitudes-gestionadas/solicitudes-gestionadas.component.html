@@ -25,9 +25,9 @@
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Rubro</mat-label>
             <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
-              @for(_seguros of datoRubros(); track _seguros){
-                <mat-option [value]="_seguros.codigoRubro">
-                  {{ _seguros.descripcionRubro }}
+              @for(_rubros of datoRubros(); track _rubros){
+                <mat-option [value]="_rubros.id_rubro">
+                  {{ _rubros.nombre_rubro }}
                 </mat-option>
               }
             </mat-select>
@@ -39,8 +39,8 @@
             <mat-label class="labelI">Tipo de seguro</mat-label>
             <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('TipoSeguro',$event.value)">
               @for(_seguros of rescatadoSeguro(); track _seguros){
-                <mat-option [value]="_seguros.descripcionSeguro">
-                  {{ _seguros.descripcionSeguro }}
+                <mat-option [value]="_seguros.id_tipo_seguro">
+                  {{ _seguros.nombre_tipo_seguro }}
                 </mat-option>
               }
               <input matInput  />

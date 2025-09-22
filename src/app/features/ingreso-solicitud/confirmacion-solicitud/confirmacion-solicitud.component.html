@@ -1,9 +1,6 @@
 <div class="dialog-container">
   <div class="barra-titulo">
     <span class="titulo">Confirmación de solicitud</span>
-    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
-      <mat-icon>close</mat-icon>
-    </button>
   </div>
 
   <div class="contenido-dialogo">
@@ -31,12 +28,11 @@
 
   <div class="acciones-dialogo">
     <button
-      mat-stroked-button
-      color="primary"
-      class="colorFondoBotonConfirmar"
+      mat-raised-button
+      class="colorFondoBotonSiguiente"
       (click)="confirmar()"
     >
-      Enviar
+      Aceptar
     </button>
   </div>
 </div>

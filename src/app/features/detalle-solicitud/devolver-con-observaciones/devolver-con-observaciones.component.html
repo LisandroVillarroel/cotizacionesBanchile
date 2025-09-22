@@ -1,0 +1,50 @@
+<div class="dialog-container">
+  <div class="barra-titulo">
+    <span class="titulomodal">Devolver con observaciones</span>
+    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="contenido-horizontal fondoGris">
+    <section>
+      <h3>Nueva solicitud</h3>
+      <div>{{ data.solicitudId }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Fecha</h3>
+      <div>{{ data.fecha }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Ejecutivo</h3>
+      <div>{{ data.ejecutivo }}</div>
+    </section>
+  </div>
+  <div class="contenido-dialogo">
+    <section>
+      <h3 class="titulo">Estás por devolver esta solicitud al ejecutivo con observaciones</h3>
+      <mat-label>Por favor, indica el motivo de la devolución para que el ejecutivo
+        pueda realizar los ajustes necesarios.
+      </mat-label>
+    </section>
+  </div>
+  <div class="contenido-dialogo">
+    <section>
+      <h3>Observaciones</h3>
+      <mat-form-field appearance="fill" class="textarea-grande col-md-12">
+        <mat-label>Ingrese el motivo de devolución</mat-label>
+        <textarea matInput #message maxlength="500" rows="6"></textarea>
+        <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+      </mat-form-field>
+    </section>
+  </div>
+  <div class="botones-derecha">
+    <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" (click)="confirmar()">
+      Cancelar
+    </button>
+    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="devolverConObs()">
+      Devolver con Observaciones
+    </button>
+  </div>
+</div>

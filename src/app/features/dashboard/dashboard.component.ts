@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ResumenGeneralComponent } from './resumen-general/resumen-general.component';
 import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solicitudes-gestionadas.component';
 import DistribucionComponent from './distribucion/distribucion.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,8 @@ import DistribucionComponent from './distribucion/distribucion.component';
     //DatePipe,
     ResumenGeneralComponent,
     SolicitudesGestionadasComponent,
-    DistribucionComponent
+    DistribucionComponent,
+    MatToolbarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
