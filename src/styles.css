@@ -36,7 +36,7 @@ h3[mat-dialog-title] {
   padding: 26px 26px !important;
   font-size: 16px !important;
   min-width: 140px !important; /* Asegura buen ancho mínimo */
-  border-radius: 2px !important;     
+  border-radius: 2px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar {
@@ -116,7 +116,7 @@ h3[mat-dialog-title] {
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   background-color: #f45516 !important;
-  color: white !important;  
+  color: white !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar:hover {
@@ -287,13 +287,12 @@ tr.mat-header-row {
 /* Fondo para table con título */
 .table-con-titulo {
   background-color: white;
-  /* color suave, profesional */
   border: 1px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
   position: relative;
-  box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;  */
 }
 
 /* Título flotante integrado */
@@ -421,13 +420,24 @@ th#opcionesI {
 }
 
 .agregar-texto {
-  font-size: 14px !important;
-  color: white !important;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  gap: 4px;
+  padding: 6px 12px;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+  background-color: #234e85 !important;
+  color: white !important;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px !important;
+}
+
+.agregar-texto:hover {
+  background-color: #002464 !important;
+  color: white !important;
 }
 
 /* Fin Columna +AGREGAR */
@@ -437,16 +447,62 @@ th#opcionesI {
   /* NOTIFICACIONES */
 
   /*FORMS*/
+
+  .agrega-container {
+    margin-top: 32px;
+    margin: 16px !important; /* Espacio uniforme alrededor del contenedor */
+    padding: 16px !important; /* Espacio interno uniforme */
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box; /* Asegura que el padding no expanda el tamaño */
+  }
+
+  .contenido-form {
+    background-color: #f0f4fa !important;
+    padding: 24px 24px 8px 24px !important; /* top, right, bottom, left */
+    margin: 0 auto !important;
+    box-sizing: border-box;
+  }
+
+  .mat-form-field {
+    margin-bottom: 8px !important; /* o menos si quieres más compacto */
+  }
+
+  .mat-dialog-content {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-dialog-actions {
+    margin-top: 0 !important; /* elimina espacio entre formulario y botones */
+    padding-top: 8px !important; /* si quieres algo de separación visual */
+    padding-bottom: 16px !important; /* mantiene espacio inferior uniforme */
+  }
+
+  /* Fondo blanco para inputs de forms */
+  .contenido-form-field input {
+    background-color: white !important;
+    padding: 17px 11px !important;
+  }
+
+  /* Fondo blanco para select de forms */
+  .contenido-form-field .mat-select-trigger {
+    background-color: white !important;
+    padding: 11px !important;
+  }
+
   /* Fondo para table con título */
   .form-con-titulo {
-    background-color: #f0f4fa;
-    /* color suave, profesional */
+    background-color: white;
     border: 1px solid #285b9b !important;
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
     position: relative;
-    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;
+    /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;  */
   }
 
   /* Título flotante integrado */
@@ -455,7 +511,7 @@ th#opcionesI {
     position: absolute;
     top: -14px;
     left: 20px;
-    background-color: #f0f4fa;
+    background-color: white;
     /* mismo fondo que el card */
     padding: 0 10px;
     font-weight: 600;
@@ -463,22 +519,6 @@ th#opcionesI {
     font-family: "Roboto", sans-serif !important;
     color: #285b9b;
     border-radius: 4px;
-  }
-
-  .contenido-form {
-    background-color: #f0f4fa !important;
-  }
-
-  /* Fondo blanco para inputs de forms */
-  .contenido-form-field input {
-    background-color: white !important;
-    padding: 17, 11px !important;
-  }
-
-  /* Fondo blanco para select de forms */
-  .contenido-form-field .mat-select-trigger {
-    background-color: white !important;
-    padding: 11px !important;
   }
 
   .success {
@@ -537,24 +577,22 @@ th#opcionesI {
 }
 
 .card-borde {
-  position: relative;
+  background-color: white;
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  background-color: #fff;
-  /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Fondo para cards con título */
 .card-con-titulo-principal {
-  background-color: #fff;
-  /* color suave, profesional */
+  background-color: white;
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  /* box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Título flotante integrado */
@@ -563,7 +601,7 @@ th#opcionesI {
   position: absolute;
   top: -14px;
   left: 20px;
-  background-color: #fff;
+  background-color: white;
   /* mismo fondo que el card */
   padding: 0 10px;
   font-weight: 600;
@@ -575,13 +613,12 @@ th#opcionesI {
 
 /* Fondo para cards con título secundario */
 .card-con-titulo {
-  background-color: #fff;
-  /* color suave, profesional */
+  background-color: white;
   border: 1px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  /* box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Título flotante integrado */
@@ -590,7 +627,7 @@ th#opcionesI {
   position: absolute;
   top: -14px;
   left: 20px;
-  background-color: #fff;
+  background-color: white;
   /* mismo fondo que el card */
   padding: 0 10px;
   font-weight: 600;
