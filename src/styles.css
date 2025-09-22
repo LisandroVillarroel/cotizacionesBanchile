@@ -31,13 +31,18 @@ h3[mat-dialog-title] {
   margin-top: 24px;
 }
 
+/* Tamaño general de todos los botones mat-mdc-raised-button */
+.mat-mdc-raised-button.mdc-button {
+  padding: 26px 26px !important;
+  font-size: 16px !important;
+  min-width: 140px !important; /* Asegura buen ancho mínimo */
+  border-radius: 2px !important;
+}
+
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar {
   background-color: #eeeff1 !important;
   border: 1px solid #d2d2d4 !important;
   color: #666668 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonCerrar:hover {
@@ -47,9 +52,6 @@ h3[mat-dialog-title] {
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente {
   background-color: #149dc9 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
 .mat-mdc-raised-button:not(:disabled).colorFondoBotonSiguiente:hover {
@@ -57,88 +59,67 @@ h3[mat-dialog-title] {
   color: white !important;
 }
 
-.colorFondoBotonAtras {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras {
   background-color: #149dc9 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonAtras:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAtras:hover {
   background-color: #0f8dba !important;
   color: white !important;
 }
 
-.colorFondoBotonAnular {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAnular {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonAnular:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonAnular:hover {
   border: 1px solid #333334 !important;
 }
 
-.colorFondoBotonDescargar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar {
   background-color: #234e85 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonDescargar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonDescargar:hover {
   background-color: #002464 !important;
   color: white !important;
 }
 
-.colorFondoBotonVolver {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonVolver {
   background-color: #ffffff !important;
   border: 1px solid #d2d2d4 !important;
   color: #234e85 !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonVolver:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonVolver:hover {
   border: 1px solid #333334 !important;
 }
 
-.colorFondoBotonGrabar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
   background-color: #234e85 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonGrabar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar:hover {
   background-color: #002464 !important;
   color: white !important;
 }
 
-.colorFondoBotonConfirmar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonConfirmar {
   background-color: #6baa1f !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonEliminar {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
   background-color: #f45516 !important;
   color: white !important;
-  padding: 8px 20px !important;
-  font-size: 15px !important;
-  min-width: 120px !important;
 }
 
-.colorFondoBotonEliminar:hover {
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar:hover {
   background-color: #d11d1a !important;
   color: white !important;
 }
@@ -186,7 +167,6 @@ h3[mat-dialog-title] {
   padding-top: 12px !important;
   padding-bottom: 6px !important;
 }
-
 /* Fin espacio del input */
 
 .inputInput {
@@ -194,17 +174,6 @@ h3[mat-dialog-title] {
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   width: 100%;
-}
-
-.inputDocumentoPendiente {
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  color: #999;
-  padding: 10px 16px;
-  font-size: 14px !important;
-  border-radius: 4px;
-  width: 100%;
-  display: inline-block;
 }
 
 .inputSelectBuscar {
@@ -264,7 +233,6 @@ h3[mat-dialog-title] {
   padding-top: 10px;
   padding-bottom: 16px;
 }
-
 /* FIN INPUTS */
 
 /* Caja para filtros */
@@ -319,13 +287,12 @@ tr.mat-header-row {
 /* Fondo para table con título */
 .table-con-titulo {
   background-color: white;
-  /* color suave, profesional */
   border: 1px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
   position: relative;
-  box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;  */
 }
 
 /* Título flotante integrado */
@@ -453,13 +420,24 @@ th#opcionesI {
 }
 
 .agregar-texto {
-  font-size: 14px !important;
-  color: white !important;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  gap: 4px;
+  padding: 6px 12px;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+  background-color: #234e85 !important;
+  color: white !important;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px !important;
+}
+
+.agregar-texto:hover {
+  background-color: #002464 !important;
+  color: white !important;
 }
 
 /* Fin Columna +AGREGAR */
@@ -469,16 +447,62 @@ th#opcionesI {
   /* NOTIFICACIONES */
 
   /*FORMS*/
+
+  .agrega-container {
+    margin-top: 32px;
+    margin: 16px !important; /* Espacio uniforme alrededor del contenedor */
+    padding: 16px !important; /* Espacio interno uniforme */
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box; /* Asegura que el padding no expanda el tamaño */
+  }
+
+  .contenido-form {
+    background-color: #f0f4fa !important;
+    padding: 24px 24px 8px 24px !important; /* top, right, bottom, left */
+    margin: 0 auto !important;
+    box-sizing: border-box;
+  }
+
+  .mat-form-field {
+    margin-bottom: 8px !important; /* o menos si quieres más compacto */
+  }
+
+  .mat-dialog-content {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-dialog-actions {
+    margin-top: 0 !important; /* elimina espacio entre formulario y botones */
+    padding-top: 8px !important; /* si quieres algo de separación visual */
+    padding-bottom: 16px !important; /* mantiene espacio inferior uniforme */
+  }
+
+  /* Fondo blanco para inputs de forms */
+  .contenido-form-field input {
+    background-color: white !important;
+    padding: 17px 11px !important;
+  }
+
+  /* Fondo blanco para select de forms */
+  .contenido-form-field .mat-select-trigger {
+    background-color: white !important;
+    padding: 11px !important;
+  }
+
   /* Fondo para table con título */
   .form-con-titulo {
-    background-color: #f0f4fa;
-    /* color suave, profesional */
+    background-color: white;
     border: 1px solid #285b9b !important;
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
     position: relative;
-    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;
+    /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;  */
   }
 
   /* Título flotante integrado */
@@ -487,7 +511,7 @@ th#opcionesI {
     position: absolute;
     top: -14px;
     left: 20px;
-    background-color: #f0f4fa;
+    background-color: white;
     /* mismo fondo que el card */
     padding: 0 10px;
     font-weight: 600;
@@ -495,22 +519,6 @@ th#opcionesI {
     font-family: "Roboto", sans-serif !important;
     color: #285b9b;
     border-radius: 4px;
-  }
-
-  .contenido-form {
-    background-color: #f0f4fa !important;
-  }
-
-  /* Fondo blanco para inputs de forms */
-  .contenido-form-field input {
-    background-color: white !important;
-    padding: 17, 11px !important;
-  }
-
-  /* Fondo blanco para select de forms */
-  .contenido-form-field .mat-select-trigger {
-    background-color: white !important;
-    padding: 11px !important;
   }
 
   .success {
@@ -569,24 +577,22 @@ th#opcionesI {
 }
 
 .card-borde {
-  position: relative;
+  background-color: white;
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  background-color: #fff;
-  /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Fondo para cards con título */
 .card-con-titulo-principal {
-  background-color: #fff;
-  /* color suave, profesional */
+  background-color: white;
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  /* box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Título flotante integrado */
@@ -595,7 +601,7 @@ th#opcionesI {
   position: absolute;
   top: -14px;
   left: 20px;
-  background-color: #fff;
+  background-color: white;
   /* mismo fondo que el card */
   padding: 0 10px;
   font-weight: 600;
@@ -607,13 +613,12 @@ th#opcionesI {
 
 /* Fondo para cards con título secundario */
 .card-con-titulo {
-  background-color: #f0f4fa;
-  /* color suave, profesional */
+  background-color: white;
   border: 1px solid #285b9b !important;
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 2rem;
-  /* box-shadow: 0px 7px 14px rgba(0, 0, 0, 0.3) !important; */
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
 /* Título flotante integrado */
@@ -622,7 +627,7 @@ th#opcionesI {
   position: absolute;
   top: -14px;
   left: 20px;
-  background-color: #f0f4fa;
+  background-color: white;
   /* mismo fondo que el card */
   padding: 0 10px;
   font-weight: 600;
@@ -634,6 +639,18 @@ th#opcionesI {
 
 .contenido-card {
   background-color: #f0f4fa !important;
+}
+
+.fondoGris {
+  background-color: #e8e8ea;
+  color: #666668;
+}
+
+/* Card de documentos opcionales deshabilitados */
+.card-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(0.5);
 }
 
 /* Contenedor flexible */
@@ -670,32 +687,61 @@ th#opcionesI {
 }
 
 /* Botones carga cuestionario */
-.boton-cargar {
+.boton-cargar-cuestionario {
   background-color: #149dc9 !important;
   color: #f2f2f4 !important;
-  font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
-  margin-left: 12px;
+  padding: 4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
 }
 
-.boton-cargar:hover {
+.boton-cargar-cuestionario:hover {
   background-color: #0f8dba !important;
   color: #f2f2f4 !important;
 }
 
-.boton-eliminar {
+.boton-eliminar-cuestionario {
   background-color: #149dc9 !important;
   color: #f2f2f4 !important;
-  font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
-  margin-left: 12px;
+  padding: 4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
 }
 
-.boton-eliminar:hover {
+.boton-eliminar-cuestionario:hover {
   background-color: #0f8dba !important;
   color: #f2f2f4 !important;
 }
-/* Fin Botones carga cuestionario */
+/* Fin botones carga cuestionario */
+
+/* Inputs cuestionarios */
+.inputInput-cuestionario {
+  font-size: 14px !important;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+}
+/* Fin inputs cuestionarios */
+
+/* Labels cuestionarios */
+.labelI-cuestionario {
+  font-size: 14px !important;
+  font-style: italic;
+  text-align: left;
+  color: #666668;
+}
+/* Fin labels cuestionarios */
 
 .form-card-cuestionario {
   border-radius: 12px;
@@ -708,7 +754,6 @@ th#opcionesI {
   gap: 2%;
   padding-top: 16px;
 }
-
 /* FIN CUESTIONARIO Y DOCUMENTOS */
 
 /* MODAL DE CONFIRMACION */
@@ -770,7 +815,7 @@ input.mat-mdc-input-element::placeholder {
 
 /* Mensajes de ayuda (hint) */
 .mat-mdc-form-field-hint {
-  color: #888 !important;
+  color: #285b9b !important;
 }
 
 /* Iconos dentro del input */
@@ -779,79 +824,35 @@ input.mat-mdc-input-element::placeholder {
   color: #323131 !important;
 }
 
-/* Texto del radio button */
-mat-radio-button {
+/* Texto del checkbox */
+mat-checkbox {
   color: #323131 !important;
-}
-
-/* Círculo exterior MDC: borde gris oscuro, fondo blanco */
-.mdc-radio__outer-circle {
-  background-color: #ffffff !important;
-  border: 2px solid #323131 !important;
-  box-shadow: none !important;
-}
-
-/* Círculo interior MDC: invisible si no está seleccionado */
-.mdc-radio__inner-circle {
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Cuando está seleccionado: círculo interior oscuro */
-.mat-radio-checked .mdc-radio__inner-circle {
-  background-color: #323131 !important;
-}
-
-/* Cards que encierran contendidos */
-.form-card {
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.card-borde {
-  position: relative;
-  border: 2px solid #285b9b;
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  background-color: #fff;
-}
-
-.card-con-titulo {
-  position: relative;
-  border: 1px solid #285b9b;
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  background-color: #fff;
-}
-
-.card-con-titulo::before {
-  content: attr(data-titulo);
-  position: absolute;
-  top: -14px;
-  left: 20px;
-  background-color: #fff;
-  padding: 0 10px;
-  font-weight: 600;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
-  font-family: "Roboto", sans-serif !important;
-  color: #285b9b;
 }
 
-.modifica-container {
-  display: flex;
-  flex-direction: column;
+/* Caja del checkbox (no seleccionada) */
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__background {
+  background-color: #ffffff !important;
+  border: 2px solid #285b9b !important;
+  box-shadow: none !important;
 }
 
-.modifica-container > * {
-  width: 100%;
+/* Caja del checkbox (seleccionada) */
+.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #285b9b !important;
+  border-color: #285b9b !important;
 }
 
-.fondoGris {
-  background-color: #e8e8ea;
-  color: #666668;
+/* Checkmark (ícono de tilde) */
+.mat-mdc-checkbox-checked .mdc-checkbox__checkmark {
+  color: #285b9b !important;
+}
+
+/* Hover y focus */
+.mat-mdc-checkbox:hover .mdc-checkbox__background,
+.mat-mdc-checkbox:focus-within .mdc-checkbox__background {
+  border-color: #285b9b !important;
 }
 
 /* Contenedor para alinear bloques horizontalmente */

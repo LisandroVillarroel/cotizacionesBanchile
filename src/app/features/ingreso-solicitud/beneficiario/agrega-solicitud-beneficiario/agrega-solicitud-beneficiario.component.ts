@@ -27,10 +27,10 @@ export class AgregaSolicitudBeneficiarioComponent {
   nombreBeneficiario = new FormControl('', [Validators.required]);
   apellidoPaternoBeneficiario = new FormControl('', [Validators.required]);
   apellidoMaternoBeneficiario = new FormControl('', [Validators.required]);
-  regionBeneficiario = new FormControl('', [Validators.required]);
-  ciudadBeneficiario = new FormControl('', [Validators.required]);
-  comunaBeneficiario = new FormControl('', [Validators.required]);
-  direccionBeneficiario = new FormControl('', [Validators.required]);
+  //regionBeneficiario = new FormControl('', [Validators.required]);
+  //ciudadBeneficiario = new FormControl('', [Validators.required]);
+  //comunaBeneficiario = new FormControl('', [Validators.required]);
+  //direccionBeneficiario = new FormControl('', [Validators.required]);
   telefonoBeneficiario = new FormControl('', [Validators.required]);
   correoBeneficiario = new FormControl('', [Validators.required]);
 
@@ -40,10 +40,10 @@ export class AgregaSolicitudBeneficiarioComponent {
       nombreBeneficiario: this.nombreBeneficiario,
       apellidoPaternoBeneficiario: this.apellidoPaternoBeneficiario,
       apellidoMaternoBeneficiario: this.apellidoMaternoBeneficiario,
-      regionBeneficiario: this.regionBeneficiario,
-      ciudadBeneficiario: this.ciudadBeneficiario,
-      comunaBeneficiario: this.comunaBeneficiario,
-      direccionBeneficiario: this.direccionBeneficiario,
+      //regionBeneficiario: this.regionBeneficiario,
+      //ciudadBeneficiario: this.ciudadBeneficiario,
+      //comunaBeneficiario: this.comunaBeneficiario,
+      //direccionBeneficiario: this.direccionBeneficiario,
       telefonoBeneficiario: this.telefonoBeneficiario,
       correoBeneficiario: this.correoBeneficiario
     })
@@ -76,7 +76,7 @@ export class AgregaSolicitudBeneficiarioComponent {
         : '';
     }
 
-    if (campo === 'regionBeneficiario') {
+    /* if (campo === 'regionBeneficiario') {
       return this.regionBeneficiario.hasError('required')
         ? 'Debes ingresar Región'
         : '';
@@ -97,7 +97,7 @@ export class AgregaSolicitudBeneficiarioComponent {
       return this.direccionBeneficiario.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-    }
+    } */
 
     if (campo === 'telefonoBeneficiario') {
       return this.telefonoBeneficiario.hasError('required')
