@@ -867,3 +867,25 @@ mat-divider[vertical] {
   height: auto;
   align-self: stretch;
 }
+
+
+.titulomodal {
+  background-color: #234e85;
+  color: white;
+  display: flex;
+  align-items: center;         /* Centra verticalmente */
+  justify-content: space-between; /* Distribuye horizontalmente */
+  height:50px;                /* Asegura altura para centrar verticalmente */
+  padding: 0 16px;             /* Espaciado horizontal */
+  margin: 1;                   /* Elimina márgenes externos */
+}
+
+/* Barra de título modal*/
+.barra-titulo {
+  background-color: #234e85;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+}

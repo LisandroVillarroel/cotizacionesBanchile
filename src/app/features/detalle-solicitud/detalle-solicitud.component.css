@@ -36,3 +36,12 @@
   color: #f45516 !important;
 }
 
+/* Barra azul con título */
+.barra-titulo {
+  background-color: #234e85;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}

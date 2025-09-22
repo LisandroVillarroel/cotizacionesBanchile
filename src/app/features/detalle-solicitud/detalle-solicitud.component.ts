@@ -8,13 +8,14 @@ import { DevolverConObservacionesComponent } from './devolver-con-observaciones/
 import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule,
-       MatDialogModule,
-       MatButtonModule],
+    MatDialogModule,
+    MatButtonModule, MatIcon],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None

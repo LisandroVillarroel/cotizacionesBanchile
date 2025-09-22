@@ -1,9 +1,9 @@
 <div class="container-fluid card-borde">
-  <div class="titulo">
-    <h2 class="titulo">
-      Detalle de solicitud - COT1234041123
-    </h2>
-    <!-- <h4 mat-dialog-subtitle class="mt-3">Detalle de solicitud - COT1234041123</h4> -->
+  <div class="barra-titulo card-con-titulo titulomodal">
+    <h2>Detalle de solicitud - COT1234041123</h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
     style="width: 98%; margin-left: 1%">
@@ -13,7 +13,7 @@
     style="width: 98%; margin-left: 1%">
     <app-documentos-asociados />
   </div>
-  <div class="container-fluid fondoGris flex">
+  <div class="container-fluid fondoGris flex card-con-titulo">
     <div class="container d-flex justify-between p-2">
       <mat-dialog-actions align="end" style="width: 100%;">
         <div class="botones-izquierda">
@@ -27,14 +27,16 @@
         </div>
       </mat-dialog-actions>
     </div>
+    <div class="container d-flex justify-between p-2">
+      <mat-dialog-actions align="end" style="width: 100%;">
+        <div class="botones-izquierda">
+        </div>
+        <div class="botones-derecha">
+          <button mat-raised-button class="colorFondoBotonGuardar" (click)="anularSol()">Anular Solicitud</button>
+          <button mat-raised-button class="colorFondoBotonConfirmar" (click)="corregirSolicitud()">Corregir
+            Solicitud</button>
+        </div>
+      </mat-dialog-actions>
+    </div>
   </div>
-  <div class="container-fluid fondoGris flex">
-      <div class="container d-flex justify-between p-2">
-      <div class="botones-izquierda">
-        <!-- <button mat-raised-button class="colorFondoBotonSalir">Volver</button> -->
-      </div>
-    <div class="botones-derecha">
-        <button mat-raised-button class="colorFondoBotonGuardar" (click)="anularSol()">Anular Solicitud</button>
-        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="corregirSolicitud()">Corregir Solicitud</button>
-      </div>
-  </div>
+</div>

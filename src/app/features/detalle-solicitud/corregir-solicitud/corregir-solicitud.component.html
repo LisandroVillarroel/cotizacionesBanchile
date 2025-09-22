@@ -1,61 +1,61 @@
 <div class="dialog-container">
-  <div class="barra-titulo">
-    <span class="titulomodal">Corregir Solicitud</span>
+  <div class="barra-titulo titulomodal">
+    <h2>Corregir Solicitud</h2>
     <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
       <mat-icon>close</mat-icon>
     </button>
   </div>
- <div class="contenido-horizontal fondoGris">
-  <section>
-    <h3>Rut Contratante</h3>
-    <div>{{ data.rutContratante }}</div>
-  </section>
-  <mat-divider vertical></mat-divider>
-  <section>
-    <h3>Nombre Contratante</h3>
-    <div>{{ data.nomContratante }}</div>
-  </section>
-  <mat-divider vertical></mat-divider>
-  <section>
-    <h3>Rubro</h3>
-    <div>{{ data.rubro }}</div>
-  </section>
-</div>
- <!-- <div class="contenido-dialogo"> -->
-    <!-- <section> -->
-      <!-- <h3 class="titulo">Documentos Asociados</h3> -->
+  <div class="contenido-horizontal fondoGris">
+    <section>
+      <h3>Rut Contratante</h3>
+      <div>{{ data.rutContratante }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Nombre Contratante</h3>
+      <div>{{ data.nomContratante }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Rubro</h3>
+      <div>{{ data.rubro }}</div>
+    </section>
+  </div>
+  <!-- <div class="contenido-dialogo"> -->
+  <!-- <section> -->
+  <!-- <h3 class="titulo">Documentos Asociados</h3> -->
 
-        <!-- <mat-label>Por favor, indica el motivo de la devolución para que el ejecutivo
+  <!-- <mat-label>Por favor, indica el motivo de la devolución para que el ejecutivo
           pueda realizar los ajustes necesarios.
         </mat-label> -->
-    <!-- </section> -->
+  <!-- </section> -->
   <!-- </div> -->
   <div class="contenido-dialogo">
     <h3 class="titulo">Documentos Asociados</h3>
-  <section>
-<div class="container mt-4">
-  <div class="row">
-    @for(registro of registros; track $index){
-    <div  class="col-md-12 mb-4 altocard">
-      <div class="card anchoCard">
-        <h5 class="fw-bold">{{ registro.nombre }}</h5>
-        @if(registro.documentosAsociados!= '' && registro.documentosAsociados != null){
-          <div  class="d-flex justify-content-between align-items-center text-muted">
-            <div>{{ registro.documentosAsociados }}</div>
-            <button mat-raised-button class="btn btn-sm btn-primary">Reemplazar</button>
+    <section>
+      <div class="container mt-4">
+        <div class="row">
+          @for(registro of registros; track $index){
+          <div class="col-md-12 mb-4 altocard">
+            <div class="card anchoCard">
+              <h5 class="fw-bold">{{ registro.nombre }}</h5>
+              @if(registro.documentosAsociados!= '' && registro.documentosAsociados != null){
+              <div class="d-flex justify-content-between align-items-center text-muted">
+                <div>{{ registro.documentosAsociados }}</div>
+                <button mat-raised-button class="btn btn-sm btn-primary">Reemplazar</button>
+              </div>
+              }@else{
+              <div class="text-muted">
+                No hay documentos asociados.
+              </div>
+              }
+            </div>
           </div>
-        }@else{
-          <div  class="text-muted">
-            No hay documentos asociados.
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
-    }
+    </section>
   </div>
-</div>
-  </section>
-</div>
 
 
   <div class="botones-derecha">
