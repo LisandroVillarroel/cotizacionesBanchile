@@ -89,7 +89,6 @@ export class SolicitudesGestionadasComponent  {
     return dataValue.toLowerCase().includes(filter.toLowerCase());
   };
 
-
     this.dataSourceSolicitud.filter = valor.trim().toLowerCase();
 
     if (this.dataSourceSolicitud.paginator) {
@@ -103,6 +102,7 @@ export class SolicitudesGestionadasComponent  {
     this.estado.reset();
 
     this.dataSourceSolicitud.data = this.datosSolicitud();
+    this.dataSourceSolicitud.filter="";
   }
   buscar() {
     this.dataSourceSolicitud.data = this.datosSolicitud();
@@ -136,7 +136,7 @@ export class SolicitudesGestionadasComponent  {
       return 'emitida';
     }else if(value=='Terminada'){
       return 'terminada';
-    }else if(value=='Con observaciones'){
+    }else if(value=='Devuelta'){
       return 'observ';
     }else if(value=='Anulada'){
       return 'anulada';
@@ -402,15 +402,43 @@ export class SolicitudesGestionadasComponent  {
     datoEstados = signal<IEstado[]>([
     {
       codigoEstado: 1,
-      descripcionEstado: 'Rubro 1',
+      descripcionEstado: 'En edición',
     },
     {
       codigoEstado: 2,
-      descripcionEstado: 'Rubro 2',
+      descripcionEstado: 'Devuelta',
     },
     {
       codigoEstado: 3,
-      descripcionEstado: 'Vehículo',
+      descripcionEstado: 'En revisión',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Aprobada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Anulada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'En cotización',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta pendiente',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta emitida',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Terminada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Rechazada',
     },
   ]);
 

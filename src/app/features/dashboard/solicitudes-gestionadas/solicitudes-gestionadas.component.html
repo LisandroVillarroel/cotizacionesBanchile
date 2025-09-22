@@ -1,6 +1,6 @@
 <mat-card class="fondoGris alinea-card-gestion" >
   <mat-card-title>
-    <h3 mat-dialog-title class="mt-2 titulo">Solicitudes gestionadas el último mes en curso</h3>
+    <h3 mat-dialog-title class="mt-2 destacado">Solicitudes gestionadas el último mes en curso</h3>
   </mat-card-title>
 
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
@@ -16,7 +16,8 @@
             <mat-label class="labelI">Contratante</mat-label>
             <mat-icon matSuffix class="gris">search</mat-icon>
             <input matInput #coordinadorInput id="contratanteInput"
-            (keyup)="applyFilterSolicitud('Contratante',coordinadorInput.value)" />
+            (keyup)="applyFilterSolicitud('Contratante',coordinadorInput.value)"
+            (change)="applyFilterSolicitud('Contratante',coordinadorInput.value)" />
           </mat-form-field>
         </div>
 
@@ -51,9 +52,9 @@
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Estado</mat-label>
             <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('Estado',$event.value)">
-              @for(_seguros of rescatadoSeguro(); track _seguros){
-                <mat-option [value]="_seguros.descripcionSeguro">
-                  {{ _seguros.descripcionSeguro }}
+              @for(_estados of datoEstados(); track _estados){
+                <mat-option [value]="_estados.descripcionEstado">
+                  {{ _estados.descripcionEstado }}
                 </mat-option>
               }
               <input matInput  />
