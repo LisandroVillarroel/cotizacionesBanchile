@@ -58,7 +58,8 @@ export interface IIngresoSolicitud {
   id_tipo_seguro: string,
   contratante: ISolicitudContratante,
   asegurados: ISolicitudAsegurado[],
-  beneficiarios: ISolicitudBeneficiario[]
+  beneficiarios: ISolicitudBeneficiario[],
+  fecha_creacion?: string
 }
 
 export interface IEstadoIngresoSolicitud {

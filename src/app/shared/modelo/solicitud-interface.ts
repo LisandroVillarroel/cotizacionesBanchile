@@ -1,26 +1,30 @@
+import { ICuestionario, ISolicitudAsegurado, ISolicitudBeneficiario, ISolicitudContratante } from "@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface";
+
 export interface ISolicitud{
-    rut_contratante: string,
-    nombre_contratante: string,
+    id_solicitud: string,
+    id_ejecutivo_banco: string,
+    contratante: ISolicitudContratante,
     id_rubro: number,
     nombre_rubro: string,
     id_tipo_seguro: number,
     nombre_tipo_seguro: string,
     fecha_creacion: string,
     id_estado: number,
-    dias: number,
-    asegurados: any[],
-    beneficiarios: any[],
-    observaciones: any[],
-    documentos: any[],
+    dias: number,  // OJO: horas???
+    asegurados: ISolicitudAsegurado[],
+    beneficiarios: ISolicitudBeneficiario[]
+    observaciones: [],
+    documentos: [],
+    cuestionario: ICuestionario
     //faltan datos: Usuario_creeacion, fecha_modificacion,
-    // y las interfaces para asegurados/beneficiarios, observaciones y documentos
+    // y las interfaces para  observaciones y documentos
 }
 
 export interface SolicitudInterface {
   codigo: number;
   mensaje: string;
-  estado: string;
-  estado_creacion: string
+  estado_sp: string;
+  mensaje_sp: string
   items: ISolicitud[];
   cantidad: number;
 }

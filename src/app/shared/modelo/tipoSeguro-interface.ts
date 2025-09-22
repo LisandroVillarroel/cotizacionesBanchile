@@ -14,8 +14,8 @@ export interface ITipoSeguro {
 export interface InterfazTipoSeguro {
   codigo: number;
   mensaje: string;
-  estado: string;
-  estado_creacion: string
+  estado_sp: string;
+  mensaje_sp: string;
   items: ITipoSeguro[];
   cantidad: number;
 }
