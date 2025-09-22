@@ -3,7 +3,7 @@
     <h1 mat-dialog-title class="mt-2 titulo">Te damos la bienvenida</h1>
     <mat-form-field class="inputFechaForm">
       <mat-label class="fontSmall gris">Actualizado el:</mat-label>
-      <input matInput [matDatepicker]="picker">
+      <input matInput [matDatepicker]="picker" [formControl]="fechaActual" (dateChange)="seleccionaFecha()">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
