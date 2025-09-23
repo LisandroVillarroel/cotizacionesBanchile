@@ -1,7 +1,7 @@
 <div class="dialog-container">
-  <div class="barra-titulo">
-    <span class="titulomodal">Confirmación de Solicitud</span>
-    <button mat-icon-button aria-label="Cerrar">
+  <div class="barra-titulo titulomodal">
+    <h2>Confirmación de Anulación</h2>
+    <button mat-icon-button (click)="cerrar()" aria-label="Cerrar">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -10,18 +10,16 @@
   </div>
   <div class="contenido-dialogo">
     <section>
-      <h3 class="titulo">La solicitud ha sido Devuelta con observaciones</h3>
+      <h3 class="titulo">La solicitud ha sido Anulada</h3>
       <mat-label>
-        LA solicitud
-        <!-- {{data.solicitudId}}  -->
-        ha sido devuelta al ejecutivo para realizar
-        los cambios requeridos. Una vez corregida, recibirás una notificación para revisarla
-        y enviarla a las compañías.
+        La solicitud
+         {{data.solicitudId}}
+        ha sido anulada.
       </mat-label>
     </section>
   </div>
   <div class="botones-derecha">
-    <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" >
+    <button mat-stroked-button color="primary" class="botonesDetalle" (click)="confirmar()">
       Ir a gestión de Solicitudes
     </button>
   </div>

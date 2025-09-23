@@ -1,40 +1,43 @@
 <div class="container-fluid card-borde">
-  <div class="titulo">
-    <h2 class="titulo">
-      Detalle de solicitud - COT1234041123
-    </h2>
-    <!-- <h4 mat-dialog-subtitle class="mt-3">Detalle de solicitud - COT1234041123</h4> -->
+  <div class="barra-titulo card-con-titulo titulomodal" style="width: 98%; margin-left: 1%">
+    <h2>Detalle de solicitud - COT1234041123</h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
-  <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
+  <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
     style="width: 98%; margin-left: 1%">
     <app-informacion-general />
-  </div>
-  <div class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
+  </mat-card>
+  <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
     style="width: 98%; margin-left: 1%">
     <app-documentos-asociados />
-  </div>
-  <div class="container-fluid fondoGris flex">
+  </mat-card>
+  <div class="container-fluid fondoGris flex card-con-titulo justify-between p-2" style="width: 98%; margin-left: 1%">
     <div class="container d-flex justify-between p-2">
       <mat-dialog-actions align="end" style="width: 100%;">
-        <div class="botones-izquierda">
-          <button mat-raised-button class="colorFondoBotonSalir" mat-dialog-close [disabled]="false">Cerrar</button>
+        <div>
+          <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
+            [disabled]="false">Cerrar</button>
         </div>
         <div class="botones-derecha">
-          <button mat-raised-button class="colorFondoBotonGuardar" (click)="devolverSolicitud()">Devolver con
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="devolverSolicitud()">Devolver
+            con
             Observaciones</button>
-          <button mat-raised-button class="colorFondoBotonConfirmar" (click)="aceptarSolDetalle()">Aceptar
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="aceptarSolDetalle()">Aceptar
+            Solicitud</button>
+        </div>
+      </mat-dialog-actions>
+    </div>
+    <div>
+      <mat-dialog-actions align="end" style="width: 100%;">
+        <div>
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="anularSol()">Anular
+            Solicitud</button>
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="corregirSolicitud()">Corregir
             Solicitud</button>
         </div>
       </mat-dialog-actions>
     </div>
   </div>
-  <div class="container-fluid fondoGris flex">
-      <div class="container d-flex justify-between p-2">
-      <div class="botones-izquierda">
-        <!-- <button mat-raised-button class="colorFondoBotonSalir">Volver</button> -->
-      </div>
-    <div class="botones-derecha">
-        <button mat-raised-button class="colorFondoBotonGuardar" (click)="anularSol()">Anular Solicitud</button>
-        <button mat-raised-button class="colorFondoBotonConfirmar" (click)="corregirSolicitud()">Corregir Solicitud</button>
-      </div>
-  </div>
+</div>
