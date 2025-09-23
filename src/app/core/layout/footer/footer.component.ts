@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatIcon } from "@angular/material/icon";
-import { MatTooltip } from "@angular/material/tooltip";
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
@@ -12,17 +12,22 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatProgressBarModule,
     MatIcon,
-    MatTooltip, MatDividerModule
+    MatTooltip,
+    MatDividerModule,
   ],
   template: `
-<div class="container-fluid">
-  <img src="./../../../../assets/logo/logofooter.png" alt="Logo" class="logo-img" />
-  <div class="footer-center">
-    <span class="footer-text">
-      © 2025 Banchile Inversiones. Todos los derechos reservados.
-    </span>
-  </div>
-</div>
+    <div class="container-fluid">
+      <img
+        src="./../../../../assets/logo/logofooter.png"
+        alt="Logo"
+        class="logo-img"
+      />
+      <div class="footer-center">
+        <span class="footer-text">
+          © 2025 Banchile Inversiones. Todos los derechos reservados.
+        </span>
+      </div>
+    </div>
   `,
   styles: `
 .mat-divider-vertical{
@@ -120,4 +125,3 @@ import { MatDividerModule } from '@angular/material/divider';
 export default class HeaderComponent {
   ///  readonly progreso = inject(Progreso);
 }
-

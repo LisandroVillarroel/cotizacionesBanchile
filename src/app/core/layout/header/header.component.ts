@@ -1,8 +1,8 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatIcon } from "@angular/material/icon";
-import { MatTooltip } from "@angular/material/tooltip";
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 //import { Progreso } from '@shared/guard/progreso';
 
@@ -13,29 +13,32 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatProgressBarModule,
     MatIcon,
-    MatTooltip, MatDividerModule
-],
+    MatTooltip,
+    MatDividerModule,
+  ],
   template: `
-
-      <div class="container-fluid">
-        <!-- Logo + Título -->
-        <div style="display: flex">
-          <a>
-            <img src="./../../../../assets/logo/bancochile.png" alt="Logo" class="logo-img me-2" />
-          </a>
-<mat-divider [vertical]="true" ></mat-divider>
-          <span class="titulo mb-0" style="color: white;">
-                Plataforma Cotizaciones Seguros Empresa
-          </span>
-        </div>
-        <div >
-          <span class='usuarioLogin'>Equipo de desarrollo Entersoft</span>
-          <button class="btn-salir" matTooltip="Cerrar" matButton><mat-icon>exit_to_app</mat-icon></button>
-        </div>
+    <div class="container-fluid">
+      <!-- Logo + Título -->
+      <div style="display: flex">
+        <a>
+          <img
+            src="./../../../../assets/logo/bancochile.png"
+            alt="Logo"
+            class="logo-img me-2"
+          />
+        </a>
+        <mat-divider [vertical]="true"></mat-divider>
+        <span class="titulo mb-0" style="color: white;">
+          Plataforma Cotizaciones Seguros Empresa
+        </span>
       </div>
-
-
-
+      <div class="usuario-container">
+        <span class="usuarioLogin">Equipo de desarrollo Entersoft</span>
+        <button class="btn-salir" matTooltip="Cerrar" matButton>
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </div>
+    </div>
   `,
   styles: `
 .mat-divider-vertical{
@@ -60,7 +63,7 @@ import { MatDividerModule } from '@angular/material/divider';
     color: #ffffff !important;
     font-size: 0.875rem; /* letra pequeña */
     font-family: 'Roboto', sans-serif;
-    font-weight: 500;
+    font-weight: 300;
     padding-right:15px;
   }
 
@@ -94,6 +97,13 @@ import { MatDividerModule } from '@angular/material/divider';
     font-size: 18px;
     font-family: 'Roboto', sans-serif;
   }
+
+  .usuario-container {
+  display: flex;
+  align-items: center;
+  margin-right: 25px; /* mueve el grupo hacia la izquierda */
+}
+
   `,
 })
 export default class HeaderComponent {
