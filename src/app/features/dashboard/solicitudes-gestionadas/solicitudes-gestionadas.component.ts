@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, NgModule } from '@angular/core';
+import { Component, ViewChild, inject, signal, NgModule, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,15 +18,14 @@ import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
 
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-import { ISolicitud } from '../modelo/resumen-interface';
+
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-import { EstadoService } from '@shared/service/estado.service';
-import { IEstado } from '@shared/modelo/estado-interface';
-
+import { IListadoSolicitudes } from '../datosSolicitud-Interface';
+import { IEstado } from './modelo/common';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -55,6 +54,7 @@ import { IEstado } from '@shared/modelo/estado-interface';
 })
 
 export class SolicitudesGestionadasComponent  {
+  datosSolicitud =  input.required<IListadoSolicitudes[] | undefined>();
  rubroService = inject(RubroService);
  tipoSeguroService = inject(TipoSeguroService);
  estadoService = inject(EstadoService);
@@ -78,7 +78,14 @@ export class SolicitudesGestionadasComponent  {
     "accion"
   ];
 
-  dataSourceSolicitud = new MatTableDataSource<ISolicitud>();
+    constructor() {
+        effect(() => {
+          this.dataSourceSolicitud.data = this.datosSolicitud()!;
+
+        })
+      }
+
+  dataSourceSolicitud = new MatTableDataSource<IListadoSolicitudes>();
 
    @ViewChild('inContratante') inputElement: any;
 
@@ -115,13 +122,15 @@ export class SolicitudesGestionadasComponent  {
     this.seguro.reset();
     this.estado.reset();
 
-    this.dataSourceSolicitud.data = this.datosSolicitud();
-    this.dataSourceSolicitud.filter="";
+    this.dataSourceSolicitud.data = this.datosSolicitud()!;
+  }
+  buscar() {
+    this.dataSourceSolicitud.data = this.datosSolicitud()!;
   }
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSourceSolicitud.data = this.datosSolicitud();
+    this.dataSourceSolicitud.data = this.datosSolicitud()!;
     this.cargaRubros();
     this.cargaEstados();
   }
@@ -210,7 +219,8 @@ export class SolicitudesGestionadasComponent  {
   }
 
 /* Llamadas a servicios */
-  datosSolicitud = signal<ISolicitud[]>([
+/*
+  datosSolicitud = signal<IListadoSolicitudes[]>([
     {
       ID: 24592,
       Fecha: '15/03/2023',
@@ -433,6 +443,7 @@ export class SolicitudesGestionadasComponent  {
       Estado: "Aprobada"
     },
   ]);
+  */
 /*
   datoRubros = signal<ITipoRubro[]>([
     {

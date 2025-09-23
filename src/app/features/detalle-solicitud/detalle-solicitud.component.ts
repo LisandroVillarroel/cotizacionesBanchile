@@ -3,18 +3,20 @@ import { MatFormField } from "@angular/material/form-field";
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
+import { MatIcon } from "@angular/material/icon";
+import { MatCard } from "@angular/material/card";
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule,
-       MatDialogModule,
-       MatButtonModule],
+    MatDialogModule,
+    MatButtonModule, MatIcon, MatCard],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
@@ -22,6 +24,7 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 export default class DetalleSolicitudComponent {
   private readonly dialog = inject(MatDialog);
 private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+//readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
    solicitudId: any;
   DetalleSolicitudComponent: any;
   devolverSolicitud(): void {
@@ -96,6 +99,7 @@ private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
       rutContratante: '00.000.000-0',
       nomContratante: 'Felipe Medina Suárez',
       rubro: 'VIDA',
+      tipoSeguro: 'Oncologíco',
     };
 
 

@@ -31,15 +31,15 @@ import {
   IIngresoSolicitud,
   ISolicitudAsegurado,
   ISolicitudBeneficiario,
-  ISolicitudContratante,
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
+
 import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
@@ -51,7 +51,7 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 
 @Component({
@@ -97,8 +97,7 @@ import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
   ],
 })
 export default class IngresoSolicitudComponent {
-
-  ingresoSolicitud!:IIngresoSolicitud;
+  ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
 
   flagAseguradoRescata: boolean = false;
@@ -109,8 +108,7 @@ export default class IngresoSolicitudComponent {
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
-  ingresoSolicitudService= inject(IngresoSolicitudService);
-
+  ingresoSolicitudService = inject(IngresoSolicitudService);
 
   esIgualAlAsegurado: boolean = false;
 
@@ -150,6 +148,16 @@ export default class IngresoSolicitudComponent {
     Validators.email,
     Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
   ]);*/
+
+  //Declara los datos del contratante para panel
+  contratanteInfo = signal<{
+    id?: number;
+    rut_contratante: string;
+    nombre: string;
+  }>({
+    rut_contratante: '',
+    nombre: '',
+  });
 
   agregaSolicitudContratante = signal<FormGroup>(
     new FormGroup({
@@ -202,10 +210,8 @@ export default class IngresoSolicitudComponent {
     this.cargaRubro();
   }
 
-
   cargaRubro() {
-
-   this.rubroService.postRubro().subscribe({
+    this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.items);
@@ -244,49 +250,63 @@ export default class IngresoSolicitudComponent {
   }
 
   grabaConratante() {
-    console.log('form contratante:',this.agregaSolicitudContratante().value);
+    console.log('form contratante:', this.agregaSolicitudContratante().value);
 
-    this.ingresoSolicitud={
-      id_ejecutivo_banco:'LISANDRO VILLARROEL',
-      contratante:{
-      rut_contratante:this.agregaSolicitudContratante().get('rutCliente')!.value,
-      nombre_razon_social_contratante:this.nombreRazonSocial(),
-      mail_contratante:'mail_contratante',
-      telefono_contratante:'telefono_contratante',
-      region_contratante:'region_contratante',
-      ciudad_contratante:'ciudad_contratante',
-      comuna_contratante:'comuna_contratante',
-      direccion_contratante:'direccion_contratante',
-      numero_dir_contratante:'n',
-      departamento_block_contratante:'a',
-      casa_contratante:'c'
+    this.ingresoSolicitud = {
+      id_ejecutivo_banco: 'LISANDRO VILLARROEL',
+      contratante: {
+        rut_contratante:
+          this.agregaSolicitudContratante().get('rutCliente')!.value,
+        nombre_razon_social_contratante: this.nombreRazonSocial(),
+        mail_contratante: 'mail_contratante',
+        telefono_contratante: 'telefono_contratante',
+        region_contratante: 'region_contratante',
+        ciudad_contratante: 'ciudad_contratante',
+        comuna_contratante: 'comuna_contratante',
+        direccion_contratante: 'direccion_contratante',
+        numero_dir_contratante: 'n',
+        departamento_block_contratante: 'a',
+        casa_contratante: 'c',
       },
-    id_rubro:this.agregaSolicitudContratante().get('rubro')!.value,
-    id_tipo_seguro:this.agregaSolicitudContratante().get('seguro')!.value,
-    asegurados: [],
-    beneficiarios:[]
-    }
-    console.log('ingreso solicitud:',this.ingresoSolicitud);
+      id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
+      id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
+      asegurados: [],
+      beneficiarios: [],
+    };
+    console.log('ingreso solicitud:', this.ingresoSolicitud);
     /*this.ingresoSolicitud?.asegurados=this.datoAsegurados() as ISolicitudAsegurado[]; */
-    this.ingresoSolicitudService.postIngresoSolicitud(this.ingresoSolicitud).subscribe({
-      next: (dato) => {
-        console.log('dato:',dato);
-        if (dato.codigo === 200) {
-           alert('Grabó bien');
-        } else {
-          if (dato.codigo != 500) {
-            alert('Error:'+dato.mensaje);
-            console.log('Error:',dato.mensaje);
+    this.ingresoSolicitudService
+      .postIngresoSolicitud(this.ingresoSolicitud)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Grabó bien');
+
+            // Actualizar el signal para mostrar datos del contratante en panel
+            const rut =
+              this.agregaSolicitudContratante().get('rutCliente')!.value;
+            const nombre = this.nombreRazonSocial();
+
+            this.contratanteInfo.set({
+              id: 999, // ID en duro para prueba
+              rut_contratante: rut,
+              nombre: nombre,
+            });
           } else {
-            alert('Error:'+dato.mensaje);
-            console.log('ERROR DE SISTEMA:');
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('ERROR DE SISTEMA:');
+            }
           }
-        }
-      },
-      error: (error) => {
-        console.log('ERROR INESPERADO', error);
-      },
-    });
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
   }
 
   salir() {

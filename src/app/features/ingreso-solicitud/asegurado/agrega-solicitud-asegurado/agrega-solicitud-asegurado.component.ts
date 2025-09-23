@@ -27,10 +27,10 @@ export class AgregaSolicitudAseguradoComponent {
   nombreAsegurado = new FormControl('', [Validators.required]);
   apellidoPaternoAsegurado = new FormControl('', [Validators.required]);
   apellidoMaternoAsegurado = new FormControl('', [Validators.required]);
-  regionAsegurado = new FormControl('', [Validators.required]);
-  ciudadAsegurado = new FormControl('', [Validators.required]);
-  comunaAsegurado = new FormControl('', [Validators.required]);
-  direccionAsegurado = new FormControl('', [Validators.required]);
+  //regionAsegurado = new FormControl('', [Validators.required]);
+  //ciudadAsegurado = new FormControl('', [Validators.required]);
+  //comunaAsegurado = new FormControl('', [Validators.required]);
+  //direccionAsegurado = new FormControl('', [Validators.required]);
   telefonoAsegurado = new FormControl('', [Validators.required]);
   correoAsegurado = new FormControl('', [Validators.required]);
 
@@ -40,10 +40,10 @@ export class AgregaSolicitudAseguradoComponent {
       nombreAsegurado: this.nombreAsegurado,
       apellidoPaternoAsegurado: this.apellidoPaternoAsegurado,
       apellidoMaternoAsegurado: this.apellidoMaternoAsegurado,
-      regionAsegurado: this.regionAsegurado,
-      ciudadAsegurado: this.ciudadAsegurado,
-      comunaAsegurado: this.comunaAsegurado,
-      direccionAsegurado: this.direccionAsegurado,
+      //regionAsegurado: this.regionAsegurado,
+      //ciudadAsegurado: this.ciudadAsegurado,
+      //comunaAsegurado: this.comunaAsegurado,
+      //direccionAsegurado: this.direccionAsegurado,
       telefonoAsegurado: this.telefonoAsegurado,
       correoAsegurado: this.correoAsegurado
     })
@@ -76,7 +76,7 @@ export class AgregaSolicitudAseguradoComponent {
         : '';
     }
 
-    if (campo === 'regionAsegurado') {
+    /* if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
         ? 'Debes ingresar Región'
         : '';
@@ -97,7 +97,7 @@ export class AgregaSolicitudAseguradoComponent {
       return this.direccionAsegurado.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-    }
+  } */
 
     if (campo === 'telefonoAsegurado') {
       return this.telefonoAsegurado.hasError('required')
