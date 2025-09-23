@@ -7,6 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 //import { Progreso } from '@shared/guard/progreso';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sildenav/sildenav.component';
+import { FooterComponent } from "./footer/footer.component";
 
 
 
@@ -14,14 +15,15 @@ import { SidenavComponent } from './sildenav/sildenav.component';
   selector: 'app-layout',
   standalone: true,
   imports: [
-   HeaderComponent,
+    HeaderComponent,
     MatIcon,
     MatSidenavModule,
     SidenavComponent,
     RouterOutlet,
     MatButtonModule,
     MatProgressBarModule,
-  ],
+    FooterComponent
+],
   template: `
     <app-header [(collapsed)]="collapsed" />
   <!--  @if (progreso.isCargando()) {
@@ -37,6 +39,10 @@ import { SidenavComponent } from './sildenav/sildenav.component';
         <router-outlet/>
       </mat-sidenav-content>
     </mat-sidenav-container>
+
+
+    <app-footer [(collapsed)]="collapsed" />
+
   `,
   styles: `
 
