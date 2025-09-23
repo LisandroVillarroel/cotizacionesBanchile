@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-documentos-asociados',
@@ -13,7 +16,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule],
+    CommonModule,
+    MatIcon,
+    MatIconButton,
+    MatTooltip
+],
   templateUrl: './documentosasociados.component.html',
   styleUrls: ['./documentosasociados.component.css']
 })

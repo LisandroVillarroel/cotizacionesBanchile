@@ -9,13 +9,14 @@ import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/ac
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 import { MatIcon } from "@angular/material/icon";
+import { MatCard } from "@angular/material/card";
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule,
     MatDialogModule,
-    MatButtonModule, MatIcon],
+    MatButtonModule, MatIcon, MatCard],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
@@ -97,6 +98,7 @@ private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
       rutContratante: '00.000.000-0',
       nomContratante: 'Felipe Medina Suárez',
       rubro: 'VIDA',
+      tipoSeguro: 'Oncologíco',
     };
 
 

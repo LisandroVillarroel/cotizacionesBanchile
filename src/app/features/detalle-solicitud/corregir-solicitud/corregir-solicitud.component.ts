@@ -17,11 +17,13 @@ import { MatDivider } from "@angular/material/divider";
 import { SolicitudCorregidaComponent } from './solicitud-corregida/solicitud-corregida.component';
 import { DocumentosAsociadosService } from '../documentosasociados/documentosasociados.service';
 import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 
 export interface CorregirSolicitudData {
 rubro: string;
 nomContratante: string;
 rutContratante: string;
+tipoSeguro: string;
 }
 
 
@@ -29,7 +31,7 @@ rutContratante: string;
   selector: 'corregir-solicitud',
   standalone: true,
   imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
-    MatFormField, MatInputModule, FormsModule, MatDivider, MatButton],
+    MatFormField, MatInputModule, FormsModule, MatDivider, MatButton, MatTooltip],
   templateUrl: './corregir-solicitud.component.html',
   styleUrl: './corregir-solicitud.component.css'
 })

@@ -21,15 +21,13 @@
       <div>{{ data.rubro }}</div>
     </section>
   </div>
-  <!-- <div class="contenido-dialogo"> -->
-  <!-- <section> -->
-  <!-- <h3 class="titulo">Documentos Asociados</h3> -->
 
-  <!-- <mat-label>Por favor, indica el motivo de la devolución para que el ejecutivo
-          pueda realizar los ajustes necesarios.
-        </mat-label> -->
-  <!-- </section> -->
+  <!-- <div class="contenido-dialogo"> -->
+    <div class="dialog">
+      <h2 class="titulo card-con-titulo">Tipo Seguro: {{ data.tipoSeguro }}</h2>
+    </div>
   <!-- </div> -->
+
   <div class="contenido-dialogo">
     <h3 class="titulo">Documentos Asociados</h3>
     <section>
@@ -42,7 +40,28 @@
               @if(registro.documentosAsociados!= '' && registro.documentosAsociados != null){
               <div class="d-flex justify-content-between align-items-center text-muted">
                 <div>{{ registro.documentosAsociados }}</div>
-                <button mat-raised-button class="btn btn-sm btn-primary">Reemplazar</button>
+                <!-- <button mat-raised-button class="btn btn-sm btn-primary">Reemplazar</button> -->
+
+
+                <div col-md-3>
+                  <button mat-icon-button color="warn" class="boton-cargar-cuestionario"
+                    matTooltip="Actualizar documento">
+                    <mat-icon>update</mat-icon>
+                  </button>
+                  <!-- <button mat-icon-button color="primary" class="boton-cargar-cuestionario"
+                    matTooltip="Cargar documento">
+                    <mat-icon>upload</mat-icon>
+                  </button> -->
+                  <button mat-icon-button color="warn" class="boton-eliminar-cuestionario"
+                    matTooltip="Eliminar documento">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+
+
+
+
               </div>
               }@else{
               <div class="text-muted">
@@ -62,7 +81,7 @@
     <button mat-stroked-button color="primary" class="colorFondoBotonGuardar" (click)="cerrar()">
       Cerrar
     </button>
-    <button mat-stroked-button color="primary" class="colorFondoBotonConfirmar" (click)="corregirYEnviar()">
+    <button mat-stroked-button color="primary" class="botonesDetalle" (click)="corregirYEnviar()">
       Corregir y enviar solicitud
     </button>
   </div>

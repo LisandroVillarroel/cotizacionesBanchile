@@ -890,3 +890,12 @@ mat-divider[vertical] {
   justify-content: space-between;
   padding: 4px 8px;
 }
+
+/* Botones detalle solicitud */
+.botonesDetalle{
+  background-color: #149dc9 !important;
+  color: white !important;
+  font-size: 13px !important;
+  font-family: "Roboto", sans-serif !important;
+  margin-left: 12px;
+}
