@@ -124,7 +124,14 @@ h3[mat-dialog-title] {
   color: white !important;
 }
 
-/* BOTONES INFERIORES */
+/*Boton Limpiar Filtros*/
+.botonLimpiarFiltros {
+  background-color: #6baa1f !important;
+  color: white !important;
+  font-size: 11px !important;
+}
+
+/* Botones inferiores */
 .botones-izquierda {
   display: flex;
   gap: 12px;
@@ -135,15 +142,7 @@ h3[mat-dialog-title] {
   gap: 12px;
   margin-left: auto;
 }
-
 /*Fin Botones*/
-
-/*Boton Limpiar Filtros*/
-.botonLimpiarFiltros {
-  background-color: #6baa1f !important;
-  color: white !important;
-  font-size: 11px !important;
-}
 
 /* INPUTS */
 .inputForm {
@@ -447,39 +446,42 @@ th#opcionesI {
   /* NOTIFICACIONES */
 
   /*FORMS*/
+  .titulo {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .barra-titulo {
+    background-color: #234e85;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0px 0px 16px !important;
+  }
 
   .agrega-container {
-    margin-top: 32px;
-    margin: 16px !important; /* Espacio uniforme alrededor del contenedor */
-    padding: 16px !important; /* Espacio interno uniforme */
+    padding: 24px 24px 0px 24px !important;
+    box-sizing: border-box;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
-    box-sizing: border-box; /* Asegura que el padding no expanda el tamaño */
   }
 
   .contenido-form {
     background-color: #f0f4fa !important;
-    padding: 24px 24px 8px 24px !important; /* top, right, bottom, left */
+    padding: 24px 24px 8px 24px !important;
     margin: 0 auto !important;
     box-sizing: border-box;
   }
 
-  .mat-form-field {
-    margin-bottom: 8px !important; /* o menos si quieres más compacto */
+  ::ng-deep .mat-dialog-content {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    height: auto !important;
+    min-height: unset !important;
   }
 
-  .mat-dialog-content {
-    display: flex !important;
-    flex-direction: column;
-    gap: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .mat-dialog-actions {
-    margin-top: 0 !important; /* elimina espacio entre formulario y botones */
-    padding-top: 8px !important; /* si quieres algo de separación visual */
-    padding-bottom: 16px !important; /* mantiene espacio inferior uniforme */
+  ::ng-deep .mat-dialog-actions {
+    margin-top: 1px; /* o incluso 0 si quieres que estén pegados */
   }
 
   /* Fondo blanco para inputs de forms */
@@ -651,22 +653,6 @@ th#opcionesI {
   pointer-events: none;
   opacity: 0.5;
   filter: grayscale(0.5);
-}
-
-/* Contenedor flexible */
-.modifica-container {
-  display: flex;
-  flex-direction: column;
-  padding-top: 16px;
-}
-
-.modifica-container > * {
-  width: 100%;
-  padding-top: 16px;
-}
-
-.espacio-superior {
-  margin-top: 16px !important;
 }
 
 /* Estilos personalizados para las celdas de la tabla de Material Design */
@@ -869,33 +855,25 @@ mat-divider[vertical] {
   align-self: stretch;
 }
 
+/* PANEL CONTRATANTE */
 
-.titulomodal {
-  background-color: #234e85;
-  color: white;
-  display: flex;
-  align-items: center;         /* Centra verticalmente */
-  justify-content: space-between; /* Distribuye horizontalmente */
-  height:50px;                /* Asegura altura para centrar verticalmente */
-  padding: 0 16px;             /* Espaciado horizontal */
-  margin: 1;                   /* Elimina márgenes externos */
+/* Panel con datos de contratante en pantallas restantes */
+.info-panel {
+  font-size: 14px;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+  justify-content: flex-end; /* alinea el contenido a la derecha */
 }
 
-/* Barra de título modal*/
-.barra-titulo {
-  background-color: #234e85;
-  color: white;
+.panel-derecha {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 8px;
+  gap: 12px;
+  margin-left: auto;
 }
 
-/* Botones detalle solicitud */
-.botonesDetalle{
-  background-color: #149dc9 !important;
-  color: white !important;
-  font-size: 13px !important;
-  font-family: "Roboto", sans-serif !important;
-  margin-left: 12px;
+.panel-borde {
+  background-color: white;
+  border: 2px solid #285b9b !important;
+  border-radius: 12px;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
