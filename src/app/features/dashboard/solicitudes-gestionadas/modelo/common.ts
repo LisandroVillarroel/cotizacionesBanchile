@@ -1,3 +1,4 @@
+/*
 export interface ISolicitud {
   ID: number;
   Fecha: string;
@@ -7,7 +8,7 @@ export interface ISolicitud {
   Coordinador: string;
   Estado: string;
 }
-
+*/
 
 
 export interface IEstado {

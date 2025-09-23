@@ -9,7 +9,7 @@
           <div class="container-fluid alinea-cards">
             <p>En proceso:</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="titulo">{{enProceso}}</h2>
+          <h2 class="titulo">{{resumenGeneral()?.p_EnProceso}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -18,7 +18,7 @@
           <div class="container-fluid alinea-cards">
             <p>Esperando respuesta</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="titulo">{{enEspera}}</h2>
+          <h2 class="titulo">{{resumenGeneral()?.p_EsperandoRespuesta}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -27,7 +27,7 @@
           <div class="container-fluid alinea-cards">
             <p>Aprobadas</p></div>
           <div class="container-fluid  alinea-cards-2">
-          <h2 class="titulo">{{aprobadas}}</h2>
+          <h2 class="titulo">{{resumenGeneral()?.p_Aprobadas}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -36,7 +36,7 @@
           <div class="container-fluid alinea-cards">
             <p>Con observaciones</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="titulo">{{conObs}}</h2>
+          <h2 class="titulo">{{resumenGeneral()?.p_EsperandoRespuesta}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
