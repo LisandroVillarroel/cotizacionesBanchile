@@ -8,6 +8,15 @@ export interface IObservacion{
   id_coordinador: string;
 }
 
+export interface ICompania{
+  id_compania: number;
+  id_solicitud: string;
+  id_estado_cot: number;
+  estado_cotizacion: string;
+  fecha_creacion: string;
+  id_coordinador: string;
+}
+
 export interface IDocumento {
   id: number;
   nombre: string;
@@ -29,8 +38,10 @@ export interface ISolicitud{
     id_estado: number,
     dias: number,  // OJO: horas???
     asegurados: ISolicitudAsegurado[],
-    beneficiarios: ISolicitudBeneficiario[]
-    observaciones: IObservacion[],
+    beneficiarios: ISolicitudBeneficiario[];
+    //observaciones: IObservacion[];
+    //companias: ICompania[];
+    //cotizaciones: ICotizacion[];
     documentos: IDocumento[],
     cuestionario: IDocumento
 }
@@ -38,8 +49,8 @@ export interface ISolicitud{
 export interface SolicitudInterface {
   codigo: number;
   mensaje: string;
-  estado_sp: string;
-  mensaje_sp: string
-  solicitud: ISolicitud[];
-  cantidad: number;
+  vcEstado: string;
+  vcEstadoCreacion: string;
+  p_cursor: ISolicitud;
+  //cantidad: number;
 }

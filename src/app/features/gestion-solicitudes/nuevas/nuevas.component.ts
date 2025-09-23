@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, NgModule } from '@angular/core';
+import { Component, ViewChild, inject, signal, NgModule, computed } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerInputEvent, MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -13,14 +13,18 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/ma
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
-//import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-import { ISolicitudG, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitudes/modelo/common';
+import { ISolicitudG} from '@features/gestion-solicitudes/gestionSolicitud-interface';
+import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
+import { RubroService } from '@shared/service/rubro.service';
+import { IRubro, InterfazRubro } from '@shared/modelo/rubro-interface';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { ITipoSeguro, InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
   selector: 'app-nuevas',
@@ -44,6 +48,7 @@ import { ISolicitudG, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitu
     MatTabsModule,
     MatCardModule,
     MatGridListModule,
+    FormsModule,
     CommonModule
   ],
   templateUrl: './nuevas.component.html',
@@ -52,76 +57,144 @@ import { ISolicitudG, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitu
 
 export class NuevasComponent {
   panelOpenState = false;
-  rescatadoSeguro=signal<ITipoSeguro[]>([]);
+
+  rubroService = inject(RubroService);
+  datoRubros = signal<IRubro[]>([]);
   rubro = new FormControl();
+
+  tipoSeguroService = inject(TipoSeguroService);
+  rescatadoSeguro = signal<ITipoSeguro[]>([]);
   seguro = new FormControl();
-  nombre = new FormControl();
+
   dateControl = new FormControl();
 
   displayedColumns: string[] = [
-    "Sla", "ID", "Rut", "Contratante", "Rubro", "TipoSeguro", "Fecha", "accion" ];
+    "Sla",
+    "ID",
+    "Rut",
+    "Contratante",
+    "Rubro",
+    "TipoSeguro",
+    "Fecha",
+    "accion"
+  ];
 
-  dataSourceSolicitud = signal<ISolicitudG[]>([]);
+  dataSolicitud = signal<ISolicitudG[]>([]);
+  filtro = signal('');
+  pagina = signal(0);
+  pageSize = 5;
 
-  @ViewChild('buscarInput') inputElement: any;
+  /* constructor(private rubroService: RubroService) {
+    this.cargarRubros();
+  }
 
-  @ViewChild(MatPaginator)
-  paginatorSolicitud!: MatPaginator;
-  @ViewChild(MatSort) sortSolicitud!: MatSort;
+  cargarRubros() {
+    this.rubroService.postRubro().subscribe(data => {
+      // Ajusta según la estructura de tu respuesta
+      this.rubros.set(data.listaRubros ?? []);
+    });
+  } */
+   @ViewChild('inContratante') inputElement: any;
+
+   @ViewChild(MatPaginator)
+    paginatorSolicitud!: MatPaginator;
 
   ngAfterViewInit(): void {
-    // this.dataSourceSolicitud.paginator = this.paginatorSolicitud;
-}
+    //this.dataSourceSolicitud.paginator = this.paginatorSolicitud;
+  }
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
- /*  applyFilterSolicitud(campo:string, valor: String) {
-  //  const filterValue = (valor.target as HTMLInputElement).value;
-    console.log('campo:',campo  + ' Valor Inicial:',valor)
-    this.dataSourceSolicitud.filterPredicate = (data: any, filter: string) => {
-      // Comprueba si el valor de la columna específica incluye el filtro
-      const dataValue = data[campo] ? data[campo].toString() : '';
-      return dataValue.toLowerCase().includes(filter.toLowerCase());
-    };
+  datosFiltrados = computed(() =>
+    this.dataSolicitud().filter(r =>
+      r.Contratante?.toLowerCase().includes(this.filtro().toLowerCase())
+    )
+  );
 
-    this.dataSourceSolicitud.filter = valor.trim().toLowerCase();
+  datosPaginados = computed(() => {
+    const start = this.pagina() * this.pageSize;
+    return this.datosFiltrados().slice(start, start + this.pageSize);
+  });
 
-    if (this.dataSourceSolicitud.paginator) {
-      this.dataSourceSolicitud.paginator.firstPage();
-    }
-  }
- */
-
-  async filtrarNombre(inNombre: string) {
-    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.Contratante == inNombre));
+  onPage(event: any) {
+    this.pagina.set(event.pageIndex);
   }
 
-  async seleccionaRubro(_codigoRubro: number) {
-    this.rescatadoSeguro.set(await this.DatoSeguros()
-    .filter((rubro) => rubro.codigoRubro == _codigoRubro));
-    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.IdRubro == _codigoRubro));
+  cargaRubros() {
+    this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.datoRubros.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
   }
 
-  async filtrarTipoSeguro(inTipoSeguro: number) {
-    this.dataSourceSolicitud.set(await this.dataSourceSolicitud().filter((item) => item.IdTipoSeguro == inTipoSeguro));
+  async seleccionaRubro(_codigoRubro: string) {
+    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
+    this.dataSolicitud.set(await this.dataSolicitud().filter((item) => item.IdRubro == _codigoRubro));
+    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+        next: (dato) => {
+          if (dato.codigo === 200) {
+            this.rescatadoSeguro.set(dato.items);
+          } else {
+            if (dato.codigo != 500) {
+              console.log('Error:',dato.mensaje);
+            } else {
+              console.log('ERROR DE SISTEMA:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
+  }
+/*
+  filtrarContratante(event: Event) {
+    //this.datosFiltrados = computed(() =>
+      this.dataSolicitud().filter(r =>
+        r.Rubro?.toLowerCase().includes(this.filtro().toLowerCase())
+      )
+    //);
+
+    this.datosPaginados = computed(() => {
+      const start = this.pagina() * this.pageSize;
+      return this.datosFiltrados().slice(start, start + this.pageSize);
+    });
+  } */
+
+  async filtrarTipoSeguro(inTipoSeguro: string) {
+    this.dataSolicitud.set(await this.dataSolicitud().filter((item) => item.IdTipoSeguro == inTipoSeguro));
   }
 
   async filtrarFecha() {
-    this.dataSourceSolicitud.set(await this.dataSourceSolicitud()
+    this.dataSolicitud.set(await this.dataSolicitud()
     .filter((item) => item.Fecha == this.dateControl.value.toString()));
   }
 
   limpiaFiltros() {
     this.rubro.reset();
     this.seguro.reset();
-    this.nombre.reset();
-    this.dataSourceSolicitud.set(this.datosSolicitud);
+
+    this.dataSolicitud.set(this.datosSolicitud);
   }
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSourceSolicitud.set(this.datosSolicitud);
+    this.dataSolicitud.set(this.datosSolicitud);
+    //this.dataSourceSolicitud.data = this.datosSolicitud();
+    this.cargaRubros();
   }
 
   getCellClass(value: number): string {
@@ -141,172 +214,199 @@ export class NuevasComponent {
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
-      IdRubro: 3,
-      Rubro: 'Vehículo',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Vehículo Liviano",
+      IdRubro: "1",
+      Rubro: 'AUTOMOTRIZ',
+      IdTipoSeguro: "1",
+      TipoSeguro: "VEHICULO LIVIANO",
       Fecha: '15/03/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
     },
     {
       Sla: 1,
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Asistencia en Viajes",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "1",
+      TipoSeguro: "RESPONSABILIDAD CIVIL MEDICA",
       Fecha: '22/07/2023',
-      Observaciones:[],
-    },
+      //Observaciones:[],
+      //Companias:[]
+
+   },
     {
       Sla: 2,
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 2,
-      TipoSeguro: "Responsabilidad Civil Médica",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "2",
+      TipoSeguro: "VIDA",
       Fecha: '30/09/2023',
-      Observaciones:[],
-    },
+      //Observaciones:[],
+      //Companias:[]
+
+},
     {
       Sla: 2,
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
-      IdRubro: 3,
-      Rubro: 'Vehículo',
-      IdTipoSeguro: 2,
-      TipoSeguro: "Transporte Terrestre",
+      IdRubro: "1",
+      Rubro: 'AUTOMOTRIZ',
+      IdTipoSeguro: "2",
+      TipoSeguro: "VEHICULO PESADO",
       Fecha: '05/12/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
-      IdRubro: 1,
-      Rubro: 'Crédito',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Seguro de Crédito Interno",
+      IdRubro: "2",
+      Rubro: 'HOGAR',
+      IdTipoSeguro: "1",
+      TipoSeguro: "INCENDIO",
       Fecha: '18/02/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 3,
-      TipoSeguro: "Asiento Pasajero/Vida Conductor",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "3",
+      TipoSeguro: "SALUD COLECTIVO",
       Fecha: '27/04/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
-      IdRubro: 2,
-      Rubro: 'Inmuebles',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Todo Seguro y Construcción",
+      IdRubro: "2",
+      Rubro: 'HOGAR',
+      IdTipoSeguro: "1",
+      TipoSeguro: "INCENDIO",
       Fecha: '11/06/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 1,
       ID: "COT-1243123",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 1",
-      IdRubro: 3,
-      Rubro: 'Vehículo',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Vehículo Liviano",
+      IdRubro: "1",
+      Rubro: 'AUTOMOTRIZ',
+      IdTipoSeguro: "1",
+      TipoSeguro: "VEHICULO LIVIANO",
       Fecha: '15/03/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 1,
       ID: "COT-1243125",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 2",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Asistencia en Viajes",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "1",
+      TipoSeguro: "RESPONSABILIDAD CIVIL MEDICA",
       Fecha: '22/07/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 2,
       ID: "COT-1245723",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 3",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 2,
-      TipoSeguro: "Responsabilidad Civil Médica",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "2",
+      TipoSeguro: "VIDA",
       Fecha: '30/09/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 2,
       ID: "COT-1257213",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 4",
-      IdRubro: 3,
-      Rubro: 'Vehículo',
-      IdTipoSeguro: 2,
-      TipoSeguro: "Transporte Terrestre",
+      IdRubro: "1",
+      Rubro: 'AUTOMOTRIZ',
+      IdTipoSeguro: "3",
+      TipoSeguro: "TRANSPORTE TERRESTRE",
       Fecha: '05/12/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257216",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 5",
-      IdRubro: 1,
-      Rubro: 'Crédito',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Seguro de Crédito Interno",
+      IdRubro: "4",
+      Rubro: 'AGRICOLA',
+      IdTipoSeguro: "1",
+      TipoSeguro: "AGRICOLA",
       Fecha: '18/02/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257226",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 6",
-      IdRubro: 4,
-      Rubro: 'Vida',
-      IdTipoSeguro: 3,
-      TipoSeguro: "Asiento Pasajero/Vida Conductor",
+      IdRubro: "3",
+      Rubro: 'VIDA',
+      IdTipoSeguro: "3",
+      TipoSeguro: "SALUD COLECTIVO",
       Fecha: '27/04/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
     {
       Sla: 3,
       ID: "COT-1257227",
       Rut: "00.000.000-1",
       Contratante: "Nombre Comercial S.A. 7",
-      IdRubro: 2,
-      Rubro: 'Inmuebles',
-      IdTipoSeguro: 1,
-      TipoSeguro: "Todo Seguro y Construcción",
+      IdRubro: "2",
+      Rubro: 'HOGAR',
+      IdTipoSeguro: "1",
+      TipoSeguro: "INCENDIO",
       Fecha: '11/06/2023',
-      Observaciones:[],
+      //Observaciones:[],
+      //Companias:[]
+
     },
   ]);
 
-  datoRubros = signal<ITipoRubro[]>([
+ /*  datoRubros = signal<ITipoRubro[]>([
     {
       codigoRubro: 1,
       descripcionRubro: 'Crédito',
@@ -317,11 +417,11 @@ export class NuevasComponent {
     },
     {
       codigoRubro: 3,
-      descripcionRubro: 'Vehículo',
+      descripcionRubro: 'AUTOMOTRIZ',
     },
     {
       codigoRubro: 4,
-      descripcionRubro: 'Vida',
+      descripcionRubro: 'VIDA',
     },
   ]);
 
@@ -338,32 +438,41 @@ export class NuevasComponent {
     },
     {
       codigoSeguro: 1,
-      descripcionSeguro: 'Vehículo liviano',
+      descripcionSeguro: 'VEHICULO LIVIANO',
       codigoRubro: 3
     },
     {
       codigoSeguro: 2,
-      descripcionSeguro: 'Transporte terrestre',
+      descripcionSeguro: 'TRANSPORTE TERRESTRE',
       codigoRubro: 3
     },
     {
       codigoSeguro: 1,
-      descripcionSeguro: 'Asistencia en viajes',
+      descripcionSeguro: 'ASISTENCIA EN VIAJES',
       codigoRubro: 4
     },
     {
       codigoSeguro: 2,
-      descripcionSeguro: 'Responsabilidad Civil Médica',
+      descripcionSeguro: 'RESPONSABILIDAD CIVIL MEDICA',
       codigoRubro: 4
     },
     {
       codigoSeguro: 3,
-      descripcionSeguro: 'Asiento Pasajero/Vida Conductor',
+      descripcionSeguro: 'Asiento Pasajero/VIDA Conductor',
       codigoRubro: 4
     },
-  ]);
+  ]); */
 
-    verDetalle(ISolicitud: any) {
-      throw new Error('Function not implemented.');
+  verDetalle(IdSolicitud: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '70%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+        .open(DetalleSolicitudComponent, dialogConfig)
+        .afterClosed()
     }
 }

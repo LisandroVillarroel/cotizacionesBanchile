@@ -20,8 +20,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
-//import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-import { ISolicitudG, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitudes/modelo/common';
+import { ISolicitudG } from '@features/gestion-solicitudes/gestionSolicitud-interface';
+import { IRubro, InterfazRubro } from '@shared/modelo/rubro-interface';
+import { ITipoSeguro, InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 
 @Component({
@@ -59,17 +60,15 @@ import { ISolicitudG, ITipoRubro, ITipoSeguro } from '@features/gestion-solicitu
   styleUrl: './con-observaciones.component.css'
 })
 export class ConObservacionesComponent {
-  panelOpenState = false;
+  /* panelOpenState = false;
   rescatadoSeguro=signal<ITipoSeguro[]>([]);
   rubro = new FormControl();
   seguro = new FormControl();
-  estado = new FormControl();
 
   dataSourceSolicitud = new MatTableDataSource<ISolicitudG>();
   displayedColumns: string[] = ["Sla", "ID", "Rut", "Contratante", "Rubro", "TipoSeguro", "Fecha", "accion"];
   expandColumns: string[]= [...this.displayedColumns, 'expand'];
   expandedElement= signal<ISolicitudG[]>([]);
-
 
   @ViewChild('buscarInput') inputElement: any;
 
@@ -121,7 +120,6 @@ export class ConObservacionesComponent {
   limpiaFiltros() {
     this.rubro.reset();
     this.seguro.reset();
-    this.estado.reset();
     this.dataSourceSolicitud.data = this.datosSolicitud();
   }
 
@@ -136,7 +134,7 @@ export class ConObservacionesComponent {
 
   async seleccionaRubro(_codigoRubro: number) {
     this.rescatadoSeguro.set(await this.DatoSeguros()
-    .filter((rubro) => rubro.codigoRubro == _codigoRubro));
+    .filter((rubro) => rubro.id_rubro == _codigoRubro));
   }
 
   getCellClass(value: number): string {
@@ -149,7 +147,6 @@ export class ConObservacionesComponent {
     }
   }
 
-/* Llamadas a servicios */
   datosSolicitud = signal<ISolicitudG[]>([
     {
       Sla: 1,
@@ -505,5 +502,5 @@ export class ConObservacionesComponent {
 
     verDetalle(ISolicitud: any) {
       throw new Error('Function not implemented.');
-    }
+    } */
 }

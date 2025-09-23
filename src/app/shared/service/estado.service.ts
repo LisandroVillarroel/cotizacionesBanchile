@@ -1,4 +1,4 @@
-import { EstadoInterface } from './../modelo/estado-interface';
+import { EstadoInterface } from '@shared/modelo/estado-interface';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';

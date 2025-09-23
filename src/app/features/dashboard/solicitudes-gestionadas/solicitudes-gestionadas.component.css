@@ -127,7 +127,8 @@ p {
 .button-link {
   background-color: #ffffff !important;
   color: #234e85 !important;
-  font-size: 12px;
+  padding: 0px 0px 0px !important;
+  font-size: 12px !important;
 }
 
 .button-link:hover {
