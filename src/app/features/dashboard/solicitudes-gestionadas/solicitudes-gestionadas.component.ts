@@ -55,9 +55,9 @@ import { IEstado } from './modelo/common';
 
 export class SolicitudesGestionadasComponent  {
   datosSolicitud =  input.required<IListadoSolicitudes[] | undefined>();
- rubroService = inject(RubroService);
- tipoSeguroService = inject(TipoSeguroService);
- estadoService = inject(EstadoService);
+  rubroService = inject(RubroService);
+  tipoSeguroService = inject(TipoSeguroService);
+ //estadoService = inject(EstadoService);
 
  datoRubros = signal<IRubro[]>([]);
  rescatadoSeguro = signal<ITipoSeguro[]>([]);
@@ -154,7 +154,7 @@ export class SolicitudesGestionadasComponent  {
     });
   }
 
-   cargaEstados() {
+   /* cargaEstados() {
     this.estadoService.postEstado().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -171,6 +171,51 @@ export class SolicitudesGestionadasComponent  {
         console.log('ERROR INESPERADO', error);
       },
     });
+  } */
+  cargaEstados() {
+    this.datosEstados = signal<IEstado[]>([
+    {
+      codigoEstado: 1,
+      descripcionEstado: 'En edición',
+    },
+    {
+      codigoEstado: 2,
+      descripcionEstado: 'Devuelta',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'En revisión',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Aprobada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Anulada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'En cotización',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta pendiente',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta emitida',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Terminada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Rechazada',
+    },
+  ]);
+
   }
 
   async seleccionaRubro(_codigoRubro: string) {
@@ -513,50 +558,6 @@ export class SolicitudesGestionadasComponent  {
     },
   ]);
 */
-    /* datoEstados = signal<IEstado[]>([
-    {
-      codigoEstado: 1,
-      descripcionEstado: 'En edición',
-    },
-    {
-      codigoEstado: 2,
-      descripcionEstado: 'Devuelta',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'En revisión',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Aprobada',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Anulada',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'En cotización',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Propuesta pendiente',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Propuesta emitida',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Terminada',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Rechazada',
-    },
-  ]);
- */
-
 
   /* Fin llamadas a servicios */
      verDetalle(IdSolicitud: number) {

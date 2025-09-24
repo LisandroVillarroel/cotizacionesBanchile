@@ -48,8 +48,10 @@
             <mat-label class="labelI">Estado</mat-label>
             <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('Estado',$event.value)">
               @for(_estados of datosEstados(); track _estados){
-                <mat-option [value]="_estados.id_estado">
-                  {{ _estados.nombre_estado }}
+<!--                 <mat-option [value]="_estados.id_estado">
+                  {{ _estados.nombre_estado }} -->
+                  <mat-option [value]="_estados.codigoEstado">
+                  {{ _estados.descripcionEstado }}
                 </mat-option>
               }
               <input matInput  />
