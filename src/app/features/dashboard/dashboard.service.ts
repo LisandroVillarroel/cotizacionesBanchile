@@ -19,12 +19,12 @@ export class DashboardService {
 
    postListadoSolicitudes(filtro: any): Observable<DatosSolicitudesInterface> {
       return this.http
-        .post<DatosSolicitudesInterface>(`${environment.apiUrl}/listar-solicitudes`, filtro,{headers: this.headers})
+        .post<DatosSolicitudesInterface>(`${environment.apiUrl}/listarSolicitudes`, filtro,{headers: this.headers})
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
         errorHandl(error: HttpErrorResponse) {
-      console.log('paso error tipo seguro: ', error);
+      console.log('paso error listar solicitudes: ', error);
       let errorMessage = '';
       if (error.error instanceof ErrorEvent) {
         // Get client-side error
