@@ -250,7 +250,7 @@ export default class IngresoSolicitudComponent {
 
   grabaConratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
-
+   console.log ('aseguradeCheck:',this.agregaSolicitudContratante().get('aseguradeCheck')!.value);
     this.ingresoSolicitud = {
       id_ejecutivo_banco: 'LISANDRO VILLARROEL',
       contratante: {
@@ -280,16 +280,16 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó bien');
-
+            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value) {
+                this.guardaAsegurado();
+            }
             // Actualizar el signal para mostrar datos del contratante en panel
-            const rut =
-              this.agregaSolicitudContratante().get('rutCliente')!.value;
-            const nombre = this.nombreRazonSocial();
+
 
             this.contratanteInfo.set({
               id: 999, // ID en duro para prueba
-              rut_contratante: rut,
-              nombre: nombre,
+              rut_contratante: this.agregaSolicitudContratante().get('rutCliente')!.value,
+              nombre: this.nombreRazonSocial(),
             });
           } else {
             if (dato.codigo != 500) {
@@ -307,13 +307,13 @@ export default class IngresoSolicitudComponent {
       });
   }
 
+  guardaAsegurado() {}
+
+
   salir() {
     this.router.navigate(['/principal/inicio']);
   }
 
-  grabarBorrador() {
-    alert('grabar borrador');
-  }
 
   async onBlurRutCliente(event: any) {
     const rut = event.target.value;

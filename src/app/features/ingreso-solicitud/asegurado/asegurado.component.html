@@ -54,7 +54,7 @@
 
 
     <ng-container matColumnDef="p_region_asegurado">
-      <th
+      <th hidden="true"
         id="_p_region_asegurado"
         mat-header-cell
         *matHeaderCellDef
@@ -69,7 +69,7 @@
     </ng-container>
 
     <ng-container matColumnDef="p_ciudad_asegurado">
-      <th
+      <th hidden="true"
         id="_p_ciudad_asegurado"
         mat-header-cell
         *matHeaderCellDef
@@ -84,7 +84,7 @@
     </ng-container>
 
     <ng-container matColumnDef="p_comuna_asegurado">
-      <th
+      <th hidden="true"
         id="_p_comuna_asegurado"
         mat-header-cell
         *matHeaderCellDef
@@ -99,7 +99,7 @@
     </ng-container>
 
     <ng-container matColumnDef="p_direccion_asegurado">
-      <th
+      <th hidden="true"
         id="_p_direccion_asegurado"
         mat-header-cell
         *matHeaderCellDef
@@ -110,6 +110,51 @@
       </th>
       <td mat-cell *matCellDef="let row" style="width: 0%">
         {{ row.p_direccion_asegurado }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="p_numero_dir_asegurado">
+      <th hidden="true"
+        id="_p_numero_dir_asegurado"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Dirección
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.p_numero_dir_asegurado }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="p_departamento_block_asegurado">
+      <th hidden="true"
+        id="_p_departamento_block_asegurado"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Depto Dirección
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.p_departamento_block_asegurado }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="p_casa_asegurado">
+      <th hidden="true"
+        id="_p_casa_asegurado"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Casa Dirección
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.p_casa_asegurado }}
       </td>
     </ng-container>
 

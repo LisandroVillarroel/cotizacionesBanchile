@@ -11,23 +11,7 @@ export interface ISolicitudContratante {
   departamento_block_contratante: string;
   casa_contratante: string;
 }
-/*
-export interface ISolicitudAsegurado {
-  p_id_ejecutivo_banco?: string;
-  p_id_solicitud?: string;
-  p_rut_asegurado: string;
-  p_nombre_razon_social_asegurado: string;
-  p_mail_asegurado: string;
-  p_telefono_asegurado: string;
-  p_region_asegurado: string;
-  p_ciudad_asegurado: string;
-  p_comuna_asegurado: string;
-  p_direccion_asegurado: string;
-  p_numero_dir_asegurado?: string;
-  p_departamento_block_asegurado?: string;
-  p_casa_asegurado?: string;
-}
-*/
+
 export interface IAsegurado {
   p_id_ejecutivo_banco?: string;
   p_id_solicitud?: string;
