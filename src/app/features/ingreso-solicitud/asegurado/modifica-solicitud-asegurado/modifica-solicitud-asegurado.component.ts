@@ -24,14 +24,14 @@ export class ModificaSolicitudAseguradoComponent {
   readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
   readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
 
-  rutAsegurado = new FormControl(this.data.rut_asegurado, [Validators.required, this.validaRut]);
-  nombreAsegurado = new FormControl(this.data.nombre_razon_social_asegurado, [Validators.required]);
-  regionAsegurado = new FormControl(this.data.region_asegurado, [Validators.required]);
-  ciudadAsegurado = new FormControl(this.data.ciudad_asegurado, [Validators.required]);
-  comunaAsegurado = new FormControl(this.data.comuna_asegurado, [Validators.required]);
-  direccionAsegurado = new FormControl(this.data.direccion_asegurado, [Validators.required]);
-  telefonoAsegurado = new FormControl(this.data.telefono_asegurado, [Validators.required]);
-  correoAsegurado = new FormControl(this.data.mail_asegurado, [Validators.required]);
+  rutAsegurado = new FormControl(this.data.p_rut_asegurado, [Validators.required, this.validaRut]);
+  nombreAsegurado = new FormControl(this.data.p_nombre_razon_social_asegurado, [Validators.required]);
+  regionAsegurado = new FormControl(this.data.p_region_asegurado, [Validators.required]);
+  ciudadAsegurado = new FormControl(this.data.p_ciudad_asegurado, [Validators.required]);
+  comunaAsegurado = new FormControl(this.data.p_comuna_asegurado, [Validators.required]);
+  direccionAsegurado = new FormControl(this.data.p_direccion_asegurado, [Validators.required]);
+  telefonoAsegurado = new FormControl(this.data.p_telefono_asegurado, [Validators.required]);
+  correoAsegurado = new FormControl(this.data.p_mail_asegurado, [Validators.required]);
 
    modificaAsegurado = signal<FormGroup>(
     new FormGroup({

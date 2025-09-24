@@ -7,8 +7,9 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  IAgregaAsegurado,
-  IIngresoAsegurado
+  //IAgregaAsegurado,
+  IIngresoAsegurado,
+  IModificaAsegurado
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
@@ -33,6 +34,29 @@ export class AseguradoService {
   }
 
   errorHandl(error: HttpErrorResponse) {
+    console.log('paso error tipo seguro: ', error);
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log('Error: ', errorMessage);
+    return throwError(errorMessage);
+  }
+
+      postModificaAsegurado(modificaAsegurado: IModificaAsegurado): Observable<any> {
+    console.log('Modifica Asegurado Service:', modificaAsegurado);
+    return this.http
+      .post<any>(`${environment.apiUrl}/modificarAsegurado`, modificaAsegurado, {
+        headers: this.headers,
+      })
+      .pipe(retry(1), catchError(this.errorHand2));
+  }
+
+  errorHand2(error: HttpErrorResponse) {
     console.log('paso error tipo seguro: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
