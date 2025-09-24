@@ -8,17 +8,17 @@
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input autofocus id="rutAsegurado" matInput class="input-rut rut" [formControl]="rutAsegurado"
+        <input autofocus id="rutAsegurado" matInput class="input-rut rut" [formControl]="p_rut_asegurado"
           oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutAsegurado($event)" validaRut required />
-        @if (rutAsegurado.invalid) {
+        @if (p_rut_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("rutAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput [formControl]="telefonoAsegurado" required />
-        @if (telefonoAsegurado.invalid) {
+        <input matInput [formControl]="p_telefono_asegurado" required />
+        @if (p_telefono_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("telefonoAsegurado") }}</mat-error>
         }
       </mat-form-field>
@@ -59,16 +59,16 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input matInput [formControl]="nombreAsegurado" required />
-        @if (nombreAsegurado.invalid) {
+        <input matInput [formControl]="p_nombre_razon_social_asegurado" required />
+        @if (p_nombre_razon_social_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
-        <input matInput [formControl]="correoAsegurado" required />
-        @if (correoAsegurado.invalid) {
+        <input matInput [formControl]="p_mail_asegurado" required />
+        @if (p_mail_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("correoAsegurado") }}</mat-error>
         }
       </mat-form-field>
@@ -83,7 +83,8 @@
     </button>
   </div>
   <div class="ms-5">
-    <button mat-raised-button class="colorFondoBotonGrabar" (click)="modificar()" [disabled]="modificaAsegurado().invalid">
+    <button mat-raised-button (click)="modificar()" class="colorFondoBotonGrabar"
+      [disabled]="modificaAsegurado().invalid">
       Grabar
     </button>
   </div>

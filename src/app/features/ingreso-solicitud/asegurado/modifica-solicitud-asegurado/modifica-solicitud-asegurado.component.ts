@@ -33,41 +33,41 @@ export class ModificaSolicitudAseguradoComponent {
   /* readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
   readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA); */
 
-  rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
-  nombreAsegurado = new FormControl('', [Validators.required]);
+  p_rut_asegurado = new FormControl('', [Validators.required, this.validaRut]);
+  p_nombre_razon_social_asegurado = new FormControl('', [Validators.required]);
   //apellidoPaternoAsegurado = new FormControl('', [Validators.required]);
   //apellidoMaternoAsegurado = new FormControl('', [Validators.required]);
   //regionAsegurado = new FormControl('', [Validators.required]);
   //ciudadAsegurado = new FormControl('', [Validators.required]);
   //comunaAsegurado = new FormControl('', [Validators.required]);
   //direccionAsegurado = new FormControl('', [Validators.required]);
-  telefonoAsegurado = new FormControl('', [Validators.required]);
-  correoAsegurado = new FormControl('', [Validators.required]);
+  p_telefono_asegurado = new FormControl('', [Validators.required]);
+  p_mail_asegurado = new FormControl('', [Validators.required]);
 
   modificaAsegurado = signal<FormGroup>(
     new FormGroup({
-      rutAsegurado: this.rutAsegurado,
-      nombreAsegurado: this.nombreAsegurado,
+      rutAsegurado: this.p_rut_asegurado,
+      nombreAsegurado: this.p_nombre_razon_social_asegurado,
       //regionAsegurado: this.regionAsegurado,
       //ciudadAsegurado: this.ciudadAsegurado,
       //comunaAsegurado: this.comunaAsegurado,
       //direccionAsegurado: this.direccionAsegurado,
-      telefonoAsegurado: this.telefonoAsegurado,
-      correoAsegurado: this.correoAsegurado
+      telefonoAsegurado: this.p_telefono_asegurado,
+      correoAsegurado: this.p_mail_asegurado
     })
   );
 
 
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
-      return this.rutAsegurado.hasError('required')
+      return this.p_rut_asegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
-        : this.rutAsegurado.hasError('rutInvalido')
+        : this.p_rut_asegurado.hasError('rutInvalido')
           ? 'Rut Inválido'
           : '';
     }
     if (campo === 'nombreAsegurado') {
-      return this.nombreAsegurado.hasError('required')
+      return this.p_nombre_razon_social_asegurado.hasError('required')
         ? 'Debes ingresar Nombre'
         : '';
     }
@@ -97,13 +97,13 @@ export class ModificaSolicitudAseguradoComponent {
     } */
 
     if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
+      return this.p_telefono_asegurado.hasError('required')
         ? 'Debes ingresar Teléfono'
         : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
+      return this.p_mail_asegurado.hasError('required')
         ? 'Debes ingresar Correo'
         : '';
     }
@@ -145,14 +145,14 @@ export class ModificaSolicitudAseguradoComponent {
       p_casa_asegurado: '1',
     };
 
-    console.log('Asegurado grabado:', this.asegurado);
+    console.log('Asegurado modificao:', this.asegurado);
     this.aseguradoService
       .postAgregaAsegurado(this.asegurado)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó asegurado bien')
+            alert('Modificó asegurado bien')
 
           } else {
             if (dato.codigo != 500) {
