@@ -5,13 +5,14 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IModificaAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
 
 @Component({
   selector: 'app-modifica-solicitud-asegurado',
   standalone: true,
-  imports: [ MatFormFieldModule,
+  imports: [MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,
@@ -20,27 +21,37 @@ import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoS
   styleUrl: './modifica-solicitud-asegurado.component.css'
 })
 export class ModificaSolicitudAseguradoComponent {
+  asegurado!: IModificaAsegurado;
 
-  readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
-  readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
+  aseguradoService = inject(AseguradoService)
 
-  rutAsegurado = new FormControl(this.data.p_rut_asegurado, [Validators.required, this.validaRut]);
-  nombreAsegurado = new FormControl(this.data.p_nombre_razon_social_asegurado, [Validators.required]);
-  regionAsegurado = new FormControl(this.data.p_region_asegurado, [Validators.required]);
-  ciudadAsegurado = new FormControl(this.data.p_ciudad_asegurado, [Validators.required]);
-  comunaAsegurado = new FormControl(this.data.p_comuna_asegurado, [Validators.required]);
-  direccionAsegurado = new FormControl(this.data.p_direccion_asegurado, [Validators.required]);
-  telefonoAsegurado = new FormControl(this.data.p_telefono_asegurado, [Validators.required]);
-  correoAsegurado = new FormControl(this.data.p_mail_asegurado, [Validators.required]);
+  private readonly dialogRef = inject(
+    MatDialogRef<ModificaSolicitudAseguradoComponent>
+  );
 
-   modificaAsegurado = signal<FormGroup>(
+
+  /* readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
+  readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA); */
+
+  rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
+  nombreAsegurado = new FormControl('', [Validators.required]);
+  //apellidoPaternoAsegurado = new FormControl('', [Validators.required]);
+  //apellidoMaternoAsegurado = new FormControl('', [Validators.required]);
+  //regionAsegurado = new FormControl('', [Validators.required]);
+  //ciudadAsegurado = new FormControl('', [Validators.required]);
+  //comunaAsegurado = new FormControl('', [Validators.required]);
+  //direccionAsegurado = new FormControl('', [Validators.required]);
+  telefonoAsegurado = new FormControl('', [Validators.required]);
+  correoAsegurado = new FormControl('', [Validators.required]);
+
+  modificaAsegurado = signal<FormGroup>(
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
-      regionAsegurado: this.regionAsegurado,
-      ciudadAsegurado: this.ciudadAsegurado,
-      comunaAsegurado: this.comunaAsegurado,
-      direccionAsegurado: this.direccionAsegurado,
+      //regionAsegurado: this.regionAsegurado,
+      //ciudadAsegurado: this.ciudadAsegurado,
+      //comunaAsegurado: this.comunaAsegurado,
+      //direccionAsegurado: this.direccionAsegurado,
       telefonoAsegurado: this.telefonoAsegurado,
       correoAsegurado: this.correoAsegurado
     })
@@ -48,12 +59,12 @@ export class ModificaSolicitudAseguradoComponent {
 
 
   getErrorMessage(campo: string) {
-      if (campo === 'rutAsegurado') {
+    if (campo === 'rutAsegurado') {
       return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
-        ? 'Rut Inválido'
-        : '';
+          ? 'Rut Inválido'
+          : '';
     }
     if (campo === 'nombreAsegurado') {
       return this.nombreAsegurado.hasError('required')
@@ -62,7 +73,7 @@ export class ModificaSolicitudAseguradoComponent {
     }
 
 
-    if (campo === 'regionAsegurado') {
+    /* if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
         ? 'Debes ingresar Región'
         : '';
@@ -83,7 +94,7 @@ export class ModificaSolicitudAseguradoComponent {
       return this.direccionAsegurado.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-    }
+    } */
 
     if (campo === 'telefonoAsegurado') {
       return this.telefonoAsegurado.hasError('required')
@@ -118,6 +129,45 @@ export class ModificaSolicitudAseguradoComponent {
   }
 
   modificar() {
-     this.dialogRef.close(this.modificaAsegurado().value);
+    this.asegurado = {
+      p_id_ejecutivo_banco: 'EJ001',
+      p_id_solicitud: '8881606',
+      p_rut_asegurado: this.modificaAsegurado().get('p_rut_asegurado')!.value,
+      p_nombre_razon_social_asegurado: this.modificaAsegurado().get('p_nombre_razon_social_asegurado')!.value,
+      p_mail_asegurado: this.modificaAsegurado().get('p_mail_asegurado')!.value,
+      p_telefono_asegurado: this.modificaAsegurado().get('p_telefono_asegurado')!.value,
+      p_region_asegurado: 'RM',
+      p_ciudad_asegurado: 'Santiago',
+      p_comuna_asegurado: 'Providencia',
+      p_direccion_asegurado: 'Av. Siempre Viva',
+      p_numero_dir_asegurado: '123',
+      p_departamento_block_asegurado: '501',
+      p_casa_asegurado: '1',
+    };
+
+    console.log('Asegurado grabado:', this.asegurado);
+    this.aseguradoService
+      .postAgregaAsegurado(this.asegurado)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Grabó asegurado bien')
+
+          } else {
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('ERROR DE SISTEMA:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
+    this.dialogRef.close();
   }
 }

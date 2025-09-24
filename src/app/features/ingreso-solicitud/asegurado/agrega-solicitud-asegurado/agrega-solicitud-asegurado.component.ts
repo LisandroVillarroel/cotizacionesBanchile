@@ -39,8 +39,8 @@ export class AgregaSolicitudAseguradoComponent {
 
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
-  apellidoPaternoAsegurado = new FormControl('', [Validators.required]);
-  apellidoMaternoAsegurado = new FormControl('', [Validators.required]);
+  //apellidoPaternoAsegurado = new FormControl('', [Validators.required]);
+  //apellidoMaternoAsegurado = new FormControl('', [Validators.required]);
   //regionAsegurado = new FormControl('', [Validators.required]);
   //ciudadAsegurado = new FormControl('', [Validators.required]);
   //comunaAsegurado = new FormControl('', [Validators.required]);
@@ -52,8 +52,8 @@ export class AgregaSolicitudAseguradoComponent {
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
-      apellidoPaternoAsegurado: this.apellidoPaternoAsegurado,
-      apellidoMaternoAsegurado: this.apellidoMaternoAsegurado,
+      //apellidoPaternoAsegurado: this.apellidoPaternoAsegurado,
+      //apellidoMaternoAsegurado: this.apellidoMaternoAsegurado,
       //regionAsegurado: this.regionAsegurado,
       //ciudadAsegurado: this.ciudadAsegurado,
       //comunaAsegurado: this.comunaAsegurado,
@@ -77,7 +77,7 @@ export class AgregaSolicitudAseguradoComponent {
         : '';
     }
 
-    if (campo === 'apellidoPaternoAsegurado') {
+    /* if (campo === 'apellidoPaternoAsegurado') {
       return this.apellidoPaternoAsegurado.hasError('required')
         ? 'Debes ingresar Apellido Paterno'
         : '';
@@ -89,7 +89,7 @@ export class AgregaSolicitudAseguradoComponent {
         : '';
     }
 
-    /* if (campo === 'regionAsegurado') {
+    if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
         ? 'Debes ingresar Región'
         : '';
