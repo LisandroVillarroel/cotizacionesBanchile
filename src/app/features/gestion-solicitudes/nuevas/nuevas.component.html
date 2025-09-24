@@ -94,8 +94,14 @@
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class="p-2" style="width: 5%; align-content: center;">
-            <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
-          </div>
+              <button
+                matTooltip="Ver detalles"
+                mat-icon-button
+                class="tabla"
+                (click)="verDetalle(item.ID)"
+              >
+                <mat-icon class="destacado">visibility</mat-icon>
+              </button>          </div>
 
         </mat-card-content>
       </mat-card>
