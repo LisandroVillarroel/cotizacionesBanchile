@@ -147,7 +147,7 @@ export class AseguradoComponent {
         if (data !== '') {
           const arregloActualizado = [
             ...this.datoAseguradosRecibe()!.filter(
-              (valor) => valor.rut_asegurado != datoAseguradoPar.rut_asegurado
+              (valor) => valor.p_rut_asegurado != datoAseguradoPar.p_rut_asegurado
             ),
             data,
           ]; // Copia y agrega un elemento
@@ -187,7 +187,7 @@ export class AseguradoComponent {
       .subscribe((data) => {
         if (data === 1) {
           const arregloActualizado = this.datoAseguradosRecibe()!.filter(
-            (valor) => valor.rut_asegurado != datoAseguradoPar.rut_asegurado
+            (valor) => valor.p_rut_asegurado != datoAseguradoPar.p_rut_asegurado
           ); // Copia y agrega un elemento
           console.log('datos agregados hijo:', arregloActualizado);
           this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
