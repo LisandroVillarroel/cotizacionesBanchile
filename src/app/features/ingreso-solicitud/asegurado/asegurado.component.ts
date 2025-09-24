@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   inject,
   input,
@@ -29,8 +30,8 @@ import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
-import { ISolicitudAsegurado } from '../modelo/ingresoSolicitud-Interface';
-import { IIngresoAsegurado } from '../modelo/ingresoSolicitud-Interface';
+import { IAsegurado } from '../modelo/ingresoSolicitud-Interface';
+
 
 @Component({
   selector: 'app-asegurado',
@@ -49,9 +50,8 @@ import { IIngresoAsegurado } from '../modelo/ingresoSolicitud-Interface';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-  ingresoAsegurados: IIngresoAsegurado[] = [];
-  datoAseguradosRecibe = input.required<ISolicitudAsegurado[] | undefined>();
-  datoAseguradosRecibeModificado = output<ISolicitudAsegurado[]>();
+  datoAsegurados=signal <IAsegurado[]>([]);
+
   flagAsegurado = model(false);
 
   private readonly dialog = inject(MatDialog);
@@ -62,15 +62,18 @@ export class AseguradoComponent {
     'index',
     'p_rut_asegurado',
     'p_nombre_razon_social_asegurado',
-    //'p_region_asegurado',
-    //'p_ciudad_asegurado',
-    //'p_comuna_asegurado',
-    //'p_direccion_asegurado',
-    'p_telefono_asegurado',
     'p_mail_asegurado',
+    'p_telefono_asegurado',
+    'p_region_asegurado',
+    'p_ciudad_asegurado',
+    'p_comuna_asegurado',
+    'p_direccion_asegurado',
+    'p_numero_dir_asegurado',
+    'p_departamento_block_asegurado',
+    'p_casa_asegurado',
     'opciones',
   ];
-  dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
+  //dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
 
   @ViewChild(MatPaginator)
   paginatorAsegurado!: MatPaginator;
@@ -78,13 +81,22 @@ export class AseguradoComponent {
 
   applyFilterAsegurado(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceAsegurado.filter = filterValue.trim().toLowerCase();
+    this.dataSourceAsegurado().filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSourceAsegurado.paginator) {
-      this.dataSourceAsegurado.paginator.firstPage();
+    if (this.dataSourceAsegurado().paginator) {
+      this.dataSourceAsegurado().paginator!.firstPage();
     }
   }
 
+  dataSourceAsegurado=computed(()=>
+  {
+    const tabla =new MatTableDataSource<IAsegurado>(this.datoAsegurados());
+    tabla.paginator = this.paginatorAsegurado;
+    tabla.sort = this.sortAsegurado;
+    return tabla;
+}
+  );
+  /*
   efe = effect(() => {
     console.log('datos asegurado:', this.datoAseguradosRecibe()!);
     this.dataSourceAsegurado.data = this.datoAseguradosRecibe()!;
@@ -97,16 +109,18 @@ export class AseguradoComponent {
     console.log('flag aseguradoooooo:');
     console.log('flag asegurado:', this.flagAsegurado());
   });
-
+*/
   ngAfterViewInit(): void {
-    this.dataSourceAsegurado.paginator = this.paginatorAsegurado;
-    this.dataSourceAsegurado.sort = this.sortAsegurado;
+    this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
+    this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    // this.dataSourceAsegurado.data = this.datoAseguradosRecibe();
+    this.rescataListaAsegurados();
   }
+
+  rescataListaAsegurados() {}
 
   agregaNuevoAsegurado() {
     //  agregaNuevo(empresaInterface_: EmpresaI) {
@@ -125,13 +139,12 @@ export class AseguradoComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
-          const arregloActualizado = [...this.datoAseguradosRecibe()!, data]; // Copia y agrega un elemento
-          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+          this.rescataListaAsegurados();
         }
       });
   }
 
-  modificaAsegurado(datoAseguradoPar: ISolicitudAsegurado): void {
+  modificaAsegurado(datoAseguradoPar: IAsegurado): void {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -145,18 +158,12 @@ export class AseguradoComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
-          const arregloActualizado = [
-            ...this.datoAseguradosRecibe()!.filter(
-              (valor) => valor.p_rut_asegurado != datoAseguradoPar.p_rut_asegurado
-            ),
-            data,
-          ]; // Copia y agrega un elemento
-          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+          this.rescataListaAsegurados();
         }
       });
   }
 
-  consultaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {
+  consultaAsegurado(datoAseguradoPar: IAsegurado) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -171,7 +178,7 @@ export class AseguradoComponent {
       .afterClosed();
   }
 
-  eliminaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {
+  eliminaAsegurado(datoAseguradoPar: any) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -186,11 +193,7 @@ export class AseguradoComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 1) {
-          const arregloActualizado = this.datoAseguradosRecibe()!.filter(
-            (valor) => valor.p_rut_asegurado != datoAseguradoPar.p_rut_asegurado
-          ); // Copia y agrega un elemento
-          console.log('datos agregados hijo:', arregloActualizado);
-          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+          this.rescataListaAsegurados();
         }
       });
   }

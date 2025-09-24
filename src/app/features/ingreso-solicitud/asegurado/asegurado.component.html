@@ -1,7 +1,7 @@
 <div class="table-con-titulo mat-elevation-z6" data-titulo="Datos del Asegurado" style="margin-top: 32px;">
   <table
     mat-table
-    [dataSource]="dataSourceAsegurado"
+    [dataSource]="dataSourceAsegurado()"
     multiTemplateDataRows
     matSort
   >
@@ -21,9 +21,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rut_asegurado">
+    <ng-container matColumnDef="p_rut_asegurado">
       <th
-        id="_rut_asegurado"
+        id="_p_rut_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -36,9 +36,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nombre_razon_social_asegurado">
+    <ng-container matColumnDef="p_nombre_razon_social_asegurado">
       <th
-        id="_nombre_razon_social_asegurado"
+        id="_p_nombre_razon_social_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -53,9 +53,9 @@
 
 
 
-    <ng-container matColumnDef="regionAsegurado">
+    <ng-container matColumnDef="p_region_asegurado">
       <th
-        id="_regionAsegurado"
+        id="_p_region_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -68,9 +68,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="ciudadAsegurado">
+    <ng-container matColumnDef="p_ciudad_asegurado">
       <th
-        id="_ciudadAsegurado"
+        id="_p_ciudad_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -83,9 +83,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="comunaAsegurado">
+    <ng-container matColumnDef="p_comuna_asegurado">
       <th
-        id="_comunaAsegurado"
+        id="_p_comuna_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -98,9 +98,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="direccionAsegurado">
+    <ng-container matColumnDef="p_direccion_asegurado">
       <th
-        id="_direccionAsegurado"
+        id="_p_direccion_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -113,9 +113,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="telefono_asegurado">
+    <ng-container matColumnDef="p_telefono_asegurado">
       <th
-        id="_telefono_asegurado"
+        id="_p_telefono_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -128,9 +128,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="mail_asegurado">
+    <ng-container matColumnDef="p_mail_asegurado">
       <th
-        id="_mail_asegurado"
+        id="_p_mail_asegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header

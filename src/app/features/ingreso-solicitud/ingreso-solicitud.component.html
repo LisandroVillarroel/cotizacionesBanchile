@@ -189,8 +189,6 @@
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
         <app-asegurado
-          [datoAseguradosRecibe]="datoAsegurados()"
-          (datoAseguradosRecibeModificado)="actualizarAsegurado($event)"
           [(flagAsegurado)]="flagAseguradoRescata"
           (flagAseguradoModel)="cambioAseguradoFlag()"
         />

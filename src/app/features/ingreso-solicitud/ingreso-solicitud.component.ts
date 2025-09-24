@@ -29,7 +29,6 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   IIngresoSolicitud,
-  ISolicitudAsegurado,
   ISolicitudBeneficiario,
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
@@ -103,7 +102,7 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
   datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   rubroService = inject(RubroService);
@@ -270,7 +269,7 @@ export default class IngresoSolicitudComponent {
       },
       id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
-      asegurados: [],
+     // asegurados: [],
       beneficiarios: [],
     };
     console.log('ingreso solicitud:', this.ingresoSolicitud);
@@ -381,11 +380,12 @@ export default class IngresoSolicitudComponent {
     this.flagAsegurado.setValue(this.flagAseguradoRescata);
   }
 
+  /*
   actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoAsegurados());
   }
-
+*/
   cambioBeneficiarioFlag() {
     console.log('ver flag', this.flagAseguradoRescata);
     this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);

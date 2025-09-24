@@ -39,7 +39,6 @@ export class IngresoSolicitudService {
       departamento_block_contratante: '',
       casa_contratante: '',
     },
-    asegurados: [],
     beneficiarios: [],
   };
 

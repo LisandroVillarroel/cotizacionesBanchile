@@ -6,11 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import {
-  //IAgregaAsegurado,
-  IIngresoAsegurado,
-  IModificaAsegurado
-} from '../modelo/ingresoSolicitud-Interface';
+import { IAsegurado } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +20,7 @@ export class AseguradoService {
   });
 
   constructor() {}
-    postAgregaAsegurado(agregaAsegurado: IIngresoAsegurado): Observable<any> {
+    postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
     console.log('Agrega Asegurado Service:', agregaAsegurado);
     return this.http
       .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
@@ -47,7 +43,7 @@ export class AseguradoService {
     return throwError(errorMessage);
   }
 
-      postModificaAsegurado(modificaAsegurado: IModificaAsegurado): Observable<any> {
+      postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
     console.log('Modifica Asegurado Service:', modificaAsegurado);
     return this.http
       .post<any>(`${environment.apiUrl}/modificarAsegurado`, modificaAsegurado, {
