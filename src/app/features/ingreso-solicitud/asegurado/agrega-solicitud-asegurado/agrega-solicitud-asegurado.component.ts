@@ -146,17 +146,19 @@ export class AgregaSolicitudAseguradoComponent {
 
   grabar() {
     this.asegurado =  {
-      rut_asegurado: this.agregaAsegurado().get('rut_asegurado')!.value,
-      nombre_razon_social_asegurado: this.agregaAsegurado().get('nombre_razon_social_asegurado')!.value,
-      mail_asegurado: this.agregaAsegurado().get('mail_asegurado')!.value,
-      telefono_asegurado: this.agregaAsegurado().get('telefono_asegurado:')!.value,
-      region_asegurado: '',
-      ciudad_asegurado: '',
-      comuna_asegurado: '',
-      direccion_asegurado: '',
-      numero_dir_asegurado: '',
-      departamento_block_asegurado: '',
-      casa_asegurado: '',
+      p_id_ejecutivo_banco: 'EJ001',
+      p_id_solicitud: '8881606',
+      p_rut_asegurado: this.agregaAsegurado().get('p_rut_asegurado')!.value,
+      p_nombre_razon_social_asegurado: this.agregaAsegurado().get('p_nombre_razon_social_asegurado')!.value,
+      p_mail_asegurado: this.agregaAsegurado().get('p_mail_asegurado')!.value,
+      p_telefono_asegurado: this.agregaAsegurado().get('p_telefono_asegurado')!.value,
+      p_region_asegurado: 'RM',
+      p_ciudad_asegurado: 'Santiago',
+      p_comuna_asegurado: 'Providencia',
+      p_direccion_asegurado: 'Av. Siempre Viva',
+      p_numero_dir_asegurado: '123',
+      p_departamento_block_asegurado: '501',
+      p_casa_asegurado: '1',
     };
 
     console.log('Asegurado grabado:', this.asegurado);
@@ -166,7 +168,7 @@ export class AgregaSolicitudAseguradoComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó bien')
+            alert('Grabó asegurado bien')
 
           } else {
             if (dato.codigo != 500) {

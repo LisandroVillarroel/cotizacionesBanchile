@@ -60,14 +60,14 @@ export class AseguradoComponent {
 
   displayedColumnsAsegurado: string[] = [
     'index',
-    'rut_asegurado',
-    'nombre_razon_social_asegurado',
-    //'region_asegurado',
-    //'ciudad_asegurado',
-    //'comuna_asegurado',
-    //'direccion_asegurado',
-    'telefono_asegurado',
-    'mail_asegurado',
+    'p_rut_asegurado',
+    'p_nombre_razon_social_asegurado',
+    //'p_region_asegurado',
+    //'p_ciudad_asegurado',
+    //'p_comuna_asegurado',
+    //'p_direccion_asegurado',
+    'p_telefono_asegurado',
+    'p_mail_asegurado',
     'opciones',
   ];
   dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();

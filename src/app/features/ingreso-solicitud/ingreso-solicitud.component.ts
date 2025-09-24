@@ -274,7 +274,6 @@ export default class IngresoSolicitudComponent {
       beneficiarios: [],
     };
     console.log('ingreso solicitud:', this.ingresoSolicitud);
-    //this.ingresoSolicitud.asegurados = this.datoAsegurados() as ISolicitudAsegurado[];
     this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
