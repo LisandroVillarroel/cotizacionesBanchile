@@ -1,4 +1,13 @@
-import { Component, effect, inject, input, model, output, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   MatDialog,
@@ -15,12 +24,13 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
 import { ISolicitudAsegurado } from '../modelo/ingresoSolicitud-Interface';
-
+import { IIngresoAsegurado } from '../modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-asegurado',
@@ -39,13 +49,14 @@ import { ISolicitudAsegurado } from '../modelo/ingresoSolicitud-Interface';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-  datoAseguradosRecibe =  input.required<ISolicitudAsegurado[] | undefined>();
+  ingresoAsegurados: IIngresoAsegurado[] = [];
+  datoAseguradosRecibe = input.required<ISolicitudAsegurado[] | undefined>();
   datoAseguradosRecibeModificado = output<ISolicitudAsegurado[]>();
-  flagAsegurado= model(false);
+  flagAsegurado = model(false);
 
   private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   displayedColumnsAsegurado: string[] = [
     'index',
@@ -74,20 +85,18 @@ export class AseguradoComponent {
     }
   }
 
-
-    efe=effect(() => {
-      console.log('datos asegurado:',this.datoAseguradosRecibe()!)
-      this.dataSourceAsegurado.data = this.datoAseguradosRecibe()!;
-     // this.dataSourceAsegurado.paginator?.pageSize !=
-     // this.paginatorAsegurado.pageSize;
-     console.log('flag asegurado 1:',this.flagAsegurado())
-      if (this.datoAseguradosRecibe()!.length===0)
-        this.flagAsegurado.set(false);
-      else
-        this.flagAsegurado.set(true);
-console.log('flag aseguradoooooo:')
-      console.log('flag asegurado:',this.flagAsegurado())
-    })
+  efe = effect(() => {
+    console.log('datos asegurado:', this.datoAseguradosRecibe()!);
+    this.dataSourceAsegurado.data = this.datoAseguradosRecibe()!;
+    // this.dataSourceAsegurado.paginator?.pageSize !=
+    // this.paginatorAsegurado.pageSize;
+    console.log('flag asegurado 1:', this.flagAsegurado());
+    if (this.datoAseguradosRecibe()!.length === 0)
+      this.flagAsegurado.set(false);
+    else this.flagAsegurado.set(true);
+    console.log('flag aseguradoooooo:');
+    console.log('flag asegurado:', this.flagAsegurado());
+  });
 
   ngAfterViewInit(): void {
     this.dataSourceAsegurado.paginator = this.paginatorAsegurado;
@@ -96,8 +105,7 @@ console.log('flag aseguradoooooo:')
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-   // this.dataSourceAsegurado.data = this.datoAseguradosRecibe();
-
+    // this.dataSourceAsegurado.data = this.datoAseguradosRecibe();
   }
 
   agregaNuevoAsegurado() {
@@ -117,9 +125,8 @@ console.log('flag aseguradoooooo:')
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
-          const arregloActualizado =[...this.datoAseguradosRecibe()!,data]; // Copia y agrega un elemento
-         this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
-
+          const arregloActualizado = [...this.datoAseguradosRecibe()!, data]; // Copia y agrega un elemento
+          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }
       });
   }
@@ -138,11 +145,15 @@ console.log('flag aseguradoooooo:')
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
-        const    arregloActualizado =[...this.datoAseguradosRecibe()!.filter(valor=> valor.rut_asegurado!=datoAseguradoPar.rut_asegurado),data]; // Copia y agrega un elemento
-         this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+          const arregloActualizado = [
+            ...this.datoAseguradosRecibe()!.filter(
+              (valor) => valor.rut_asegurado != datoAseguradoPar.rut_asegurado
+            ),
+            data,
+          ]; // Copia y agrega un elemento
+          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }
-        }
-      );
+      });
   }
 
   consultaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {
@@ -157,8 +168,7 @@ console.log('flag aseguradoooooo:')
     dialogConfig.data = datoAseguradoPar;
     this.dialog
       .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
-      .afterClosed()
-
+      .afterClosed();
   }
 
   eliminaAsegurado(datoAseguradoPar: ISolicitudAsegurado) {
@@ -176,11 +186,12 @@ console.log('flag aseguradoooooo:')
       .afterClosed()
       .subscribe((data) => {
         if (data === 1) {
-          const arregloActualizado = this.datoAseguradosRecibe()!.filter(valor=> valor.rut_asegurado!=datoAseguradoPar.rut_asegurado); // Copia y agrega un elemento
-         console.log('datos agregados hijo:',arregloActualizado)
-         this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+          const arregloActualizado = this.datoAseguradosRecibe()!.filter(
+            (valor) => valor.rut_asegurado != datoAseguradoPar.rut_asegurado
+          ); // Copia y agrega un elemento
+          console.log('datos agregados hijo:', arregloActualizado);
+          this.datoAseguradosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
         }
       });
   }
-
 }

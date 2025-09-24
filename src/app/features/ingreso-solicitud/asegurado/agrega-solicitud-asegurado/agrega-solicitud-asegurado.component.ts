@@ -1,27 +1,41 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
+import { IIngresoAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
 @Component({
   selector: 'app-agrega-solicitud-asegurado',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,
-    MatButtonModule],
+    MatButtonModule,
+  ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
-  styleUrl: './agrega-solicitud-asegurado.component.css'
+  styleUrl: './agrega-solicitud-asegurado.component.css',
 })
 export class AgregaSolicitudAseguradoComponent {
+  asegurado!: IIngresoAsegurado;
 
-  private readonly dialogRef = inject(MatDialogRef<AgregaSolicitudAseguradoComponent>);
+  aseguradoService=inject(AseguradoService)
+
+  private readonly dialogRef = inject(
+    MatDialogRef<AgregaSolicitudAseguradoComponent>
+  );
 
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
@@ -45,18 +59,17 @@ export class AgregaSolicitudAseguradoComponent {
       //comunaAsegurado: this.comunaAsegurado,
       //direccionAsegurado: this.direccionAsegurado,
       telefonoAsegurado: this.telefonoAsegurado,
-      correoAsegurado: this.correoAsegurado
+      correoAsegurado: this.correoAsegurado,
     })
   );
-
 
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
       return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
-          ? 'Rut Inválido'
-          : '';
+        ? 'Rut Inválido'
+        : '';
     }
     if (campo === 'nombreAsegurado') {
       return this.nombreAsegurado.hasError('required')
@@ -127,11 +140,48 @@ export class AgregaSolicitudAseguradoComponent {
     if (validateRut(rut) === true) {
       await this.agregaAsegurado()
         .get('rutAsegurado')!
-        .setValue(formatRut(rut, RutFormat.DOTS_DASH))
+        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
   }
 
   grabar() {
-    this.dialogRef.close(this.agregaAsegurado().value);
+    this.asegurado =  {
+      rut_asegurado: this.agregaAsegurado().get('rut_asegurado')!.value,
+      nombre_razon_social_asegurado: this.agregaAsegurado().get('nombre_razon_social_asegurado')!.value,
+      mail_asegurado: this.agregaAsegurado().get('mail_asegurado')!.value,
+      telefono_asegurado: this.agregaAsegurado().get('telefono_asegurado:')!.value,
+      region_asegurado: '',
+      ciudad_asegurado: '',
+      comuna_asegurado: '',
+      direccion_asegurado: '',
+      numero_dir_asegurado: '',
+      departamento_block_asegurado: '',
+      casa_asegurado: '',
+    };
+
+    console.log('Asegurado grabado:', this.asegurado);
+    this.aseguradoService
+    .postAgregaAsegurado(this.asegurado)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Grabó bien')
+
+          } else {
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('ERROR DE SISTEMA:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
+    this.dialogRef.close();
   }
 }
