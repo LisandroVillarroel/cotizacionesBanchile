@@ -1,6 +1,5 @@
-<div class="container-fluid">
-  <div class="container-fluid d-flex justify-around p-2">
-    <h1 mat-dialog-title class="mt-2 titulo">Te damos la bienvenida</h1>
+  <div class="container-fluid d-flex justify-around">
+    <h1 mat-dialog-title class="titulo">Te damos la bienvenida</h1>
     <mat-form-field class="inputFechaForm">
       <mat-label class="fontSmall gris">Actualizado el:</mat-label>
       <input matInput [matDatepicker]="picker" [formControl]="fechaActual" (dateChange)="seleccionaFecha()">
@@ -15,4 +14,3 @@
   <div class="container-fluid fondoGris flex">
     <app-distribucion [listadoSolicitudesGrafiico]="listadoSolicitudes()"/>
   </div>
-</div>

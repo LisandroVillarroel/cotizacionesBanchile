@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, input, ViewEncapsulation } from '@angular/core';
 import { MatFormField } from "@angular/material/form-field";
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
@@ -21,10 +21,14 @@ import { MatCard } from "@angular/material/card";
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
 })
+
 export default class DetalleSolicitudComponent {
+    //idCotizacion =  input.required<IResumenSolicitudes | undefined>();
+
   private readonly dialog = inject(MatDialog);
-private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
-//readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+
+
    solicitudId: any;
   DetalleSolicitudComponent: any;
   devolverSolicitud(): void {

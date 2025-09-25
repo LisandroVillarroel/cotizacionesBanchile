@@ -68,22 +68,17 @@ export class NuevasComponent {
 
   dateControl = new FormControl();
 
-  displayedColumns: string[] = [
-    "Sla",
-    "ID",
-    "Rut",
-    "Contratante",
-    "Rubro",
-    "TipoSeguro",
-    "Fecha",
-    "accion"
-  ];
-
   dataSolicitud = signal<ISolicitudG[]>([]);
   filtro = signal('');
   pagina = signal(0);
   pageSize = 5;
 
+  async ngOnInit() {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.dataSolicitud.set(this.datosSolicitud);
+    //this.dataSourceSolicitud.data = this.datosSolicitud();
+    this.cargaRubros();
+  }
   /* constructor(private rubroService: RubroService) {
     this.cargarRubros();
   }
@@ -188,13 +183,6 @@ export class NuevasComponent {
     this.seguro.reset();
 
     this.dataSolicitud.set(this.datosSolicitud);
-  }
-
-  async ngOnInit() {
-    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.dataSolicitud.set(this.datosSolicitud);
-    //this.dataSourceSolicitud.data = this.datosSolicitud();
-    this.cargaRubros();
   }
 
   getCellClass(value: number): string {
