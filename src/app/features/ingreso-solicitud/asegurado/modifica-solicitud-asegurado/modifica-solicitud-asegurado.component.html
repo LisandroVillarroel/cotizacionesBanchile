@@ -42,8 +42,8 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput [formControl]="p_telefono_asegurado" required />
-        @if (p_telefono_asegurado.invalid) {
+        <input matInput [formControl]="telefonoAsegurado" required />
+        @if (telefonoAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("telefonoAsegurado") }}</mat-error>
         }
       </mat-form-field>

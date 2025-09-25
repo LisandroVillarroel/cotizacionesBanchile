@@ -69,14 +69,14 @@ export class AgregaSolicitudAseguradoComponent {
 
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
-      return this.p_rut_asegurado.hasError('required')
+      return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
-        : this.p_rut_asegurado.hasError('rutInvalido')
+        : this.rutAsegurado.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreAsegurado') {
-      return this.p_nombre_razon_social_asegurado.hasError('required')
+      return this.nombreAsegurado.hasError('required')
         ? 'Debes ingresar Nombre'
         : '';
     }
@@ -123,13 +123,13 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
     if (campo === 'telefonoAsegurado') {
-      return this.p_telefono_asegurado.hasError('required')
+      return this.telefonoAsegurado.hasError('required')
         ? 'Debes ingresar Teléfono'
         : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.p_mail_asegurado.hasError('required')
+      return this.correoAsegurado.hasError('required')
         ? 'Debes ingresar Correo'
         : '';
     }
