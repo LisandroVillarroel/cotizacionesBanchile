@@ -57,7 +57,7 @@ export default class DashboardComponent   {
     console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-       "p_id_usuario": "LISANDRO VILLARROEL",
+       "p_id_usuario": "EJ002",
     "p_fecha": "23/09/2025",
     "p_tipo_usuario": "E"
     }

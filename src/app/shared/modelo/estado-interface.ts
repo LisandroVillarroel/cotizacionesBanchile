@@ -1,7 +1,7 @@
 export interface IEstado {
-  id_estado: string;
+  id_estado_solicitud: number;
   nombre_estado: string;
-  status_estado: string;
+   status_estado: string;
   fecha_creacion: string;
   usuario_creacion: string;
   fecha_modificacion: string
@@ -13,6 +13,6 @@ export interface EstadoInterface {
   mensaje: string;
   estado_sp: string;
   mensaje_sp: string;
-  items: IEstado[];
+  p_cursor: IEstado[];
   cantidad: number;
 }

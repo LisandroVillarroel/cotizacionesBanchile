@@ -1,12 +1,27 @@
 <div class="container-fluid justify-around p-2" >
   <mat-card style="width: 49%;">
-    <mat-card-header class="justify-around">Resumen Solicitudes por Tipo de Seguro &nbsp;&nbsp;&nbsp;&nbsp;
-      <select [(ngModel)]="seleccionada" class="inputSelect gris" style="width: 30%;" matNativeControl required>
+    <mat-card-header class="justify-around">Resumen Solicitudes por Rubro &nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- <select [(ngModel)]="seleccionada" class="inputSelect gris" style="width: 30%;" matNativeControl required>
         <option [value]="null" disabled selected>Seleccione un tipo de seguro</option>
         <option *ngFor="let opcion of opciones" [value]="opcion.id">
           {{ opcion.nombre }}
         </option>
-      </select>
+      </select> -->
+
+
+      <mat-form-field style="width: 30%;" >
+            <mat-label class="labelI">Rubro</mat-label>
+            <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+              @for(_rubros of datoRubros(); track _rubros){
+                <mat-option [value]="_rubros.id_rubro">
+                  {{ _rubros.nombre_rubro }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+
+
     </mat-card-header>
     <mat-card-content>
       <app-grafico-pie />
@@ -15,7 +30,7 @@
   <mat-card style="width: 49%;">
     <mat-card-header>Tiempo promedio en Gestión de Solicitudes (días promedio)</mat-card-header>
     <mat-card-content style="margin-top: 20%;">
-      <app-grafico-barra />
+      <app-grafico-barra  [datoResumenGeneral_Grafico]="resumenGeneral()"/>
     </mat-card-content>
   </mat-card>
 </div>
