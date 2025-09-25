@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 ///import { AutenticaServicio } from '@features/autentica/servicios/autenticaServicio';
 
-
 @Component({
-  selector: 'app-header',
-  standalone: true,
+  selector: 'app-footer',
+   standalone: true,
   imports: [MatToolbar, MatIcon, MatButtonModule, MatMenuModule,MatDividerModule],
   template: `
     <mat-toolbar
@@ -29,13 +28,10 @@ import { MatDividerModule } from '@angular/material/divider';
           </a>
 <mat-divider [vertical]="true" ></mat-divider>
           <span class="titulo mb-0">
-                Plataforma Cotizaciones Seguros Empresaxxxx
+                Footer - Plataforma Cotizaciones Seguros Empresa
           </span>
         </div>
-        <div >
-          <span class='usuarioLogin'>Equipo de desarrollo Entersoft</span>
-          <button class="btn-salir" matTooltip="Cerrar" matButton><mat-icon>exit_to_app</mat-icon></button>
-        </div>
+
       </div>
       <!--   }-->
     </mat-toolbar>
@@ -107,8 +103,10 @@ import { MatDividerModule } from '@angular/material/divider';
 
   `,
 })
-export class HeaderComponent {
-  readonly #router = inject(Router);
+
+
+export class FooterComponent {
+readonly #router = inject(Router);
   ///readonly #AutenticaServicio = inject(AutenticaServicio);
 
   collapsed = model.required<boolean>();
@@ -119,8 +117,5 @@ export class HeaderComponent {
     document.documentElement.classList.toggle('dark', this.darkMode());
   });
 
-  logout() {
-    //this.#AutenticaServicio.logout();
-    this.#router.navigate(['/login']);
-  }
+
 }

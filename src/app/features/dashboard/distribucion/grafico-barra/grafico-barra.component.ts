@@ -1,10 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { UIChart } from "primeng/chart";
-import { MatCard } from "@angular/material/card";
-import { MatCardModule } from '@angular/material/card';
+import { IListadoSolicitudes } from './../../datosSolicitud-Interface';
+import { IEstado } from '@shared/modelo/estado-interface';
+import { EstadoService } from '@shared/service/estado.service';
+import { Component, signal, computed, input, effect, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
-import { MatFormField } from "@angular/material/form-field";
-import { isPlatformBrowser } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 
 
 @Component({
@@ -15,46 +15,79 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrls: ['./grafico-barra.component.css'],
 })
 export class GraficoBarraComponent implements OnInit {
-  data= signal({});
+datoResumenGeneral_Grafico = input.required<IListadoSolicitudes[] | undefined>();
+
+  datoEstado=signal<IEstado[]>([])
+  datoEstadoNombre=signal<string[]>([])
+  arrTotalesSignal=signal<number[]>([])
+  estadoService=inject(EstadoService);
+
+  // Entrada de datos
+
+  resumenGeneral = computed(() => this.datoResumenGeneral_Grafico());
+
+  // Señales para el gráfico
+  data = signal({});
   options = signal({});
 
-  ngOnInit() {
-    this.data.set({
-      labels: ['En edición', 'En revisión', 'Con observaciones', 'En cotización'
-        , 'Aprobadas', 'Propuestas pendientes', 'Propuestas Emitidas'
-        , 'Propuestas firmadas', 'Teminadas', 'Anuladas', 'Rechazadas'],
-      datasets: [
-        {
-          //  label: 'My First dataset',
-          backgroundColor:
-          [
-            '#666668',
-            '#149DC9',
-            '#FFC725',
-            '#234E85',
-            '#6BAA1F',
-            '#776D92',
-            '#002464',
-            '#A6B118',
-            '#C21589',
-            '#F45516',
-            '#D11D1A'],
-          data: [2, 4, 1, 3, 6, 1, 2, 0, 0, 1, 1]
-        }
-      ]
-    });
-    this.options.set({
-      indexAxis: 'y', // ← Esto convierte el gráfico en horizontal
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'none'
-        },
-        title: {
-          display: false,
-          //text: 'Gráfico de Barras Horizontal'
-        }
+  constructor() {
+    effect((): void => {
+      const resumen = this.resumenGeneral();
+      if (!resumen) return;
+      let arrTotales=[]
+      console.log('paso 1')
+      for (let i = 0; i < this.datoEstadoNombre().length; i++) {
+           console.log('this.datoEstadoNombre()[i]',this.datoEstadoNombre()[i])
+           arrTotales[i] = this.resumenGeneral()!.filter(item => item.id_estado_solicitud.toString() === this.datoEstadoNombre()[i])
+                        .reduce((contador) => contador=contador+1,0);
+
       }
+      this.arrTotalesSignal.set(arrTotales)
+console.log('arrTotales',arrTotales)
+      console.log('Resumen cargado:', resumen);
+
+      this.data.set({
+        labels: [this.datoEstadoNombre()],
+        datasets: [{
+          backgroundColor: ['#666668', '#149DC9', '#FFC725', '#234E85'],
+          data: this.arrTotalesSignal()
+        }]
+      });
+
+      this.options.set({
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: false }
+        }
+      });
+    }, { allowSignalWrites: true });
+  }
+
+  ngOnInit(){
+    this.cargaEstado()
+  }
+
+    cargaEstado() {
+    this.estadoService.getEstado().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+         // this.datoEstado.set(dato.p_cursor);
+
+          this.datoEstadoNombre.set(dato.p_cursor.map(x => '1')) //x.nombre_estado Obtiene solo tipodescrip
+           console.log('dato.p_cursor-.',dato.p_cursor)
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
     });
   }
 }

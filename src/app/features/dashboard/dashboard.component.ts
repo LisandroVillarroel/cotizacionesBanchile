@@ -38,7 +38,7 @@ import { DatosSolicitudesInterface, IListadoSolicitudes, IResumenSolicitudes } f
   styleUrls: ['./dashboard.component.css']
 })
 
-export default class DashboardComponent {
+export default class DashboardComponent   {
 
   fechaActual = new FormControl<Date>(new Date());
 
@@ -57,21 +57,23 @@ export default class DashboardComponent {
     console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-      p_id_ejecutivo_banco: "LISANDRO VILLARROEL",
-      p_fecha: fechaFiltrar
+       "p_id_usuario": "EJ002",
+    "p_fecha": "23/09/2025",
+    "p_tipo_usuario": "E"
     }
     console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
-      next: (dato: DatosSolicitudesInterface) => {
+      next: (dato: any) => {
         if (dato.codigo === 200) {
           this.resumenGeneral.set({
             vcEstado: dato.vcEstado,
             vcEstadoCreacion: dato.vcEstadoCreacion,
-            cantidad: 0,
             p_EnProceso: dato.p_EnProceso,
             p_EsperandoRespuesta: dato.p_EsperandoRespuesta,
-            p_Aprobadas: dato.p_Aprobadas
+            p_Aprobadas: dato.p_Aprobadas,
+            p_ConObservaciones: dato.p_ConObservaciones
           });
+          console.log("cargó resumen");
           this.listadoSolicitudes.set(dato.p_cursor);
           console.log('rescata Datos:', dato)
           console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());

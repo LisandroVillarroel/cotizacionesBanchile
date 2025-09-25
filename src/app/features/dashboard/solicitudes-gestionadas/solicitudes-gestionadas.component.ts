@@ -55,10 +55,13 @@ import { IEstado } from './modelo/common';
 
 export class SolicitudesGestionadasComponent  {
   datosSolicitud =  input.required<IListadoSolicitudes[] | undefined>();
- rubroService = inject(RubroService);
- tipoSeguroService = inject(TipoSeguroService);
+  rubroService = inject(RubroService);
+  tipoSeguroService = inject(TipoSeguroService);
+ //estadoService = inject(EstadoService);
+
  datoRubros = signal<IRubro[]>([]);
  rescatadoSeguro = signal<ITipoSeguro[]>([]);
+ datosEstados = signal<IEstado[]>([]);
 
   panelOpenState = false;
   rubro = new FormControl();
@@ -84,7 +87,7 @@ export class SolicitudesGestionadasComponent  {
 
   dataSourceSolicitud = new MatTableDataSource<IListadoSolicitudes>();
 
-   @ViewChild('coordinadorInput') inputElement: any;
+   @ViewChild('inContratante') inputElement: any;
 
    @ViewChild(MatPaginator)
     paginatorSolicitud!: MatPaginator;
@@ -100,13 +103,12 @@ export class SolicitudesGestionadasComponent  {
 
   applyFilterSolicitud(campo:string, valor: String) {
   //  const filterValue = (valor.target as HTMLInputElement).value;
-     console.log('campo:',campo  + ' Valor Inicial:',valor)
+     //console.log('campo:',campo  + ' Valor Inicial:',valor)
      this.dataSourceSolicitud.filterPredicate = (data: any, filter: string) => {
     // Comprueba si el valor de la columna específica incluye el filtro
     const dataValue = data[campo] ? data[campo].toString() : '';
     return dataValue.toLowerCase().includes(filter.toLowerCase());
   };
-
 
     this.dataSourceSolicitud.filter = valor.trim().toLowerCase();
 
@@ -130,13 +132,14 @@ export class SolicitudesGestionadasComponent  {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.dataSourceSolicitud.data = this.datosSolicitud()!;
     this.cargaRubros();
+    this.cargaEstados();
   }
 
   cargaRubros() {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.datoRubros.set(dato.p_cursor);
+          this.datoRubros.set(dato.items);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:',dato.mensaje);
@@ -149,6 +152,70 @@ export class SolicitudesGestionadasComponent  {
         console.log('ERROR INESPERADO', error);
       },
     });
+  }
+
+   /* cargaEstados() {
+    this.estadoService.postEstado().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.datosEstados.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  } */
+  cargaEstados() {
+    this.datosEstados = signal<IEstado[]>([
+    {
+      codigoEstado: 1,
+      descripcionEstado: 'En edición',
+    },
+    {
+      codigoEstado: 2,
+      descripcionEstado: 'Devuelta',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'En revisión',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Aprobada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Anulada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'En cotización',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta pendiente',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Propuesta emitida',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Terminada',
+    },
+    {
+      codigoEstado: 3,
+      descripcionEstado: 'Rechazada',
+    },
+  ]);
+
   }
 
   async seleccionaRubro(_codigoRubro: string) {
@@ -186,7 +253,7 @@ export class SolicitudesGestionadasComponent  {
       return 'emitida';
     }else if(value=='Terminada'){
       return 'terminada';
-    }else if(value=='Con observaciones'){
+    }else if(value=='Devuelta'){
       return 'observ';
     }else if(value=='Anulada'){
       return 'anulada';
@@ -203,8 +270,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 24592,
       Fecha: '15/03/2023',
       Contratante: "Nombre Comercial S.A. 1",
-      Rubro: 'Vehículo',
-      TipoSeguro: "Vehículo Liviano",
+      id_rubro: 1,
+      desc_rubro: 'Vehículo',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Vehículo Liviano",
       Coordinador: "Camila Soto",
       Estado: "En edición"
     },
@@ -212,8 +281,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 98129,
       Fecha: '22/07/2023',
       Contratante: "Nombre Comercial S.A. 2",
-      Rubro: 'Vida',
-      TipoSeguro: "Asistencia en Viajes",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Asistencia en Viajes",
       Coordinador: "Andrés Salgado Pérez",
       Estado: "Anulada"
     },
@@ -221,8 +292,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 33784,
       Fecha: '30/09/2023',
       Contratante: "Nombre Comercial S.A. 3",
-      Rubro: 'Vida',
-      TipoSeguro: "Responsabilidad Civil Médica",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Responsabilidad Civil Médica",
       Coordinador: "Valentina Díaz Ríos",
       Estado: "Con observaciones"
     },
@@ -230,8 +303,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 67347,
       Fecha: '05/12/2023',
       Contratante: "Nombre Comercial S.A. 4",
-      Rubro: 'Vehículo',
-      TipoSeguro: "Transporte Terrestre",
+      id_rubro: 1,
+      desc_rubro: 'Vehículo',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Transporte Terrestre",
       Coordinador: "Joaquín Torres Martínez",
       Estado: "Aprobada"
     },
@@ -239,8 +314,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 12915,
       Fecha: '18/02/2023',
       Contratante: "Nombre Comercial S.A. 5",
-      Rubro: 'Crédito',
-      TipoSeguro: "Seguro de Crédito Interno",
+      id_rubro: 3,
+      desc_rubro: 'Crédito',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Seguro de Crédito Interno",
       Coordinador: "Renata Castro Vergara",
       Estado: "Rechazada"
     },
@@ -248,8 +325,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 55268,
       Fecha: '27/04/2023',
       Contratante: "Nombre Comercial S.A. 6",
-      Rubro: 'Vida',
-      TipoSeguro: "Asiento Pasajero/Vida Conductor",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 3,
+      desc_tipoSeguro: "Asiento Pasajero/Vida Conductor",
       Coordinador: "Felipe Hernández García",
       Estado: "Propuesta emitida"
     },
@@ -257,8 +336,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 24592,
       Fecha: '11/06/2023',
       Contratante: "Nombre Comercial S.A. 7",
-      Rubro: 'Inmuebles',
-      TipoSeguro: "Todo Seguro y Construcción",
+      id_rubro: 4,
+      desc_rubro: 'Inmuebles',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Todo Seguro y Construcción",
       Coordinador: "Francisco González",
       Estado: "En revisión"
     },
@@ -266,8 +347,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 98130,
       Fecha: '23/08/2023',
       Contratante: "Nombre Comercial S.A. 8",
-      Rubro: 'Vida',
-      TipoSeguro: "Comunidad",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 3,
+      desc_tipoSeguro: "Comunidad",
       Coordinador: "María José Pérez Martínez",
       Estado: "En cotización"
     },
@@ -275,8 +358,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 33785,
       Fecha: '14/10/2023',
       Contratante: "Nombre Comercial S.A. 9",
-      Rubro: 'Vida',
-      TipoSeguro: "Incendio",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 4,
+      desc_tipoSeguro: "Incendio",
       Coordinador: "Sofía Ramírez",
       Estado: "Propuesta pendiente"
     },
@@ -284,8 +369,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 67348,
       Fecha: '29/11/2023',
       Contratante: "Nombre Comercial S.A. 10",
-      Rubro: 'Comunidad',
-      TipoSeguro: "Seguro Crédito PY",
+      id_rubro: 3,
+      desc_rubro: 'Crédito',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Seguro Crédito PY",
       Coordinador: "Cristóbal Fernández López",
       Estado: "Aprobada"
     },
@@ -294,8 +381,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 24592,
       Fecha: '15/03/2023',
       Contratante: "Nombre Comercial S.A. 1",
-      Rubro: 'Vehículo',
-      TipoSeguro: "Vehículo Liviano",
+      id_rubro: 1,
+      desc_rubro: 'Vehículo',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Vehículo Liviano",
       Coordinador: "Camila Soto",
       Estado: "En edición"
     },
@@ -303,8 +392,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 98129,
       Fecha: '22/07/2023',
       Contratante: "Nombre Comercial S.A. 2",
-      Rubro: 'Vida',
-      TipoSeguro: "Asistencia en Viajes",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Asistencia en Viajes",
       Coordinador: "Andrés Salgado Pérez",
       Estado: "En revisión"
     },
@@ -312,8 +403,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 33784,
       Fecha: '30/09/2023',
       Contratante: "Nombre Comercial S.A. 3",
-      Rubro: 'Vida',
-      TipoSeguro: "Responsabilidad Civil Médica",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Responsabilidad Civil Médica",
       Coordinador: "Valentina Díaz Ríos",
       Estado: "Con observaciones"
     },
@@ -321,8 +414,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 67347,
       Fecha: '05/12/2023',
       Contratante: "Nombre Comercial S.A. 4",
-      Rubro: 'Vehículo',
-      TipoSeguro: "Transporte Terrestre",
+      id_rubro: 1,
+      desc_rubro: 'Vehículo',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Transporte Terrestre",
       Coordinador: "Joaquín Torres Martínez",
       Estado: "Aprobada"
     },
@@ -330,8 +425,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 12915,
       Fecha: '18/02/2023',
       Contratante: "Nombre Comercial S.A. 5",
-      Rubro: 'Crédito',
-      TipoSeguro: "Seguro de Crédito Interno",
+      id_rubro: 3,
+      desc_rubro: 'Crédito',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Seguro de Crédito Interno",
       Coordinador: "Renata Castro Vergara",
       Estado: "Rechazada"
     },
@@ -339,8 +436,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 55268,
       Fecha: '27/04/2023',
       Contratante: "Nombre Comercial S.A. 6",
-      Rubro: 'Vida',
-      TipoSeguro: "Asiento Pasajero/Vida Conductor",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 5,
+      desc_tipoSeguro: "Asiento Pasajero/Vida Conductor",
       Coordinador: "Felipe Hernández García",
       Estado: "Propuesta emitida"
     },
@@ -348,8 +447,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 24592,
       Fecha: '11/06/2023',
       Contratante: "Nombre Comercial S.A. 7",
-      Rubro: 'Inmuebles',
-      TipoSeguro: "Todo Seguro y Construcción",
+      id_rubro: 4,
+      desc_rubro: 'Inmuebles',
+      id_tipo_seguro: 1,
+      desc_tipoSeguro: "Todo Seguro y Construcción",
       Coordinador: "Francisco González",
       Estado: "En revisión"
     },
@@ -357,8 +458,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 98130,
       Fecha: '23/08/2023',
       Contratante: "Nombre Comercial S.A. 8",
-      Rubro: 'Vida',
-      TipoSeguro: "Comunidad",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 3,
+      desc_tipoSeguro: "Comunidad",
       Coordinador: "María José Pérez Martínez",
       Estado: "En cotización"
     },
@@ -366,8 +469,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 33785,
       Fecha: '14/10/2023',
       Contratante: "Nombre Comercial S.A. 9",
-      Rubro: 'Vida',
-      TipoSeguro: "Incendio",
+      id_rubro: 2,
+      desc_rubro: 'Vida',
+      id_tipo_seguro: 4,
+      desc_tipoSeguro: "Incendio",
       Coordinador: "Sofía Ramírez",
       Estado: "Con observaciones"
     },
@@ -375,8 +480,10 @@ export class SolicitudesGestionadasComponent  {
       ID: 67348,
       Fecha: '29/11/2023',
       Contratante: "Nombre Comercial S.A. 10",
-      Rubro: 'Comunidad',
-      TipoSeguro: "Seguro Crédito PY",
+      id_rubro: 3,
+      desc_rubro: 'Crédito',
+      id_tipo_seguro: 2,
+      desc_tipoSeguro: "Seguro Crédito PY",
       Coordinador: "Cristóbal Fernández López",
       Estado: "Aprobada"
     },
@@ -451,20 +558,6 @@ export class SolicitudesGestionadasComponent  {
     },
   ]);
 */
-    datoEstados = signal<IEstado[]>([
-    {
-      codigoEstado: 1,
-      descripcionEstado: 'Rubro 1',
-    },
-    {
-      codigoEstado: 2,
-      descripcionEstado: 'Rubro 2',
-    },
-    {
-      codigoEstado: 3,
-      descripcionEstado: 'Vehículo',
-    },
-  ]);
 
   /* Fin llamadas a servicios */
      verDetalle(IdSolicitud: number) {

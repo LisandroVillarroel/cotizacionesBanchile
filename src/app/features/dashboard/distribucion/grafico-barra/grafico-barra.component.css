@@ -1,5 +1,6 @@
-:host {
-  display: block;
-  max-width: 500px;
-  margin: 0 auto;
+:host ::ng-deep .p-chart {
+ /* height: 600px; /* o el valor que prefieras */
+  width: 100%;
 }
+
+

@@ -1,6 +1,6 @@
 <mat-card class="fondoGris alinea-card-gestion" >
-  <mat-card-title style="padding: 0px 16px 0px;">
-    <h2 mat-dialog-title class="titulo">Solicitudes gestionadas el último mes en curso</h2>
+  <mat-card-title>
+    <h3 mat-dialog-title class="mt-2 destacado">Solicitudes gestionadas el último mes en curso</h3>
   </mat-card-title>
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
     <div class="container-fluid p-0">
@@ -13,8 +13,9 @@
           <mat-form-field class="inputBuscar">
             <mat-label class="labelI">Contratante</mat-label>
             <mat-icon matSuffix class="gris">search</mat-icon>
-            <input matInput #coordinadorInput id="contratanteInput"
-            (keyup)="applyFilterSolicitud('Contratante',coordinadorInput.value)" />
+            <input matInput #inContratante
+            (keyup)="applyFilterSolicitud('Contratante',inContratante.value)"
+            (change)="applyFilterSolicitud('Contratante',inContratante.value)" />
           </mat-form-field>
         </div>
         <div style="width: 20%;">
@@ -46,8 +47,10 @@
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Estado</mat-label>
             <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('Estado',$event.value)">
-              @for(_estados of datoEstados(); track _estados){
-                <mat-option [value]="_estados.codigoEstado">
+              @for(_estados of datosEstados(); track _estados){
+<!--                 <mat-option [value]="_estados.id_estado">
+                  {{ _estados.nombre_estado }} -->
+                  <mat-option [value]="_estados.codigoEstado">
                   {{ _estados.descripcionEstado }}
                 </mat-option>
               }
@@ -64,7 +67,7 @@
           </mat-form-field>
         </div>
         <div class="gap-1" style="width: 10%;">
-          <button mat-raised-button (click)="limpiaFiltros()" class="button-link"> Limpiar filtros
+          <button mat-raised-button (click)="limpiaFiltros(); inContratante.value = ''" class="button-link"> Limpiar filtros
           </button>
         </div>
       </div>

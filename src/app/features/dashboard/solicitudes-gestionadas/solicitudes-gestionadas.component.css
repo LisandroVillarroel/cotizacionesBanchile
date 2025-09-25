@@ -117,7 +117,8 @@ p {
 .inputFechaForm {
   font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding: 10px 0px 0px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
   height: 65px !important;
   margin-bottom: 15px !important;
   color: #666668;
@@ -126,7 +127,8 @@ p {
 .button-link {
   background-color: #ffffff !important;
   color: #234e85 !important;
-  font-size: 12px;
+  padding: 0px 0px 0px !important;
+  font-size: 12px !important;
 }
 
 .button-link:hover {
