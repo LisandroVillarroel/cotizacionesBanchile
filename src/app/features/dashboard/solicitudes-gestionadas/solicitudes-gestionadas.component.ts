@@ -25,7 +25,8 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
-import { IEstado } from './modelo/common';
+import { EstadoService } from '@shared/service/estado.service';
+import { IEstado } from '@shared/modelo/estado-interface';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -60,6 +61,7 @@ export class SolicitudesGestionadasComponent {
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
+  estadoService = inject(EstadoService);
   tipoUsuario = "E";
   //estadoService = inject(EstadoService);
 
@@ -85,30 +87,11 @@ export class SolicitudesGestionadasComponent {
     "accion"
   ];
 
-  /*   dataSolicitud = signal<ISolicitudG[]>([]);
-      filtro = signal('');
-      pagina = signal(0);
-      pageSize = 5;
-
-      async ngOnInit() {
-        this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-        this.dataSolicitud.set(this.datosSolicitud);
-        //this.dataSourceSolicitud.data = this.datosSolicitud();
-        this.cargaRubros();
-      } */
 
   dataSourceSolicitud = computed(() => {
     const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud())
     return tabla
   });
-
-
-  constructor() {
-
-  }
-
-
-  @ViewChild('inContratante') inputElement: any;
 
   @ViewChild(MatPaginator)
   paginatorSolicitud!: MatPaginator;
@@ -148,9 +131,11 @@ export class SolicitudesGestionadasComponent {
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+
    // this.dataSourceSolicitud().data = this.datosSolicitud()!;
     this.cargaRubros();
     this.cargaEstados();
+    this.limpiaFiltros();
   }
 
   cargaRubros() {
@@ -172,11 +157,11 @@ export class SolicitudesGestionadasComponent {
     });
   }
 
-  /* cargaEstados() {
+  cargaEstados() {
    this.estadoService.postEstado().subscribe({
      next: (dato) => {
        if (dato.codigo === 200) {
-          this.datosEstados.set(dato.items);
+          this.datosEstados.set(dato.p_cursor);
        } else {
          if (dato.codigo != 500) {
            console.log('Error:',dato.mensaje);
@@ -189,8 +174,9 @@ export class SolicitudesGestionadasComponent {
        console.log('ERROR INESPERADO', error);
      },
    });
- } */
-  cargaEstados() {
+ }
+
+/*   cargaEstados() {
     this.datosEstados = signal<IEstado[]>([
       {
         codigoEstado: 1,
@@ -234,17 +220,16 @@ export class SolicitudesGestionadasComponent {
       },
     ]);
 
-  }
+  } */
 
   async seleccionaRubro(datos: IRubro) {
-    console.log('datos:',datos)
-const _codigoRubro=datos.id_rubro
+    const _codigoRubro=datos.id_rubro
     const estructura_codigoRubro = { id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.items);
-          console.log("Cargó productos", this.rescatadoSeguro());
+          //console.log("Cargó productos", this.rescatadoSeguro());
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -259,32 +244,29 @@ const _codigoRubro=datos.id_rubro
     });
   }
 
-  getCellClass(value: string): string {
-    if (value == 'En edición') {
-      return 'edicion';
-    } else if (value == 'En revisión') {
-      return 'revision';
-    } else if (value == 'Aprobada') {
+  getCellClass(value: number): string {
+    if (value == 1) { //'Aprobada'
       return 'aprobada';
-    } else if (value == 'En cotización') {
-      return 'cotizacion';
-    } else if (value == 'Propuesta pendiente') {
-      return 'pendiente';
-    } else if (value == 'Propuesta emitida') {
-      return 'emitida';
-    } else if (value == 'Terminada') {
-      return 'terminada';
-    } else if (value == 'Devuelta') {
-      return 'observ';
-    } else if (value == 'Anulada') {
+    } else if (value == 2) {  //'Anulada'
       return 'anulada';
-      // }else if(value=='Rechazada'){
-    } else {
+    } else if (value == 3) { //'Devuelta'
+      return 'observ';
+    } else if (value == 4) {  //'En Cotizacion'
+      return 'cotizacion';
+    }else if (value == 5) {  //'En Edicion'
+      return 'edicion';
+    } else if (value == 6) { //'En Revision'
+      return 'revision';
+    } else if (value == 7) { //'Propuesta Emitida'
+      return 'emitida';
+    } else if (value == 8) { //'Propuesta Pendiente'
+      return 'pendiente';
+    } else if(value==9){  //'Rechazada'
       return 'rechazada';
+    } else { //if (value == 10) { //'Terminada'
+      return 'terminada';
     }
   }
-
-
 
   /* Fin llamadas a servicios */
   verDetalle(IdSolicitud: number) {

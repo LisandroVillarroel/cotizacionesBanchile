@@ -1,5 +1,5 @@
 export interface IEstado {
-  id_estado_solicitud: string;
+  id_estado_solicitud: number;
   nombre_estado: string;
 /*   status_estado: string;
   fecha_creacion: string;

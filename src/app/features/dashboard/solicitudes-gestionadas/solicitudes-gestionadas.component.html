@@ -48,12 +48,12 @@
         <div style="width: 20%;">
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Estado</mat-label>
-            <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('Estado',$event.value)">
+            <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('id_estado_solicitud',$event.value)">
               @for(_estados of datosEstados(); track _estados){
 <!--                 <mat-option [value]="_estados.id_estado">
                   {{ _estados.nombre_estado }} -->
-                  <mat-option [value]="_estados.codigoEstado">
-                  {{ _estados.descripcionEstado }}
+                  <mat-option [value]="_estados.id_estado_solicitud">
+                  {{ _estados.nombre_estado }}
                 </mat-option>
               }
               <input matInput  />
@@ -69,7 +69,7 @@
           </mat-form-field>
         </div>
         <div class="gap-1" style="width: 10%;">
-          <button mat-raised-button (click)="limpiaFiltros(); inContratante.value = ''" class="button-link">
+          <button mat-raised-button (click)="limpiaFiltros()" class="button-link">
             Limpiar filtros
           </button>
         </div>
@@ -195,7 +195,7 @@
                   style="width: 8%"
                 > Estado </th>
             <td mat-cell *matCellDef="let element">
-              <div [ngClass]="getCellClass(element.Estado)">{{element.id_estado_solicitud}}</div>
+              <div [ngClass]="getCellClass(element.id_estado_solicitud)">{{element.id_estado_solicitud}}</div>
             </td>
           </ng-container>
 
@@ -210,14 +210,13 @@
             </th>
             <td
               mat-cell
-              *matCellDef="let row; let i = index"
+              *matCellDef="let element; let i = index"
               style="width: 8%; text-align: center"
             >
               <button
                 matTooltip="Ver detalles"
                 mat-icon-button
-                class="tabla"
-                (click)="verDetalle(row.ID)"
+                (click)="verDetalle(element.id_solicitud)"
               >
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>

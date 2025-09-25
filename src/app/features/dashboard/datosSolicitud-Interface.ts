@@ -9,7 +9,7 @@ export interface IListadoSolicitudes {
   nombre_tipo_seguro: string;
   nombre_ejecutivo_banco: string;
   nombre_coordinador: string;
-  id_estado_solicitud: string;
+  id_estado_solicitud: number;
 }
 
 export interface IResumenSolicitudes {
