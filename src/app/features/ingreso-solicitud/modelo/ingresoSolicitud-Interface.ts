@@ -93,11 +93,11 @@ export interface IEstadoIngresoSolicitud {
   estado_creacion: string;
 }
 
-/* export interface IAgregaAsegurado {
+export interface IAgregaAsegurado {
   id_ejecutivo_banco: string;
   id_rubro: string;
   id_tipo_seguro: string;
   contratante: ISolicitudContratante;
   asegurados: ISolicitudAsegurado[];
   beneficiarios: ISolicitudBeneficiario[];
-} */
+}

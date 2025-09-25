@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -27,11 +27,12 @@ import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-
   ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
 
-  aseguradoService=inject(AseguradoService)
+  aseguradoService = inject(AseguradoService);
 
   private readonly dialogRef = inject(
     MatDialogRef<AgregaSolicitudAseguradoComponent>
@@ -68,14 +69,14 @@ export class AgregaSolicitudAseguradoComponent {
 
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
-      return this.rutAsegurado.hasError('required')
+      return this.p_rut_asegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
-        : this.rutAsegurado.hasError('rutInvalido')
+        : this.p_rut_asegurado.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreAsegurado') {
-      return this.nombreAsegurado.hasError('required')
+      return this.p_nombre_razon_social_asegurado.hasError('required')
         ? 'Debes ingresar Nombre'
         : '';
     }
@@ -122,13 +123,13 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
     if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
+      return this.p_telefono_asegurado.hasError('required')
         ? 'Debes ingresar Teléfono'
         : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
+      return this.p_mail_asegurado.hasError('required')
         ? 'Debes ingresar Correo'
         : '';
     }
@@ -148,7 +149,7 @@ export class AgregaSolicitudAseguradoComponent {
 
     if (validateRut(rut) === true) {
       await this.agregaAsegurado()
-        .get('rutAsegurado')!
+        .get('p_rut_asegurado')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
   }
@@ -172,28 +173,22 @@ export class AgregaSolicitudAseguradoComponent {
     };
 
     console.log('Asegurado grabado:', this.asegurado);
-    this.aseguradoService
-    .postAgregaAsegurado(this.asegurado)
-      .subscribe({
-        next: (dato) => {
-          console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            alert('Grabó asegurado bien')
 
-          } else {
-            if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('ERROR DE SISTEMA:');
-            }
-          }
-        },
-        error: (error) => {
-          console.log('ERROR INESPERADO', error);
-        },
-      });
+    this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          alert('Grabó asegurado bien');
+        } else {
+          alert('Error:' + dato.mensaje);
+          console.log('Error:', dato.mensaje);
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+
     this.dialogRef.close();
   }
 }

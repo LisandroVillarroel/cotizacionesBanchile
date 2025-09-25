@@ -464,6 +464,8 @@ th#opcionesI {
     box-sizing: border-box;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
+    display: block;
+    max-height: fit-content;
   }
 
   .contenido-form {
@@ -471,17 +473,6 @@ th#opcionesI {
     padding: 24px 24px 8px 24px !important;
     margin: 0 auto !important;
     box-sizing: border-box;
-  }
-
-  ::ng-deep .mat-dialog-content {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-    height: auto !important;
-    min-height: unset !important;
-  }
-
-  ::ng-deep .mat-dialog-actions {
-    margin-top: 1px; /* o incluso 0 si quieres que estén pegados */
   }
 
   /* Fondo blanco para inputs de forms */

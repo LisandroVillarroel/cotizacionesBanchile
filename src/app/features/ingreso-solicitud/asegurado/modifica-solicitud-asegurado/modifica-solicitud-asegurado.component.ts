@@ -63,14 +63,14 @@ export class ModificaSolicitudAseguradoComponent {
 
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
-      return this.rutAsegurado.hasError('required')
+      return this.p_rut_asegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreAsegurado') {
-      return this.nombreAsegurado.hasError('required')
+      return this.p_nombre_razon_social_asegurado.hasError('required')
         ? 'Debes ingresar Nombre'
         : '';
     }
@@ -117,13 +117,13 @@ export class ModificaSolicitudAseguradoComponent {
   }
 
     if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
+      return this.p_telefono_asegurado.hasError('required')
         ? 'Debes ingresar Teléfono'
         : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
+      return this.p_mail_asegurado.hasError('required')
         ? 'Debes ingresar Correo'
         : '';
     }
@@ -166,14 +166,14 @@ export class ModificaSolicitudAseguradoComponent {
     };
 
 
-    console.log('Asegurado grabado:', this.asegurado);
+    console.log('Asegurado modificao:', this.asegurado);
     this.aseguradoService
       .postModificaAsegurado(this.asegurado)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó asegurado bien')
+            alert('Modificó asegurado bien')
 
           } else {
             if (dato.codigo != 500) {

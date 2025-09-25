@@ -19,13 +19,13 @@
           id="rutAsegurado"
           matInput
           class="input-rut rut"
-          [formControl]="rutAsegurado"
+          [formControl]="p_rut_asegurado"
           oninput="this.value = this.value.toUpperCase()"
           (blur)="onBlurRutAsegurado($event)"
           validaRut
           required
         />
-        @if (rutAsegurado.invalid) {
+        @if (p_rut_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("rutAsegurado") }}</mat-error>
         }
       </mat-form-field>
@@ -48,8 +48,8 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput [formControl]="telefonoAsegurado" required />
-        @if (telefonoAsegurado.invalid) {
+        <input matInput [formControl]="p_telefono_asegurado" required />
+        @if (p_telefono_asegurado.invalid) {
         <mat-error>{{ getErrorMessage("telefonoAsegurado") }}</mat-error>
         }
       </mat-form-field>
