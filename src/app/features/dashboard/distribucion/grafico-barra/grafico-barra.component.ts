@@ -38,7 +38,7 @@ datoResumenGeneral_Grafico = input.required<IListadoSolicitudes[] | undefined>()
       console.log('paso 1')
       for (let i = 0; i < this.datoEstadoNombre().length; i++) {
            console.log('this.datoEstadoNombre()[i]',this.datoEstadoNombre()[i])
-           arrTotales[i] = this.resumenGeneral()!.filter(item => item.id_estado_solicitud.toString() === this.datoEstadoNombre()[i])
+           arrTotales[i] = this.resumenGeneral()!.filter(item => item.descripcion_estado.toString() === this.datoEstadoNombre()[i])
                         .reduce((contador) => contador=contador+1,0);
 
       }
@@ -49,8 +49,8 @@ console.log('arrTotales',arrTotales)
       this.data.set({
         labels: [this.datoEstadoNombre()],
         datasets: [{
-          backgroundColor: ['#666668', '#149DC9', '#FFC725', '#234E85'],
-          data: this.arrTotalesSignal()
+          backgroundColor: ['#666668', '#149DC9', '#FFC725', '#234E85', '#0c70f1ff', '#bbec07ff', '#d31721ff', '#8021ceff', '#12a4e7ff'],
+          data: [this.arrTotalesSignal()]
         }]
       });
 
@@ -75,7 +75,7 @@ console.log('arrTotales',arrTotales)
         if (dato.codigo === 200) {
          // this.datoEstado.set(dato.p_cursor);
 
-          this.datoEstadoNombre.set(dato.p_cursor.map(x => '1')) //x.nombre_estado Obtiene solo tipodescrip
+          this.datoEstadoNombre.set(dato.p_cursor.map(x => x.nombre_estado)) //x.nombre_estado Obtiene solo tipodescrip
            console.log('dato.p_cursor-.',dato.p_cursor)
         } else {
           if (dato.codigo != 500) {

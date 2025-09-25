@@ -158,7 +158,7 @@ export class SolicitudesGestionadasComponent {
   }
 
   cargaEstados() {
-   this.estadoService.postEstado().subscribe({
+   this.estadoService.getEstado().subscribe({
      next: (dato) => {
        if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);

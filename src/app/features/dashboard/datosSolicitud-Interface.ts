@@ -10,6 +10,7 @@ export interface IListadoSolicitudes {
             nombre_ejecutivo_banco: string;
             nombre_coordinador: string;
             id_estado_solicitud:number;
+            descripcion_estado:string;
 }
 
 export interface IResumenSolicitudes {
