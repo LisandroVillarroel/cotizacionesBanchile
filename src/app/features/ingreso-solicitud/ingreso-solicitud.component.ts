@@ -122,8 +122,8 @@ export default class IngresoSolicitudComponent {
   pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
-  rubro = new FormControl('');
-  seguro = new FormControl('');
+  rubro = new FormControl('', [Validators.required]);
+  seguro = new FormControl('', [Validators.required]);
   aseguradeCheck = new FormControl(false, [Validators.required]);
 
   flagAsegurado = new FormControl(true, [
@@ -248,9 +248,12 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaConratante() {
+  grabaConTratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
-   console.log ('aseguradeCheck:',this.agregaSolicitudContratante().get('aseguradeCheck')!.value);
+    console.log(
+      'aseguradeCheck:',
+      this.agregaSolicitudContratante().get('aseguradeCheck')!.value
+    );
     this.ingresoSolicitud = {
       id_ejecutivo_banco: 'EJ001',
       contratante: {
@@ -269,8 +272,8 @@ export default class IngresoSolicitudComponent {
       },
       id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
-     // asegurados: [],
-      beneficiarios: [],
+      // asegurados: [],
+      // beneficiarios: [],
     };
     console.log('ingreso solicitud:', this.ingresoSolicitud);
     this.ingresoSolicitudService
@@ -280,15 +283,17 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó bien');
-            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value) {
-                this.guardaAsegurado();
+            if (
+              this.agregaSolicitudContratante().get('aseguradeCheck')!.value
+            ) {
+              this.guardaAsegurado();
             }
             // Actualizar el signal para mostrar datos del contratante en panel
 
-
             this.contratanteInfo.set({
               id: 999, // ID en duro para prueba
-              rut_contratante: this.agregaSolicitudContratante().get('rutCliente')!.value,
+              rut_contratante:
+                this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
             });
           } else {
@@ -309,11 +314,9 @@ export default class IngresoSolicitudComponent {
 
   guardaAsegurado() {}
 
-
   salir() {
     this.router.navigate(['/principal/inicio']);
   }
-
 
   async onBlurRutCliente(event: any) {
     const rut = event.target.value;

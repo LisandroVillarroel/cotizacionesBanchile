@@ -54,7 +54,6 @@ export interface DatosAseguradosInterface {
   vcEstadoCreacion: string;
 }
 
-
 export interface ISolicitudBeneficiario {
   rut_beneficiario: string;
   nombre_razon_social_beneficiario: string;
@@ -79,11 +78,11 @@ export interface ICuestionario {
 
 export interface IIngresoSolicitud {
   id_ejecutivo_banco: string;
-  id_rubro: string;
-  id_tipo_seguro: string;
+  id_rubro: number;
+  id_tipo_seguro: number;
   contratante: ISolicitudContratante;
   // asegurados: ISolicitudAsegurado[];
-  beneficiarios: ISolicitudBeneficiario[];
+  // beneficiarios: ISolicitudBeneficiario[];
 }
 
 export interface IEstadoIngresoSolicitud {
@@ -92,4 +91,3 @@ export interface IEstadoIngresoSolicitud {
   estado: string;
   estado_creacion: string;
 }
-
