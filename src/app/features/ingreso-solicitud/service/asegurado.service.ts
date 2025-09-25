@@ -6,7 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IAsegurado } from '../modelo/ingresoSolicitud-Interface';
+import { DatosAseguradosInterface, IAsegurado } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,21 +26,7 @@ export class AseguradoService {
       .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
         headers: this.headers,
       })
-      .pipe(retry(1), catchError(this.errorHandl));
-  }
-
-  errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
+      .pipe(retry(1), catchError(this.errorHand));
   }
 
       postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
@@ -49,11 +35,18 @@ export class AseguradoService {
       .post<any>(`${environment.apiUrl}/modificarAsegurado`, modificaAsegurado, {
         headers: this.headers,
       })
-      .pipe(retry(1), catchError(this.errorHand2));
+      .pipe(retry(1), catchError(this.errorHand));
   }
 
-  errorHand2(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
+
+  postListadoAsegurados(filtro: any): Observable<DatosAseguradosInterface> {
+        return this.http
+          .post<DatosAseguradosInterface>(`${environment.apiUrl}/listarAsegurados`, filtro,{headers: this.headers})
+          .pipe(retry(1), catchError(this.errorHand));
+      }
+
+ errorHand(error: HttpErrorResponse) {
+    console.log('paso error Asegurado: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

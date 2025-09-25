@@ -157,7 +157,7 @@ export class AgregaSolicitudAseguradoComponent {
 
     this.asegurado =  {
       p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '8881606',
+      p_id_solicitud: '5',
       p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado: this.agregaAsegurado().get('nombreAsegurado')!.value,
       p_mail_asegurado: this.agregaAsegurado().get('correoAsegurado')!.value,

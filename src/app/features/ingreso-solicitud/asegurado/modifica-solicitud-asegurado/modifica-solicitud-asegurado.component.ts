@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
 
@@ -30,10 +30,9 @@ export class ModificaSolicitudAseguradoComponent {
   );
 
 
-  /* readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
-  readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA); */
+  readonly data = inject<IAseguradoLista>(MAT_DIALOG_DATA);
 
-  rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
+  rutAsegurado = new FormControl(this.data.rutAsegurado, [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
   regionAsegurado = new FormControl('', [Validators.required]);
   ciudadAsegurado = new FormControl('', [Validators.required]);
@@ -152,7 +151,7 @@ export class ModificaSolicitudAseguradoComponent {
   modificar() {
     this.asegurado = {
       p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '8881606',
+      p_id_solicitud: '5',
       p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado: this.modificaAsegurado().get('nombreAsegurado')!.value,
       p_mail_asegurado: this.modificaAsegurado().get('correoAsegurado')!.value,

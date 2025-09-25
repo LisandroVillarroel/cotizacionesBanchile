@@ -252,7 +252,7 @@ export default class IngresoSolicitudComponent {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
    console.log ('aseguradeCheck:',this.agregaSolicitudContratante().get('aseguradeCheck')!.value);
     this.ingresoSolicitud = {
-      id_ejecutivo_banco: 'LISANDRO VILLARROEL',
+      id_ejecutivo_banco: 'EJ001',
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,

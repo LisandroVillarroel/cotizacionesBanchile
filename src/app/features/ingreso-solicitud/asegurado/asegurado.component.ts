@@ -30,7 +30,8 @@ import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
-import { IAsegurado } from '../modelo/ingresoSolicitud-Interface';
+import { DatosAseguradosInterface, IAsegurado, IAseguradoLista } from '../modelo/ingresoSolicitud-Interface';
+import { AseguradoService } from '../service/asegurado.service';
 
 
 @Component({
@@ -50,9 +51,11 @@ import { IAsegurado } from '../modelo/ingresoSolicitud-Interface';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-  datoAsegurados=signal <IAsegurado[]>([]);
+  datoAsegurados=signal <IAseguradoLista[]>([]);
 
   flagAsegurado = model(false);
+
+  aseguradoService= inject(AseguradoService)
 
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
@@ -60,17 +63,17 @@ export class AseguradoComponent {
 
   displayedColumnsAsegurado: string[] = [
     'index',
-    'p_rut_asegurado',
-    'p_nombre_razon_social_asegurado',
-    'p_mail_asegurado',
-    'p_telefono_asegurado',
-    'p_region_asegurado',
-    'p_ciudad_asegurado',
-    'p_comuna_asegurado',
-    'p_direccion_asegurado',
-    'p_numero_dir_asegurado',
-    'p_departamento_block_asegurado',
-    'p_casa_asegurado',
+    'rutAsegurado',
+    'nombreRazonSocialAsegurado',
+    'mailAsegurado',
+    'telefonoAsegurado',
+    'regionAsegurado',
+    'ciudadAsegurado',
+    'comunaAsegurado',
+    'direccionAsegurado',
+    'numeroDirAsegurado',
+    'departamentoBlockAsegurado',
+    'casaAsegurado',
     'opciones',
   ];
   //dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
@@ -90,7 +93,7 @@ export class AseguradoComponent {
 
   dataSourceAsegurado=computed(()=>
   {
-    const tabla =new MatTableDataSource<IAsegurado>(this.datoAsegurados());
+    const tabla =new MatTableDataSource<IAseguradoLista>(this.datoAsegurados());
     tabla.paginator = this.paginatorAsegurado;
     tabla.sort = this.sortAsegurado;
     return tabla;
@@ -120,7 +123,28 @@ export class AseguradoComponent {
     this.rescataListaAsegurados();
   }
 
-  rescataListaAsegurados() {}
+  rescataListaAsegurados() {
+    const estructura_listaAsegurados={
+      "p_id_solicitud": "5"
+    }
+    this.aseguradoService.postListadoAsegurados(estructura_listaAsegurados).subscribe({
+          next: (dato: DatosAseguradosInterface) => {
+            if (dato.codigo === 200) {
+
+              this.datoAsegurados.set(dato.p_cursor);
+            } else {
+              if (dato.codigo != 500) {
+                console.log('Error:', dato.mensaje);
+              } else {
+                console.log('ERROR DE SISTEMA:');
+              }
+            }
+          },
+          error: (error) => {
+            console.log('ERROR INESPERADO', error);
+          },
+        });
+  }
 
   agregaNuevoAsegurado() {
     //  agregaNuevo(empresaInterface_: EmpresaI) {
@@ -144,7 +168,9 @@ export class AseguradoComponent {
       });
   }
 
-  modificaAsegurado(datoAseguradoPar: IAsegurado): void {
+  modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
+
+    console.log('dato modificar;',datoAseguradoPar)
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;

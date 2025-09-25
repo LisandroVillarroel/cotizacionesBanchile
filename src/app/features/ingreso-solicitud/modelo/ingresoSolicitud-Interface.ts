@@ -12,6 +12,24 @@ export interface ISolicitudContratante {
   casa_contratante: string;
 }
 
+export interface IAseguradoLista {
+  rutAsegurado: string;
+  nombreRazonSocialAsegurado: string;
+  mailAsegurado: string;
+  telefonoAsegurado: string;
+  regionAsegurado: string;
+  ciudadAsegurado: string;
+  comunaAsegurado: string;
+  direccionAsegurado: string;
+  numeroDirAsegurado: string;
+  departamentoBlockAsegurado: string;
+  casaAsegurado: string;
+  fechaCreacion: string;
+  usuarioCreacion: string;
+  fechaModificacion: string;
+  usuarioModificacion: string;
+}
+
 export interface IAsegurado {
   p_id_ejecutivo_banco?: string;
   p_id_solicitud?: string;
@@ -26,6 +44,14 @@ export interface IAsegurado {
   p_numero_dir_asegurado: string;
   p_departamento_block_asegurado: string;
   p_casa_asegurado: string;
+}
+
+export interface DatosAseguradosInterface {
+  codigo: number;
+  mensaje: string;
+  vcEstado: string;
+  p_cursor: IAseguradoLista[];
+  vcEstadoCreacion: string;
 }
 
 
@@ -56,7 +82,7 @@ export interface IIngresoSolicitud {
   id_rubro: string;
   id_tipo_seguro: string;
   contratante: ISolicitudContratante;
- // asegurados: ISolicitudAsegurado[];
+  // asegurados: ISolicitudAsegurado[];
   beneficiarios: ISolicitudBeneficiario[];
 }
 
