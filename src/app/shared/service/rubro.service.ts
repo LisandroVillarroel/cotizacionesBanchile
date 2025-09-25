@@ -19,7 +19,7 @@ export class RubroService {
 
   postRubro(): Observable<InterfazRubro> {
     return this.http
-      .get<InterfazRubro>(`${environment.apiUrl}/lista-rubros`,{headers: this.headers})
+      .get<InterfazRubro>(`${environment.apiUrl}/listarRubros`,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
