@@ -79,7 +79,7 @@ panelOpenState = false;
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.datoRubros.set(dato.items);
+          this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:',dato.mensaje);
