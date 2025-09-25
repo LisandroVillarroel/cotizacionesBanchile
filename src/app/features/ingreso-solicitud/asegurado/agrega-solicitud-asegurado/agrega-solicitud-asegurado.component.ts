@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -27,11 +27,12 @@ import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.
   ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IIngresoAsegurado;
 
-  aseguradoService=inject(AseguradoService)
+  aseguradoService = inject(AseguradoService);
 
   private readonly dialogRef = inject(
     MatDialogRef<AgregaSolicitudAseguradoComponent>
@@ -50,16 +51,16 @@ export class AgregaSolicitudAseguradoComponent {
 
   agregaAsegurado = signal<FormGroup>(
     new FormGroup({
-      rutAsegurado: this.p_rut_asegurado,
-      nombreAsegurado: this.p_nombre_razon_social_asegurado,
+      p_rut_asegurado: this.p_rut_asegurado,
+      p_nombre_razon_social_asegurado: this.p_nombre_razon_social_asegurado,
       //apellidoPaternoAsegurado: this.apellidoPaternoAsegurado,
       //apellidoMaternoAsegurado: this.apellidoMaternoAsegurado,
       //regionAsegurado: this.regionAsegurado,
       //ciudadAsegurado: this.ciudadAsegurado,
       //comunaAsegurado: this.comunaAsegurado,
       //direccionAsegurado: this.direccionAsegurado,
-      telefonoAsegurado: this.p_telefono_asegurado,
-      correoAsegurado: this.p_mail_asegurado,
+      p_telefono_asegurado: this.p_telefono_asegurado,
+      p_mail_asegurado: this.p_mail_asegurado,
     })
   );
 
@@ -145,7 +146,7 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
   grabar() {
-    this.asegurado =  {
+    this.asegurado = {
       p_id_ejecutivo_banco: 'EJ001',
       p_id_solicitud: '8881606',
       p_rut_asegurado: this.agregaAsegurado().get('p_rut_asegurado')!.value,
@@ -158,32 +159,26 @@ export class AgregaSolicitudAseguradoComponent {
       p_direccion_asegurado: 'Av. Siempre Viva',
       p_numero_dir_asegurado: '123',
       p_departamento_block_asegurado: '501',
-      p_casa_asegurado: '1',
+      p_casa_asegurado: '', // si no tienes este campo en el formulario
     };
 
     console.log('Asegurado grabado:', this.asegurado);
-    this.aseguradoService
-    .postAgregaAsegurado(this.asegurado)
-      .subscribe({
-        next: (dato) => {
-          console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            alert('Grabó asegurado bien')
 
-          } else {
-            if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('ERROR DE SISTEMA:');
-            }
-          }
-        },
-        error: (error) => {
-          console.log('ERROR INESPERADO', error);
-        },
-      });
+    this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          alert('Grabó asegurado bien');
+        } else {
+          alert('Error:' + dato.mensaje);
+          console.log('Error:', dato.mensaje);
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+
     this.dialogRef.close();
   }
 }

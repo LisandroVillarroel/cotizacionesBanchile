@@ -116,7 +116,7 @@ export class AseguradoComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.height = '50%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {};
 

@@ -9,7 +9,7 @@ import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
   //IAgregaAsegurado,
   IIngresoAsegurado,
-  IModificaAsegurado
+  IModificaAsegurado,
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class AseguradoService {
   });
 
   constructor() {}
-    postAgregaAsegurado(agregaAsegurado: IIngresoAsegurado): Observable<any> {
+  postAgregaAsegurado(agregaAsegurado: IIngresoAsegurado): Observable<any> {
     console.log('Agrega Asegurado Service:', agregaAsegurado);
     return this.http
       .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
@@ -33,30 +33,22 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
-  errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
-  }
-
-      postModificaAsegurado(modificaAsegurado: IModificaAsegurado): Observable<any> {
+  postModificaAsegurado(
+    modificaAsegurado: IModificaAsegurado
+  ): Observable<any> {
     console.log('Modifica Asegurado Service:', modificaAsegurado);
     return this.http
-      .post<any>(`${environment.apiUrl}/modificarAsegurado`, modificaAsegurado, {
-        headers: this.headers,
-      })
-      .pipe(retry(1), catchError(this.errorHand2));
+      .post<any>(
+        `${environment.apiUrl}/modificarAsegurado`,
+        modificaAsegurado,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
   }
 
-  errorHand2(error: HttpErrorResponse) {
+  errorHandl(error: HttpErrorResponse) {
     console.log('paso error tipo seguro: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
