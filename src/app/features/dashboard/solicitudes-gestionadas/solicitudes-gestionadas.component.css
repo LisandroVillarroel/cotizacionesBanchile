@@ -1,9 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@charset "UTF-8";
-
-html, body { height: 100%; color: #666668;}
-body { margin: 0; font-family: "Roboto", sans-serif; font-size: 14; }
-
 p {
     margin-top: 0;
     margin-bottom: 1rem;
@@ -13,10 +8,6 @@ p {
     p.small {
         font-size: 0.75rem; /* 12px */
     }
-
-.destacado {
-    color: #285B9B;
-}
 
 .gris {
   color: #666668;
@@ -38,7 +29,7 @@ p {
   color: #666668;
 }
 
-.titulo{
+.destacado{
   color: #285B9B
 }
 

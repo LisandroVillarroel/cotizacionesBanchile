@@ -1,15 +1,15 @@
 export interface IListadoSolicitudes {
-  idSolicitud: number;
-  fechaCreacionSolicitud: string;
-  rutContratante: string;
-  nombreContratante: string;
-  idRubro: number;
-  descripcionRubro: string;
-  idProducto: number;
-  descripcionTipoSeguro: string;
-  nombreEjecutivo: string;
-  nombreCoordinador: string;
-  estadoSolicitud: string;
+  id_solicitud: number;
+  fecha_creacion: string;
+  rut_contratante: string;
+  nombre_razon_social_contratante: string;
+  id_rubro: number;
+  nombre_rubro: string;
+  id_tipo_seguro: number;
+  nombre_tipo_seguro: string;
+  nombre_ejecutivo_banco: string;
+  nombre_coordinador: string;
+  id_estado_solicitud: string;
 }
 
 export interface IResumenSolicitudes {

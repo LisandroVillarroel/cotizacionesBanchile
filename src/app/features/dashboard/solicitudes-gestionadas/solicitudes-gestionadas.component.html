@@ -1,7 +1,8 @@
 <mat-card class="fondoGris alinea-card-gestion" >
-  <mat-card-title>
-    <h3 mat-dialog-title class="mt-2 destacado">Solicitudes gestionadas el último mes en curso</h3>
+  <mat-card-title style="padding: 0px 16px 0px;">
+    <h2 mat-dialog-title class="destacado">Solicitudes gestionadas el último mes en curso</h2>
   </mat-card-title>
+
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
     <div class="container-fluid p-0">
       <div class="box-form-fields p-2 gap-2" style="align-items: center;">
@@ -14,16 +15,17 @@
             <mat-label class="labelI">Contratante</mat-label>
             <mat-icon matSuffix class="gris">search</mat-icon>
             <input matInput #inContratante
-            (keyup)="applyFilterSolicitud('Contratante',inContratante.value)"
-            (change)="applyFilterSolicitud('Contratante',inContratante.value)" />
+            (keyup)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)"
+            (change)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)" />
           </mat-form-field>
         </div>
         <div style="width: 20%;">
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Rubro</mat-label>
-            <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+            <mat-select [formControl]="rubro"
+              (selectionChange)="seleccionaRubro($event.value);applyFilterSolicitud('nombre_rubro',$event.value.nombre_rubro)">
               @for(_rubros of datoRubros(); track _rubros){
-                <mat-option [value]="_rubros.id_rubro">
+                <mat-option [value]="_rubros">
                   {{ _rubros.nombre_rubro }}
                 </mat-option>
               }
@@ -33,9 +35,9 @@
         <div style="width: 20%;">
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Tipo de seguro</mat-label>
-            <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('TipoSeguro',$event.value)">
+            <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('nombre_tipo_seguro',$event.value)">
               @for(_seguros of rescatadoSeguro(); track _seguros){
-                <mat-option [value]="_seguros.id_tipo_seguro">
+                <mat-option [value]="_seguros.nombre_tipo_seguro">
                   {{ _seguros.nombre_tipo_seguro }}
                 </mat-option>
               }
@@ -67,13 +69,14 @@
           </mat-form-field>
         </div>
         <div class="gap-1" style="width: 10%;">
-          <button mat-raised-button (click)="limpiaFiltros(); inContratante.value = ''" class="button-link"> Limpiar filtros
+          <button mat-raised-button (click)="limpiaFiltros(); inContratante.value = ''" class="button-link">
+            Limpiar filtros
           </button>
         </div>
       </div>
       <div class="mat-elevation-z8">
         <table mat-table
-              [dataSource]="dataSourceSolicitud"
+              [dataSource]="dataSourceSolicitud()"
               multiTemplateDataRows
               matSort>
           <ng-container matColumnDef="index">
@@ -102,7 +105,7 @@
                 mat-sort-header
                 style="width: 8%"
               > ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.id_solicitud}} </td>
           </ng-container>
           <ng-container matColumnDef="Fecha">
             <th id="_fecha"
@@ -111,7 +114,19 @@
                 mat-sort-header
                 style="width: 8%"
               > Fecha </th>
-            <td mat-cell *matCellDef="let element"> {{element.Fecha}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.fecha_creacion}} </td>
+          </ng-container>
+          <ng-container matColumnDef="RUT">
+            <th
+              id="_rut"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              style="width: 8%"
+            >
+              RUT
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.rut_contratante }}</td>
           </ng-container>
           <ng-container matColumnDef="Contratante">
             <th
@@ -123,7 +138,7 @@
             >
               Contratante
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.Contratante }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.nombre_razon_social_contratante }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Rubro">
@@ -136,7 +151,7 @@
             >
               Rubro
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.Rubro }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.nombre_rubro }}</td>
           </ng-container>
 
           <ng-container matColumnDef="TipoSeguro">
@@ -149,9 +164,28 @@
             >
               Tipo Seguro
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.TipoSeguro }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.nombre_tipo_seguro }}</td>
           </ng-container>
-
+          <ng-container matColumnDef="Ejecutivo">
+            <th
+                  id="_ejecutivo"
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  style="width: 8%"
+                > Ejecutivo </th>
+            <td mat-cell *matCellDef="let element">{{element.nombre_ejecutivo_banco}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Coordinador">
+            <th
+                  id="_coordinador"
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  style="width: 8%"
+                > Coordinador </th>
+            <td mat-cell *matCellDef="let element">{{element.nombre_coordinador}}</td>
+          </ng-container>
           <ng-container matColumnDef="Estado">
             <th
                   id="_estado"
@@ -161,7 +195,7 @@
                   style="width: 8%"
                 > Estado </th>
             <td mat-cell *matCellDef="let element">
-              <div [ngClass]="getCellClass(element.Estado)">{{element.Estado}}</div>
+              <div [ngClass]="getCellClass(element.Estado)">{{element.id_estado_solicitud}}</div>
             </td>
           </ng-container>
 
