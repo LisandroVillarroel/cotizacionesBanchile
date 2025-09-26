@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    {
+  {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'inicio',
+    redirectTo: 'login',
   },
-/*  {
-    path: 'login',
-    loadComponent: () => import('@autentica/pages/login/login'),
-    canActivate: [publicoGuard()],
-  },*/
+    {
+      path: 'login',
+      loadComponent: () => import('@features/auth/auth.component')
+    //  canActivate: [publicoGuard()],
+    },
   {
-    path: 'principal',
+    path: '',
     loadComponent: () => import('@core/layout/principal.component'),
-   // canActivate: [privadoGuard()],
+    // canActivate: [privadoGuard()],
     children: [
       {
         path: 'inicio',
@@ -28,29 +28,30 @@ export const routes: Routes = [
         path: 'gestion',
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
-
-    ],
-    //loadComponent: () => import('./componentes/portada/portada.component'),
-  },
-
-   {
-    path: 'secundario',
-    loadComponent: () => import('@core/layout2/principal.component'),
-   // canActivate: [privadoGuard()],
-    children: [
       {
-        path: 'inicio2',
-        loadComponent: () => import('@features/dashboard/dashboard.component'),
-      },
-      {
-        path: 'ingreso2',
-        loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
+        path: 'detalle',
+        loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
       },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
-  {
-    path: 'detalle',
-    loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
-  },
+  /*
+     {
+      path: 'secundario',
+      loadComponent: () => import('@core/layout2/principal.component'),
+     // canActivate: [privadoGuard()],
+      children: [
+        {
+          path: 'inicio2',
+          loadComponent: () => import('@features/dashboard/dashboard.component'),
+        },
+        {
+          path: 'ingreso2',
+          loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
+        },
+      ],
+      //loadComponent: () => import('./componentes/portada/portada.component'),
+    },
+    */
+
 ];
