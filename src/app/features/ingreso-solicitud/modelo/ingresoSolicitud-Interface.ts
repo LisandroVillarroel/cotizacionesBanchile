@@ -49,8 +49,8 @@ export interface IAsegurado {
 export interface DatosAseguradosInterface {
   codigo: number;
   mensaje: string;
-  vcEstado: string;
   p_cursor: IAseguradoLista[];
+  vcEstado: string;
   vcEstadoCreacion: string;
 }
 
@@ -66,6 +66,45 @@ export interface ISolicitudBeneficiario {
   numero_dir_beneficiario: string;
   departamento_block_beneficiario: string;
   casa_beneficiario: string;
+}
+
+export interface IBeneficiarioLista {
+  rut_beneficiario: string;
+  nombre_razon_social_beneficiario: string;
+  mail_beneficiario: string;
+  telefono_beneficiario: string;
+  region_beneficiario: string;
+  ciudad_beneficiario: string;
+  comuna_beneficiario: string;
+  direccion_beneficiario: string;
+  numero_dir_beneficiario: string;
+  departamento_block_beneficiario: string;
+  casa_beneficiario: string;
+  fecha_creacion: string;
+  usuario_creacion: string;
+  fecha_modificacion: string;
+  usuario_modificacion: string;
+}
+
+export interface IBeneficiario {
+  p_id_ejecutivo_banco?: string;
+  p_id_solicitud?: string;
+  p_rut_beneficiario: string;
+  p_nombre_razon_social_beneficiario: string;
+  p_mail_beneficiario: string;
+  p_telefono_beneficiario: string;
+  p_region_beneficiario: string;
+  p_ciudad_beneficiario: string;
+  p_comuna_beneficiario: string;
+  p_direccion_beneficiario: string;
+}
+
+export interface DatosBeneficiariosInterface {
+  codigo: number;
+  mensaje: string;
+  p_cursor: IBeneficiarioLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
 
 export interface ICuestionario {

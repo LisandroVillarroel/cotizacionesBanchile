@@ -171,7 +171,11 @@
                   mat-raised-button
                   matStepperNext
                   (click)="grabaConTratante()"
-                  class="colorFondoBotonSiguiente"
+                  [disabled]="agregaSolicitudContratante().invalid"
+                  [ngClass]="{
+                    colorFondoBotonSiguiente:
+                      !agregaSolicitudContratante().invalid
+                  }"
                 >
                   Siguiente
                 </button>
@@ -229,8 +233,6 @@
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
         <app-beneficiario
-          [datoBeneficiariosRecibe]="datoBeneficiarios()"
-          (datoBeneficiariosRecibeModificado)="actualizarBeneficiario($event)"
           [(flagBeneficiario)]="flagBeneficiarioRescata"
           (flagBeneficiarioModel)="cambioBeneficiarioFlag()"
         />

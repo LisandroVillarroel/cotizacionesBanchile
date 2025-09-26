@@ -103,7 +103,7 @@ export default class IngresoSolicitudComponent {
   flagBeneficiarioRescata: boolean = false;
 
   //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+  //datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -230,12 +230,12 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  async seleccionaRubro(_codigoRubro: string) {
-    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+  async seleccionaRubro(_codigoRubro: number) {
+    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -385,19 +385,17 @@ export default class IngresoSolicitudComponent {
     this.flagAsegurado.setValue(this.flagAseguradoRescata);
   }
 
-  /*
-  actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
+  /* actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoAsegurados());
-  }
-*/
+  } */
   cambioBeneficiarioFlag() {
     console.log('ver flag', this.flagAseguradoRescata);
     this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
   }
 
-  actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
+  /* actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
     this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoBeneficiarios());
-  }
+  } */
 }

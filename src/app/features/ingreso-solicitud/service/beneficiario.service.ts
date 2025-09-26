@@ -7,14 +7,14 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  DatosAseguradosInterface,
-  IAsegurado,
+  DatosBeneficiariosInterface,
+  IBeneficiario,
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AseguradoService {
+export class BeneficiarioService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -23,21 +23,12 @@ export class AseguradoService {
   });
 
   constructor() {}
-  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
-    console.log('Agrega Asegurado Service:', agregaAsegurado);
-    return this.http
-      .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
-        headers: this.headers,
-      })
-      .pipe(retry(1), catchError(this.errorHand));
-  }
-
-  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
-    console.log('Modifica Asegurado Service:', modificaAsegurado);
+  postAgregaBeneficiario(agregaBeneficiario: IBeneficiario): Observable<any> {
+    console.log('Agrega Beneficiario Service:', agregaBeneficiario);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/modificarAsegurado`,
-        modificaAsegurado,
+        `${environment.apiUrl}/ingresarBeneficiario`,
+        agregaBeneficiario,
         {
           headers: this.headers,
         }
@@ -45,19 +36,36 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postEliminaAsegurado(eliminaAsegurado: IAsegurado): Observable<any> {
-    console.log('Elimina Asegurado Service:', eliminaAsegurado);
+  postModificaAsegurado(modificaBeneficiario: IBeneficiario): Observable<any> {
+    console.log('Modifica Beneficiario Service:', modificaBeneficiario);
     return this.http
-      .post<any>(`${environment.apiUrl}/eliminarAsegurado`, eliminaAsegurado, {
-        headers: this.headers,
-      })
+      .post<any>(
+        `${environment.apiUrl}/modificarBeneficiario`,
+        modificaBeneficiario,
+        {
+          headers: this.headers,
+        }
+      )
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postListadoAsegurados(filtro: any): Observable<DatosAseguradosInterface> {
+  postEliminaAsegurado(eliminaBeneficiario: IBeneficiario): Observable<any> {
+    console.log('Elimina Beneficiario Service:', eliminaBeneficiario);
     return this.http
-      .post<DatosAseguradosInterface>(
-        `${environment.apiUrl}/listarAsegurados`,
+      .post<any>(
+        `${environment.apiUrl}/eliminarBeneficiario`,
+        eliminaBeneficiario,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe(retry(1), catchError(this.errorHand));
+  }
+
+  postListadoBeneficiarios(filtro: any): Observable<DatosBeneficiariosInterface> {
+    return this.http
+      .post<DatosBeneficiariosInterface>(
+        `${environment.apiUrl}/listarBeneficiarios`,
         filtro,
         { headers: this.headers }
       )
@@ -65,7 +73,7 @@ export class AseguradoService {
   }
 
   errorHand(error: HttpErrorResponse) {
-    console.log('Paso Error Asegurado: ', error);
+    console.log('Paso Error Beneficiario: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

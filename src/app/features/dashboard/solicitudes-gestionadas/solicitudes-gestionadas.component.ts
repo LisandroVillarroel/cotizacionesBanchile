@@ -228,7 +228,7 @@ export class SolicitudesGestionadasComponent {
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
           //console.log("Cargó productos", this.rescatadoSeguro());
         } else {
           if (dato.codigo != 500) {

@@ -20,7 +20,7 @@ export class TipoSeguroService {
 
   postTipoSeguro(idRubro: any): Observable<InterfazTipoSeguro> {
     return this.http
-      .post<InterfazTipoSeguro>(`${environment.apiUrl}/lista-productos`, idRubro,{headers: this.headers})
+      .post<InterfazTipoSeguro>(`${environment.apiUrl}/listaProductos`, idRubro,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 

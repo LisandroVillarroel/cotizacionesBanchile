@@ -25,14 +25,16 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
 import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
-import { DatosAseguradosInterface, IAsegurado, IAseguradoLista } from '../modelo/ingresoSolicitud-Interface';
+import {
+  DatosAseguradosInterface,
+  IAsegurado,
+  IAseguradoLista,
+} from '../modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '../service/asegurado.service';
-
 
 @Component({
   selector: 'app-asegurado',
@@ -51,14 +53,13 @@ import { AseguradoService } from '../service/asegurado.service';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-  datoAsegurados=signal <IAseguradoLista[]>([]);
+  datoAsegurados = signal<IAseguradoLista[]>([]);
 
   flagAsegurado = model(false);
 
-  aseguradoService= inject(AseguradoService)
+  aseguradoService = inject(AseguradoService);
 
   private readonly dialog = inject(MatDialog);
-  private readonly snackBar = inject(MatSnackBar);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
   displayedColumnsAsegurado: string[] = [
@@ -91,28 +92,15 @@ export class AseguradoComponent {
     }
   }
 
-  dataSourceAsegurado=computed(()=>
-  {
-    const tabla =new MatTableDataSource<IAseguradoLista>(this.datoAsegurados());
+  dataSourceAsegurado = computed(() => {
+    const tabla = new MatTableDataSource<IAseguradoLista>(
+      this.datoAsegurados()
+    );
     tabla.paginator = this.paginatorAsegurado;
     tabla.sort = this.sortAsegurado;
     return tabla;
-}
-  );
-  /*
-  efe = effect(() => {
-    console.log('datos asegurado:', this.datoAseguradosRecibe()!);
-    this.dataSourceAsegurado.data = this.datoAseguradosRecibe()!;
-    // this.dataSourceAsegurado.paginator?.pageSize !=
-    // this.paginatorAsegurado.pageSize;
-    console.log('flag asegurado 1:', this.flagAsegurado());
-    if (this.datoAseguradosRecibe()!.length === 0)
-      this.flagAsegurado.set(false);
-    else this.flagAsegurado.set(true);
-    console.log('flag aseguradoooooo:');
-    console.log('flag asegurado:', this.flagAsegurado());
   });
-*/
+
   ngAfterViewInit(): void {
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
@@ -124,26 +112,27 @@ export class AseguradoComponent {
   }
 
   rescataListaAsegurados() {
-    const estructura_listaAsegurados={
-      "p_id_solicitud": "5"
-    }
-    this.aseguradoService.postListadoAsegurados(estructura_listaAsegurados).subscribe({
-          next: (dato: DatosAseguradosInterface) => {
-            if (dato.codigo === 200) {
-
-              this.datoAsegurados.set(dato.p_cursor);
+    const estructura_listaAsegurados = {
+      p_id_solicitud: '5',
+    };
+    this.aseguradoService
+      .postListadoAsegurados(estructura_listaAsegurados)
+      .subscribe({
+        next: (dato: DatosAseguradosInterface) => {
+          if (dato.codigo === 200) {
+            this.datoAsegurados.set(dato.p_cursor);
+          } else {
+            if (dato.codigo != 500) {
+              console.log('Error:', dato.mensaje);
             } else {
-              if (dato.codigo != 500) {
-                console.log('Error:', dato.mensaje);
-              } else {
-                console.log('ERROR DE SISTEMA:');
-              }
+              console.log('Error de Sistema:');
             }
-          },
-          error: (error) => {
-            console.log('ERROR INESPERADO', error);
-          },
-        });
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
   }
 
   agregaNuevoAsegurado() {
@@ -154,7 +143,7 @@ export class AseguradoComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '50%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {};
 
@@ -169,14 +158,13 @@ export class AseguradoComponent {
   }
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
-
-    console.log('dato modificar;',datoAseguradoPar)
+    console.log('Dato Modificar;', datoAseguradoPar);
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoAseguradoPar;
     this.dialog
@@ -184,6 +172,7 @@ export class AseguradoComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data !== '') {
+          console.log('Modificación confirmada:', data);
           this.rescataListaAsegurados();
         }
       });
@@ -195,7 +184,7 @@ export class AseguradoComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = datoAseguradoPar;
@@ -210,7 +199,7 @@ export class AseguradoComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = datoAseguradoPar;
