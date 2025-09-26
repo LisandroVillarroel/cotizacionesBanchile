@@ -134,22 +134,21 @@ export class NuevasComponent {
     const _codigoRubro = datos.id_rubro;
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
-      next: (dato) => {
-        if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          //console.log("Cargó productos", this.rescatadoSeguro());
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+        next: (dato) => {
+          if (dato.codigo === 200) {
+            this.rescatadoSeguro.set(dato.c_TipoSeguros);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            if (dato.codigo != 500) {
+              console.log('Error:',dato.mensaje);
+            } else {
+              console.log('ERROR DE SISTEMA:');
+            }
           }
-        }
-      },
-      error: (error) => {
-        console.log('ERROR INESPERADO', error);
-      },
-    });
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
   }
 seleccionaFecha() {
     this.filtroFecha.set(this.hoy.value!.toLocaleDateString('es-BO').toString());
