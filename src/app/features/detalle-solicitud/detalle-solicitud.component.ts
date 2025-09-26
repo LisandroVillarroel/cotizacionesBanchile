@@ -3,6 +3,15 @@ import { MatFormField } from "@angular/material/form-field";
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
 import { MatButtonModule } from '@angular/material/button';
+
+//Ejemplo
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatInputModule} from '@angular/material/input';
+
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
@@ -14,26 +23,30 @@ import { MatCard } from "@angular/material/card";
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
-  imports: [InformacionGeneralComponent, DocumentosAsociadosComponent, MatButtonModule,
+  imports: [
+    InformacionGeneralComponent,
+    DocumentosAsociadosComponent,
+    MatButtonModule,
     MatDialogModule,
-    MatButtonModule, MatIcon, MatCard],
+    MatIcon,
+    MatCard,
+    MatToolbarModule,
+  ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
 })
 
 export default class DetalleSolicitudComponent {
-    //idCotizacion =  input.required<IResumenSolicitudes | undefined>();
-
+  idCotizacion =  input.required<string | undefined>();
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
 
-
-   solicitudId: any;
+  solicitudId: any;
   DetalleSolicitudComponent: any;
   devolverSolicitud(): void {
     const dato = {
-      solicitudId: 'ID123456789',
+      solicitudId: this.idCotizacion,//'ID123456789',
       fecha: '00 - 00 - 0000',
       ejecutivo: 'Manuel Sepúlveda',
     };
@@ -57,7 +70,7 @@ export default class DetalleSolicitudComponent {
 
   aceptarSolDetalle(): void {
     const dato = {
-      solicitudId: 'ID COT_12040_123412'
+      solicitudId: this.idCotizacion//'ID COT_12040_123412'
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -78,7 +91,7 @@ export default class DetalleSolicitudComponent {
 
    anularSol(): void {
     const dato = {
-      solicitudId: 'ID COT_Anular_123412'
+      solicitudId: this.idCotizacion//'ID COT_Anular_123412'
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -100,6 +113,7 @@ export default class DetalleSolicitudComponent {
 
  corregirSolicitud(): void {
     const dato = {
+      solicitudId: this.idCotizacion,
       rutContratante: '00.000.000-0',
       nomContratante: 'Felipe Medina Suárez',
       rubro: 'VIDA',
@@ -124,4 +138,3 @@ export default class DetalleSolicitudComponent {
   }
 
 }
-
