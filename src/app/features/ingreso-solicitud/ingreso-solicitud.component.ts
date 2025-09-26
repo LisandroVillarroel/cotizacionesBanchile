@@ -234,7 +234,7 @@ export default class IngresoSolicitudComponent {
   }
 
   async seleccionaRubro(_codigoRubro: string) {
-    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {

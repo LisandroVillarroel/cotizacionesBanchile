@@ -1,4 +1,4 @@
-<mat-card class="fondoGris alinea-card-gestion" >
+<mat-card class="fondoGris alinea-card-gestion">
   <mat-card-title style="padding: 0px 16px 0px;">
     <h2 mat-dialog-title class="destacado">Solicitudes gestionadas el último mes en curso</h2>
   </mat-card-title>
@@ -8,15 +8,15 @@
       <div class="box-form-fields p-2 gap-2" style="align-items: center;">
 
         <div class="gap-1" style="width: 10%;">
-           <span class="gris"> Filtrar por: </span>
+          <span class="gris"> Filtrar por: </span>
         </div>
         <div style="width: 20%;">
           <mat-form-field class="inputBuscar">
             <mat-label class="labelI">Contratante</mat-label>
             <mat-icon matSuffix class="gris">search</mat-icon>
             <input matInput #inContratante
-            (keyup)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)"
-            (change)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)" />
+              (keyup)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)"
+              (change)="applyFilterSolicitud('nombre_razon_social_contratante',inContratante.value)" />
           </mat-form-field>
         </div>
         <div style="width: 20%;">
@@ -25,9 +25,9 @@
             <mat-select [formControl]="rubro"
               (selectionChange)="seleccionaRubro($event.value);applyFilterSolicitud('nombre_rubro',$event.value.nombre_rubro)">
               @for(_rubros of datoRubros(); track _rubros){
-                <mat-option [value]="_rubros">
-                  {{ _rubros.nombre_rubro }}
-                </mat-option>
+              <mat-option [value]="_rubros">
+                {{ _rubros.nombre_rubro }}
+              </mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -35,28 +35,30 @@
         <div style="width: 20%;">
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Tipo de seguro</mat-label>
-            <mat-select [formControl]="seguro" (selectionChange)="applyFilterSolicitud('nombre_tipo_seguro',$event.value)">
+            <mat-select [formControl]="seguro"
+              (selectionChange)="applyFilterSolicitud('nombre_tipo_seguro',$event.value)">
               @for(_seguros of rescatadoSeguro(); track _seguros){
-                <mat-option [value]="_seguros.nombre_tipo_seguro">
-                  {{ _seguros.nombre_tipo_seguro }}
-                </mat-option>
+              <mat-option [value]="_seguros.nombre_tipo_seguro">
+                {{ _seguros.nombre_tipo_seguro }}
+              </mat-option>
               }
-              <input matInput  />
+              <input matInput />
             </mat-select>
           </mat-form-field>
         </div>
         <div style="width: 20%;">
           <mat-form-field class="inputSelect">
             <mat-label class="labelI">Estado</mat-label>
-            <mat-select [formControl]="estado" (selectionChange)="applyFilterSolicitud('id_estado_solicitud',$event.value)">
+            <mat-select [formControl]="estado"
+              (selectionChange)="applyFilterSolicitud('id_estado_solicitud',$event.value)">
               @for(_estados of datosEstados(); track _estados){
-<!--                 <mat-option [value]="_estados.id_estado">
+              <!--                 <mat-option [value]="_estados.id_estado">
                   {{ _estados.nombre_estado }} -->
-                  <mat-option [value]="_estados.id_estado_solicitud">
-                  {{ _estados.nombre_estado }}
-                </mat-option>
+              <mat-option [value]="_estados.id_estado_solicitud">
+                {{ _estados.nombre_estado }}
+              </mat-option>
               }
-              <input matInput  />
+              <input matInput />
             </mat-select>
           </mat-form-field>
         </div>
@@ -75,162 +77,80 @@
         </div>
       </div>
       <div class="mat-elevation-z8">
-        <table mat-table
-              [dataSource]="dataSourceSolicitud()"
-              multiTemplateDataRows
-              matSort>
+        <table mat-table [dataSource]="dataSourceSolicitud()" multiTemplateDataRows matSort>
           <ng-container matColumnDef="index">
-            <th
-              id="indexI"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 4%"
-            >
+            <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
               N°
             </th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = dataIndex"
-              class="gris"
-              style="width: 4%"
-            >
+            <td mat-cell *matCellDef="let element; let i = dataIndex" class="gris" style="width: 4%">
               {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="ID">
-            <th id="_id"
-                mat-header-cell
-                *matHeaderCellDef
-                mat-sort-header
-                style="width: 8%"
-              > ID </th>
+          <ng-container matColumnDef="id_solicitud">
+            <th id="_id" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> ID </th>
             <td mat-cell *matCellDef="let element"> {{element.id_solicitud}} </td>
           </ng-container>
-          <ng-container matColumnDef="Fecha">
-            <th id="_fecha"
-                mat-header-cell
-                *matHeaderCellDef
-                mat-sort-header
-                style="width: 8%"
-              > Fecha </th>
+          <ng-container matColumnDef="fecha_creacion">
+            <th id="_fecha" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Fecha </th>
             <td mat-cell *matCellDef="let element"> {{element.fecha_creacion}} </td>
           </ng-container>
-          <ng-container matColumnDef="RUT">
-            <th
-              id="_rut"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+          <ng-container matColumnDef="rut_contratante">
+            <th id="_rut" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               RUT
             </th>
             <td mat-cell *matCellDef="let element">{{ element.rut_contratante }}</td>
           </ng-container>
-          <ng-container matColumnDef="Contratante">
-            <th
-              id="_contratante"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+          <ng-container matColumnDef="nombre_razon_social_contratante">
+            <th id="_contratante" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               Contratante
             </th>
             <td mat-cell *matCellDef="let element">{{ element.nombre_razon_social_contratante }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="Rubro">
-            <th
-              id="_rubro"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+          <ng-container matColumnDef="nombre_rubro">
+            <th id="_rubro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               Rubro
             </th>
             <td mat-cell *matCellDef="let element">{{ element.nombre_rubro }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="TipoSeguro">
-            <th
-              id="_tipoSeguro"
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              style="width: 8%"
-            >
+          <ng-container matColumnDef="nombre_tipo_seguro">
+            <th id="_tipoSeguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               Tipo Seguro
             </th>
             <td mat-cell *matCellDef="let element">{{ element.nombre_tipo_seguro }}</td>
           </ng-container>
-          <ng-container matColumnDef="Ejecutivo">
-            <th
-                  id="_ejecutivo"
-                  mat-header-cell
-                  *matHeaderCellDef
-                  mat-sort-header
-                  style="width: 8%"
-                > Ejecutivo </th>
+          <ng-container matColumnDef="nombre_ejecutivo_banco">
+            <th id="_ejecutivo" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Ejecutivo </th>
             <td mat-cell *matCellDef="let element">{{element.nombre_ejecutivo_banco}}</td>
           </ng-container>
-          <ng-container matColumnDef="Coordinador">
-            <th
-                  id="_coordinador"
-                  mat-header-cell
-                  *matHeaderCellDef
-                  mat-sort-header
-                  style="width: 8%"
-                > Coordinador </th>
+          <ng-container matColumnDef="nombre_coordinador">
+            <th id="_coordinador" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Coordinador </th>
             <td mat-cell *matCellDef="let element">{{element.nombre_coordinador}}</td>
           </ng-container>
-          <ng-container matColumnDef="Estado">
-            <th
-                  id="_estado"
-                  mat-header-cell
-                  *matHeaderCellDef
-                  mat-sort-header
-                  style="width: 8%"
-                > Estado </th>
+          <ng-container matColumnDef="id_estado_solicitud">
+            <th id="_estado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Estado </th>
             <td mat-cell *matCellDef="let element">
               <div [ngClass]="getCellClass(element.id_estado_solicitud)">{{element.descripcion_estado}}</div>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="accion">
-            <th
-              id="accionI"
-              mat-header-cell
-              *matHeaderCellDef
-              style="width: 8%; text-align: center"
-            >
+            <th id="accionI" mat-header-cell *matHeaderCellDef style="width: 8%; text-align: center">
               Acción
             </th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = index"
-              style="width: 8%; text-align: center"
-            >
-              <button
-                matTooltip="Ver detalles"
-                mat-icon-button
-                (click)="verDetalle(element.id_solicitud)"
-              >
+            <td mat-cell *matCellDef="let element; let i = index" style="width: 8%; text-align: center">
+              <button matTooltip="Ver detalles" mat-icon-button (click)="verDetalle(element.id_solicitud)">
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>
-            </td></ng-container
-          >
+            </td>
+          </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-paginator
-          #myPaginator
-          [pageSizeOptions]="[10, 20, 30, 100]"
-        ></mat-paginator>
+        <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
       </div>
     </div>
   </mat-card-content>

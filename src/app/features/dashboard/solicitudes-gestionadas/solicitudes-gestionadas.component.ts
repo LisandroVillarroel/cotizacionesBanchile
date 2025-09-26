@@ -75,31 +75,38 @@ export class SolicitudesGestionadasComponent {
   estado = new FormControl();
   displayedColumns: string[] = [
     'index',
-    'ID',
-    'Fecha',
-    'RUT',
-    'Contratante',
-    'Rubro',
-    "TipoSeguro",
-    "Ejecutivo",
-    "Coordinador",
-    "Estado",
+    'id_solicitud',
+    'fecha_creacion',
+    'rut_contratante',
+    'nombre_razon_social_contratante',
+    'nombre_rubro',
+    "nombre_tipo_seguro",
+    "nombre_ejecutivo_banco",
+    "nombre_coordinador",
+    "id_estado_solicitud",
     "accion"
   ];
 
 
   dataSourceSolicitud = computed(() => {
-    const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud())
+    const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
+    this.setSortingAndPagination(tabla);
     return tabla
   });
 
   @ViewChild(MatPaginator)
-  paginatorSolicitud!: MatPaginator;
-  @ViewChild(MatSort) sortSolicitud!: MatSort;
+  paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
-    this.dataSourceSolicitud().paginator = this.paginatorSolicitud;
-    this.dataSourceSolicitud().sort = this.sortSolicitud;
+    //this.dataSourceSolicitud().paginator = this.paginatorSolicitud;
+    //this.dataSourceSolicitud().sort = this.sortSolicitud;
+    this.setSortingAndPagination(this.dataSourceSolicitud());
+  }
+
+   setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
+    dataSource.sort = this.sort;
+    dataSource.paginator = this.paginator;
   }
 
   private readonly dialog = inject(MatDialog);
