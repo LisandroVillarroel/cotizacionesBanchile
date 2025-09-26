@@ -89,12 +89,11 @@ export class SolicitudesGestionadasComponent {
 
 
   dataSourceSolicitud = computed(() => {
-    const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud())
+    const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
     return tabla
   });
 
-  @ViewChild(MatPaginator)
-  paginatorSolicitud!: MatPaginator;
+  @ViewChild(MatPaginator) paginatorSolicitud!: MatPaginator;
   @ViewChild(MatSort) sortSolicitud!: MatSort;
 
   ngAfterViewInit(): void {
@@ -176,59 +175,14 @@ export class SolicitudesGestionadasComponent {
    });
  }
 
-/*   cargaEstados() {
-    this.datosEstados = signal<IEstado[]>([
-      {
-        codigoEstado: 1,
-        descripcionEstado: 'En edición',
-      },
-      {
-        codigoEstado: 2,
-        descripcionEstado: 'Devuelta',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'En revisión',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Aprobada',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Anulada',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'En cotización',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Propuesta pendiente',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Propuesta emitida',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Terminada',
-      },
-      {
-        codigoEstado: 3,
-        descripcionEstado: 'Rechazada',
-      },
-    ]);
-
-  } */
-
   async seleccionaRubro(datos: IRubro) {
+    console.log("rubros: ",datos);
     const _codigoRubro=datos.id_rubro
-    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
           //console.log("Cargó productos", this.rescatadoSeguro());
         } else {
           if (dato.codigo != 500) {

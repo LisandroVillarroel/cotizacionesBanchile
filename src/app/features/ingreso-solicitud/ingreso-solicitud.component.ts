@@ -235,7 +235,7 @@ export default class IngresoSolicitudComponent {
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
