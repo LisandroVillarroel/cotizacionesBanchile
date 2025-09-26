@@ -18,7 +18,6 @@ export class TipoSeguroService {
 
   constructor() { }
 
-
   postTipoSeguro(idRubro: any): Observable<InterfazTipoSeguro> {
     return this.http
       .post<InterfazTipoSeguro>(`${environment.apiUrl}/listaProductos`, idRubro,{headers: this.headers})

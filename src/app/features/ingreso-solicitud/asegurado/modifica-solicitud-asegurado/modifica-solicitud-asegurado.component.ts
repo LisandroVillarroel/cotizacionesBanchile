@@ -5,13 +5,14 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
 
 @Component({
   selector: 'app-modifica-solicitud-asegurado',
   standalone: true,
-  imports: [ MatFormFieldModule,
+  imports: [MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,
@@ -20,20 +21,30 @@ import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoS
   styleUrl: './modifica-solicitud-asegurado.component.css'
 })
 export class ModificaSolicitudAseguradoComponent {
+  asegurado!: IAsegurado;
 
-  readonly dialogRef = inject(MatDialogRef<ModificaSolicitudAseguradoComponent>);
-  readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
+  aseguradoService = inject(AseguradoService)
 
-  rutAsegurado = new FormControl(this.data.rut_asegurado, [Validators.required, this.validaRut]);
-  nombreAsegurado = new FormControl(this.data.nombre_razon_social_asegurado, [Validators.required]);
-  regionAsegurado = new FormControl(this.data.region_asegurado, [Validators.required]);
-  ciudadAsegurado = new FormControl(this.data.ciudad_asegurado, [Validators.required]);
-  comunaAsegurado = new FormControl(this.data.comuna_asegurado, [Validators.required]);
-  direccionAsegurado = new FormControl(this.data.direccion_asegurado, [Validators.required]);
-  telefonoAsegurado = new FormControl(this.data.telefono_asegurado, [Validators.required]);
-  correoAsegurado = new FormControl(this.data.mail_asegurado, [Validators.required]);
+  private readonly dialogRef = inject(
+    MatDialogRef<ModificaSolicitudAseguradoComponent>
+  );
 
-   modificaAsegurado = signal<FormGroup>(
+
+  readonly data = inject<IAseguradoLista>(MAT_DIALOG_DATA);
+
+  rutAsegurado = new FormControl(this.data.rutAsegurado, [Validators.required, this.validaRut]);
+  nombreAsegurado = new FormControl('', [Validators.required]);
+  regionAsegurado = new FormControl('', [Validators.required]);
+  ciudadAsegurado = new FormControl('', [Validators.required]);
+  comunaAsegurado = new FormControl('', [Validators.required]);
+  direccionAsegurado = new FormControl('', [Validators.required]);
+  numeroDireccionAsegurado = new FormControl('', [Validators.required]);
+  deptoDireccionAsegurado = new FormControl('', [Validators.required]);
+  casaAsegurado = new FormControl('', [Validators.required]);
+  telefonoAsegurado = new FormControl('', [Validators.required]);
+  correoAsegurado = new FormControl('', [Validators.required]);
+
+  modificaAsegurado = signal<FormGroup>(
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
@@ -41,14 +52,17 @@ export class ModificaSolicitudAseguradoComponent {
       ciudadAsegurado: this.ciudadAsegurado,
       comunaAsegurado: this.comunaAsegurado,
       direccionAsegurado: this.direccionAsegurado,
+      numeroDireccionAsegurado: this.numeroDireccionAsegurado,
+      deptoDireccionAsegurado: this.deptoDireccionAsegurado,
+      casaAsegurado: this.casaAsegurado,
       telefonoAsegurado: this.telefonoAsegurado,
-      correoAsegurado: this.correoAsegurado
+      correoAsegurado: this.correoAsegurado,
     })
   );
 
 
   getErrorMessage(campo: string) {
-      if (campo === 'rutAsegurado') {
+    if (campo === 'rutAsegurado') {
       return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
@@ -60,7 +74,6 @@ export class ModificaSolicitudAseguradoComponent {
         ? 'Debes ingresar Nombre'
         : '';
     }
-
 
     if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
@@ -83,7 +96,25 @@ export class ModificaSolicitudAseguradoComponent {
       return this.direccionAsegurado.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-    }
+  }
+
+   if (campo === 'numeroDireccionAsegurado') {
+      return this.numeroDireccionAsegurado.hasError('required')
+        ? 'Debes ingresar Número Dirección'
+        : '';
+  }
+
+   if (campo === 'deptoDireccionAsegurado') {
+      return this.deptoDireccionAsegurado.hasError('required')
+        ? 'Debes ingresar Departamento Dirección'
+        : '';
+  }
+
+   if (campo === 'casaAsegurado') {
+      return this.casaAsegurado.hasError('required')
+        ? 'Debes ingresar Número casa Dirección'
+        : '';
+  }
 
     if (campo === 'telefonoAsegurado') {
       return this.telefonoAsegurado.hasError('required')
@@ -92,7 +123,7 @@ export class ModificaSolicitudAseguradoComponent {
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
+      return this.telefonoAsegurado.hasError('required')
         ? 'Debes ingresar Correo'
         : '';
     }
@@ -118,6 +149,46 @@ export class ModificaSolicitudAseguradoComponent {
   }
 
   modificar() {
-     this.dialogRef.close(this.modificaAsegurado().value);
+    this.asegurado = {
+      p_id_ejecutivo_banco: 'EJ001',
+      p_id_solicitud: '5',
+      p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
+      p_nombre_razon_social_asegurado: this.modificaAsegurado().get('nombreAsegurado')!.value,
+      p_mail_asegurado: this.modificaAsegurado().get('correoAsegurado')!.value,
+      p_telefono_asegurado: this.modificaAsegurado().get('telefonoAsegurado')!.value,
+      p_region_asegurado: this.modificaAsegurado().get('regionAsegurado')!.value,
+      p_ciudad_asegurado: this.modificaAsegurado().get('ciudadAsegurado')!.value,
+      p_comuna_asegurado: this.modificaAsegurado().get('comunaAsegurado')!.value,
+      p_direccion_asegurado: this.modificaAsegurado().get('direccionAsegurado')!.value,
+      p_numero_dir_asegurado: this.modificaAsegurado().get('numeroDireccionAsegurado')!.value,
+      p_departamento_block_asegurado: this.modificaAsegurado().get('deptoDireccionAsegurado')!.value,
+      p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value
+    };
+
+
+    console.log('Asegurado modificao:', this.asegurado);
+    this.aseguradoService
+      .postModificaAsegurado(this.asegurado)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Modificó asegurado bien')
+
+          } else {
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('ERROR DE SISTEMA:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('ERROR INESPERADO', error);
+        },
+      });
+    this.dialogRef.close();
   }
 }

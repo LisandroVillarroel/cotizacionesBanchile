@@ -12,21 +12,25 @@ export interface ISolicitudContratante {
   casa_contratante: string;
 }
 
-export interface ISolicitudAsegurado {
-  rut_asegurado: string;
-  nombre_razon_social_asegurado: string;
-  mail_asegurado: string;
-  telefono_asegurado: string;
-  region_asegurado: string;
-  ciudad_asegurado: string;
-  comuna_asegurado: string;
-  direccion_asegurado: string;
-  numero_dir_asegurado: string;
-  departamento_block_asegurado: string;
-  casa_asegurado: string;
+export interface IAseguradoLista {
+  rutAsegurado: string;
+  nombreRazonSocialAsegurado: string;
+  mailAsegurado: string;
+  telefonoAsegurado: string;
+  regionAsegurado: string;
+  ciudadAsegurado: string;
+  comunaAsegurado: string;
+  direccionAsegurado: string;
+  numeroDirAsegurado: string;
+  departamentoBlockAsegurado: string;
+  casaAsegurado: string;
+  fechaCreacion: string;
+  usuarioCreacion: string;
+  fechaModificacion: string;
+  usuarioModificacion: string;
 }
 
-/* export interface IIngresoAsegurado {
+export interface IAsegurado {
   p_id_ejecutivo_banco?: string;
   p_id_solicitud?: string;
   p_rut_asegurado: string;
@@ -40,19 +44,14 @@ export interface ISolicitudAsegurado {
   p_numero_dir_asegurado: string;
   p_departamento_block_asegurado: string;
   p_casa_asegurado: string;
-} */
-export interface IIngresoAsegurado {
-  rut_asegurado: string;
-  nombre_razon_social_asegurado: string;
-  mail_asegurado: string;
-  telefono_asegurado: string;
-  region_asegurado: string;
-  ciudad_asegurado: string;
-  comuna_asegurado: string;
-  direccion_asegurado: string;
-  numero_dir_asegurado: string;
-  departamento_block_asegurado: string;
-  casa_asegurado: string;
+}
+
+export interface DatosAseguradosInterface {
+  codigo: number;
+  mensaje: string;
+  vcEstado: string;
+  p_cursor: IAseguradoLista[];
+  vcEstadoCreacion: string;
 }
 
 export interface ISolicitudBeneficiario {
@@ -79,11 +78,11 @@ export interface ICuestionario {
 
 export interface IIngresoSolicitud {
   id_ejecutivo_banco: string;
-  id_rubro: string;
-  id_tipo_seguro: string;
+  id_rubro: number;
+  id_tipo_seguro: number;
   contratante: ISolicitudContratante;
-  asegurados: ISolicitudAsegurado[];
-  beneficiarios: ISolicitudBeneficiario[];
+  // asegurados: ISolicitudAsegurado[];
+  // beneficiarios: ISolicitudBeneficiario[];
 }
 
 export interface IEstadoIngresoSolicitud {
@@ -91,13 +90,4 @@ export interface IEstadoIngresoSolicitud {
   mensaje: string;
   estado: string;
   estado_creacion: string;
-}
-
-export interface IAgregaAsegurado {
-  id_ejecutivo_banco: string;
-  id_rubro: string;
-  id_tipo_seguro: string;
-  contratante: ISolicitudContratante;
-  asegurados: ISolicitudAsegurado[];
-  beneficiarios: ISolicitudBeneficiario[];
 }

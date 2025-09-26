@@ -99,7 +99,7 @@ export class BeneficiarioComponent {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {};
     this.dialog

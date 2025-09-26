@@ -25,7 +25,7 @@
       }
       <button class="colorFondoBotonVolver" mat-raised-button (click)="salir()">
         Volver
-      </button>-->
+      </button> -->
     </div>
   </div>
   <mat-divider></mat-divider>
@@ -170,7 +170,7 @@
                 <button
                   mat-raised-button
                   matStepperNext
-                  (click)="grabaConratante()"
+                  (click)="grabaConTratante()"
                   class="colorFondoBotonSiguiente"
                 >
                   Siguiente
@@ -189,8 +189,6 @@
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
         <app-asegurado
-          [datoAseguradosRecibe]="datoAsegurados()"
-          (datoAseguradosRecibeModificado)="actualizarAsegurado($event)"
           [(flagAsegurado)]="flagAseguradoRescata"
           (flagAseguradoModel)="cambioAseguradoFlag()"
         />
@@ -205,13 +203,13 @@
             </button>
           </div>
           <div class="botones-derecha">
-            <!--><button
+            <!-- <button
             mat-raised-button
             class="colorFondoBotonGuardar"
             (click)="grabarBorrador()"
           >
             Grabar
-          </button>-->
+          </button> -->
             <button
               mat-raised-button
               matStepperNext
@@ -247,13 +245,13 @@
             </button>
           </div>
           <div class="botones-derecha">
-            <!--><button
+            <!-- <button
             mat-raised-button
             class="colorFondoBotonGuardar"
             (click)="grabarBorrador()"
           >
             Grabar
-          </button>-->
+          </button> -->
             <button
               mat-raised-button
               matStepperNext
@@ -280,13 +278,13 @@
           </button>
         </div>
         <div class="botones-derecha">
-          <!--><button
+          <!-- <button
             mat-raised-button
             class="colorFondoBotonGuardar"
             (click)="grabarBorrador()"
           >
             Grabar
-          </button>-->
+          </button> -->
           <button
             mat-raised-button
             matStepperNext
@@ -312,9 +310,9 @@
           </button>
         </div>
         <div class="botones-derecha">
-          <!--<button mat-raised-button class="colorFondoBotonGuardar" (click)="grabarBorrador()">
+          <!-- <button mat-raised-button class="colorFondoBotonGuardar" (click)="grabarBorrador()">
             Grabar
-          </button>-->
+          </button> -->
           <button
             mat-raised-button
             (click)="abrirDialogoYAvanzar()"

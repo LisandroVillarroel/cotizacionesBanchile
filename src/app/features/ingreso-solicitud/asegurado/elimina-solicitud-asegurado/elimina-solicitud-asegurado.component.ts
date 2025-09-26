@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-elimina-solicitud-asegurado',
@@ -21,7 +21,7 @@ import { ISolicitudAsegurado } from '@features/ingreso-solicitud/modelo/ingresoS
 })
 export class EliminaSolicitudAseguradoComponent {
   private readonly dialogRef = inject(MatDialogRef<EliminaSolicitudAseguradoComponent>);
-  public readonly data = inject<ISolicitudAsegurado>(MAT_DIALOG_DATA);
+  public readonly data = inject<IAseguradoLista>(MAT_DIALOG_DATA);
 
   eliminar(){
     this.dialogRef.close(1);

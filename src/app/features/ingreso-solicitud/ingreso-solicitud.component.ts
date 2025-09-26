@@ -29,7 +29,6 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   IIngresoSolicitud,
-  ISolicitudAsegurado,
   ISolicitudBeneficiario,
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
@@ -103,7 +102,7 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
+  //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
   datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   rubroService = inject(RubroService);
@@ -123,8 +122,8 @@ export default class IngresoSolicitudComponent {
   pasoActivoLabel: string = '';
 
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
-  rubro = new FormControl('');
-  seguro = new FormControl('');
+  rubro = new FormControl('', [Validators.required]);
+  seguro = new FormControl('', [Validators.required]);
   aseguradeCheck = new FormControl(false, [Validators.required]);
 
   flagAsegurado = new FormControl(true, [
@@ -211,10 +210,12 @@ export default class IngresoSolicitudComponent {
   }
 
   cargaRubro() {
+    console.log('paso rubro')
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.datoRubros.set(dato.items);
+          console.log()
+          this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -249,11 +250,14 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaConratante() {
+  grabaConTratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
-
+    console.log(
+      'aseguradeCheck:',
+      this.agregaSolicitudContratante().get('aseguradeCheck')!.value
+    );
     this.ingresoSolicitud = {
-      id_ejecutivo_banco: 'LISANDRO VILLARROEL',
+      id_ejecutivo_banco: 'EJ001',
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,
@@ -270,11 +274,10 @@ export default class IngresoSolicitudComponent {
       },
       id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
-      asegurados: [],
-      beneficiarios: [],
+      // asegurados: [],
+      // beneficiarios: [],
     };
     console.log('ingreso solicitud:', this.ingresoSolicitud);
-    //this.ingresoSolicitud.asegurados = this.datoAsegurados() as ISolicitudAsegurado[];
     this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
@@ -282,16 +285,18 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó bien');
-
+            if (
+              this.agregaSolicitudContratante().get('aseguradeCheck')!.value
+            ) {
+              this.guardaAsegurado();
+            }
             // Actualizar el signal para mostrar datos del contratante en panel
-            const rut =
-              this.agregaSolicitudContratante().get('rutCliente')!.value;
-            const nombre = this.nombreRazonSocial();
 
             this.contratanteInfo.set({
               id: 999, // ID en duro para prueba
-              rut_contratante: rut,
-              nombre: nombre,
+              rut_contratante:
+                this.agregaSolicitudContratante().get('rutCliente')!.value,
+              nombre: this.nombreRazonSocial(),
             });
           } else {
             if (dato.codigo != 500) {
@@ -309,12 +314,10 @@ export default class IngresoSolicitudComponent {
       });
   }
 
+  guardaAsegurado() {}
+
   salir() {
     this.router.navigate(['/principal/inicio']);
-  }
-
-  grabarBorrador() {
-    alert('grabar borrador');
   }
 
   async onBlurRutCliente(event: any) {
@@ -382,11 +385,12 @@ export default class IngresoSolicitudComponent {
     this.flagAsegurado.setValue(this.flagAseguradoRescata);
   }
 
+  /*
   actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoAsegurados());
   }
-
+*/
   cambioBeneficiarioFlag() {
     console.log('ver flag', this.flagAseguradoRescata);
     this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);

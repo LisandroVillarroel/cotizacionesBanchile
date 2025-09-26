@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { IListadoSolicitudes } from './../datosSolicitud-Interface';
+import { IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
+import { Component, computed, input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
+import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 
 // Angular Material
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 // PrimeNG
 import { ChartModule } from 'primeng/chart';
@@ -14,6 +17,11 @@ import { ChartModule } from 'primeng/chart';
 // Componentes personalizados
 import { GraficoPieComponent } from './grafico-pie/grafico-pie.component';
 import { GraficoBarraComponent } from './grafico-barra/grafico-barra.component';
+
+import { RubroService } from '@shared/service/rubro.service';
+import { IRubro } from '@shared/modelo/rubro-interface';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 
 @Component({
@@ -28,8 +36,12 @@ import { GraficoBarraComponent } from './grafico-barra/grafico-barra.component';
     MatOptionModule,
     ChartModule,
     GraficoPieComponent,
-    GraficoBarraComponent
-  ],
+    GraficoBarraComponent,
+    MatFormField,
+    MatLabel,
+    MatSelectModule,
+    MatSelect,ReactiveFormsModule
+],
   templateUrl: './distribucion.component.html',
   styleUrls: ['./distribucion.component.css'] // ✅ Corrección: debe ser "styleUrls" (plural)
 })
@@ -37,12 +49,78 @@ import { GraficoBarraComponent } from './grafico-barra/grafico-barra.component';
 
 
 export default class DistribucionComponent {
-opciones = [
-    { id: 1, nombre: 'Automotriz' },
-    { id: 2, nombre: 'Hogar' },
-    { id: 3, nombre: 'Vida' }
-  ];
-  seleccionada = null;
+listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[] | undefined>();
+resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
+rubroService = inject(RubroService);
+tipoSeguroService = inject(TipoSeguroService);
+
+datoRubros = signal<IRubro[]>([]);
+rescatadoSeguro = signal<ITipoSeguro[]>([]);
+
+panelOpenState = false;
+  rubro = new FormControl();
+
+
+
+// opciones = [
+//     { id: 1, nombre: 'Automotriz' },
+//     { id: 2, nombre: 'Hogar' },
+//     { id: 3, nombre: 'Vida' }
+//   ];
+//   seleccionada = null;
+
+  constructor(){
+   // console.log('resumenGeneral:',this.datoResumenGeneral()?.p_Aprobadas)
+  }
+
+
+  cargaRubros() {
+    console.log('Entro cargaRubros');
+    this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datoRubros.set(dato.p_cursor);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+async seleccionaRubro(_codigoRubro: string) {
+
+    console.log('Entro seleccionaRubro');
+    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
+   this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+           this.rescatadoSeguro.set(dato.items);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:',dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+async ngOnInit() {
+    this.cargaRubros();
+    //this.cargaEstados();
+  }
+
 }
 
 

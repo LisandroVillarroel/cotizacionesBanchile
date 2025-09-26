@@ -142,7 +142,7 @@ export class SolicitudesGestionadasComponent {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.datoRubros.set(dato.items);
+          this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -158,7 +158,7 @@ export class SolicitudesGestionadasComponent {
   }
 
   cargaEstados() {
-   this.estadoService.postEstado().subscribe({
+   this.estadoService.getEstado().subscribe({
      next: (dato) => {
        if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);

@@ -17,14 +17,14 @@ export class EstadoService {
   });
   constructor() { }
 
-  postEstado(): Observable<EstadoInterface> {
+  getEstado(): Observable<EstadoInterface> {
     return this.http
       .get<EstadoInterface>(`${environment.apiUrl}/listarEstados`,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   errorHandl(error: HttpErrorResponse) {
-    //console.log('error estado: ', error);
+    console.log('error estado: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

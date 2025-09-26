@@ -6,10 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import {
-  IAgregaAsegurado,
-  IIngresoAsegurado
-} from '../modelo/ingresoSolicitud-Interface';
+import { DatosAseguradosInterface, IAsegurado } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,17 +20,33 @@ export class AseguradoService {
   });
 
   constructor() {}
-    postAgregaAsegurado(agregaAsegurado: IIngresoAsegurado): Observable<any> {
+    postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
     console.log('Agrega Asegurado Service:', agregaAsegurado);
     return this.http
       .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
         headers: this.headers,
       })
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry(1), catchError(this.errorHand));
   }
 
-  errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
+      postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
+    console.log('Modifica Asegurado Service:', modificaAsegurado);
+    return this.http
+      .post<any>(`${environment.apiUrl}/modificarAsegurado`, modificaAsegurado, {
+        headers: this.headers,
+      })
+      .pipe(retry(1), catchError(this.errorHand));
+  }
+
+
+  postListadoAsegurados(filtro: any): Observable<DatosAseguradosInterface> {
+        return this.http
+          .post<DatosAseguradosInterface>(`${environment.apiUrl}/listarAsegurados`, filtro,{headers: this.headers})
+          .pipe(retry(1), catchError(this.errorHand));
+      }
+
+ errorHand(error: HttpErrorResponse) {
+    console.log('paso error Asegurado: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

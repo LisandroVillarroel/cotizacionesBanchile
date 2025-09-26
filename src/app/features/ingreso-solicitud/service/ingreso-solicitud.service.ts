@@ -22,33 +22,12 @@ export class IngresoSolicitudService {
     Accept: 'application/json',
   });
 
-  ingreso: IIngresoSolicitud = {
-    id_ejecutivo_banco: 'LISANDRO VILLARROEL',
-    id_rubro: 'AUTOMOTRIZ',
-    id_tipo_seguro: 'ASISTENCIA EN VIAJES',
-    contratante: {
-      rut_contratante: '11.118.901-9',
-      nombre_razon_social_contratante: 'Carlos Torres Navarro',
-      mail_contratante: 'Carlos.Torres.Navarro@gmail.com',
-      telefono_contratante: '1181111111',
-      region_contratante: 'Arica y Parinacota',
-      ciudad_contratante: 'Putre',
-      comuna_contratante: 'Putre',
-      direccion_contratante: 'Arturo Prat',
-      numero_dir_contratante: '1186',
-      departamento_block_contratante: '',
-      casa_contratante: '',
-    },
-    asegurados: [],
-    beneficiarios: [],
-  };
-
   constructor() {}
 
   postIngresoSolicitud(ingresoSolicitud: IIngresoSolicitud): Observable<any> {
     console.log('Ingreso Solicitud Service:', ingresoSolicitud);
     return this.http
-      .post<any>(`${environment.apiUrl}/ingreso-solicitud`, ingresoSolicitud, {
+      .post<any>(`${environment.apiUrl}/ingresoSolicitud`, ingresoSolicitud, {
         headers: this.headers,
       })
       .pipe(retry(1), catchError(this.errorHandl));

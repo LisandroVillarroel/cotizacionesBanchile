@@ -14,11 +14,3 @@ export interface ISolicitudG {
   //Companias: ICompania[]
 }
 
-export interface SolicitudInterface {
-  codigo: number;
-  mensaje: string;
-  vcEstado: string;
-  vcEstadoCreacion: string;
-  p_cursor: ISolicitudG[];
-  //cantidad: number;
-}
