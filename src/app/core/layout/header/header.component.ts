@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { Router } from '@angular/router';
 //import { Progreso } from '@shared/guard/progreso';
 
 @Component({
@@ -33,8 +37,8 @@ import { MatDividerModule } from '@angular/material/divider';
         </span>
       </div>
       <div class="usuario-container">
-        <span class="usuarioLogin">Equipo de desarrollo Entersoft</span>
-        <button class="btn-salir" matTooltip="Cerrar" matButton>
+        <span class="usuarioLogin">{{_storage()?.usuarioLogin?.nombre}}</span>
+        <button class="btn-salir" (click)="cerrarSesion()" matTooltip="Cerrar" matButton>
           <mat-icon>exit_to_app</mat-icon>
         </button>
       </div>
@@ -108,4 +112,12 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export default class HeaderComponent {
   ///  readonly progreso = inject(Progreso);
+  readonly router = inject(Router);
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+    cerrarSesion(){
+      this.storage.remueve('sesion')
+       this.router.navigate(['/login']);
+    }
 }

@@ -33,7 +33,6 @@ import {
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
@@ -52,6 +51,8 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -74,7 +75,6 @@ import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
     MatSortModule,
     MatDividerModule,
     MatIconModule,
-    MatTableExporterModule,
     MatTooltipModule,
     FormsModule,
     AseguradoComponent,
@@ -104,6 +104,9 @@ export default class IngresoSolicitudComponent {
 
   //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
   datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -231,11 +234,11 @@ export default class IngresoSolicitudComponent {
   }
 
   async seleccionaRubro(_codigoRubro: string) {
-    const estructura_codigoRubro = { id_rubro: _codigoRubro };
+    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.rescatadoSeguro.set(dato.items);
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -257,7 +260,7 @@ export default class IngresoSolicitudComponent {
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
     );
     this.ingresoSolicitud = {
-      id_ejecutivo_banco: 'EJ001',
+      id_ejecutivo_banco: this._storage()?.usuarioLogin.codigoEjecutivo!,
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,

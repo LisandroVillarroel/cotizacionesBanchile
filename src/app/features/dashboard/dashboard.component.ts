@@ -13,11 +13,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardService } from './dashboard.service';
 import { DatosSolicitudesInterface, IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
+import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
+  providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS),],
   imports: [
     MatFormFieldModule,
     MatInputModule,
