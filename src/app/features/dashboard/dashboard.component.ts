@@ -89,6 +89,7 @@ export default class DashboardComponent   {
         console.log('ERROR INESPERADO', error);
       },
     });
+    // this.truncarFechas();
   }
 
 }

@@ -6,17 +6,19 @@
         <mat-form-field class="inputBuscar">
           <mat-label class="labelI">Contratante</mat-label>
           <mat-icon matSuffix class="gris">search</mat-icon>
-          <input matInput #inContratante (keyup)="filtro.set(inContratante.value); pagina.set(0)"
-                (change)="filtro.set(inContratante.value); pagina.set(0)"/>
+            <input matInput #inContratante
+              (keyup)="filtroContratante.set(inContratante.value); pagina.set(0)"
+              (change)="filtroContratante.set(inContratante.value); pagina.set(0)"/>
         </mat-form-field>
       </div>
 
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
           <mat-label class="labelI">Rubro</mat-label>
-           <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value); pagina.set(0)">
+           <mat-select [formControl]="rubro"
+            (selectionChange)="seleccionaRubro($event.value); filtroRubro.set($event.value.nombre_rubro); pagina.set(0)">
             @for(_rubros of datoRubros(); track _rubros){
-              <mat-option [value]="_rubros.id_rubro" >
+              <mat-option [value]="_rubros" >
                 {{ _rubros.nombre_rubro }}
               </mat-option>
             }
@@ -27,9 +29,9 @@
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
           <mat-label class="labelI">Tipo de seguro</mat-label>
-          <mat-select [formControl]="seguro" (selectionChange)="filtrarTipoSeguro($event.value); pagina.set(0)">
+          <mat-select [formControl]="seguro" (selectionChange)="filtroProducto.set($event.value); pagina.set(0)">
             @for(_seguros of rescatadoSeguro(); track _seguros){
-              <mat-option [value]="_seguros.id_tipo_seguro">
+              <mat-option [value]="_seguros.nombre_tipo_seguro">
                 {{ _seguros.nombre_tipo_seguro }}
               </mat-option>
             }
@@ -41,9 +43,9 @@
     <div style="width: 20%;">
       <mat-form-field class="inputFechaForm">
         <mat-label class="fontSmall gris">Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="dateControl">
+          <input matInput [matDatepicker]="picker" [formControl]="hoy" (dateChange)="seleccionaFecha()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker (dateChange)="filtrarFecha()"></mat-datepicker>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
 
@@ -106,7 +108,7 @@
       </mat-card>
     }
   <!-- </table> -->
-  <mat-paginator [length]="datosFiltrados().length"
+  <mat-paginator [length]="datosFiltrados()!.length"
                  [pageSize]="pageSize"
                  [pageIndex]="pagina()"
                  (page)="onPage($event)">
