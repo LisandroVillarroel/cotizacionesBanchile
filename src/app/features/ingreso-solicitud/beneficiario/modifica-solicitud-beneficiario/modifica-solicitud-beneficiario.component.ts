@@ -15,8 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import {
-  IBeneficiario,
   IBeneficiarioLista,
+  IModificaBeneficiario,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
 
@@ -34,7 +34,7 @@ import { BeneficiarioService } from '@features/ingreso-solicitud/service/benefic
   styleUrl: './modifica-solicitud-beneficiario.component.css',
 })
 export class ModificaSolicitudBeneficiarioComponent {
-  beneficiario!: IBeneficiario;
+  beneficiario!: IModificaBeneficiario;
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -73,6 +73,17 @@ export class ModificaSolicitudBeneficiarioComponent {
   direccionBeneficiario = new FormControl(this.data.direccion_beneficiario, [
     Validators.required,
   ]);
+  numeroDireccionBeneficiario = new FormControl(
+    this.data.numero_dir_beneficiario,
+    [Validators.required]
+  );
+  deptoDireccionBeneficiario = new FormControl(
+    this.data.departamento_block_beneficiario,
+    [Validators.required]
+  );
+  casaBeneficiario = new FormControl(this.data.casa_beneficiario, [
+    Validators.required,
+  ]);
 
   modificaBeneficiario = signal<FormGroup>(
     new FormGroup({
@@ -84,6 +95,9 @@ export class ModificaSolicitudBeneficiarioComponent {
       ciudadBeneficiario: this.ciudadBeneficiario,
       comunaBeneficiario: this.comunaBeneficiario,
       direccionBeneficiario: this.direccionBeneficiario,
+      numeroDireccionBeneficiario: this.numeroDireccionBeneficiario,
+      deptoDireccionBeneficiario: this.deptoDireccionBeneficiario,
+      casaBeneficiario: this.casaBeneficiario,
     })
   );
 
@@ -136,6 +150,24 @@ export class ModificaSolicitudBeneficiarioComponent {
         : '';
     }
 
+    if (campo === 'numeroDireccionBeneficiario') {
+      return this.numeroDireccionBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
+        : '';
+    }
+
+    if (campo === 'deptoDireccionBeneficiario') {
+      return this.deptoDireccionBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
+        : '';
+    }
+
+    if (campo === 'casaBeneficiario') {
+      return this.casaBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
+        : '';
+    }
+
     return '';
   }
 
@@ -158,26 +190,43 @@ export class ModificaSolicitudBeneficiarioComponent {
 
   modificar() {
     this.beneficiario = {
-      p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '5',
-      p_rut_beneficiario: this.modificaBeneficiario().get('')!.value,
+      p_id_solicitud: 5,
+      p_rut_beneficiario:
+        this.modificaBeneficiario().get('rutBeneficiario')!.value,
       p_nombre_razon_social_beneficiario:
-        this.modificaBeneficiario().get('')!.value,
-      p_mail_beneficiario: this.modificaBeneficiario().get('')!.value,
-      p_telefono_beneficiario: this.modificaBeneficiario().get('')!.value,
-      p_region_beneficiario: this.modificaBeneficiario().get('')!.value,
-      p_ciudad_beneficiario: this.modificaBeneficiario().get('')!.value,
-      p_comuna_beneficiario: this.modificaBeneficiario().get('')!.value,
-      p_direccion_beneficiario: this.modificaBeneficiario().get('')!.value,
+        this.modificaBeneficiario().get('nombreBeneficiario')!.value,
+      p_mail_beneficiario:
+        this.modificaBeneficiario().get('correoBeneficiario')!.value,
+      p_telefono_beneficiario: this.modificaBeneficiario().get(
+        'telefonoBeneficiario'
+      )!.value,
+      p_region_beneficiario:
+        this.modificaBeneficiario().get('regionBeneficiario')!.value,
+      p_ciudad_beneficiario:
+        this.modificaBeneficiario().get('ciudadBeneficiario')!.value,
+      p_comuna_beneficiario:
+        this.modificaBeneficiario().get('comunaBeneficiario')!.value,
+      p_direccion_beneficiario: this.modificaBeneficiario().get(
+        'direccionBeneficiario'
+      )!.value,
+      p_numero_dir_beneficiario: this.modificaBeneficiario().get(
+        'numeroDireccionBeneficiario'
+      )!.value,
+      p_departamento_block_beneficiario: this.modificaBeneficiario().get(
+        'deptoDireccionBeneficiario'
+      )!.value,
+      p_casa_beneficiario:
+        this.modificaBeneficiario().get('casaBeneficiario')!.value,
+      p_usuario_modificacion: 'EJE022',
     };
     console.log('Beneficiario Modificado:', this.beneficiario);
     this.beneficiarioService
-      .postModificaAsegurado(this.beneficiario)
+      .postModificaBeneficiario(this.beneficiario)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Modificó beneficiario bien');
+            alert('Modificó Beneficiario Bien');
             this.dialogRef.close('modificado');
           } else {
             if (dato.codigo != 500) {

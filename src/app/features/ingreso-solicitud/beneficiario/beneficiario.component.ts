@@ -1,11 +1,8 @@
 import {
   Component,
   computed,
-  effect,
   inject,
-  input,
   model,
-  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -33,7 +30,6 @@ import {
   DatosBeneficiariosInterface,
   IBeneficiario,
   IBeneficiarioLista,
-  ISolicitudBeneficiario,
 } from '../modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '../service/beneficiario.service';
 
@@ -65,20 +61,19 @@ export class BeneficiarioComponent {
 
   displayedColumnsBeneficiario: string[] = [
     'index',
-    'rut_beneficiario',
-    'nombre_razon_social_beneficiario',
-    'mail_beneficiario',
-    'telefono_beneficiario',
-    'region_beneficiario',
-    'ciudad_beneficiario',
-    'comuna_beneficiario',
-    'direccion_beneficiario',
-    'numero_dir_beneficiario',
-    'departamento_block_beneficiario',
-    'casa_beneficiario',
+    'rutBeneficiario',
+    'nombreBeneficiario',
+    'correoBeneficiario',
+    'telefonoBeneficiario',
+    'regionBeneficiario',
+    'ciudadBeneficiario',
+    'comunaBeneficiario',
+    'direccionBeneficiario',
+    'numeroDireccionBeneficiario',
+    'deptoDireccionBeneficiario',
+    'casaBeneficiario',
     'opciones',
   ];
-  //dataSourceBeneficiario = new MatTableDataSource<ISolicitudBeneficiario>();
 
   @ViewChild(MatPaginator)
   paginatorBeneficiario!: MatPaginator;
@@ -113,11 +108,11 @@ export class BeneficiarioComponent {
   }
 
   rescataListaBeneficiarios() {
-    const estructura_listaAsegurados = {
-      p_id_solicitud: '5',
+    const estructura_listaBeneficiarios = {
+      p_id_solicitud: 5,
     };
     this.beneficiarioService
-      .postListadoBeneficiarios(estructura_listaAsegurados)
+      .postListadoBeneficiario(estructura_listaBeneficiarios)
       .subscribe({
         next: (dato: DatosBeneficiariosInterface) => {
           if (dato.codigo === 200) {
@@ -152,7 +147,7 @@ export class BeneficiarioComponent {
       .open(AgregaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data !== '') {
+        if (data === 'agregado') {
           this.rescataListaBeneficiarios();
         }
       });
@@ -172,7 +167,7 @@ export class BeneficiarioComponent {
       .open(ModificaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data !== '') {
+        if (data === 'modificado') {
           console.log('Modificación Confirmada:', data);
           this.rescataListaBeneficiarios();
         }
@@ -208,7 +203,7 @@ export class BeneficiarioComponent {
       .open(EliminaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data === 1) {
+        if (data === 'eliminado') {
           this.rescataListaBeneficiarios();
         }
       });

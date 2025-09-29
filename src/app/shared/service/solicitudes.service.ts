@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { ISolicitudAsegurado, ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAseguradoLista, IBeneficiarioLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root'

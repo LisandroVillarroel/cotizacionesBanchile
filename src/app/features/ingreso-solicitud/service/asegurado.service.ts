@@ -7,8 +7,10 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  DatosAseguradosInterface,
   IAsegurado,
+  IAgregaAsegurado,
+  IModificaAsegurado,
+  DatosAseguradosInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
@@ -23,7 +25,7 @@ export class AseguradoService {
   });
 
   constructor() {}
-  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
+  postAgregaAsegurado(agregaAsegurado: IAgregaAsegurado): Observable<any> {
     console.log('Agrega Asegurado Service:', agregaAsegurado);
     return this.http
       .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
@@ -32,7 +34,7 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
+  postModificaAsegurado(modificaAsegurado: IModificaAsegurado): Observable<any> {
     console.log('Modifica Asegurado Service:', modificaAsegurado);
     return this.http
       .post<any>(
@@ -54,7 +56,7 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postListadoAsegurados(filtro: any): Observable<DatosAseguradosInterface> {
+  postListadoAsegurado(filtro: any): Observable<DatosAseguradosInterface> {
     return this.http
       .post<DatosAseguradosInterface>(
         `${environment.apiUrl}/listarAsegurados`,

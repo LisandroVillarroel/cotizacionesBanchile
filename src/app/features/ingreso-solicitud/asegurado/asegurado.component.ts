@@ -113,10 +113,10 @@ export class AseguradoComponent {
 
   rescataListaAsegurados() {
     const estructura_listaAsegurados = {
-      p_id_solicitud: '5',
+      p_id_solicitud: 5,
     };
     this.aseguradoService
-      .postListadoAsegurados(estructura_listaAsegurados)
+      .postListadoAsegurado(estructura_listaAsegurados)
       .subscribe({
         next: (dato: DatosAseguradosInterface) => {
           if (dato.codigo === 200) {
@@ -151,7 +151,7 @@ export class AseguradoComponent {
       .open(AgregaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data !== '') {
+        if (data === 'agregado') {
           this.rescataListaAsegurados();
         }
       });
@@ -171,8 +171,8 @@ export class AseguradoComponent {
       .open(ModificaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data !== '') {
-          console.log('Modificación confirmada:', data);
+        if (data === 'modificado') {
+          console.log('Modificación Confirmada:', data);
           this.rescataListaAsegurados();
         }
       });
@@ -207,7 +207,7 @@ export class AseguradoComponent {
       .open(EliminaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data === 1) {
+        if (data === 'eliminado') {
           this.rescataListaAsegurados();
         }
       });

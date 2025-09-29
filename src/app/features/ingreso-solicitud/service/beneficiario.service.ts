@@ -7,8 +7,10 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  DatosBeneficiariosInterface,
   IBeneficiario,
+  IAgregaBeneficiario,
+  IModificaBeneficiario,
+  DatosBeneficiariosInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
@@ -23,7 +25,7 @@ export class BeneficiarioService {
   });
 
   constructor() {}
-  postAgregaBeneficiario(agregaBeneficiario: IBeneficiario): Observable<any> {
+  postAgregaBeneficiario(agregaBeneficiario: IAgregaBeneficiario): Observable<any> {
     console.log('Agrega Beneficiario Service:', agregaBeneficiario);
     return this.http
       .post<any>(
@@ -36,7 +38,7 @@ export class BeneficiarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postModificaAsegurado(modificaBeneficiario: IBeneficiario): Observable<any> {
+  postModificaBeneficiario(modificaBeneficiario: IModificaBeneficiario): Observable<any> {
     console.log('Modifica Beneficiario Service:', modificaBeneficiario);
     return this.http
       .post<any>(
@@ -49,7 +51,7 @@ export class BeneficiarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postEliminaAsegurado(eliminaBeneficiario: IBeneficiario): Observable<any> {
+  postEliminaBeneficiario(eliminaBeneficiario: IBeneficiario): Observable<any> {
     console.log('Elimina Beneficiario Service:', eliminaBeneficiario);
     return this.http
       .post<any>(
@@ -62,7 +64,7 @@ export class BeneficiarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postListadoBeneficiarios(filtro: any): Observable<DatosBeneficiariosInterface> {
+  postListadoBeneficiario(filtro: any): Observable<DatosBeneficiariosInterface> {
     return this.http
       .post<DatosBeneficiariosInterface>(
         `${environment.apiUrl}/listarBeneficiarios`,

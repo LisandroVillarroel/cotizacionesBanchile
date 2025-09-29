@@ -15,8 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import {
-  IAsegurado,
   IAseguradoLista,
+  IModificaAsegurado,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
@@ -34,7 +34,7 @@ import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.
   styleUrl: './modifica-solicitud-asegurado.component.css',
 })
 export class ModificaSolicitudAseguradoComponent {
-  asegurado!: IAsegurado;
+  asegurado!: IModificaAsegurado;
 
   aseguradoService = inject(AseguradoService);
 
@@ -185,8 +185,7 @@ export class ModificaSolicitudAseguradoComponent {
 
   modificar() {
     this.asegurado = {
-      p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '5',
+      p_id_solicitud: 5,
       p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.modificaAsegurado().get('nombreAsegurado')!.value,
@@ -208,9 +207,10 @@ export class ModificaSolicitudAseguradoComponent {
         'deptoDireccionAsegurado'
       )!.value,
       p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value,
+      p_usuario_modificacion: 'EJE022',
     };
 
-    console.log('Asegurado modificado:', this.asegurado);
+    console.log('Asegurado Modificado:', this.asegurado);
     this.aseguradoService.postModificaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         console.log('dato:', dato);
