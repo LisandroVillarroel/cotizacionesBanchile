@@ -98,7 +98,7 @@ export class NuevasComponent {
       r['Contratante']?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
       r['Rubro']?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
       r['TipoSeguro']?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
-      r['Fecha']?.toLowerCase().includes(this.filtroFecha().toLowerCase())
+      (new Date(r['Fecha']?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
     )
   );
 
