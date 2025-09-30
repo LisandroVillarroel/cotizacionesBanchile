@@ -177,6 +177,14 @@ export interface IIngresoSolicitud {
   // beneficiarios: ISolicitudBeneficiario[];
 }
 
+export interface IIngresoSolicitud_Recibe {
+  codigo: number;
+  mensaje: string;
+  p_id_solicitud: string;
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}
+
 export interface IEstadoIngresoSolicitud {
   codigo: number;
   mensaje: string;

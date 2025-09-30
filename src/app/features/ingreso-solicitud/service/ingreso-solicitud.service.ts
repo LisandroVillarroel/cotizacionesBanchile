@@ -7,8 +7,8 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  IEstadoIngresoSolicitud,
   IIngresoSolicitud,
+  IIngresoSolicitud_Recibe,
 } from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
@@ -24,12 +24,18 @@ export class IngresoSolicitudService {
 
   constructor() {}
 
-  postIngresoSolicitud(ingresoSolicitud: IIngresoSolicitud): Observable<any> {
+  postIngresoSolicitud(
+    ingresoSolicitud: IIngresoSolicitud
+  ): Observable<IIngresoSolicitud_Recibe> {
     console.log('Ingreso Solicitud Service:', ingresoSolicitud);
     return this.http
-      .post<any>(`${environment.apiUrl}/ingresoSolicitud`, ingresoSolicitud, {
-        headers: this.headers,
-      })
+      .post<IIngresoSolicitud_Recibe>(
+        `${environment.apiUrl}/ingresoSolicitud`,
+        ingresoSolicitud,
+        {
+          headers: this.headers,
+        }
+      )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 

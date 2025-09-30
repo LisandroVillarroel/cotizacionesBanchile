@@ -138,11 +138,8 @@ export default class IngresoSolicitudComponent {
   @ViewChild('stepper') stepper!: MatStepper;
 
   //Declara los datos del contratante para panel
-  contratanteInfo = signal<{
-    id?: number;
-    rut_contratante: string;
-    nombre: string;
-  }>({
+  contratanteInfo = signal({
+    id: '0', // ID en duro para prueba
     rut_contratante: '',
     nombre: '',
   });
@@ -189,11 +186,11 @@ export default class IngresoSolicitudComponent {
   }
 
   cargaRubro() {
-    console.log('paso rubro')
+    console.log('paso rubro');
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          console.log()
+          console.log();
           this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
@@ -264,15 +261,10 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó Bien');
-            if (
-              this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-            ) {
-              this.guardaAsegurado();
-            }
 
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
-              id: 999, // ID en duro para prueba
+              id: dato.p_id_solicitud, // ID en duro para prueba
               rut_contratante:
                 this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
@@ -292,8 +284,6 @@ export default class IngresoSolicitudComponent {
         },
       });
   }
-
-  guardaAsegurado() {}
 
   salir() {
     this.router.navigate(['/principal/inicio']);
