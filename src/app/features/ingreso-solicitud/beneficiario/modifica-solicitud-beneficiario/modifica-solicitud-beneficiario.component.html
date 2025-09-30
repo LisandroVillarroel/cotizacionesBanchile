@@ -1,4 +1,4 @@
-<div class="barra-titulo">
+<div class="barra-titulo-form">
   <h2 class="titulo">Modifica Beneficiario</h2>
 </div>
 
@@ -8,11 +8,10 @@
   class="modifica-container"
 >
   <div
-    class="row contenido-form form-con-titulo mat-elevation-z6"
+    class="row form-con-titulo contenido-form mat-elevation-z6"
     data-titulo="Modifica Datos del Beneficiario"
-    style="margin-top: 32px"
   >
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
         <input
@@ -70,7 +69,9 @@
         <mat-error>{{ getErrorMessage("telefonoBeneficiario") }}</mat-error>
         }
       </mat-form-field>
+    </div>
 
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>
         <input
@@ -122,7 +123,9 @@
         <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
         }
       </mat-form-field>
+    </div>
 
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Dirección</mat-label>
         <input
@@ -137,10 +140,10 @@
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Número Depto Dirección</mat-label>
+        <mat-label class="labelI">Número Departamento</mat-label>
         <input
           matInput
-          aria-label="Número Depto Dirección"
+          aria-label="Número Departamento"
           [formControl]="deptoDireccionBeneficiario"
           required
         />
@@ -150,10 +153,10 @@
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Número Casa Dirección</mat-label>
+        <mat-label class="labelI">Número Casa</mat-label>
         <input
           matInput
-          aria-label="Número Casa Dirección"
+          aria-label="Número Casa"
           [formControl]="casaBeneficiario"
           required
         />
@@ -165,7 +168,7 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-center">
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button
       type="button"

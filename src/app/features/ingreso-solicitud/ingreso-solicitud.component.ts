@@ -102,9 +102,6 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
-  //datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
-
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   ingresoSolicitudService = inject(IngresoSolicitudService);
@@ -138,15 +135,7 @@ export default class IngresoSolicitudComponent {
   @ViewChild(CuestionarioComponent)
   cuestionarioComponent!: CuestionarioComponent;
 
-  // Oculta el botón "Anular" solo en el primer paso del stepper.
-  // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
-
-  /*  email = new FormControl('', [
-    Validators.required,
-    Validators.email,
-    Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
-  ]);*/
 
   //Declara los datos del contratante para panel
   contratanteInfo = signal<{
@@ -166,16 +155,6 @@ export default class IngresoSolicitudComponent {
       aseguradeCheck: this.aseguradeCheck,
     })
   );
-
-  /*  ngAfterViewInit(): void {
-    // Establecer estado inicial
-    this.mostrarAnular = this.stepper.selectedIndex !== 0;
-
-    // Escuchar cambios posteriores
-    this.stepper.selectionChange.subscribe((event) => {
-      this.mostrarAnular = event.selectedIndex !== 0;
-    });
-  }*/
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -277,21 +256,21 @@ export default class IngresoSolicitudComponent {
       // asegurados: [],
       // beneficiarios: [],
     };
-    console.log('ingreso solicitud:', this.ingresoSolicitud);
+    console.log('Ingreso Solicitud:', this.ingresoSolicitud);
     this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó bien');
+            alert('Grabó Bien');
             if (
               this.agregaSolicitudContratante().get('aseguradeCheck')!.value
             ) {
               this.guardaAsegurado();
             }
-            // Actualizar el signal para mostrar datos del contratante en panel
 
+            // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
               id: 999, // ID en duro para prueba
               rut_contratante:

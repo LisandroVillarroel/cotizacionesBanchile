@@ -142,7 +142,7 @@ export class AseguradoComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {};
@@ -163,7 +163,7 @@ export class AseguradoComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoAseguradoPar;
@@ -183,7 +183,7 @@ export class AseguradoComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
@@ -198,7 +198,7 @@ export class AseguradoComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
