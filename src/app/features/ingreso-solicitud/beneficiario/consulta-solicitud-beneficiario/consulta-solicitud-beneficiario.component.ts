@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IBeneficiarioLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 
 @Component({
@@ -18,5 +18,5 @@ import { ISolicitudBeneficiario } from '@features/ingreso-solicitud/modelo/ingre
 })
 export class ConsultaSolicitudBeneficiarioComponent {
 private readonly dialogRef = inject(MatDialogRef<ConsultaSolicitudBeneficiarioComponent>);
-  public readonly data = inject<ISolicitudBeneficiario>(MAT_DIALOG_DATA);
+  public readonly data = inject<IBeneficiarioLista>(MAT_DIALOG_DATA);
 }

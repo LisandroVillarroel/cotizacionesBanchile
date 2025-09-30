@@ -34,7 +34,7 @@ export class IngresoSolicitudService {
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
+    console.log('Paso Error Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

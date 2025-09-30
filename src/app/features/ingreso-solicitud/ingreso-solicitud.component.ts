@@ -29,7 +29,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   IIngresoSolicitud,
-  ISolicitudBeneficiario,
+  IBeneficiarioLista,
 } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
@@ -103,10 +103,7 @@ export default class IngresoSolicitudComponent {
   flagBeneficiarioRescata: boolean = false;
 
   //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
-  datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
-
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  //datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -202,7 +199,7 @@ export default class IngresoSolicitudComponent {
     }
 
     if (campo === 'seguro') {
-      return this.seguro.hasError('required') ? 'Debes ingresar Seguro' : '';
+      return this.seguro.hasError('required') ? 'Debes Ingresar Seguro' : '';
     }
 
     return '';
@@ -223,17 +220,17 @@ export default class IngresoSolicitudComponent {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            console.log('Error de Sistema:');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        console.log('Error Inesperado', error);
       },
     });
   }
 
-  async seleccionaRubro(_codigoRubro: string) {
+  async seleccionaRubro(_codigoRubro: number) {
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
@@ -243,12 +240,12 @@ export default class IngresoSolicitudComponent {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            console.log('Error de Sistema:');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        console.log('Error Inesperado', error);
       },
     });
   }
@@ -307,12 +304,12 @@ export default class IngresoSolicitudComponent {
               console.log('Error:', dato.mensaje);
             } else {
               alert('Error:' + dato.mensaje);
-              console.log('ERROR DE SISTEMA:');
+              console.log('Error de Sistema:');
             }
           }
         },
         error: (error) => {
-          console.log('ERROR INESPERADO', error);
+          console.log('Error Inesperado', error);
         },
       });
   }
@@ -330,7 +327,7 @@ export default class IngresoSolicitudComponent {
       await this.agregaSolicitudContratante()
         .get('rutCliente')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-      await this.nombreRazonSocial.set('Nombre de prueba22222');
+      await this.nombreRazonSocial.set('Nombre de Prueba');
     }
   }
 
@@ -388,19 +385,17 @@ export default class IngresoSolicitudComponent {
     this.flagAsegurado.setValue(this.flagAseguradoRescata);
   }
 
-  /*
-  actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
+  /* actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
     this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoAsegurados());
-  }
-*/
+  } */
   cambioBeneficiarioFlag() {
     console.log('ver flag', this.flagAseguradoRescata);
     this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
   }
 
-  actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
+  /* actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
     this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
     console.log('arreglo actualizado:', this.datoBeneficiarios());
-  }
+  } */
 }

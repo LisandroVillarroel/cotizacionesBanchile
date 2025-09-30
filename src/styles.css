@@ -569,6 +569,11 @@ th#opcionesI {
   margin-bottom: 2rem;
 }
 
+.mat-card-form {
+  width: 48%;
+  margin-left: 1%;
+}
+
 .card-borde {
   background-color: white;
   border: 2px solid #285b9b !important;
@@ -650,6 +655,11 @@ th#opcionesI {
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
   padding: 0 2px 0 10px;
+}
+
+/* Posicion de Check-Box de Ingreso Contratante */
+.check-mat-card {
+  margin-top: 16px;
 }
 
 /* CUESTIONARIO Y DOCUMENTOS */

@@ -25,7 +25,7 @@ export class TipoSeguroService {
   }
 
       errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
+    console.log('Paso Error Tipo Seguro: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

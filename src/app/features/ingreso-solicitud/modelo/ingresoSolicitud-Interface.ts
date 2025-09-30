@@ -12,6 +12,22 @@ export interface ISolicitudContratante {
   casa_contratante: string;
 }
 
+export interface IAsegurado {
+  p_id_solicitud?: number;
+  p_rut_asegurado: string;
+  p_nombre_razon_social_asegurado: string;
+  p_mail_asegurado: string;
+  p_telefono_asegurado: string;
+  p_region_asegurado: string;
+  p_ciudad_asegurado: string;
+  p_comuna_asegurado: string;
+  p_direccion_asegurado: string;
+  p_numero_dir_asegurado: string;
+  p_departamento_block_asegurado: string;
+  p_casa_asegurado: string;
+  p_usuario_creacion?: string;
+}
+
 export interface IAseguradoLista {
   rutAsegurado: string;
   nombreRazonSocialAsegurado: string;
@@ -24,15 +40,14 @@ export interface IAseguradoLista {
   numeroDirAsegurado: string;
   departamentoBlockAsegurado: string;
   casaAsegurado: string;
-  fechaCreacion: string;
-  usuarioCreacion: string;
-  fechaModificacion: string;
-  usuarioModificacion: string;
+  fechaCreacion?: string;
+  usuarioCreacion?: string;
+  fechaModificacion?: string;
+  usuarioModificacion?: string;
 }
 
-export interface IAsegurado {
-  p_id_ejecutivo_banco?: string;
-  p_id_solicitud?: string;
+export interface IAgregaAsegurado {
+  p_id_solicitud?: number;
   p_rut_asegurado: string;
   p_nombre_razon_social_asegurado: string;
   p_mail_asegurado: string;
@@ -44,17 +59,50 @@ export interface IAsegurado {
   p_numero_dir_asegurado: string;
   p_departamento_block_asegurado: string;
   p_casa_asegurado: string;
+  p_usuario_creacion?: string;
+}
+
+export interface IModificaAsegurado {
+  p_id_solicitud?: number;
+  p_rut_asegurado: string;
+  p_nombre_razon_social_asegurado: string;
+  p_mail_asegurado: string;
+  p_telefono_asegurado: string;
+  p_region_asegurado: string;
+  p_ciudad_asegurado: string;
+  p_comuna_asegurado: string;
+  p_direccion_asegurado: string;
+  p_numero_dir_asegurado: string;
+  p_departamento_block_asegurado: string;
+  p_casa_asegurado: string;
+  p_usuario_modificacion?: string;
 }
 
 export interface DatosAseguradosInterface {
   codigo: number;
   mensaje: string;
-  vcEstado: string;
   p_cursor: IAseguradoLista[];
+  vcEstado: string;
   vcEstadoCreacion: string;
 }
 
-export interface ISolicitudBeneficiario {
+export interface IBeneficiario {
+  p_id_solicitud?: number;
+  p_rut_beneficiario: string;
+  p_nombre_razon_social_beneficiario: string;
+  p_mail_beneficiario: string;
+  p_telefono_beneficiario: string;
+  p_region_beneficiario: string;
+  p_ciudad_beneficiario: string;
+  p_comuna_beneficiario: string;
+  p_direccion_beneficiario: string;
+  p_numero_dir_beneficiario: string;
+  p_departamento_block_beneficiario: string;
+  p_casa_beneficiario: string;
+  p_usuario_creacion?: string;
+}
+
+export interface IBeneficiarioLista {
   rut_beneficiario: string;
   nombre_razon_social_beneficiario: string;
   mail_beneficiario: string;
@@ -66,6 +114,50 @@ export interface ISolicitudBeneficiario {
   numero_dir_beneficiario: string;
   departamento_block_beneficiario: string;
   casa_beneficiario: string;
+  fecha_creacion?: string;
+  usuario_creacion?: string;
+  fecha_modificacion?: string;
+  usuario_modificacion?: string;
+}
+
+export interface IAgregaBeneficiario {
+  p_id_solicitud?: number;
+  p_rut_beneficiario: string;
+  p_nombre_razon_social_beneficiario: string;
+  p_mail_beneficiario: string;
+  p_telefono_beneficiario: string;
+  p_region_beneficiario: string;
+  p_ciudad_beneficiario: string;
+  p_comuna_beneficiario: string;
+  p_direccion_beneficiario: string;
+  p_numero_dir_beneficiario: string;
+  p_departamento_block_beneficiario: string;
+  p_casa_beneficiario: string;
+  p_usuario_creacion?: string;
+}
+
+export interface IModificaBeneficiario {
+  p_id_solicitud?: number;
+  p_rut_beneficiario: string;
+  p_nombre_razon_social_beneficiario: string;
+  p_mail_beneficiario: string;
+  p_telefono_beneficiario: string;
+  p_region_beneficiario: string;
+  p_ciudad_beneficiario: string;
+  p_comuna_beneficiario: string;
+  p_direccion_beneficiario: string;
+  p_numero_dir_beneficiario: string;
+  p_departamento_block_beneficiario: string;
+  p_casa_beneficiario: string;
+  p_usuario_modificacion?: string;
+}
+
+export interface DatosBeneficiariosInterface {
+  codigo: number;
+  mensaje: string;
+  p_cursor: IBeneficiarioLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
 
 export interface ICuestionario {

@@ -2,63 +2,44 @@
   <h2 class="titulo">Modifica Beneficiario</h2>
 </div>
 
-<mat-dialog-content [formGroup]="modificaBeneficiario()" name="modificaBeneficiario" class="modifica-container">
-  <div class="row contenido-form  form-con-titulo mat-elevation-z6" data-titulo="Modifica Datos del Beneficiario" style="margin-top: 32px;">
+<mat-dialog-content
+  [formGroup]="modificaBeneficiario()"
+  name="modificaBeneficiario"
+  class="modifica-container"
+>
+  <div
+    class="row contenido-form form-con-titulo mat-elevation-z6"
+    data-titulo="Modifica Datos del Beneficiario"
+    style="margin-top: 32px"
+  >
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input autofocus id="rutBeneficiario" matInput class="input-rut rut" [formControl]="rutBeneficiario"
-          oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutBeneficiario($event)" validaRut required />
+        <input
+          matInput
+          autofocus
+          id="rutBeneficiario"
+          aria-label="Rut"
+          class="input-rut rut"
+          [formControl]="rutBeneficiario"
+          oninput="this.value = this.value.toUpperCase()"
+          (blur)="onBlurRutBeneficiario($event)"
+          validaRut
+          required
+        />
         @if (rutBeneficiario.invalid) {
         <mat-error>{{ getErrorMessage("rutBeneficiario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput [formControl]="telefonoBeneficiario" required />
-        @if (telefonoBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("telefonoBeneficiario") }}</mat-error>
-        }
-      </mat-form-field>
-
-      <!-- <mat-form-field class="inputInput">
-        <mat-label class="labelI">Región</mat-label>
-        <input matInput [formControl]="regionBeneficiario" required />
-        @if (regionBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("regionBeneficiario") }}</mat-error>
-        }
-      </mat-form-field> -->
-    </div>
-
-    <div class="col-md-6">
-      <!-- <mat-form-field class="inputInput">
-        <mat-label class="labelI">Ciudad</mat-label>
-        <input matInput [formControl]="ciudadBeneficiario" required />
-        @if (ciudadBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("ciudadBeneficiario") }}</mat-error>
-        }
-      </mat-form-field> -->
-
-      <!-- <mat-form-field class="inputInput">
-        <mat-label class="labelI">Comuna</mat-label>
-        <input matInput [formControl]="comunaBeneficiario" required />
-        @if (comunaBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("comunaBeneficiario") }}</mat-error>
-        }
-      </mat-form-field> -->
-
-      <!-- <mat-form-field class="inputInput">
-        <mat-label class="labelI">Dirección</mat-label>
-        <input matInput [formControl]="direccionBeneficiario" required />
-        @if (direccionBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
-        }
-      </mat-form-field> -->
-
-      <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input matInput [formControl]="nombreBeneficiario" required />
+        <input
+          matInput
+          aria-label="Nombre"
+          [formControl]="nombreBeneficiario"
+          required
+        />
         @if (nombreBeneficiario.invalid) {
         <mat-error>{{ getErrorMessage("nombreBeneficiario") }}</mat-error>
         }
@@ -66,9 +47,118 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
-        <input matInput [formControl]="correoBeneficiario" required />
+        <input
+          matInput
+          aria-label="Correo"
+          [formControl]="correoBeneficiario"
+          required
+        />
         @if (correoBeneficiario.invalid) {
         <mat-error>{{ getErrorMessage("correoBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+        <input
+          matInput
+          aria-label="Teléfono"
+          [formControl]="telefonoBeneficiario"
+          required
+        />
+        @if (telefonoBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("telefonoBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Región</mat-label>
+        <input
+          matInput
+          aria-label="Región"
+          [formControl]="regionBeneficiario"
+          required
+        />
+        @if (regionBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("regionBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Ciudad</mat-label>
+        <input
+          matInput
+          aria-label="Ciudad"
+          [formControl]="ciudadBeneficiario"
+          required
+        />
+        @if (ciudadBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("ciudadBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Comuna</mat-label>
+        <input
+          matInput
+          aria-label="Comuna"
+          [formControl]="comunaBeneficiario"
+          required
+        />
+        @if (comunaBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("comunaBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Dirección"
+          [formControl]="direccionBeneficiario"
+          required
+        />
+        @if (direccionBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Número Dirección"
+          [formControl]="numeroDireccionBeneficiario"
+          required
+        />
+        @if (numeroDireccionBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Depto Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Número Depto Dirección"
+          [formControl]="deptoDireccionBeneficiario"
+          required
+        />
+        @if (deptoDireccionBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Casa Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Número Casa Dirección"
+          [formControl]="casaBeneficiario"
+          required
+        />
+        @if (casaBeneficiario.invalid) {
+        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
         }
       </mat-form-field>
     </div>
@@ -77,12 +167,24 @@
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button mat-raised-button mat-dialog-close class="colorFondoBotonCerrar" [disabled]="false">
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="colorFondoBotonCerrar"
+      [disabled]="false"
+    >
       Cerrar
     </button>
   </div>
   <div class="ms-5">
-    <button mat-raised-button class="colorFondoBotonGrabar" (click)="modificar()" [disabled]="modificaBeneficiario().invalid">
+    <button
+      type="button"
+      mat-raised-button
+      class="colorFondoBotonGrabar"
+      (click)="modificar()"
+      [disabled]="modificaBeneficiario().invalid"
+    >
       Grabar
     </button>
   </div>
