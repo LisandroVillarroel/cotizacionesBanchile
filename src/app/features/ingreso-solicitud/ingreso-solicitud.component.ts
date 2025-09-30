@@ -260,7 +260,7 @@ export default class IngresoSolicitudComponent {
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
     );
     this.ingresoSolicitud = {
-      id_ejecutivo_banco: this._storage()?.usuarioLogin.codigoEjecutivo!,
+      id_ejecutivo_banco: this._storage()?.usuarioLogin.usuario!,
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,

@@ -37,7 +37,7 @@ import { Router } from '@angular/router';
         </span>
       </div>
       <div class="usuario-container">
-        <span class="usuarioLogin">{{_storage()?.usuarioLogin?.nombre}}</span>
+        <span class="usuarioLogin">{{_storage()?.usuarioLogin?.usuario + ' - ' + _storage()?.usuarioLogin?.perfilUsuario + ' - ' + _storage()?.usuarioLogin?.nombreUsuario}}</span>
         <button class="btn-salir" (click)="cerrarSesion()" matTooltip="Cerrar" matButton>
           <mat-icon>exit_to_app</mat-icon>
         </button>
