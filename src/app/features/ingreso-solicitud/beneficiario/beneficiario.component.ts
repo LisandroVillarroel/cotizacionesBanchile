@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  input,
   model,
   signal,
   ViewChild,
@@ -50,9 +51,8 @@ import { BeneficiarioService } from '../service/beneficiario.service';
   styleUrl: './beneficiario.component.css',
 })
 export class BeneficiarioComponent {
+  idSolicitud = input.required<string>();
   datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
-
-  flagBeneficiario = model(false);
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -104,12 +104,12 @@ export class BeneficiarioComponent {
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.rescataListaBeneficiarios();
+    this.rescataListaBeneficiarios(this.idSolicitud());
   }
 
-  rescataListaBeneficiarios() {
+  rescataListaBeneficiarios(idSolicitud: string) {
     const estructura_listaBeneficiarios = {
-      p_id_solicitud: 5,
+      p_id_solicitud: Number(idSolicitud),
     };
     this.beneficiarioService
       .postListadoBeneficiario(estructura_listaBeneficiarios)
@@ -141,14 +141,14 @@ export class BeneficiarioComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {};
+    dialogConfig.data = this.idSolicitud();
 
     this.dialog
       .open(AgregaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataListaBeneficiarios();
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }
@@ -169,7 +169,7 @@ export class BeneficiarioComponent {
       .subscribe((data) => {
         if (data === 'modificado') {
           console.log('Modificación Confirmada:', data);
-          this.rescataListaBeneficiarios();
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }
@@ -204,7 +204,7 @@ export class BeneficiarioComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataListaBeneficiarios();
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }

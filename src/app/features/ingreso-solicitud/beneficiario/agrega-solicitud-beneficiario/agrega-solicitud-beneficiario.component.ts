@@ -6,7 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
@@ -30,6 +34,7 @@ import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicit
 })
 export class AgregaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
+  public readonly data = inject<string>(MAT_DIALOG_DATA);
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -48,7 +53,6 @@ export class AgregaSolicitudBeneficiarioComponent {
   numeroDireccionBeneficiario = new FormControl('', [Validators.required]);
   deptoDireccionBeneficiario = new FormControl('', [Validators.required]);
   casaBeneficiario = new FormControl('', [Validators.required]);
-
 
   agregaBeneficiario = signal<FormGroup>(
     new FormGroup({
@@ -155,7 +159,7 @@ export class AgregaSolicitudBeneficiarioComponent {
 
   grabar() {
     this.beneficiario = {
-      p_id_solicitud: 5,
+      p_id_solicitud: Number(this.data),
       p_rut_beneficiario:
         this.agregaBeneficiario().get('rutBeneficiario')!.value,
       p_nombre_razon_social_beneficiario:
@@ -187,20 +191,22 @@ export class AgregaSolicitudBeneficiarioComponent {
 
     console.log('Beneficiario Grabado:', this.beneficiario);
 
-    this.beneficiarioService.postAgregaBeneficiario(this.beneficiario).subscribe({
-      next: (dato) => {
-        console.log('dato:', dato);
-        if (dato.codigo === 200) {
-          alert('Grabó Beneficiario Bien');
-          this.dialogRef.close('agregado');
-        } else {
-          alert('Error:' + dato.mensaje);
-          console.log('Error:', dato.mensaje);
-        }
-      },
-      error: (error) => {
-        console.log('Error Inesperado', error);
-      },
-    });
+    this.beneficiarioService
+      .postAgregaBeneficiario(this.beneficiario)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Grabó Beneficiario Bien');
+            this.dialogRef.close('agregado');
+          } else {
+            alert('Error:' + dato.mensaje);
+            console.log('Error:', dato.mensaje);
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
   }
 }

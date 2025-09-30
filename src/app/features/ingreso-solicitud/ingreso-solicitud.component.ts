@@ -27,10 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import {
-  IIngresoSolicitud,
-  IBeneficiarioLista,
-} from './modelo/ingresoSolicitud-Interface';
+import { IIngresoSolicitud } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -98,6 +95,7 @@ import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 export default class IngresoSolicitudComponent {
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
+  idSolicitud = signal<string>('0');
 
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
@@ -139,7 +137,7 @@ export default class IngresoSolicitudComponent {
 
   //Declara los datos del contratante para panel
   contratanteInfo = signal({
-    id: '0', // ID en duro para prueba
+    id: '0',
     rut_contratante: '',
     nombre: '',
   });
@@ -226,7 +224,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaConTratante() {
+  grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
@@ -261,10 +259,10 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó Bien');
-
+            this.idSolicitud.set(dato.p_id_solicitud);
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
-              id: dato.p_id_solicitud, // ID en duro para prueba
+              id: dato.p_id_solicitud,
               rut_contratante:
                 this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
@@ -348,23 +346,4 @@ export default class IngresoSolicitudComponent {
   get mostrarDatosAsegurado(): boolean {
     return !this.esIgualAlAsegurado;
   }
-
-  cambioAseguradoFlag() {
-    console.log('ver flag', this.flagAseguradoRescata);
-    this.flagAsegurado.setValue(this.flagAseguradoRescata);
-  }
-
-  /* actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
-    this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:', this.datoAsegurados());
-  } */
-  cambioBeneficiarioFlag() {
-    console.log('ver flag', this.flagAseguradoRescata);
-    this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
-  }
-
-  /* actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
-    this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:', this.datoBeneficiarios());
-  } */
 }

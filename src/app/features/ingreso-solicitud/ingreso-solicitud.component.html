@@ -178,7 +178,7 @@
                   type="button"
                   mat-raised-button
                   matStepperNext
-                  (click)="grabaConTratante()"
+                  (click)="grabaContratante()"
                   [disabled]="agregaSolicitudContratante().invalid"
                   [ngClass]="{
                     colorFondoBotonSiguiente:
@@ -201,8 +201,7 @@
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
         <app-asegurado
-          [(flagAsegurado)]="flagAseguradoRescata"
-          (flagAseguradoModel)="cambioAseguradoFlag()"
+          [idSolicitud]="idSolicitud()"
         />
         <div class="alinear-botones">
           <div class="botones-izquierda">
@@ -242,9 +241,7 @@
     >
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
-        <app-beneficiario
-          [(flagBeneficiario)]="flagBeneficiarioRescata"
-          (flagBeneficiarioModel)="cambioBeneficiarioFlag()"
+        <app-beneficiario  [idSolicitud]="idSolicitud()"
         />
         <div class="alinear-botones">
           <div class="botones-izquierda">

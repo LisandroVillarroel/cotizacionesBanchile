@@ -42,41 +42,48 @@ export class ModificaSolicitudAseguradoComponent {
     MatDialogRef<ModificaSolicitudAseguradoComponent>
   );
 
-  readonly data = inject<IAseguradoLista>(MAT_DIALOG_DATA);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
 
-  rutAsegurado = new FormControl(this.data.rutAsegurado, [
+  rutAsegurado = new FormControl(this.data.datoAseguradoPar.rutAsegurado, [
     Validators.required,
     this.validaRut,
   ]);
-  nombreAsegurado = new FormControl(this.data.nombreRazonSocialAsegurado, [
-    Validators.required,
-  ]);
-  correoAsegurado = new FormControl(this.data.mailAsegurado, [
-    Validators.required,
-  ]);
-  telefonoAsegurado = new FormControl(this.data.telefonoAsegurado, [
-    Validators.required,
-  ]);
-  regionAsegurado = new FormControl(this.data.regionAsegurado, [
-    Validators.required,
-  ]);
-  ciudadAsegurado = new FormControl(this.data.ciudadAsegurado, [
-    Validators.required,
-  ]);
-  comunaAsegurado = new FormControl(this.data.comunaAsegurado, [
-    Validators.required,
-  ]);
-  direccionAsegurado = new FormControl(this.data.direccionAsegurado, [
-    Validators.required,
-  ]);
-  numeroDireccionAsegurado = new FormControl(this.data.numeroDirAsegurado, [
-    Validators.required,
-  ]);
-  deptoDireccionAsegurado = new FormControl(
-    this.data.departamentoBlockAsegurado,
+  nombreAsegurado = new FormControl(
+    this.data.datoAseguradoPar.nombreRazonSocialAsegurado,
     [Validators.required]
   );
-  casaAsegurado = new FormControl(this.data.casaAsegurado, [
+  correoAsegurado = new FormControl(this.data.datoAseguradoPar.mailAsegurado, [
+    Validators.required,
+  ]);
+  telefonoAsegurado = new FormControl(
+    this.data.datoAseguradoPar.telefonoAsegurado,
+    [Validators.required]
+  );
+  regionAsegurado = new FormControl(
+    this.data.datoAseguradoPar.regionAsegurado,
+    [Validators.required]
+  );
+  ciudadAsegurado = new FormControl(
+    this.data.datoAseguradoPar.ciudadAsegurado,
+    [Validators.required]
+  );
+  comunaAsegurado = new FormControl(
+    this.data.datoAseguradoPar.comunaAsegurado,
+    [Validators.required]
+  );
+  direccionAsegurado = new FormControl(
+    this.data.datoAseguradoPar.direccionAsegurado,
+    [Validators.required]
+  );
+  numeroDireccionAsegurado = new FormControl(
+    this.data.datoAseguradoPar.numeroDirAsegurado,
+    [Validators.required]
+  );
+  deptoDireccionAsegurado = new FormControl(
+    this.data.datoAseguradoPar.departamentoBlockAsegurado,
+    [Validators.required]
+  );
+  casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado, [
     Validators.required,
   ]);
 
@@ -185,7 +192,7 @@ export class ModificaSolicitudAseguradoComponent {
 
   modificar() {
     this.asegurado = {
-      p_id_solicitud: 5,
+      p_id_solicitud: this.data.idSolicitud,
       p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.modificaAsegurado().get('nombreAsegurado')!.value,
