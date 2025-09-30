@@ -578,6 +578,17 @@ th#opcionesI {
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
+.card-borde2 {
+  background-color: white;
+  border: 1px solid #285b9b !important;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 40px !important;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
+}
+
+
 /* Fondo para cards con título */
 .card-con-titulo-principal {
   background-color: white;
@@ -867,4 +878,9 @@ mat-divider[vertical] {
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
+}
+
+
+.destacado{
+  color: #285B9B
 }
