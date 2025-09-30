@@ -49,8 +49,10 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 
 export default class DistribucionComponent {
-listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[] | undefined>();
+listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
 resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
+resumenGeneral_Rubro =signal<IListadoSolicitudes[]>([]);
+
 rubroService = inject(RubroService);
 tipoSeguroService = inject(TipoSeguroService);
 
@@ -59,6 +61,7 @@ rescatadoSeguro = signal<ITipoSeguro[]>([]);
 
 panelOpenState = false;
   rubro = new FormControl();
+  seguro = new FormControl();
 
 
 
@@ -70,12 +73,13 @@ panelOpenState = false;
 //   seleccionada = null;
 
   constructor(){
-   // console.log('resumenGeneral:',this.datoResumenGeneral()?.p_Aprobadas)
+
   }
 
 
   cargaRubros() {
-    console.log('Entro cargaRubros');
+    //console.log('Entro cargaRubros');
+
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -94,31 +98,19 @@ panelOpenState = false;
     });
   }
 
-async seleccionaRubro(_codigoRubro: number) {
 
-    console.log('Entro seleccionaRubro');
-    const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
-   this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
-      next: (dato) => {
-        if (dato.codigo === 200) {
-           this.rescatadoSeguro.set(dato.c_TipoSeguros);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:',dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
-        }
-      },
-      error: (error) => {
-        console.log('ERROR INESPERADO', error);
-      },
-    });
+
+
+ seleccionaRubro(_codigoRubro: number) {
+this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
+console.log('resumenGeneral()1111',this.resumenGeneral_Rubro())
   }
 
 async ngOnInit() {
+this.resumenGeneral_Rubro.set(this.resumenGeneral())
     this.cargaRubros();
     //this.cargaEstados();
+    console.log('resumenGeneral()',this.resumenGeneral())
   }
 
 }

@@ -4,7 +4,6 @@ import { EstadoService } from '@shared/service/estado.service';
 import { Component, signal, computed, input, effect, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { MatCardModule } from '@angular/material/card';
-import { IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 
 
 @Component({

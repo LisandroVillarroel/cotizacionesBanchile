@@ -104,7 +104,7 @@ export class SolicitudesGestionadasComponent {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
-   setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
+  setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
     dataSource.sort = this.sort;
     dataSource.paginator = this.paginator;
   }
@@ -114,7 +114,7 @@ export class SolicitudesGestionadasComponent {
 
   applyFilterSolicitud(campo: string, valor: String) {
     //  const filterValue = (valor.target as HTMLInputElement).value;
-    console.log('campo:',campo  + ' Valor Inicial:',valor)
+    console.log('campo:', campo + ' Valor Inicial:', valor)
     this.dataSourceSolicitud().filterPredicate = (data: any, filter: string) => {
       const dataValue = data[campo] ? data[campo].toString() : '';
       return dataValue.toLowerCase().includes(filter.toLowerCase());
@@ -132,14 +132,14 @@ export class SolicitudesGestionadasComponent {
     this.seguro.reset();
     this.estado.reset();
 
-    this.dataSourceSolicitud().filter= '';
+    this.dataSourceSolicitud().filter = '';
   }
 
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
 
-   // this.dataSourceSolicitud().data = this.datosSolicitud()!;
+    // this.dataSourceSolicitud().data = this.datosSolicitud()!;
     this.cargaRubros();
     this.cargaEstados();
     this.limpiaFiltros();
@@ -165,27 +165,27 @@ export class SolicitudesGestionadasComponent {
   }
 
   cargaEstados() {
-   this.estadoService.getEstado().subscribe({
-     next: (dato) => {
-       if (dato.codigo === 200) {
+    this.estadoService.getEstado().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
-       } else {
-         if (dato.codigo != 500) {
-           console.log('Error:',dato.mensaje);
-         } else {
-           console.log('ERROR DE SISTEMA:');
-         }
-       }
-     },
-     error: (error) => {
-       console.log('ERROR INESPERADO', error);
-     },
-   });
- }
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
 
   async seleccionaRubro(datos: IRubro) {
-    console.log("rubros: ",datos);
-    const _codigoRubro=datos.id_rubro
+    console.log("rubros: ", datos);
+    const _codigoRubro = datos.id_rubro
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
@@ -215,7 +215,7 @@ export class SolicitudesGestionadasComponent {
       return 'observ';
     } else if (value == 4) {  //'En Cotizacion'
       return 'cotizacion';
-    }else if (value == 5) {  //'En Edicion'
+    } else if (value == 5) {  //'En Edicion'
       return 'edicion';
     } else if (value == 6) { //'En Revision'
       return 'revision';
@@ -223,7 +223,7 @@ export class SolicitudesGestionadasComponent {
       return 'emitida';
     } else if (value == 8) { //'Propuesta Pendiente'
       return 'pendiente';
-    } else if(value==9){  //'Rechazada'
+    } else if (value == 9) {  //'Rechazada'
       return 'rechazada';
     } else { //if (value == 10) { //'Terminada'
       return 'terminada';
