@@ -2,16 +2,24 @@
   <h2 class="titulo">Modifica Asegurado</h2>
 </div>
 
-<mat-dialog-content [formGroup]="modificaAsegurado()" name="modificaAsegurado" class="modifica-container">
-  <div class="row contenido-form  form-con-titulo mat-elevation-z6" data-titulo="Modifica Datos del Asegurado"
-    style="margin-top: 32px;">
+<mat-dialog-content
+  [formGroup]="modificaAsegurado()"
+  name="modificaAsegurado"
+  class="modifica-container"
+>
+  <div
+    class="row contenido-form form-con-titulo mat-elevation-z6"
+    data-titulo="Modifica Datos del Asegurado"
+    style="margin-top: 32px"
+  >
     <div class="col-md-6">
-         <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
         <input
+          matInput
           autofocus
           id="rutAsegurado"
-          matInput
+          aria-label="Rut"
           class="input-rut rut"
           [formControl]="rutAsegurado"
           oninput="this.value = this.value.toUpperCase()"
@@ -26,7 +34,12 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input matInput [formControl]="nombreAsegurado" required />
+        <input
+          matInput
+          aria-label="Nombre"
+          [formControl]="nombreAsegurado"
+          required
+        />
         @if (nombreAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
         }
@@ -34,7 +47,12 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
-        <input matInput [formControl]="correoAsegurado" required />
+        <input
+          matInput
+          aria-label="Correo"
+          [formControl]="correoAsegurado"
+          required
+        />
         @if (correoAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("correoAsegurado") }}</mat-error>
         }
@@ -42,48 +60,77 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput [formControl]="telefonoAsegurado" required />
+        <input
+          matInput
+          aria-label="Teléfono"
+          [formControl]="telefonoAsegurado"
+          required
+        />
         @if (telefonoAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("telefonoAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
-       <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>
-        <input matInput [formControl]="regionAsegurado" required />
+        <input
+          matInput
+          aria-label="Región"
+          [formControl]="regionAsegurado"
+          required
+        />
         @if (regionAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("regionAsegurado") }}</mat-error>
         }
       </mat-form-field>
-    </div>
 
-     <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Ciudad</mat-label>
-        <input matInput [formControl]="ciudadAsegurado" required />
+        <input
+          matInput
+          aria-label="Ciudad"
+          [formControl]="ciudadAsegurado"
+          required
+        />
         @if (ciudadAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("ciudadAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
-       <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Comuna</mat-label>
-        <input matInput [formControl]="comunaAsegurado" required />
+        <input
+          matInput
+          aria-label="Comuna"
+          [formControl]="comunaAsegurado"
+          required
+        />
         @if (comunaAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("comunaAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
-       <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Dirección</mat-label>
-        <input matInput [formControl]="direccionAsegurado" required />
+        <input
+          matInput
+          aria-label="Dirección"
+          [formControl]="direccionAsegurado"
+          required
+        />
         @if (direccionAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("direccionAsegurado") }}</mat-error>
         }
       </mat-form-field>
 
-     <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Dirección</mat-label>
-        <input matInput [formControl]="numeroDireccionAsegurado" required />
+        <input
+          matInput
+          aria-label="Número Dirección"
+          [formControl]="numeroDireccionAsegurado"
+          required
+        />
         @if (numeroDireccionAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("numeroDireccionAsegurado") }}</mat-error>
         }
@@ -91,7 +138,12 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Depto Dirección</mat-label>
-        <input matInput [formControl]="deptoDireccionAsegurado" required />
+        <input
+          matInput
+          aria-label="Número Depto Dirección"
+          [formControl]="deptoDireccionAsegurado"
+          required
+        />
         @if (deptoDireccionAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("deptoDireccionAsegurado") }}</mat-error>
         }
@@ -99,23 +151,40 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Casa Dirección</mat-label>
-        <input matInput [formControl]="casaAsegurado" required />
+        <input
+          matInput
+          aria-label="Número Casa Dirección"
+          [formControl]="casaAsegurado"
+          required
+        />
         @if (casaAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("casaAsegurado") }}</mat-error>
         }
       </mat-form-field>
+    </div>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions class="d-flex justify-content-center">
   <div class="me-5">
-    <button mat-raised-button mat-dialog-close class="colorFondoBotonCerrar" [disabled]="false">
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="colorFondoBotonCerrar"
+      [disabled]="false"
+    >
       Cerrar
     </button>
   </div>
   <div class="ms-5">
-    <button mat-raised-button (click)="modificar()" class="colorFondoBotonGrabar"
-      [disabled]="modificaAsegurado().invalid">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="modificar()"
+      class="colorFondoBotonGrabar"
+      [disabled]="modificaAsegurado().invalid"
+    >
       Grabar
     </button>
   </div>

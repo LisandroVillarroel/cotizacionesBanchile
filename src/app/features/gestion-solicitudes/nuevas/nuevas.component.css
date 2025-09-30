@@ -1,17 +1,3 @@
-.fontSmall{
-  font-size: 12px;
-}
-.fontLarge{
-  font-size: 16px;
-}
-.cursiva{
-  font-style: italic;
-}
-
-.destacado{
-  color: #285B9B;
-}
-
 .fondoGestion{
   background-color: #E8E8EA;
   color: #666668;
@@ -91,16 +77,6 @@
 .button-link:hover {
   background-color: #ffffff !important;
   color: #0F8DBA !important;
-}
-
-.verde{
-  color: green;
-}
-.amarillo{
-  color: yellow;
-}
-.rojo{
-  color: red;
 }
 
 .alinea-card-gestion{

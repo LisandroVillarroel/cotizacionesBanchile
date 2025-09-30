@@ -1,11 +1,8 @@
-<div
-  class="table-con-titulo mat-elevation-z6"
-  data-titulo="Datos del Beneficiario"
-  style="margin-top: 32px"
->
+<div class="table-con-titulo mat-elevation-z6"
+  data-titulo="Datos del Asegurado" style="margin-top: 32px">
   <table
     mat-table
-    [dataSource]="dataSourceBeneficiario()"
+    [dataSource]="dataSourceAsegurado()"
     multiTemplateDataRows
     matSort
   >
@@ -24,9 +21,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rutBeneficiario">
+    <ng-container matColumnDef="rutAsegurado">
       <th
-        id="_rutBeneficiario"
+        id="_rutAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -35,13 +32,13 @@
         Rut
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.rut_beneficiario }}
+        {{ row.rutAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nombreBeneficiario">
+    <ng-container matColumnDef="nombreRazonSocialAsegurado">
       <th
-        id="_nombreBeneficiario"
+        id="_nombreRazonSocialAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -50,14 +47,14 @@
         Nombre/Razón Social
       </th>
       <td mat-cell *matCellDef="let row" style="width: 33%">
-        {{ row.nombre_razon_social_beneficiario }}
+        {{ row.nombreRazonSocialAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="regionBeneficiario">
+    <ng-container matColumnDef="regionAsegurado">
       <th
         hidden="true"
-        id="_regionBeneficiario"
+        id="_regionAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -66,14 +63,14 @@
         Región
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.region_beneficiario }}
+        {{ row.regionAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="ciudadBeneficiario">
+    <ng-container matColumnDef="ciudadAsegurado">
       <th
         hidden="true"
-        id="_ciudadBeneficiario"
+        id="_ciudadAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -82,14 +79,14 @@
         Ciudad
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.ciudad_beneficiario }}
+        {{ row.ciudadAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="comunaBeneficiario">
+    <ng-container matColumnDef="comunaAsegurado">
       <th
         hidden="true"
-        id="_comunaBeneficiario"
+        id="_comunaAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -98,14 +95,14 @@
         Comuna
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.comuna_beneficiario }}
+        {{ row.comunaAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="direccionBeneficiario">
+    <ng-container matColumnDef="direccionAsegurado">
       <th
         hidden="true"
-        id="_direccionBeneficiario"
+        id="_direccionAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -114,14 +111,14 @@
         Dirección
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.direccion_beneficiario }}
+        {{ row.direccionAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="numeroDireccionBeneficiario">
+    <ng-container matColumnDef="numeroDirAsegurado">
       <th
         hidden="true"
-        id="_numeroDireccionBeneficiario"
+        id="_numeroDirAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -130,14 +127,14 @@
         Número Dirección
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.numero_dir_beneficiario }}
+        {{ row.numeroDirAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="deptoDireccionBeneficiario">
+    <ng-container matColumnDef="departamentoBlockAsegurado">
       <th
         hidden="true"
-        id="_deptoDireccionBeneficiario"
+        id="_departamentoBlockAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -146,14 +143,14 @@
         Número Depto Dirección
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.departamento_block_beneficiario }}
+        {{ row.departamentoBlockAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="casaBeneficiario">
+    <ng-container matColumnDef="casaAsegurado">
       <th
         hidden="true"
-        id="_casaBeneficiario"
+        id="casaAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -162,13 +159,13 @@
         Número Casa Dirección
       </th>
       <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.casa_beneficiario }}
+        {{ row.casaAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="telefonoBeneficiario">
+    <ng-container matColumnDef="telefonoAsegurado">
       <th
-        id="_telefonoBeneficiario"
+        id="_telefonoAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -177,13 +174,13 @@
         Teléfono
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.telefono_beneficiario }}
+        {{ row.telefonoAsegurado }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="correoBeneficiario">
+    <ng-container matColumnDef="mailAsegurado">
       <th
-        id="_correoBeneficiario"
+        id="_mailAsegurado"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -192,7 +189,7 @@
         Correo
       </th>
       <td mat-cell *matCellDef="let row" style="width: 27%">
-        {{ row.mail_beneficiario }}
+        {{ row.mailAsegurado }}
       </td>
     </ng-container>
 
@@ -205,15 +202,14 @@
       >
         <span
           class="agregar-texto"
-          matTooltip="Agregar nuevo beneficiario"
+          matTooltip="Agregar nuevo asegurado"
           matTooltipPosition="above"
-          (click)="agregaNuevoBeneficiario()"
+          (click)="agregaNuevoAsegurado()"
         >
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
         </span>
       </th>
-      x
 
       <td
         mat-cell
@@ -221,38 +217,41 @@
         style="width: 15%; text-align: center"
       >
         <button
+          type="button"
           matTooltip="Modificar"
           mat-icon-button
           class="tabla"
-          (click)="modificaBeneficiario(row)"
+          (click)="modificaAsegurado(row)"
         >
           <mat-icon>edit</mat-icon>
         </button>
 
         <button
+          type="button"
           matTooltip="Consultar"
           mat-icon-button
           class="tabla"
-          (click)="consultaBeneficiario(row)"
+          (click)="consultaAsegurado(row)"
         >
           <mat-icon>visibility</mat-icon>
         </button>
 
         <button
+          type="button"
           matTooltip="Eliminar"
           mat-icon-button
           class="tabla"
-          (click)="eliminaBeneficiario(row)"
+          (click)="eliminaAsegurado(row)"
         >
           <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumnsBeneficiario"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsAsegurado"></tr>
     <tr
       mat-row
-      *matRowDef="let row; columns: displayedColumnsBeneficiario"
+      *matRowDef="let row; columns: displayedColumnsAsegurado"
       class="example-element-row"
     ></tr>
   </table>

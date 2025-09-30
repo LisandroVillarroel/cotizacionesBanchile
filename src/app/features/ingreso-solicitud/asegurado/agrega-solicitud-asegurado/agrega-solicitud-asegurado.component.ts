@@ -27,7 +27,6 @@ import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-
   ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css',
-  encapsulation: ViewEncapsulation.None
 })
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
@@ -38,9 +37,10 @@ export class AgregaSolicitudAseguradoComponent {
     MatDialogRef<AgregaSolicitudAseguradoComponent>
   );
 
-
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
+  correoAsegurado = new FormControl('', [Validators.required]);
+  telefonoAsegurado = new FormControl('', [Validators.required]);
   regionAsegurado = new FormControl('', [Validators.required]);
   ciudadAsegurado = new FormControl('', [Validators.required]);
   comunaAsegurado = new FormControl('', [Validators.required]);
@@ -48,8 +48,6 @@ export class AgregaSolicitudAseguradoComponent {
   numeroDireccionAsegurado = new FormControl('', [Validators.required]);
   deptoDireccionAsegurado = new FormControl('', [Validators.required]);
   casaAsegurado = new FormControl('', [Validators.required]);
-  telefonoAsegurado = new FormControl('', [Validators.required]);
-  correoAsegurado = new FormControl('', [Validators.required]);
 
   agregaAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -81,6 +79,18 @@ export class AgregaSolicitudAseguradoComponent {
         : '';
     }
 
+    if (campo === 'correoAsegurado') {
+      return this.correoAsegurado.hasError('required')
+        ? 'Debes ingresar Correo'
+        : '';
+    }
+
+    if (campo === 'telefonoAsegurado') {
+      return this.telefonoAsegurado.hasError('required')
+        ? 'Debes ingresar Teléfono'
+        : '';
+    }
+
     if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
         ? 'Debes ingresar Región'
@@ -102,35 +112,23 @@ export class AgregaSolicitudAseguradoComponent {
       return this.direccionAsegurado.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-  }
+    }
 
-   if (campo === 'numeroDireccionAsegurado') {
+    if (campo === 'numeroDireccionAsegurado') {
       return this.numeroDireccionAsegurado.hasError('required')
         ? 'Debes ingresar Número Dirección'
         : '';
-  }
+    }
 
-   if (campo === 'deptoDireccionAsegurado') {
+    if (campo === 'deptoDireccionAsegurado') {
       return this.deptoDireccionAsegurado.hasError('required')
         ? 'Debes ingresar Departamento Dirección'
         : '';
-  }
-
-   if (campo === 'casaAsegurado') {
-      return this.casaAsegurado.hasError('required')
-        ? 'Debes ingresar Número casa Dirección'
-        : '';
-  }
-
-    if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
-        ? 'Debes ingresar Teléfono'
-        : '';
     }
 
-    if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
-        ? 'Debes ingresar Correo'
+    if (campo === 'casaAsegurado') {
+      return this.casaAsegurado.hasError('required')
+        ? 'Debes ingresar Número casa Dirección'
         : '';
     }
 
@@ -155,40 +153,45 @@ export class AgregaSolicitudAseguradoComponent {
   }
 
   grabar() {
-
-    this.asegurado =  {
-      p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '5',
+    this.asegurado = {
+      p_id_solicitud: 5,
       p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
-      p_nombre_razon_social_asegurado: this.agregaAsegurado().get('nombreAsegurado')!.value,
+      p_nombre_razon_social_asegurado:
+        this.agregaAsegurado().get('nombreAsegurado')!.value,
       p_mail_asegurado: this.agregaAsegurado().get('correoAsegurado')!.value,
-      p_telefono_asegurado: this.agregaAsegurado().get('telefonoAsegurado')!.value,
+      p_telefono_asegurado:
+        this.agregaAsegurado().get('telefonoAsegurado')!.value,
       p_region_asegurado: this.agregaAsegurado().get('regionAsegurado')!.value,
       p_ciudad_asegurado: this.agregaAsegurado().get('ciudadAsegurado')!.value,
       p_comuna_asegurado: this.agregaAsegurado().get('comunaAsegurado')!.value,
-      p_direccion_asegurado: this.agregaAsegurado().get('direccionAsegurado')!.value,
-      p_numero_dir_asegurado: this.agregaAsegurado().get('numeroDireccionAsegurado')!.value,
-      p_departamento_block_asegurado: this.agregaAsegurado().get('deptoDireccionAsegurado')!.value,
-      p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value
+      p_direccion_asegurado:
+        this.agregaAsegurado().get('direccionAsegurado')!.value,
+      p_numero_dir_asegurado: this.agregaAsegurado().get(
+        'numeroDireccionAsegurado'
+      )!.value,
+      p_departamento_block_asegurado: this.agregaAsegurado().get(
+        'deptoDireccionAsegurado'
+      )!.value,
+      p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
+      p_usuario_creacion: 'EJE022',
     };
 
-    console.log('Asegurado grabado:', this.asegurado);
+    console.log('Asegurado Grabado:', this.asegurado);
 
     this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó asegurado bien');
+          alert('Grabó Asegurado Bien');
+          this.dialogRef.close('agregado');
         } else {
           alert('Error:' + dato.mensaje);
           console.log('Error:', dato.mensaje);
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        console.log('Error Inesperado', error);
       },
     });
-
-    this.dialogRef.close();
   }
 }

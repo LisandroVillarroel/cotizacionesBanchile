@@ -1,43 +1,21 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  model,
-  output,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, inject, input, model, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatPaginator,
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
-import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
-import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
-import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
-import {
-  DatosAseguradosInterface,
-  IAsegurado,
-  IAseguradoLista,
-} from '../modelo/ingresoSolicitud-Interface';
-import { AseguradoService } from '../service/asegurado.service';
+import { AgregaSolicitudAseguradoComponent } from '@features/ingreso-solicitud/asegurado/agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
+import { ModificaSolicitudAseguradoComponent } from '@features/ingreso-solicitud/asegurado/modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
+import { ConsultaSolicitudAseguradoComponent } from '@features/ingreso-solicitud/asegurado/consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
+import { EliminaSolicitudAseguradoComponent } from '@features/ingreso-solicitud/asegurado/elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
+import { DatosAseguradosInterface, IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 
 @Component({
-  selector: 'app-asegurado',
+  selector: 'app-ver-asegurados',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -49,14 +27,13 @@ import { AseguradoService } from '../service/asegurado.service';
     MatTooltipModule,
     MatInputModule,
   ],
-  templateUrl: './asegurado.component.html',
-  styleUrl: './asegurado.component.css',
+  templateUrl: './ver-asegurados.component.html',
+  styleUrls: ['./ver-asegurados.component.css']
 })
-export class AseguradoComponent {
+export class VerAseguradosComponent {
+  idSolicitud =  input.required<number | undefined>();
   datoAsegurados = signal<IAseguradoLista[]>([]);
-
   flagAsegurado = model(false);
-
   aseguradoService = inject(AseguradoService);
 
   private readonly dialog = inject(MatDialog);
@@ -79,8 +56,7 @@ export class AseguradoComponent {
   ];
   //dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
 
-  @ViewChild(MatPaginator)
-  paginatorAsegurado!: MatPaginator;
+  @ViewChild(MatPaginator) paginatorAsegurado!: MatPaginator;
   @ViewChild(MatSort) sortAsegurado!: MatSort;
 
   applyFilterAsegurado(event: Event) {
@@ -94,7 +70,7 @@ export class AseguradoComponent {
 
   dataSourceAsegurado = computed(() => {
     const tabla = new MatTableDataSource<IAseguradoLista>(
-      this.datoAsegurados()
+    this.datoAsegurados()
     );
     tabla.paginator = this.paginatorAsegurado;
     tabla.sort = this.sortAsegurado;
@@ -213,3 +189,6 @@ export class AseguradoComponent {
       });
   }
 }
+
+
+

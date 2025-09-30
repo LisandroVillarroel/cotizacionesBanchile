@@ -9,39 +9,12 @@ p {
         font-size: 0.75rem; /* 12px */
     }
 
-.gris {
-  color: #666668;
-}
-
-.info {
-    color: #149DC9;
-}
-
-
-.justify-around{
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Esto puede ser de uso general */
-.fondoGris{
-  background-color: #E8E8EA;
-  color: #666668;
-}
-
-.destacado{
-  color: #285B9B
-}
-
-.fontSmall{
-  font-size: 12px;
-}
 /*MAT-TABLE*/
 /* Mantenedores Material*/
 /*Titulo Mantenedores Tablas principales*/
 .content {
   min-height: calc(100vh - 98px);
-    border-radius: 10px;
+  border-radius: 10px;
   margin: 16px;
   margin-left: 32px;
   justify-content: center;
@@ -50,13 +23,6 @@ p {
   color: #666668;
   padding: 0 1px !important;
 }
-
-/*Fin Titulo Mantenedores Tablas principales*/
-
-/*FIN MAT-TABLE*/
-
-/*Cambia color y fondo barra superior del sistema*/
-
 
 /*Botones*/
 
@@ -113,18 +79,6 @@ p {
   height: 65px !important;
   margin-bottom: 15px !important;
   color: #666668;
-}
-
-.button-link {
-  background-color: #ffffff !important;
-  color: #234e85 !important;
-  padding: 0px 0px 0px !important;
-  font-size: 12px !important;
-}
-
-.button-link:hover {
-  background-color: #ffffff !important;
-  color: #0F8DBA !important;
 }
 
 .mat-mdc-select-value-text {

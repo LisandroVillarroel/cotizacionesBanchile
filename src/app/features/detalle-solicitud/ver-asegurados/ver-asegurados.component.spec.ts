@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { InformacionGeneralComponent } from './informacion-general.component';
+import { VerAseguradosComponent } from './ver-asegurados.component';
 
-describe('InformacionGeneralComponent', () => {
-  let component: InformacionGeneralComponent;
-  let fixture: ComponentFixture<InformacionGeneralComponent>;
+describe('VerAseguradosComponent', () => {
+  let component: VerAseguradosComponent;
+  let fixture: ComponentFixture<VerAseguradosComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InformacionGeneralComponent ]
+      declarations: [ VerAseguradosComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformacionGeneralComponent);
+    fixture = TestBed.createComponent(VerAseguradosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

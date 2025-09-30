@@ -1,60 +1,52 @@
-<div class="container d-flex flex-column p-2">
-  <!-- Título principal -->
-
-  <!-- Tarjetas de información -->
-  <div class="d-flex justify-content-between" >
+<div class="container-fluid fondoGris justify-around d-flex p-4">
+  <!-- <div class="d-flex justify-around"> -->
     <mat-card style="width: 49%;">
       <mat-card-header>
-        <div style="display: flex; justify-content: space-between; width: 100%;">
-          <label class="fw-bold">RUT Contratante</label>
-          <label>12.345.678-9</label>
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <label class="destacado">RUT Contratante</label>
+          <label>{{ infoSolicitud()?.rut_contratante }}</label>
         </div>
       </mat-card-header>
+      <mat-card-content>
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <label class="destacado">Nombre / Razón Social</label>
+          <label>{{ infoSolicitud()?.nombre_razon_social_contratante }}</label>
+        </div>
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <label class="destacado">Estado Solicitud</label>
+          <label>{{ infoSolicitud()?.id_estado_solicitud }}</label>
+        </div>
+      </mat-card-content>
     </mat-card>
 
     <mat-card style="width: 49%;">
       <mat-card-header>
-        <div style="display: flex; justify-content: space-between; width: 100%;">
-          <label class="fw-bold">Rubro / Tipo de Seguro</label>
-          <label>Asistencia en Viajes</label>
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <label class="destacado">Rubro / Tipo de Seguro</label>
+          <label>{{ infoSolicitud()?.nombre_rubro }} / {{ infoSolicitud()?.nombre_tipo_seguro }}</label>
         </div>
       </mat-card-header>
+      <mat-card-content>
+        <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <label class="destacado">Fecha Creación Solicitud</label>
+          <label>{{ infoSolicitud()?.fecha_creacion_solicitud }}</label>
+        </div>
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <label class="destacado">SLA</label>
+          <label>{{ infoSolicitud()?.sla }}</label>
+        </div>
+      </mat-card-content>
     </mat-card>
-  </div>
 </div>
-<div class="container d-flex justify-around p-2">
- <mat-card style="width: 49%;">
-  <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%;">
-      <label class="fw-bold">Nombre / Razón Social</label>
-      <label>Comercial S.A.</label>
-    </div>
-  </mat-card-header>
-</mat-card>
-   <mat-card style="width: 49%;">
-  <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%;">
-      <label class="fw-bold">Fecha Creación Solicitud</label>
-      <label>18/09/2025</label>
-    </div>
-  </mat-card-header>
-</mat-card>
+<div class="container-fluid fondoGris justify-around d-flex p-2">
+  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
+    data-titulo="Observaciones" style="width: 98%; margin-left: 1%">
+
+  </mat-card>
 </div>
-<div class="container d-flex justify-around p-2">
- <mat-card style="width: 49%;">
-  <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%;">
-      <label class="fw-bold">Estado Solicitud</label>
-      <label>Pendiente</label>
-    </div>
-  </mat-card-header>
-</mat-card>
-   <mat-card style="width: 49%;">
-  <mat-card-header>
-    <div style="display: flex; justify-content: space-between; width: 100%;">
-      <label class="fw-bold">SLA</label>
-      <label>En Cotización</label>
-    </div>
-  </mat-card-header>
-</mat-card>
+<div class="container-fluid fondoGris justify-around d-flex p-2">
+  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
+    data-titulo="Empresas contactadas" style="width: 98%; margin-left: 1%">
+
+  </mat-card>
 </div>
