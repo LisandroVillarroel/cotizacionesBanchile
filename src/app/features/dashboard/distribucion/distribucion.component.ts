@@ -94,7 +94,7 @@ panelOpenState = false;
     });
   }
 
-async seleccionaRubro(_codigoRubro: string) {
+async seleccionaRubro(_codigoRubro: number) {
 
     console.log('Entro seleccionaRubro');
     const estructura_codigoRubro = {id_rubro:_codigoRubro} ;
