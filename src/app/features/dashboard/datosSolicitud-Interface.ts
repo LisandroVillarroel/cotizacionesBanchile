@@ -1,6 +1,6 @@
 export interface IListadoSolicitudes {
   id_solicitud: number;
-            fecha_creacion: string;
+            fecha_creacion: Date;
             rut_contratante: string;
             nombre_razon_social_contratante: string;
             id_rubro:number;
