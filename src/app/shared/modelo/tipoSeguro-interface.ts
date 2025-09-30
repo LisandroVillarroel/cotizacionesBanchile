@@ -1,6 +1,8 @@
 export interface ITipoSeguro {
   id_rubro: number;
   id_tipo_seguro: number;
+  id_rubro: number;
+  id_tipo_seguro: number;
   nombre_tipo_seguro: string;
  // producto_isol: string;
   estado_tipo_seguro: string;

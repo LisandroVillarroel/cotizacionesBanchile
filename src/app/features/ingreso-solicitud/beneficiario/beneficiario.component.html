@@ -1,23 +1,14 @@
-<!-- <div>
-  <div class="col-md-12 ml-2 mr-2">
-    <mat-form-field class="inputBuscar">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        (keyup)="applyFilterBeneficiario($event)"
-        placeholder="Buscar"
-      />
-    </mat-form-field>
-  </div>
-</div> -->
-<div class="table-con-titulo mat-elevation-z6" data-titulo="Datos del Beneficiario" style="margin-top: 32px;">
+<div
+  class="table-con-titulo mat-elevation-z6"
+  data-titulo="Datos del Beneficiario"
+  style="margin-top: 32px"
+>
   <table
     mat-table
-    [dataSource]="dataSourceBeneficiario"
+    [dataSource]="dataSourceBeneficiario()"
     multiTemplateDataRows
     matSort
   >
-    <!-- ID Index -->
     <ng-container matColumnDef="index">
       <th
         id="indexI"
@@ -33,9 +24,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rut_beneficiario">
+    <ng-container matColumnDef="rutBeneficiario">
       <th
-        id="_rut_beneficiario"
+        id="_rutBeneficiario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -48,9 +39,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nombre_razon_social_beneficiario">
+    <ng-container matColumnDef="nombreBeneficiario">
       <th
-        id="_nombre_razon_social_beneficiario"
+        id="_nombreBeneficiario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -63,9 +54,121 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="telefono_beneficiario">
+    <ng-container matColumnDef="regionBeneficiario">
       <th
-        id="_telefono_beneficiario"
+        hidden="true"
+        id="_regionBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Región
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.region_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ciudadBeneficiario">
+      <th
+        hidden="true"
+        id="_ciudadBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Ciudad
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.ciudad_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="comunaBeneficiario">
+      <th
+        hidden="true"
+        id="_comunaBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Comuna
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.comuna_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="direccionBeneficiario">
+      <th
+        hidden="true"
+        id="_direccionBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Dirección
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.direccion_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numeroDireccionBeneficiario">
+      <th
+        hidden="true"
+        id="_numeroDireccionBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Dirección
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.numero_dir_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deptoDireccionBeneficiario">
+      <th
+        hidden="true"
+        id="_deptoDireccionBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Depto Dirección
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.departamento_block_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="casaBeneficiario">
+      <th
+        hidden="true"
+        id="_casaBeneficiario"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 0%"
+      >
+        Número Casa Dirección
+      </th>
+      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.casa_beneficiario }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telefonoBeneficiario">
+      <th
+        id="_telefonoBeneficiario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -78,9 +181,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="mail_beneficiario">
+    <ng-container matColumnDef="correoBeneficiario">
       <th
-        id="_mail_beneficiario"
+        id="_correoBeneficiario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header

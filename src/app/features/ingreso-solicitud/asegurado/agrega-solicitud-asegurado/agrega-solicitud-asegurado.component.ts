@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,7 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
@@ -27,10 +31,11 @@ import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-
   ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css',
-  encapsulation: ViewEncapsulation.None
 })
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
+
+  public readonly data = inject<string>(MAT_DIALOG_DATA);
 
   aseguradoService = inject(AseguradoService);
 
@@ -38,9 +43,10 @@ export class AgregaSolicitudAseguradoComponent {
     MatDialogRef<AgregaSolicitudAseguradoComponent>
   );
 
-
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
+  correoAsegurado = new FormControl('', [Validators.required]);
+  telefonoAsegurado = new FormControl('', [Validators.required]);
   regionAsegurado = new FormControl('', [Validators.required]);
   ciudadAsegurado = new FormControl('', [Validators.required]);
   comunaAsegurado = new FormControl('', [Validators.required]);
@@ -48,8 +54,6 @@ export class AgregaSolicitudAseguradoComponent {
   numeroDireccionAsegurado = new FormControl('', [Validators.required]);
   deptoDireccionAsegurado = new FormControl('', [Validators.required]);
   casaAsegurado = new FormControl('', [Validators.required]);
-  telefonoAsegurado = new FormControl('', [Validators.required]);
-  correoAsegurado = new FormControl('', [Validators.required]);
 
   agregaAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -81,6 +85,18 @@ export class AgregaSolicitudAseguradoComponent {
         : '';
     }
 
+    if (campo === 'correoAsegurado') {
+      return this.correoAsegurado.hasError('required')
+        ? 'Debes ingresar Correo'
+        : '';
+    }
+
+    if (campo === 'telefonoAsegurado') {
+      return this.telefonoAsegurado.hasError('required')
+        ? 'Debes ingresar Teléfono'
+        : '';
+    }
+
     if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
         ? 'Debes ingresar Región'
@@ -102,39 +118,37 @@ export class AgregaSolicitudAseguradoComponent {
       return this.direccionAsegurado.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-  }
+    }
 
-   if (campo === 'numeroDireccionAsegurado') {
+    if (campo === 'numeroDireccionAsegurado') {
       return this.numeroDireccionAsegurado.hasError('required')
         ? 'Debes ingresar Número Dirección'
         : '';
-  }
+    }
 
-   if (campo === 'deptoDireccionAsegurado') {
+    if (campo === 'deptoDireccionAsegurado') {
       return this.deptoDireccionAsegurado.hasError('required')
         ? 'Debes ingresar Departamento Dirección'
         : '';
-  }
-
-   if (campo === 'casaAsegurado') {
-      return this.casaAsegurado.hasError('required')
-        ? 'Debes ingresar Número casa Dirección'
-        : '';
-  }
-
-    if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
-        ? 'Debes ingresar Teléfono'
-        : '';
     }
 
-    if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
-        ? 'Debes ingresar Correo'
+    if (campo === 'casaAsegurado') {
+      return this.casaAsegurado.hasError('required')
+        ? 'Debes ingresar Número casa Dirección'
         : '';
     }
 
     return '';
+  }
+
+  async onBlurRutAsegurado(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      await this.agregaAsegurado()
+        .get('rutAsegurado')!
+        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
+    }
   }
 
   validaRut(control: FormControl): { [s: string]: boolean } {
@@ -144,51 +158,46 @@ export class AgregaSolicitudAseguradoComponent {
     return null as any;
   }
 
-  async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
-
-    if (validateRut(rut) === true) {
-      await this.agregaAsegurado()
-        .get('p_rut_asegurado')!
-        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-    }
-  }
-
   grabar() {
-
-    this.asegurado =  {
-      p_id_ejecutivo_banco: 'EJ001',
-      p_id_solicitud: '5',
+    this.asegurado = {
+      p_id_solicitud: Number(this.data),
       p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
-      p_nombre_razon_social_asegurado: this.agregaAsegurado().get('nombreAsegurado')!.value,
+      p_nombre_razon_social_asegurado:
+        this.agregaAsegurado().get('nombreAsegurado')!.value,
       p_mail_asegurado: this.agregaAsegurado().get('correoAsegurado')!.value,
-      p_telefono_asegurado: this.agregaAsegurado().get('telefonoAsegurado')!.value,
+      p_telefono_asegurado:
+        this.agregaAsegurado().get('telefonoAsegurado')!.value,
       p_region_asegurado: this.agregaAsegurado().get('regionAsegurado')!.value,
       p_ciudad_asegurado: this.agregaAsegurado().get('ciudadAsegurado')!.value,
       p_comuna_asegurado: this.agregaAsegurado().get('comunaAsegurado')!.value,
-      p_direccion_asegurado: this.agregaAsegurado().get('direccionAsegurado')!.value,
-      p_numero_dir_asegurado: this.agregaAsegurado().get('numeroDireccionAsegurado')!.value,
-      p_departamento_block_asegurado: this.agregaAsegurado().get('deptoDireccionAsegurado')!.value,
-      p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value
+      p_direccion_asegurado:
+        this.agregaAsegurado().get('direccionAsegurado')!.value,
+      p_numero_dir_asegurado: this.agregaAsegurado().get(
+        'numeroDireccionAsegurado'
+      )!.value,
+      p_departamento_block_asegurado: this.agregaAsegurado().get(
+        'deptoDireccionAsegurado'
+      )!.value,
+      p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
+      p_usuario_creacion: 'EJE022',
     };
 
-    console.log('Asegurado grabado:', this.asegurado);
+    console.log('Asegurado Grabado:', this.asegurado);
 
     this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó asegurado bien');
+          alert('Grabó Asegurado Bien');
+          this.dialogRef.close('agregado');
         } else {
           alert('Error:' + dato.mensaje);
           console.log('Error:', dato.mensaje);
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        console.log('Error Inesperado', error);
       },
     });
-
-    this.dialogRef.close();
   }
 }

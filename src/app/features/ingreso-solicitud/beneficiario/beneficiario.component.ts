@@ -1,4 +1,12 @@
-import { Component, effect, inject, input, model, output, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   MatDialog,
@@ -19,7 +27,12 @@ import { AgregaSolicitudBeneficiarioComponent } from './agrega-solicitud-benefic
 import { ModificaSolicitudBeneficiarioComponent } from './modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
 import { ConsultaSolicitudBeneficiarioComponent } from './consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
 import { EliminaSolicitudBeneficiarioComponent } from './elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
-import { ISolicitudBeneficiario } from '../modelo/ingresoSolicitud-Interface';
+import {
+  DatosBeneficiariosInterface,
+  IBeneficiario,
+  IBeneficiarioLista,
+} from '../modelo/ingresoSolicitud-Interface';
+import { BeneficiarioService } from '../service/beneficiario.service';
 
 @Component({
   selector: 'app-beneficiario',
@@ -38,28 +51,29 @@ import { ISolicitudBeneficiario } from '../modelo/ingresoSolicitud-Interface';
   styleUrl: './beneficiario.component.css',
 })
 export class BeneficiarioComponent {
-  datoBeneficiariosRecibe =  input.required<ISolicitudBeneficiario[] | undefined>();
-  datoBeneficiariosRecibeModificado = output<ISolicitudBeneficiario[]>();
-  flagBeneficiario= model(false);
+  idSolicitud = input.required<string>();
+  datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
+
+  beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-
-
   displayedColumnsBeneficiario: string[] = [
     'index',
-    'rut_beneficiario',
-    'nombre_razon_social_beneficiario',
-    //'region_beneficiario',
-    //'ciudad_beneficiario',
-    //'comuna_beneficiario',
-    //'direccion_beneficiario',
-    'telefono_beneficiario',
-    'mail_beneficiario',
+    'rutBeneficiario',
+    'nombreBeneficiario',
+    'correoBeneficiario',
+    'telefonoBeneficiario',
+    'regionBeneficiario',
+    'ciudadBeneficiario',
+    'comunaBeneficiario',
+    'direccionBeneficiario',
+    'numeroDireccionBeneficiario',
+    'deptoDireccionBeneficiario',
+    'casaBeneficiario',
     'opciones',
   ];
-  dataSourceBeneficiario = new MatTableDataSource<ISolicitudBeneficiario>();
 
   @ViewChild(MatPaginator)
   paginatorBeneficiario!: MatPaginator;
@@ -67,28 +81,54 @@ export class BeneficiarioComponent {
 
   applyFilterBeneficiario(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceBeneficiario.filter = filterValue.trim().toLowerCase();
+    this.dataSourceBeneficiario().filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSourceBeneficiario.paginator) {
-      this.dataSourceBeneficiario.paginator.firstPage();
+    if (this.dataSourceBeneficiario().paginator) {
+      this.dataSourceBeneficiario().paginator!.firstPage();
     }
   }
 
-   constructor() {
-      effect(() => {
-        this.dataSourceBeneficiario.data = this.datoBeneficiariosRecibe()!;
-        this.dataSourceBeneficiario.paginator?.pageSize !=
-        this.paginatorBeneficiario.pageSize;
-      })
-    }
+  dataSourceBeneficiario = computed(() => {
+    const tabla = new MatTableDataSource<IBeneficiarioLista>(
+      this.datoBeneficiarios()
+    );
+    tabla.paginator = this.paginatorBeneficiario;
+    tabla.sort = this.sortBeneficiario;
+    return tabla;
+  });
 
   ngAfterViewInit(): void {
-    this.dataSourceBeneficiario.paginator = this.paginatorBeneficiario;
-    this.dataSourceBeneficiario.sort = this.sortBeneficiario;
+    this.dataSourceBeneficiario().paginator = this.paginatorBeneficiario;
+    this.dataSourceBeneficiario().sort = this.sortBeneficiario;
   }
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.rescataListaBeneficiarios(this.idSolicitud());
+  }
+
+  rescataListaBeneficiarios(idSolicitud: string) {
+    const estructura_listaBeneficiarios = {
+      p_id_solicitud: Number(idSolicitud),
+    };
+    this.beneficiarioService
+      .postListadoBeneficiario(estructura_listaBeneficiarios)
+      .subscribe({
+        next: (dato: DatosBeneficiariosInterface) => {
+          if (dato.codigo === 200) {
+            this.datoBeneficiarios.set(dato.p_cursor);
+          } else {
+            if (dato.codigo != 500) {
+              console.log('Error:', dato.mensaje);
+            } else {
+              console.log('Error de Sistema:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
   }
 
   agregaNuevoBeneficiario() {
@@ -98,65 +138,64 @@ export class BeneficiarioComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {};
+    dialogConfig.data = this.idSolicitud();
+
     this.dialog
       .open(AgregaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-         if (data !== '') {
-          const arregloActualizado =[...this.datoBeneficiariosRecibe()!,data]; // Copia y agrega un elemento
-         this.datoBeneficiariosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
-          this.flagBeneficiario.set(true);
+        if (data === 'agregado') {
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }
 
-  modificaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario): void {
+  modificaBeneficiario(datoBeneficiarioPar: IBeneficiarioLista): void {
+    console.log('Dato Modificar;', datoBeneficiarioPar);
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoBeneficiarioPar;
     this.dialog
       .open(ModificaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-         if (data !== '') {
-        const    arregloActualizado =[...this.datoBeneficiariosRecibe()!.filter(valor=> valor.rut_beneficiario!=datoBeneficiarioPar.rut_beneficiario),data]; // Copia y agrega un elemento
-         this.datoBeneficiariosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
-          this.flagBeneficiario.set(true);
+        if (data === 'modificado') {
+          console.log('Modificación Confirmada:', data);
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }
 
-  consultaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario) {
+  consultaBeneficiario(datoBeneficiarioPar: IBeneficiario) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = datoBeneficiarioPar;
     this.dialog
       .open(ConsultaSolicitudBeneficiarioComponent, dialogConfig)
-      .afterClosed()
+      .afterClosed();
   }
 
-  eliminaBeneficiario(datoBeneficiarioPar: ISolicitudBeneficiario) {
+  eliminaBeneficiario(datoBeneficiarioPar: any) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
-    dialogConfig.height = '90%';
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = datoBeneficiarioPar;
@@ -164,10 +203,8 @@ export class BeneficiarioComponent {
       .open(EliminaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
-        if (data === 1) {
-          const arregloActualizado = this.datoBeneficiariosRecibe()!.filter(valor=> valor.rut_beneficiario!=datoBeneficiarioPar.rut_beneficiario); // Copia y agrega un elemento
-         console.log('datos agregados hijo:',arregloActualizado)
-         this.datoBeneficiariosRecibeModificado.emit(arregloActualizado); // Emite el arreglo modificado
+        if (data === 'eliminado') {
+          this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
   }

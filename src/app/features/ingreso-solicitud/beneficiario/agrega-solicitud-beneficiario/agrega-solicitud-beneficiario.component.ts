@@ -1,62 +1,82 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
+import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
+import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-agrega-solicitud-beneficiario',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,
-    MatButtonModule],
+    MatButtonModule,
+  ],
   templateUrl: './agrega-solicitud-beneficiario.component.html',
-  styleUrl: './agrega-solicitud-beneficiario.component.css'
+  styleUrl: './agrega-solicitud-beneficiario.component.css',
 })
 export class AgregaSolicitudBeneficiarioComponent {
+  beneficiario!: IBeneficiario;
+  public readonly data = inject<string>(MAT_DIALOG_DATA);
 
-  private readonly dialogRef = inject(MatDialogRef<AgregaSolicitudBeneficiarioComponent>);
+  beneficiarioService = inject(BeneficiarioService);
+
+  private readonly dialogRef = inject(
+    MatDialogRef<AgregaSolicitudBeneficiarioComponent>
+  );
 
   rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);
   nombreBeneficiario = new FormControl('', [Validators.required]);
-  apellidoPaternoBeneficiario = new FormControl('', [Validators.required]);
-  apellidoMaternoBeneficiario = new FormControl('', [Validators.required]);
-  //regionBeneficiario = new FormControl('', [Validators.required]);
-  //ciudadBeneficiario = new FormControl('', [Validators.required]);
-  //comunaBeneficiario = new FormControl('', [Validators.required]);
-  //direccionBeneficiario = new FormControl('', [Validators.required]);
-  telefonoBeneficiario = new FormControl('', [Validators.required]);
   correoBeneficiario = new FormControl('', [Validators.required]);
+  telefonoBeneficiario = new FormControl('', [Validators.required]);
+  regionBeneficiario = new FormControl('', [Validators.required]);
+  ciudadBeneficiario = new FormControl('', [Validators.required]);
+  comunaBeneficiario = new FormControl('', [Validators.required]);
+  direccionBeneficiario = new FormControl('', [Validators.required]);
+  numeroDireccionBeneficiario = new FormControl('', [Validators.required]);
+  deptoDireccionBeneficiario = new FormControl('', [Validators.required]);
+  casaBeneficiario = new FormControl('', [Validators.required]);
 
   agregaBeneficiario = signal<FormGroup>(
     new FormGroup({
       rutBeneficiario: this.rutBeneficiario,
       nombreBeneficiario: this.nombreBeneficiario,
-      apellidoPaternoBeneficiario: this.apellidoPaternoBeneficiario,
-      apellidoMaternoBeneficiario: this.apellidoMaternoBeneficiario,
-      //regionBeneficiario: this.regionBeneficiario,
-      //ciudadBeneficiario: this.ciudadBeneficiario,
-      //comunaBeneficiario: this.comunaBeneficiario,
-      //direccionBeneficiario: this.direccionBeneficiario,
+      correoBeneficiario: this.correoBeneficiario,
       telefonoBeneficiario: this.telefonoBeneficiario,
-      correoBeneficiario: this.correoBeneficiario
+      regionBeneficiario: this.regionBeneficiario,
+      ciudadBeneficiario: this.ciudadBeneficiario,
+      comunaBeneficiario: this.comunaBeneficiario,
+      direccionBeneficiario: this.direccionBeneficiario,
+      numeroDireccionBeneficiario: this.numeroDireccionBeneficiario,
+      deptoDireccionBeneficiario: this.deptoDireccionBeneficiario,
+      casaBeneficiario: this.casaBeneficiario,
     })
   );
-
 
   getErrorMessage(campo: string) {
     if (campo === 'rutBeneficiario') {
       return this.rutBeneficiario.hasError('required')
         ? 'Debes ingresar Rut Beneficiario'
         : this.rutBeneficiario.hasError('rutInvalido')
-          ? 'Rut Inválido'
-          : '';
+        ? 'Rut Inválido'
+        : '';
     }
     if (campo === 'nombreBeneficiario') {
       return this.nombreBeneficiario.hasError('required')
@@ -64,19 +84,19 @@ export class AgregaSolicitudBeneficiarioComponent {
         : '';
     }
 
-    if (campo === 'apellidoPaternoBeneficiario') {
-      return this.apellidoPaternoBeneficiario.hasError('required')
-        ? 'Debes ingresar Apellido Paterno'
+    if (campo === 'correoBeneficiario') {
+      return this.correoBeneficiario.hasError('required')
+        ? 'Debes ingresar Correo'
         : '';
     }
 
-    if (campo === 'apellidoMaternoBeneficiario') {
-      return this.apellidoMaternoBeneficiario.hasError('required')
-        ? 'Debes ingresar Apellido Materno'
+    if (campo === 'telefonoBeneficiario') {
+      return this.telefonoBeneficiario.hasError('required')
+        ? 'Debes ingresar Teléfono'
         : '';
     }
 
-    /* if (campo === 'regionBeneficiario') {
+    if (campo === 'regionBeneficiario') {
       return this.regionBeneficiario.hasError('required')
         ? 'Debes ingresar Región'
         : '';
@@ -97,17 +117,23 @@ export class AgregaSolicitudBeneficiarioComponent {
       return this.direccionBeneficiario.hasError('required')
         ? 'Debes ingresar Dirección'
         : '';
-    } */
+    }
 
-    if (campo === 'telefonoBeneficiario') {
-      return this.telefonoBeneficiario.hasError('required')
-        ? 'Debes ingresar Teléfono'
+    if (campo === 'numeroDireccionBeneficiario') {
+      return this.numeroDireccionBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
-    if (campo === 'correoBeneficiario') {
-      return this.correoBeneficiario.hasError('required')
-        ? 'Debes ingresar Correo'
+    if (campo === 'deptoDireccionBeneficiario') {
+      return this.deptoDireccionBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
+        : '';
+    }
+
+    if (campo === 'casaBeneficiario') {
+      return this.casaBeneficiario.hasError('required')
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
@@ -127,11 +153,60 @@ export class AgregaSolicitudBeneficiarioComponent {
     if (validateRut(rut) === true) {
       await this.agregaBeneficiario()
         .get('rutBeneficiario')!
-        .setValue(formatRut(rut, RutFormat.DOTS_DASH))
+        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
   }
 
   grabar() {
-    this.dialogRef.close(1);
+    this.beneficiario = {
+      p_id_solicitud: Number(this.data),
+      p_rut_beneficiario:
+        this.agregaBeneficiario().get('rutBeneficiario')!.value,
+      p_nombre_razon_social_beneficiario:
+        this.agregaBeneficiario().get('nombreBeneficiario')!.value,
+      p_mail_beneficiario:
+        this.agregaBeneficiario().get('correoBeneficiario')!.value,
+      p_telefono_beneficiario: this.agregaBeneficiario().get(
+        'telefonoBeneficiario'
+      )!.value,
+      p_region_beneficiario:
+        this.agregaBeneficiario().get('regionBeneficiario')!.value,
+      p_ciudad_beneficiario:
+        this.agregaBeneficiario().get('ciudadBeneficiario')!.value,
+      p_comuna_beneficiario:
+        this.agregaBeneficiario().get('comunaBeneficiario')!.value,
+      p_direccion_beneficiario: this.agregaBeneficiario().get(
+        'direccionBeneficiario'
+      )!.value,
+      p_numero_dir_beneficiario: this.agregaBeneficiario().get(
+        'numeroDireccionBeneficiario'
+      )!.value,
+      p_departamento_block_beneficiario: this.agregaBeneficiario().get(
+        'deptoDireccionBeneficiario'
+      )!.value,
+      p_casa_beneficiario:
+        this.agregaBeneficiario().get('casaBeneficiario')!.value,
+      p_usuario_creacion: 'EJE022',
+    };
+
+    console.log('Beneficiario Grabado:', this.beneficiario);
+
+    this.beneficiarioService
+      .postAgregaBeneficiario(this.beneficiario)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Grabó Beneficiario Bien');
+            this.dialogRef.close('agregado');
+          } else {
+            alert('Error:' + dato.mensaje);
+            console.log('Error:', dato.mensaje);
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
   }
 }
