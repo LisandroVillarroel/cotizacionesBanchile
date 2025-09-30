@@ -76,6 +76,14 @@ export interface ICuestionario {
   archivoNombre: string;
 }
 
+export interface IDocumento {
+  id: number;
+  nombre: string;
+  obligatorio: boolean;
+  archivo: string;
+  archivoNombre: string;
+}
+
 export interface IIngresoSolicitud {
   id_ejecutivo_banco: string;
   id_rubro: number;
@@ -90,4 +98,32 @@ export interface IEstadoIngresoSolicitud {
   mensaje: string;
   estado: string;
   estado_creacion: string;
+}
+
+export interface IAseguradoDet {
+  rut_asegurado: string;
+  nombre_razon_social_asegurado: string;
+  mail_asegurado: string;
+  telefono_asegurado: string;
+  region_asegurado: string;
+  ciudad_asegurado: string;
+  comuna_asegurado: string;
+  direccion_asegurado: string;
+  numero_dir_asegurado: string;
+  departamento_block_asegurado: string;
+  casa_asegurado: string;
+}
+
+export interface IBeneficiarioDet {
+  rut_beneficiario: string;
+  nombre_razon_social_beneficiario: string;
+  mail_beneficiario: string;
+  telefono_beneficiario: string;
+  region_beneficiario: string;
+  ciudad_beneficiario: string;
+  comuna_beneficiario: string;
+  direccion_beneficiario: string;
+  numero_dir_beneficiario: string;
+  departamento_block_beneficiario: string;
+  casa_beneficiario: string;
 }

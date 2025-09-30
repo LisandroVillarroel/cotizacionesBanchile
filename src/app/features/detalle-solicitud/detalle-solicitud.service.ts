@@ -1,37 +1,34 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { DetalleSolicitudInterface } from '@features/detalle-solicitud/detalle-interface';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TipoSeguroService {
-
+export class DetalleSolicitudService {
   private http = inject(HttpClient);
 
-   headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  });
 
   constructor() { }
 
-  postTipoSeguro(idRubro: any): Observable<InterfazTipoSeguro> {
+  postDetalle(IdSolicitud: any): Observable<any> {
     return this.http
-      .post<InterfazTipoSeguro>(`${environment.apiUrl}/listarProductos`, idRubro,{headers: this.headers})
+      .post<any>(`${environment.apiUrl}/detalleSolicitud`, IdSolicitud,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
-      errorHandl(error: HttpErrorResponse) {
-    console.log('paso error tipo seguro: ', error);
+  errorHandl(error: HttpErrorResponse) {
+    console.log('Error en detalle de solicitud: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
-      // Get client-side error
       errorMessage = error.error.message;
     } else {
-      // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     console.log('Error: ', errorMessage);

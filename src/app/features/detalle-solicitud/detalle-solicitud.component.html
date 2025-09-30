@@ -27,17 +27,19 @@
     <div class="p-2 fondoAzul">
       <h1 style=" margin: 0px 0px 0px;">Detalle de solicitud</h1></div>
   </header>  -->
-     <div class="barra-titulo card-con-titulo titulomodal" style="width: 100%; margin-left: 1%">
-    <h2>Detalle de solicitud </h2>
-    <button mat-icon-button mat-dialog-close [disabled]="false">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
- <content>
-  <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Información General"
-    style="width: 98%; margin-left: 1%">
-    <app-informacion-general />
+<div class="barra-titulo card-con-titulo titulomodal" style="width: 100%">
+  <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
+  <button mat-icon-button mat-dialog-close [disabled]="false">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<content>
+  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
+    data-titulo="Información General" style="width: 98%; margin-left: 1%">
+    <app-informacion-general  [infoGral]="infoGral()"/>
   </mat-card>
+
   <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
     style="width: 98%; margin-left: 1%">
     <app-documentos-asociados />
@@ -53,7 +55,7 @@
           <button mat-stroked-button color="primary" class="botonesDetalle" (click)="devolverSolicitud()">Devolver
             con
             Observaciones</button>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="aceptarSolDetalle()">Aceptar
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="aprobarSolicitud()">Aceptar
             Solicitud</button>
         </div>
       </mat-dialog-actions>
@@ -61,7 +63,7 @@
     <div>
       <mat-dialog-actions align="end" style="width: 100%;">
         <div>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="anularSol()">Anular
+          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="anularSolicitud()">Anular
             Solicitud</button>
           <button mat-stroked-button color="primary" class="botonesDetalle" (click)="corregirSolicitud()">Corregir
             Solicitud</button>

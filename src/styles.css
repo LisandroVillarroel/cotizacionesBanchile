@@ -868,3 +868,70 @@ mat-divider[vertical] {
   border-radius: 12px;
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
+
+/* Afgregado por Irma Chin  */
+.justify-around{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Esto puede ser de uso general */
+.fondoGris{
+  background-color: #E8E8EA;
+  color: #666668;
+}
+
+.fondoAzul{
+  background-color: #234E85;
+  color: white;
+}
+
+.titulo{
+  color: #234E85;
+}
+
+.danger{
+  color: #F45516;
+}
+
+.destacado{
+    color: #285B9B;
+}
+
+.verde{
+  color: green;
+}
+.amarillo{
+  color: yellow;
+}
+.rojo{
+  color: red;
+}
+
+
+.gris {
+  color: #666668;
+}
+
+.info {
+    color: #149DC9;
+}
+
+.fontSmall{
+  font-size: 12px;
+}
+
+.fontLarge{
+  font-size: 16px;
+}
+
+.cursiva{
+  font-style: italic;
+}
+
+.link{
+  background-color: inherit;
+  border: none !important;
+  box-shadow: none !important;
+  color:  #149dc9;
+}

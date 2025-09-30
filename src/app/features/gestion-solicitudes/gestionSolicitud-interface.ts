@@ -1,4 +1,4 @@
-import { ICompania, IObservacion } from "@features/detalle-solicitud/modelo/solicitud-interface";
+import { ICompania, IObservacion } from "@features/detalle-solicitud/detalle-interface";
 
 export interface ISolicitudG {
   Sla: number;
