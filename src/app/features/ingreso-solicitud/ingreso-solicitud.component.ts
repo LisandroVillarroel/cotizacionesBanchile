@@ -96,6 +96,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   ],
 })
 export default class IngresoSolicitudComponent {
+    storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
 

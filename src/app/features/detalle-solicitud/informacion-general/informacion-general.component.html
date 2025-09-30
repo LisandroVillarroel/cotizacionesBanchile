@@ -1,4 +1,5 @@
-<div class="d-flex justify-around">
+<div class="container-fluid fondoGris justify-around d-flex p-4">
+  <!-- <div class="d-flex justify-around"> -->
     <mat-card style="width: 49%;">
       <mat-card-header>
         <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
@@ -37,10 +38,15 @@
       </mat-card-content>
     </mat-card>
 </div>
-<div class="container d-flex p-2 gap-5" style="justify-content: center;">
-          <button mat-stroked-button class="btn-link link" (click)="verAsegurados()">Ver asegurados</button>
-          <button mat-stroked-button class="btn-link link" (click)="verBeneficiarios()">Ver beneficiarios</button>
-          <button mat-stroked-button class="btn-link link" (click)="verMateria()">Ver materia asegurada</button>
-          <button mat-stroked-button class="btn-link link" (click)="verDocumentos()">Ver documentos</button>
+<div class="container-fluid fondoGris justify-around d-flex p-2">
+  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
+    data-titulo="Observaciones" style="width: 98%; margin-left: 1%">
 
+  </mat-card>
+</div>
+<div class="container-fluid fondoGris justify-around d-flex p-2">
+  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
+    data-titulo="Empresas contactadas" style="width: 98%; margin-left: 1%">
+
+  </mat-card>
 </div>

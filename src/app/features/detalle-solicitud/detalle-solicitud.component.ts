@@ -2,7 +2,7 @@ import { Component, inject, input, signal, ViewEncapsulation } from '@angular/co
 import { MatButtonModule } from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { MatIcon } from "@angular/material/icon";
+import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatCard } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
@@ -18,18 +18,29 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IAseguradoDet, IBeneficiarioDet, IDocumento } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
+import { VerAseguradosComponent } from './ver-asegurados/ver-asegurados.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [
     InformacionGeneralComponent,
-    DocumentosAsociadosComponent,
+    VerAseguradosComponent,
+    //DocumentosAsociadosComponent,
     MatButtonModule,
     MatDialogModule,
     MatIcon,
     MatCard,
     MatToolbarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatTabsModule,
+    CommonModule,
   ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',

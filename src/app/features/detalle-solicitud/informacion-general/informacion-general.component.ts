@@ -20,10 +20,4 @@ import { catchError } from 'rxjs';
 export class InformacionGeneralComponent {
   infoGral = input.required<ISolicitud | undefined>();
   infoSolicitud = computed(()=> this.infoGral());
-
-  verAsegurados(){
-  }
-  verBeneficiarios(){}
-  verDocumentos(){}
-  verMateria(){}
 }

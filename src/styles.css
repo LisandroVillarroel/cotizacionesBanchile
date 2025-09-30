@@ -943,5 +943,5 @@ mat-divider[vertical] {
   background-color: inherit;
   border: none !important;
   box-shadow: none !important;
-  color:  #149dc9;
+  color: #149dc9 !important;
 }

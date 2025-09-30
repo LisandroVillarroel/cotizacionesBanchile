@@ -1,44 +1,42 @@
-<!-- <div class="modal fade" tabindex="-1" aria-labelledby="Detalle de solicitud">
-  <div class='modal-dialog modal-lg'>
-    <div class='modal-content rounded-0'>
-        <div class='modal-header bg-secondary rounded-0'>
-          <div><h1 class='modal-title'> Detalle de solicitud - {{}}</h1></div>
-
-        </div>
-    </div>
+<div class="container-fluid">
+  <div class="barra-titulo card-con-titulo titulomodal" style="width: 100%">
+    <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
-</div> -->
-
-<!-- <div class="modal fade"  tabindex="-1" aria-labelledby="Detalle Solicitud">
-  <div class="modal-dialog modal-lg">
-    <div class='modal-content rounded-0'>
-      <div class='modal-header fondoAzul rounded-0'>
-          <div><h1 class='modal-title'>Detalle de solicitud</h1></div>
-            <button mat-icon-button mat-dialog-close [disabled]="false"  data-bs-dismiss='modal' aria-label='Close'>
-              <mat-icon>close</mat-icon>
-            </button>
+  <!-- <h1 mat-dialog-title class="mt-3 titulo">Detalle de solicitud - {{ idSolicitud }}</h1> -->
+  <mat-tab-group>
+    <mat-tab label="Información General">
+      <div class="container-fluid fondoGris">
+        <app-informacion-general [infoGral]="infoGral()"/>
+       </div>
+    </mat-tab>
+    <mat-tab label="Asegurados">
+      <div class="container-fluid fondoGris">
+        <app-ver-asegurados [idSolicitud]="idSolicitud"/>
       </div>
-    </div>
-  </div>
-</div> -->
-<!-- <mat-toolbar class="example-header">Detalle de solicitud</mat-toolbar> -->
-
-<!--   <header style="padding: 0px 0px 0px;">
-    <div class="p-2 fondoAzul">
-      <h1 style=" margin: 0px 0px 0px;">Detalle de solicitud</h1></div>
-  </header>  -->
-<div class="barra-titulo card-con-titulo titulomodal" style="width: 100%">
-  <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
-  <button mat-icon-button mat-dialog-close [disabled]="false">
-    <mat-icon>close</mat-icon>
-  </button>
+    </mat-tab>
+    <mat-tab label="Beneficiarios">
+      <div class="container-fluid fondoGris"> Content 3</div>
+      <!-- <app-en-cotizacion/> -->
+    </mat-tab>
+    <mat-tab label="Materia Asegurada">
+      <div class="container-fluid fondoGris"> Content 3</div>
+      <!-- <app-en-cotizacion/> -->
+    </mat-tab>
+    <mat-tab label="Documentos Asociados">
+      <div class="container-fluid fondoGris"> Content 3</div>
+      <!--     <app-documentos-asociados /> -->
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
-<content>
-  <mat-card class="fondoGris card-con-titulo container d-flex justify-around p-4"
-    data-titulo="Información General" style="width: 98%; margin-left: 1%">
-    <app-informacion-general  [infoGral]="infoGral()"/>
-  </mat-card>
+
+
+
+
+<!-- <content>
 
   <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
     style="width: 98%; margin-left: 1%">
@@ -79,4 +77,4 @@
     </div>
   </div>
 </content>
-
+ -->

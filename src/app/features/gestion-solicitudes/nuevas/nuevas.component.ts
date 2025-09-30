@@ -179,7 +179,7 @@ seleccionaFecha() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = IdSolicitud;
