@@ -7,9 +7,8 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
-  IBeneficiario,
+
   IAgregaBeneficiario,
-  IModificaBeneficiario,
   DatosBeneficiariosInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
@@ -38,7 +37,7 @@ export class BeneficiarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postModificaBeneficiario(modificaBeneficiario: IModificaBeneficiario): Observable<any> {
+  postModificaBeneficiario(modificaBeneficiario: IAgregaBeneficiario): Observable<any> {
     console.log('Modifica Beneficiario Service:', modificaBeneficiario);
     return this.http
       .post<any>(
@@ -51,12 +50,13 @@ export class BeneficiarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postEliminaBeneficiario(eliminaBeneficiario: IBeneficiario): Observable<any> {
-    console.log('Elimina Beneficiario Service:', eliminaBeneficiario);
+  postEliminaBeneficiario(isolicitud: number,rutBeneficiario:string): Observable<any> {
+   const parametro={p_id_solicitud:isolicitud, p_rut_beneficiario:rutBeneficiario}
+
     return this.http
       .post<any>(
         `${environment.apiUrl}/eliminarBeneficiario`,
-        eliminaBeneficiario,
+        parametro,
         {
           headers: this.headers,
         }

@@ -15,10 +15,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import {
-  IBeneficiarioLista,
-  IModificaBeneficiario,
+  IAgregaBeneficiario,
+  IBeneficiarioListaParametro,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { StorageService } from '@shared/service/storage.service';
 
 @Component({
   selector: 'app-modifica-solicitud-beneficiario',
@@ -34,7 +36,9 @@ import { BeneficiarioService } from '@features/ingreso-solicitud/service/benefic
   styleUrl: './modifica-solicitud-beneficiario.component.css',
 })
 export class ModificaSolicitudBeneficiarioComponent {
-  beneficiario!: IModificaBeneficiario;
+  beneficiario!: IAgregaBeneficiario;
+ storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -42,46 +46,46 @@ export class ModificaSolicitudBeneficiarioComponent {
     MatDialogRef<ModificaSolicitudBeneficiarioComponent>
   );
 
-  readonly data = inject<IBeneficiarioLista>(MAT_DIALOG_DATA);
+  readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
-  rutBeneficiario = new FormControl(this.data.rut_beneficiario, [
+  rutBeneficiario = new FormControl(this.data.datoBeneficiarioPar.rut_beneficiario, [
     Validators.required,
     this.validaRut,
   ]);
   nombreBeneficiario = new FormControl(
-    this.data.nombre_razon_social_beneficiario,
+    this.data.datoBeneficiarioPar.nombre_razon_social_beneficiario,
     [Validators.required]
   );
 
-  correoBeneficiario = new FormControl(this.data.mail_beneficiario, [
+  correoBeneficiario = new FormControl(this.data.datoBeneficiarioPar.mail_beneficiario, [
     Validators.required,
   ]);
 
-  telefonoBeneficiario = new FormControl(this.data.telefono_beneficiario, [
+  telefonoBeneficiario = new FormControl(this.data.datoBeneficiarioPar.telefono_beneficiario, [
     Validators.required,
   ]);
 
-  regionBeneficiario = new FormControl(this.data.region_beneficiario, [
+  regionBeneficiario = new FormControl(this.data.datoBeneficiarioPar.region_beneficiario, [
     Validators.required,
   ]);
-  ciudadBeneficiario = new FormControl(this.data.ciudad_beneficiario, [
+  ciudadBeneficiario = new FormControl(this.data.datoBeneficiarioPar.ciudad_beneficiario, [
     Validators.required,
   ]);
-  comunaBeneficiario = new FormControl(this.data.comuna_beneficiario, [
+  comunaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.comuna_beneficiario, [
     Validators.required,
   ]);
-  direccionBeneficiario = new FormControl(this.data.direccion_beneficiario, [
+  direccionBeneficiario = new FormControl(this.data.datoBeneficiarioPar.direccion_beneficiario, [
     Validators.required,
   ]);
   numeroDireccionBeneficiario = new FormControl(
-    this.data.numero_dir_beneficiario,
+    this.data.datoBeneficiarioPar.numero_dir_beneficiario,
     [Validators.required]
   );
   deptoDireccionBeneficiario = new FormControl(
-    this.data.departamento_block_beneficiario,
+    this.data.datoBeneficiarioPar.departamento_block_beneficiario,
     [Validators.required]
   );
-  casaBeneficiario = new FormControl(this.data.casa_beneficiario, [
+  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario, [
     Validators.required,
   ]);
 
@@ -190,7 +194,7 @@ export class ModificaSolicitudBeneficiarioComponent {
 
   modificar() {
     this.beneficiario = {
-      p_id_solicitud: 5,
+      p_id_solicitud: Number(this.data.idSolicitud),
       p_rut_beneficiario:
         this.modificaBeneficiario().get('rutBeneficiario')!.value,
       p_nombre_razon_social_beneficiario:
@@ -217,7 +221,7 @@ export class ModificaSolicitudBeneficiarioComponent {
       )!.value,
       p_casa_beneficiario:
         this.modificaBeneficiario().get('casaBeneficiario')!.value,
-      p_usuario_modificacion: 'EJE022',
+      p_usuario_modificacion: this._storage()?.usuarioLogin.usuario,
     };
     console.log('Beneficiario Modificado:', this.beneficiario);
     this.beneficiarioService

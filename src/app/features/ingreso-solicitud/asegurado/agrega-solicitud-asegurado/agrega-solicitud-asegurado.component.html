@@ -1,4 +1,4 @@
-<div class="barra-titulo">
+<div class="barra-titulo-form">
   <h2 class="titulo">Ingreso Asegurado</h2>
 </div>
 
@@ -8,10 +8,10 @@
   class="agrega-container"
 >
   <div
-    class="row contenido-form form-con-titulo mat-elevation-z6"
+    class="row form-con-titulo contenido-form mat-elevation-z6"
     data-titulo="Agregar Datos del Asegurado"
   >
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
         <input
@@ -69,7 +69,9 @@
         <mat-error>{{ getErrorMessage("telefonoAsegurado") }}</mat-error>
         }
       </mat-form-field>
+    </div>
 
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>
         <input
@@ -82,89 +84,91 @@
         <mat-error>{{ getErrorMessage("regionAsegurado") }}</mat-error>
         }
       </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Ciudad</mat-label>
+        <input
+          matInput
+          aria-label="Ciudad"
+          [formControl]="ciudadAsegurado"
+          required
+        />
+        @if (ciudadAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("ciudadAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Comuna</mat-label>
+        <input
+          matInput
+          aria-label="Comuna"
+          [formControl]="comunaAsegurado"
+          required
+        />
+        @if (comunaAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("comunaAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Dirección"
+          [formControl]="direccionAsegurado"
+          required
+        />
+        @if (direccionAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("direccionAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
     </div>
 
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Ciudad</mat-label>
-      <input
-        matInput
-        aria-label="Ciudad"
-        [formControl]="ciudadAsegurado"
-        required
-      />
-      @if (ciudadAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("ciudadAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
+    <div class="col-md-4">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Dirección</mat-label>
+        <input
+          matInput
+          aria-label="Número Dirección"
+          [formControl]="numeroDireccionAsegurado"
+          required
+        />
+        @if (numeroDireccionAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("numeroDireccionAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Comuna</mat-label>
-      <input
-        matInput
-        aria-label="Comuna"
-        [formControl]="comunaAsegurado"
-        required
-      />
-      @if (comunaAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("comunaAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Departamento</mat-label>
+        <input
+          matInput
+          aria-label="Número Departamento"
+          [formControl]="deptoDireccionAsegurado"
+          required
+        />
+        @if (deptoDireccionAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("deptoDireccionAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Dirección</mat-label>
-      <input
-        matInput
-        aria-label="Dirección"
-        [formControl]="direccionAsegurado"
-        required
-      />
-      @if (direccionAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("direccionAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Número Dirección</mat-label>
-      <input
-        matInput
-        aria-label="Número Dirección"
-        [formControl]="numeroDireccionAsegurado"
-        required
-      />
-      @if (numeroDireccionAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("numeroDireccionAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Número Depto Dirección</mat-label>
-      <input
-        matInput
-        aria-label="Número Depto Dirección"
-        [formControl]="deptoDireccionAsegurado"
-        required
-      />
-      @if (deptoDireccionAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("deptoDireccionAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field class="inputInput">
-      <mat-label class="labelI">Número Casa Dirección</mat-label>
-      <input
-        matInput
-        aria-label="Número Casa Dirección"
-        [formControl]="casaAsegurado"
-        required
-      />
-      @if (casaAsegurado.invalid) {
-      <mat-error>{{ getErrorMessage("casaAsegurado") }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Número Casa</mat-label>
+        <input
+          matInput
+          aria-label="Número Casa"
+          [formControl]="casaAsegurado"
+          required
+        />
+        @if (casaAsegurado.invalid) {
+        <mat-error>{{ getErrorMessage("casaAsegurado") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-center">
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button
       type="button"

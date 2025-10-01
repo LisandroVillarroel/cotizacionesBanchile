@@ -27,10 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import {
-  IIngresoSolicitud,
-  IBeneficiarioLista,
-} from './modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IIngresoSolicitud } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
@@ -53,6 +50,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { AseguradoService } from './service/asegurado.service';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -101,12 +99,16 @@ export default class IngresoSolicitudComponent {
 
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
+  idSolicitud = signal<string>('0');
 
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  //datoAsegurados = signal<ISolicitudAsegurado[] | undefined>(undefined);
-  //datoBeneficiarios = signal<ISolicitudBeneficiario[] | undefined>(undefined);
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  asegurado!: IAsegurado;
+  aseguradoService = inject(AseguradoService);
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -141,22 +143,11 @@ export default class IngresoSolicitudComponent {
   @ViewChild(CuestionarioComponent)
   cuestionarioComponent!: CuestionarioComponent;
 
-  // Oculta el botón "Anular" solo en el primer paso del stepper.
-  // Se actualiza al cargar el componente y cada vez que el usuario cambia de paso.
   @ViewChild('stepper') stepper!: MatStepper;
 
-  /*  email = new FormControl('', [
-    Validators.required,
-    Validators.email,
-    Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),
-  ]);*/
-
   //Declara los datos del contratante para panel
-  contratanteInfo = signal<{
-    id?: number;
-    rut_contratante: string;
-    nombre: string;
-  }>({
+  contratanteInfo = signal({
+    id: '0',
     rut_contratante: '',
     nombre: '',
   });
@@ -169,16 +160,6 @@ export default class IngresoSolicitudComponent {
       aseguradeCheck: this.aseguradeCheck,
     })
   );
-
-  /*  ngAfterViewInit(): void {
-    // Establecer estado inicial
-    this.mostrarAnular = this.stepper.selectedIndex !== 0;
-
-    // Escuchar cambios posteriores
-    this.stepper.selectionChange.subscribe((event) => {
-      this.mostrarAnular = event.selectedIndex !== 0;
-    });
-  }*/
 
   agregaSolicitudAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -213,11 +194,11 @@ export default class IngresoSolicitudComponent {
   }
 
   cargaRubro() {
-    console.log('paso rubro')
+    console.log('paso rubro');
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          console.log()
+          console.log();
           this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
@@ -253,7 +234,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaConTratante() {
+  async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
@@ -280,27 +261,25 @@ export default class IngresoSolicitudComponent {
       // asegurados: [],
       // beneficiarios: [],
     };
-    console.log('ingreso solicitud:', this.ingresoSolicitud);
-    this.ingresoSolicitudService
+    console.log('Ingreso Solicitud:', this.ingresoSolicitud);
+    await this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó bien');
-            if (
-              this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-            ) {
-              this.guardaAsegurado();
-            }
+            alert('Grabó Bien');
+            this.idSolicitud.set(dato.p_id_solicitud);
             // Actualizar el signal para mostrar datos del contratante en panel
-
             this.contratanteInfo.set({
-              id: 999, // ID en duro para prueba
+              id: dato.p_id_solicitud,
               rut_contratante:
                 this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
             });
+            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value==true){
+                this.agregarAsegurado()
+            }
           } else {
             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
@@ -317,7 +296,40 @@ export default class IngresoSolicitudComponent {
       });
   }
 
-  guardaAsegurado() {}
+ async agregarAsegurado() {
+    this.asegurado = {
+      p_id_solicitud: Number(this.contratanteInfo().id),
+      p_rut_asegurado: this.ingresoSolicitud.contratante.rut_contratante,
+      p_nombre_razon_social_asegurado:this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
+      p_mail_asegurado: this.ingresoSolicitud.contratante.mail_contratante,
+      p_telefono_asegurado: this.ingresoSolicitud.contratante.telefono_contratante,
+      p_region_asegurado: this.ingresoSolicitud.contratante.region_contratante,
+      p_ciudad_asegurado: this.ingresoSolicitud.contratante.ciudad_contratante,
+      p_comuna_asegurado: this.ingresoSolicitud.contratante.comuna_contratante,
+      p_direccion_asegurado:this.ingresoSolicitud.contratante.direccion_contratante,
+      p_numero_dir_asegurado: this.ingresoSolicitud.contratante.numero_dir_contratante,
+      p_departamento_block_asegurado: this.ingresoSolicitud.contratante.departamento_block_contratante,
+      p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
+      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
+    };
+
+    console.log('Asegurado Grabado:', this.asegurado);
+
+    await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          alert('Grabó En Asegurado');
+        } else {
+          alert('Error:' + dato.mensaje);
+          console.log('Error:', dato.mensaje);
+        }
+      },
+      error: (error) => {
+        console.log('Error Inesperado', error);
+      },
+    });
+  }
 
   salir() {
     this.router.navigate(['/principal/inicio']);
@@ -382,23 +394,4 @@ export default class IngresoSolicitudComponent {
   get mostrarDatosAsegurado(): boolean {
     return !this.esIgualAlAsegurado;
   }
-
-  cambioAseguradoFlag() {
-    console.log('ver flag', this.flagAseguradoRescata);
-    this.flagAsegurado.setValue(this.flagAseguradoRescata);
-  }
-
-  /* actualizarAsegurado(nuevoAsegurados: ISolicitudAsegurado[]) {
-    this.datoAsegurados.set(nuevoAsegurados); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:', this.datoAsegurados());
-  } */
-  cambioBeneficiarioFlag() {
-    console.log('ver flag', this.flagAseguradoRescata);
-    this.flagBeneficiario.setValue(this.flagBeneficiarioRescata);
-  }
-
-  /* actualizarBeneficiario(nuevoBeneficiarios: ISolicitudBeneficiario[]) {
-    this.datoBeneficiarios.set(nuevoBeneficiarios); // Actualiza la señal del padre con el arreglo recibido del hijo
-    console.log('arreglo actualizado:', this.datoBeneficiarios());
-  } */
 }

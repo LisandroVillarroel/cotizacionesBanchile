@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,13 +6,19 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-agrega-solicitud-asegurado',
@@ -30,6 +36,11 @@ import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-
 })
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
+
+   storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  public readonly data = inject<string>(MAT_DIALOG_DATA);
 
   aseguradoService = inject(AseguradoService);
 
@@ -135,6 +146,16 @@ export class AgregaSolicitudAseguradoComponent {
     return '';
   }
 
+  async onBlurRutAsegurado(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      await this.agregaAsegurado()
+        .get('rutAsegurado')!
+        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
+    }
+  }
+
   validaRut(control: FormControl): { [s: string]: boolean } {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
@@ -142,19 +163,9 @@ export class AgregaSolicitudAseguradoComponent {
     return null as any;
   }
 
-  async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
-
-    if (validateRut(rut) === true) {
-      await this.agregaAsegurado()
-        .get('p_rut_asegurado')!
-        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-    }
-  }
-
   grabar() {
     this.asegurado = {
-      p_id_solicitud: 5,
+      p_id_solicitud: Number(this.data),
       p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.agregaAsegurado().get('nombreAsegurado')!.value,
@@ -173,7 +184,7 @@ export class AgregaSolicitudAseguradoComponent {
         'deptoDireccionAsegurado'
       )!.value,
       p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
-      p_usuario_creacion: 'EJE022',
+      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Asegurado Grabado:', this.asegurado);

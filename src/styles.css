@@ -459,20 +459,22 @@ th#opcionesI {
     padding: 16px 0px 0px 16px !important;
   }
 
-  .agrega-container {
-    padding: 24px 24px 0px 24px !important;
-    box-sizing: border-box;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    display: block;
-    max-height: fit-content;
+  .barra-titulo-form {
+    background-color: #234e85;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0px 0px 16px !important;
   }
 
   .contenido-form {
     background-color: #f0f4fa !important;
-    padding: 24px 24px 8px 24px !important;
-    margin: 0 auto !important;
+    padding: 24px 24px 24px 24px !important;
     box-sizing: border-box;
+  }
+
+  .barra-botones-form {
+    margin-bottom: 2rem;
   }
 
   /* Fondo blanco para inputs de forms */
@@ -488,12 +490,12 @@ th#opcionesI {
   }
 
   /* Fondo para table con título */
+
   .form-con-titulo {
     background-color: white;
     border: 1px solid #285b9b !important;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    border-radius: 6px;
+    margin: 8rem auto 2rem auto; /* Centrado horizontal */
     position: relative;
     /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important;  */
   }

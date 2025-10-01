@@ -1,20 +1,19 @@
-<div class="barra-titulo">
+<div class="barra-titulo-form">
   <h2 class="titulo">Elimina Beneficiario</h2>
 </div>
 
 <mat-dialog-content name="eliminaBeneficiario" class="elimina-container">
   <div
-    class="row contenido-form form-con-titulo mat-elevation-z6"
+    class="row form-con-titulo contenido-form mat-elevation-z6"
     data-titulo="Eliminar Beneficiario"
-    style="margin-top: 32px"
   >
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
         <input
           matInput
           aria-label="Rut"
-          value="{{ data.rut_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.rut_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -24,7 +23,7 @@
         <input
           matInput
           aria-label="Nombre"
-          value="{{ data.nombre_razon_social_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.nombre_razon_social_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -34,7 +33,7 @@
         <input
           matInput
           aria-label="Correo"
-          value="{{ data.mail_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.mail_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -44,17 +43,19 @@
         <input
           matInput
           aria-label="Teléfono"
-          value="{{ data.telefono_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.telefono_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
+    </div>
 
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>
         <input
           matInput
           aria-label="Región"
-          value="{{ data.region_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.region_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -64,7 +65,7 @@
         <input
           matInput
           aria-label="Ciudad"
-          value="{{ data.ciudad_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.ciudad_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -74,7 +75,7 @@
         <input
           matInput
           aria-label="Comuna"
-          value="{{ data.comuna_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.comuna_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -84,37 +85,39 @@
         <input
           matInput
           aria-label="Dirección"
-          value="{{ data.direccion_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.direccion_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
+    </div>
 
+    <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Dirección</mat-label>
         <input
           matInput
           aria-label="Número Dirección"
-          value="{{ data.numero_dir_beneficiario }}"
+          value="{{ data.datoBeneficiarioPar.numero_dir_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Número Depto Dirección</mat-label>
+        <mat-label class="labelI">Número Departamento</mat-label>
         <input
           matInput
-          aria-label="Número Depto Dirección"
-          value="{{ data.departamento_block_beneficiario }}"
+          aria-label="Número Departamento"
+          value="{{ data.datoBeneficiarioPar.departamento_block_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Número Casa Dirección</mat-label>
+        <mat-label class="labelI">Número Casa</mat-label>
         <input
           matInput
-          aria-label="Número Casa Dirección"
-          value="{{ data.casa_beneficiario }}"
+          aria-label="Número Casa"
+          value="{{ data.datoBeneficiarioPar.casa_beneficiario }}"
           disabled="true"
         />
       </mat-form-field>
@@ -122,7 +125,7 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-center">
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button
       type="button"

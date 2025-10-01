@@ -5,7 +5,6 @@ import {
   inject,
   input,
   model,
-  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -33,6 +32,7 @@ import {
   DatosAseguradosInterface,
   IAsegurado,
   IAseguradoLista,
+  IAseguradoListaParametro,
 } from '../modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '../service/asegurado.service';
 
@@ -53,9 +53,11 @@ import { AseguradoService } from '../service/asegurado.service';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
+   idSolicitud = input.required<string>();
   datoAsegurados = signal<IAseguradoLista[]>([]);
 
-  flagAsegurado = model(false);
+
+  //flagAsegurado = model(false);
 
   aseguradoService = inject(AseguradoService);
 
@@ -77,7 +79,7 @@ export class AseguradoComponent {
     'casaAsegurado',
     'opciones',
   ];
-  //dataSourceAsegurado = new MatTableDataSource<ISolicitudAsegurado>();
+  //dataSourceAsegurado = new MatTableDataSource<IAseguradoLista>(this.datoAsegurados());
 
   @ViewChild(MatPaginator)
   paginatorAsegurado!: MatPaginator;
@@ -101,19 +103,31 @@ export class AseguradoComponent {
     return tabla;
   });
 
+  constructor() {
+    effect(() => {
+      // Llamar al método cada vez que el valor cambie
+      this.rescataListaAsegurados(this.idSolicitud());
+    });
+  }
+
+   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
+
   ngAfterViewInit(): void {
+    console.log('entro a asegurado ngAfterViewInit',this.idSolicitud())
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
   async ngOnInit() {
+    console.log('entro a asegurado',this.idSolicitud())
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.rescataListaAsegurados();
+    this.rescataListaAsegurados(this.idSolicitud()!);
   }
 
-  rescataListaAsegurados() {
+  rescataListaAsegurados(p_id_solicitud: string) {
+    console.log('rescataListaAsegurados')
     const estructura_listaAsegurados = {
-      p_id_solicitud: 5,
+      p_id_solicitud: Number(p_id_solicitud),
     };
     this.aseguradoService
       .postListadoAsegurado(estructura_listaAsegurados)
@@ -138,42 +152,47 @@ export class AseguradoComponent {
   agregaNuevoAsegurado() {
     //  agregaNuevo(empresaInterface_: EmpresaI) {
     // Nuevo
+    console.log('this.idSolicitud():', this.idSolicitud());
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {};
+    dialogConfig.data = this.idSolicitud();
 
     this.dialog
       .open(AgregaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataListaAsegurados();
+          this.rescataListaAsegurados(this.idSolicitud()!);
         }
       });
   }
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
     console.log('Dato Modificar;', datoAseguradoPar);
+    const parametro:IAseguradoListaParametro={
+      datoAseguradoPar: datoAseguradoPar,
+      idSolicitud: this.idSolicitud(),
+    };
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = datoAseguradoPar;
+    dialogConfig.data = parametro;
     this.dialog
       .open(ModificaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
           console.log('Modificación Confirmada:', data);
-          this.rescataListaAsegurados();
+          this.rescataListaAsegurados(this.idSolicitud()!);
         }
       });
   }
@@ -183,7 +202,7 @@ export class AseguradoComponent {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
@@ -195,20 +214,24 @@ export class AseguradoComponent {
 
   eliminaAsegurado(datoAseguradoPar: any) {
     const dialogConfig = new MatDialogConfig();
+ const parametro:IAseguradoListaParametro={
+      datoAseguradoPar: datoAseguradoPar,
+      idSolicitud: this.idSolicitud(),
+    };
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
-    dialogConfig.data = datoAseguradoPar;
+    dialogConfig.data = parametro;
     this.dialog
       .open(EliminaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataListaAsegurados();
+          this.rescataListaAsegurados(this.idSolicitud()!);
         }
       });
   }
