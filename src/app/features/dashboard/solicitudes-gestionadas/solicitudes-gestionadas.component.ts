@@ -146,6 +146,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     const estado = this.filtroFormulario().value.estado??'';
     console.log('his.filtroFormulario().value:',this.filtroFormulario().value)
     const fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    console.log('fechaInicio.getFullYear():',fechaInicio.getFullYear())
 this.formularioModificado();
     console.log('this.datosSolicitud():',this.datosSolicitud())
     console.log('contratante',contratante)
@@ -236,7 +237,7 @@ this.formularioModificado();
     this.rubro.reset();
     this.seguro.reset();
     this.estado.reset();
-
+    this.fecha.reset();
     this.dataSourceSolicitud().filter= '';
   }
 
