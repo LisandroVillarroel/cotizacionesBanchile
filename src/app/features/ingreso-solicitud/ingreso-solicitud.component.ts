@@ -233,6 +233,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
+
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(

@@ -1,3 +1,11 @@
+
+<div class="row">
 @for (elemento of datoMateria(); track $index){
-  <div>{{elemento.p_descripcion_seccion}}</div>
+  @if ($index==0){
+    <div class="md-12">{{elemento.p_descripcion_seccion}}</div>
+  }@else{
+
+  }
+
 }
+</div>
