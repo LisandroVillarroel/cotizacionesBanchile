@@ -6,11 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import {
-
-  IAgregaBeneficiario,
-  DatosBeneficiariosInterface,
-} from '../modelo/ingresoSolicitud-Interface';
+import { IAgregaBeneficiario,  DatosBeneficiariosInterface,} from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',

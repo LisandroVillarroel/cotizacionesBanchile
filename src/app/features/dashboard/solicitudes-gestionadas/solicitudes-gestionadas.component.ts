@@ -144,10 +144,11 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
     const estado = this.filtroFormulario().value.estado??'';
-    console.log('his.filtroFormulario().value:',this.filtroFormulario().value.fecha)
+    console.log('his.filtroFormulario().value:',this.filtroFormulario().value)
     const fechaInicio = new Date(this.filtroFormulario().value.fecha);
 this.formularioModificado();
     console.log('this.datosSolicitud():',this.datosSolicitud())
+    console.log('contratante',contratante)
     return this.datosSolicitud()!.filter(item => {
 
       const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
