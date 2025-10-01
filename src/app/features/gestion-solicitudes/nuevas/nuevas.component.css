@@ -67,17 +67,6 @@
 }
 
 /*fin caja para filtros*/
-.button-link {
-  background-color: #ffffff !important;
-  color: #234e85 !important;
-  padding: 0px 0px 0px !important;
-  font-size: 12px !important;
-}
-
-.button-link:hover {
-  background-color: #ffffff !important;
-  color: #0F8DBA !important;
-}
 
 .alinea-card-gestion{
   margin-bottom: 0.5rem;

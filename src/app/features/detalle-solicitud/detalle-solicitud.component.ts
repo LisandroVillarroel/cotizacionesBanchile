@@ -1,12 +1,11 @@
 import { Component, inject, input, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatCard } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
-import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud } from './detalle-interface';
+import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
 import { DetalleSolicitudService } from './detalle-solicitud.service';
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
@@ -17,7 +16,6 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { IAseguradoDet, IBeneficiarioDet, IDocumento } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -34,7 +32,6 @@ import { VerAseguradosComponent } from './ver-asegurados/ver-asegurados.componen
     MatButtonModule,
     MatDialogModule,
     MatIcon,
-    MatCard,
     MatToolbarModule,
     MatIconModule,
     MatTooltipModule,
@@ -57,26 +54,21 @@ export default class DetalleSolicitudComponent {
 
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
-  documentos = signal<IDocumento[] | undefined>(undefined);
+  //documentos = signal<IDocumento[] | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
-  companias = signal<ICompania[] | undefined>(undefined);
-  asegurados = signal<IAseguradoDet[] | undefined>(undefined);
-  beneficiarios = signal<IBeneficiarioDet[] | undefined>(undefined);
+  //companias = signal<ICompania[] | undefined>(undefined);
+  //asegurados = signal<IAseguradoDet[] | undefined>(undefined);
+  //beneficiarios = signal<IBeneficiarioDet[] | undefined>(undefined);
 
   async ngOnInit(){
     this.cargarSolicitud(this.idSolicitud);
   }
-  // const estructura_listaSolicitudes = {
-  //     //"p_id_usuario": "CO001",
-  //     "p_id_usuario": "EJ001", //  id_ejecutivo_banco: this._storage()?.usuarioLogin.codigoEjecutivo!,
-  //     //"p_id_usuario": "EJ002",
-  //     "p_tipo_usuario": "E"
-  //   }
 
-  cargarSolicitud(idSolicitud: any){
-/*     this.detalleService.postDetalle(idSolicitud).subscribe({
-      next: (dato: any) => {
+  cargarSolicitud(idSolicitud: number){
+     this.detalleService.postDetalle(idSolicitud).subscribe({
+      next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
+          console.log('Detalle solicitud:', dato);
           this.infoGral.set({
             id_solicitud : this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
@@ -87,14 +79,12 @@ export default class DetalleSolicitudComponent {
             id_tipo_seguro: dato.p_id_tipo_seguro,
             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
             sla: dato.p_sla,
-            id_estado_solicitud: dato.p_id_estado_solicitud
-            //, descripcion_estado: dato.p_descripcion_estado
+            id_estado_solicitud: dato.p_id_estado_solicitud,
+            nombre_estado: dato.p_nombre_estado
           });
-          this.asegurados.set(dato.c_asegurados);
-          this.beneficiarios.set(dato.c_beneficiarios);
+          //this.asegurados.set(dato.c_asegurados);
+          //this.beneficiarios.set(dato.c_beneficiarios);
           this.observaciones.set(dato.c_observaciones);
-          console.log('Detalle solicitud:', dato)
-          //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -108,8 +98,8 @@ export default class DetalleSolicitudComponent {
         console.log('ID Solicitud:', idSolicitud);
 
       },
-    }); */
-    this.infoGral.set({
+    });
+/*     this.infoGral.set({
       id_solicitud: 1,
       rut_contratante: "88.888.901-9",
       nombre_razon_social_contratante: "Carlos Torres Navarro",
@@ -202,7 +192,7 @@ export default class DetalleSolicitudComponent {
             casa_beneficiario: ""
         }
     ]);
-    this.observaciones.set([]);
+    this.observaciones.set([]); */
   }
 
   solicitudId: any;

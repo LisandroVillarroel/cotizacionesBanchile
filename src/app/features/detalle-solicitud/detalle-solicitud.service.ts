@@ -17,9 +17,10 @@ export class DetalleSolicitudService {
 
   constructor() { }
 
-  postDetalle(IdSolicitud: any): Observable<any> {
+  postDetalle(IdSolicitud: number): Observable<DetalleSolicitudInterface> {
+    const parametro = {p_id_solicitud: IdSolicitud};
     return this.http
-      .post<any>(`${environment.apiUrl}/detalleSolicitud`, IdSolicitud,{headers: this.headers})
+      .post<DetalleSolicitudInterface>(`${environment.apiUrl}/detalleSolicitud`, parametro,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 

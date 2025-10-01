@@ -38,7 +38,7 @@ p {
 
 /*INICIO INPUT*/
 .inputInput {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
@@ -55,7 +55,7 @@ p {
 }
 
 .inputSelect {
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-size: var(--mdc-typography-body1-font-size, 12px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
   width:100%;
@@ -114,7 +114,10 @@ p {
   margin-bottom: 0.5rem;
   /* padding-bottom: 0px; */
   padding: 10px 16px 10px;
+  background-color: #E8E8EA !important;
 }
+
+
 /*fin caja para filtros*/
 
 /*MAT-TABLE*/
@@ -176,79 +179,9 @@ tr.mat-header-row {
   /*Tamaño letra tabla*/
 }
 
-/*Color Barra hover de la tabla*/
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: rgba(208, 206, 205, 0.686);
-
-  button.tabla {
-    background-color: rgba(208, 206, 205, 0.686);
-  }
-
-}
-
-/* Color Barra Cuando se da Click*/
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #959597;
-}
-
-tr.mat-footer-row,
-tr.mat-row {
-  height: 30px !important;
-}
-
-
-
-/*iconos de tabla*/
-button.nuevo:hover {
-  color: white !important;
-   background-color: #149DC9 !important;
-}
-
-button.nuevo {
-  color: black !important;
-  border: 0;
-  background-color: #149DC9;
-  width: 40px !important;
-  height: 40px !important;
-}
-
-button.tabla:hover {
-  color: black !important;
- background-color: rgba(208, 206, 205, 0.686) !important;
-}
-
-button.tabla {
-  color: #149DC9 !important;
-  border: 0;
-  background-color: white;
-  width: 40px !important;
-  height: 40px !important;
-}
-
-/*Fin iconos de tabla*/
-
-/*Icono ordena tabla*/
-.mat-sort-header-arrow {
-  color: #cd1515 !important;
-}
-
-.mat-sort-header-arrow:hover {
-  color: #ffffff !important;
-}
-
-/*Foot Tabla*/
-.mat-mdc-paginator-page-size-select {
-  width: 84px !important;
-}
-
-/* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
 .border-none {
   border-radius: 0px;
-}
-
-.danger{
-  color: #F45516;
 }
 
 .edicion{

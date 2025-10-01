@@ -10,6 +10,7 @@ body {
 body {
   margin: 0;
   font-family: "Roboto", sans-serif !important;
+  color: #333334;
 }
 /* FIN GENERAL */
 
@@ -654,7 +655,7 @@ th#opcionesI {
 
 .fondoGris {
   background-color: #e8e8ea;
-  color: #666668;
+  color: #333334;
 }
 
 /* Card de documentos opcionales deshabilitados */
@@ -918,7 +919,15 @@ mat-divider[vertical] {
 }
 
 .destacado{
-    color: #285B9B;
+    color: #285B9B !important;
+}
+
+.warning{
+  color: #FFC725;
+}
+
+.success{
+  color: #6BAA1F;
 }
 
 .verde{
@@ -934,6 +943,10 @@ mat-divider[vertical] {
 
 .gris {
   color: #666668;
+}
+
+.gris-claro{
+  color: #CFCFD2;
 }
 
 .info {
@@ -957,4 +970,20 @@ mat-divider[vertical] {
   border: none !important;
   box-shadow: none !important;
   color: #149dc9 !important;
+  font-size: 12px !important;
+}
+
+.button-link {
+  background-color: inherit;
+  border: none !important;
+  box-shadow: none !important;
+  color: #149dc9 !important;
+  /*color: #234e85 !important;*/
+  /*padding: 0px 0px 0px !important;*/
+  font-size: 10px !important;
+}
+
+.button-link:hover {
+  background-color: #ffffff !important;
+  color: #0F8DBA !important;
 }

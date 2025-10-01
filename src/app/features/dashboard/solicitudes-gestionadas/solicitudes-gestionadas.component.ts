@@ -28,7 +28,6 @@ import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interfac
 import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
 
-
 @Component({
   selector: 'app-solicitudes-gestionadas',
   standalone: true,
@@ -111,8 +110,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     "accion"
   ];
 
-
-
   dataSourceSolicitud = computed(() => {
     const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
     this.setSortingAndPagination(tabla);
@@ -146,7 +143,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     const estado = this.filtroFormulario().value.estado??'';
     console.log('his.filtroFormulario().value:',this.filtroFormulario().value.fecha)
     const fechaInicio = new Date(this.filtroFormulario().value.fecha);
-this.formularioModificado();
+    this.formularioModificado();
     console.log('this.datosSolicitud():',this.datosSolicitud())
     return this.datosSolicitud()!.filter(item => {
 
@@ -305,7 +302,18 @@ this.formularioModificado();
     });
   }
 
-  getCellClass(value: number): string {
+
+/*
+  get estilosTemperatura() {
+    return {
+      'background-color': this.temperatura > 30 ? 'red' :
+                         this.temperatura > 20 ? 'orange' : 'blue',
+      'color': 'white',
+      'display': this.isVisible ? 'block' : 'none',
+      'font-size': '20px'
+    };
+  }
+
     if (value == 1) { //'Aprobada'
       return 'aprobada';
     } else if (value == 2) {  //'Anulada'
@@ -326,8 +334,7 @@ this.formularioModificado();
       return 'rechazada';
     } else { //if (value == 10) { //'Terminada'
       return 'terminada';
-    }
-  }
+    } */
 
   /* Fin llamadas a servicios */
   verDetalle(IdSolicitud: number) {
@@ -343,7 +350,26 @@ this.formularioModificado();
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
   }
+
+  getEstadoFiltrado(idEstado: number){
+    return this.datosEstados().filter(item =>
+      item.id_estado_solicitud===idEstado
+    );
+  }
+
+  getCellStyle(idEstado: number) {
+    const estado = this.getEstadoFiltrado(idEstado)[0];
+    return {
+      'color': estado.color_estado,
+      'background-color': estado.background_estado,
+      'border': '1px solid' + estado.color_estado,
+      'width': 'fit-content',
+      'padding-left': '5%',
+      'padding-right': '5%'
+    };
+  }
 }
+
 function takeUntilDestroyed(): import("rxjs").OperatorFunction<any, unknown> {
   throw new Error('Function not implemented.');
 }
