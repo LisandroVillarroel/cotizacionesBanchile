@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, NgModule, input, effect, computed } from '@angular/core';
+import { Component, ViewChild, inject, signal, NgModule, input, effect, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +28,7 @@ import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interfac
 import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
 
+
 @Component({
   selector: 'app-solicitudes-gestionadas',
   standalone: true,
@@ -54,7 +55,7 @@ import { IEstado } from '@shared/modelo/estado-interface';
   styleUrl: './solicitudes-gestionadas.component.css'
 })
 
-export class SolicitudesGestionadasComponent {
+export class SolicitudesGestionadasComponent  implements OnInit {
   datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
 
   //datosSolicitudActual=signal<IListadoSolicitudes[]>([]);
@@ -69,10 +70,33 @@ export class SolicitudesGestionadasComponent {
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
   datosEstados = signal<IEstado[]>([]);
 
+  filtroContratante = signal('');
+  filtroRubro = signal('');
+  filtroTipoSeguro = signal('');
+  filtroEstado = signal('');
+  filtroFecha = signal<Date | null>(null);
+
   panelOpenState = false;
-  rubro = new FormControl();
-  seguro = new FormControl();
-  estado = new FormControl();
+
+  formularioModificado = signal(false);
+
+  contratante = new FormControl();
+    rubro = new FormControl();
+    seguro = new FormControl();
+    estado = new FormControl();
+    fecha = new FormControl<Date | null>(null);
+
+  filtroFormulario = signal<FormGroup>(new FormGroup({
+    contratante : this.contratante,
+    rubro : this.rubro,
+    seguro : this.seguro,
+    estado : this.estado,
+    fecha : this.fecha
+    })
+  );
+
+
+
   displayedColumns: string[] = [
     'index',
     'id_solicitud',
@@ -86,6 +110,7 @@ export class SolicitudesGestionadasComponent {
     "id_estado_solicitud",
     "accion"
   ];
+
 
 
   dataSourceSolicitud = computed(() => {
@@ -112,21 +137,82 @@ export class SolicitudesGestionadasComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
+
+  // Señal computada para los datos filtrados
+  datosFiltrados() {
+    const contratante = this.filtroFormulario().value.contratante??'';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
+    const tipoSeguro = this.filtroFormulario().value.seguro??'';
+    const estado = this.filtroFormulario().value.estado??'';
+    console.log('his.filtroFormulario().value:',this.filtroFormulario().value.fecha)
+    const fechaInicio = new Date(this.filtroFormulario().value.fecha);
+this.formularioModificado();
+    console.log('this.datosSolicitud():',this.datosSolicitud())
+    return this.datosSolicitud()!.filter(item => {
+
+      const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
+      const cumpleEstado = item.descripcion_estado.includes(estado);
+
+    const fechaBase = new Date(item.fecha_creacion);
+
+      const cumpleFecha = !fechaInicio || (
+        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+        fechaBase.getMonth() === fechaInicio.getMonth() &&
+        fechaBase.getDate() === fechaInicio.getDate()
+      );
+
+
+      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+    });
+  };
+
+//ngOnInit(): void {
+  // Suscribirse a los cambios del formulario y actualizar las señales
+  //  this.filtroContratante.set(this.filtroFormulario().get('contratante')?.valueChanges)
+
+/*
+    this.filterForm.get('estado')?.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(valor => this.filtroEstado.set(valor));
+
+    this.filterForm.get('fechaRange')?.get('start')?.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(valor => this.filtroFechaInicio.set(valor));
+
+    this.filterForm.get('fechaRange')?.get('end')?.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(valor => {
+        // Ajustar la fecha final para incluir todo el día
+        const fechaAjustada = valor ? new Date(valor) : null;
+        if (fechaAjustada) {
+          fechaAjustada.setHours(23, 59, 59, 999);
+        }
+        this.filtroFechaFin.set(fechaAjustada);
+      });
+      */
+  //  }
+  /*
   applyFilterSolicitud(campo: string, valor: String) {
     //  const filterValue = (valor.target as HTMLInputElement).value;
     console.log('campo:', campo + ' Valor Inicial:', valor)
     this.dataSourceSolicitud().filterPredicate = (data: any, filter: string) => {
       const dataValue = data[campo] ? data[campo].toString() : '';
+      console.log('dataValue:',dataValue.toLowerCase().includes(filter.toLowerCase()))
       return dataValue.toLowerCase().includes(filter.toLowerCase());
     };
 
     this.dataSourceSolicitud().filter = valor.trim().toLowerCase();
+  }
 
     if (this.dataSourceSolicitud().paginator) {
       this.dataSourceSolicitud().paginator!.firstPage();
     }
   }
 
+
+*/
   limpiaFiltros() {
     this.rubro.reset();
     this.seguro.reset();
@@ -143,6 +229,19 @@ export class SolicitudesGestionadasComponent {
     this.cargaRubros();
     this.cargaEstados();
     this.limpiaFiltros();
+
+    this.formularioModificado.set(true);
+     // Suscribirse a los cambios del formulario
+    this.filtroFormulario().valueChanges.subscribe(() => {
+      console.log('paso 1')
+      this.datosFiltrados()
+      this.updateTableData();
+    });
+  }
+
+  private updateTableData(): void {
+    console.log('this.datosFiltrados():',this.datosFiltrados())
+    this.dataSourceSolicitud().data = this.datosFiltrados();
   }
 
   cargaRubros() {
@@ -245,3 +344,7 @@ export class SolicitudesGestionadasComponent {
       .afterClosed()
   }
 }
+function takeUntilDestroyed(): import("rxjs").OperatorFunction<any, unknown> {
+  throw new Error('Function not implemented.');
+}
+
