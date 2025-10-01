@@ -17,6 +17,8 @@ import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
 import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-agrega-solicitud-beneficiario',
@@ -34,6 +36,9 @@ import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicit
 })
 export class AgregaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
+   storage = inject(StorageService);
+    _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
   public readonly data = inject<string>(MAT_DIALOG_DATA);
 
   beneficiarioService = inject(BeneficiarioService);
@@ -186,7 +191,7 @@ export class AgregaSolicitudBeneficiarioComponent {
       )!.value,
       p_casa_beneficiario:
         this.agregaBeneficiario().get('casaBeneficiario')!.value,
-      p_usuario_creacion: 'EJE022',
+      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Beneficiario Grabado:', this.beneficiario);

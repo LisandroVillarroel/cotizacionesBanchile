@@ -27,7 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { IIngresoSolicitud } from './modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IIngresoSolicitud } from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
@@ -50,6 +50,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { AseguradoService } from './service/asegurado.service';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -99,6 +100,12 @@ export default class IngresoSolicitudComponent {
 
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
+
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  asegurado!: IAsegurado;
+  aseguradoService = inject(AseguradoService);
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -224,7 +231,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaContratante() {
+  async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
@@ -252,7 +259,7 @@ export default class IngresoSolicitudComponent {
       // beneficiarios: [],
     };
     console.log('Ingreso Solicitud:', this.ingresoSolicitud);
-    this.ingresoSolicitudService
+    await this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
@@ -267,6 +274,9 @@ export default class IngresoSolicitudComponent {
                 this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
             });
+            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value==true){
+                this.agregarAsegurado()
+            }
           } else {
             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
@@ -281,6 +291,41 @@ export default class IngresoSolicitudComponent {
           console.log('Error Inesperado', error);
         },
       });
+  }
+
+ async agregarAsegurado() {
+    this.asegurado = {
+      p_id_solicitud: Number(this.contratanteInfo().id),
+      p_rut_asegurado: this.ingresoSolicitud.contratante.rut_contratante,
+      p_nombre_razon_social_asegurado:this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
+      p_mail_asegurado: this.ingresoSolicitud.contratante.mail_contratante,
+      p_telefono_asegurado: this.ingresoSolicitud.contratante.telefono_contratante,
+      p_region_asegurado: this.ingresoSolicitud.contratante.region_contratante,
+      p_ciudad_asegurado: this.ingresoSolicitud.contratante.ciudad_contratante,
+      p_comuna_asegurado: this.ingresoSolicitud.contratante.comuna_contratante,
+      p_direccion_asegurado:this.ingresoSolicitud.contratante.direccion_contratante,
+      p_numero_dir_asegurado: this.ingresoSolicitud.contratante.numero_dir_contratante,
+      p_departamento_block_asegurado: this.ingresoSolicitud.contratante.departamento_block_contratante,
+      p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
+      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
+    };
+
+    console.log('Asegurado Grabado:', this.asegurado);
+
+    await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          alert('Grabó En Asegurado');
+        } else {
+          alert('Error:' + dato.mensaje);
+          console.log('Error:', dato.mensaje);
+        }
+      },
+      error: (error) => {
+        console.log('Error Inesperado', error);
+      },
+    });
   }
 
   salir() {

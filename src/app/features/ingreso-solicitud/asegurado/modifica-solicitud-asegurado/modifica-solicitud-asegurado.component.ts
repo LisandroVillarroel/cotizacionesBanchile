@@ -15,10 +15,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import {
-  IAseguradoLista,
-  IModificaAsegurado,
+  IAgregaAsegurado,
+  IAseguradoListaParametro,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { StorageService } from '@shared/service/storage.service';
 
 @Component({
   selector: 'app-modifica-solicitud-asegurado',
@@ -34,15 +36,16 @@ import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.
   styleUrl: './modifica-solicitud-asegurado.component.css',
 })
 export class ModificaSolicitudAseguradoComponent {
-  asegurado!: IModificaAsegurado;
-
+  asegurado!: IAgregaAsegurado;
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   aseguradoService = inject(AseguradoService);
 
   private readonly dialogRef = inject(
     MatDialogRef<ModificaSolicitudAseguradoComponent>
   );
 
-  readonly data = inject<any>(MAT_DIALOG_DATA);
+  readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);
 
   rutAsegurado = new FormControl(this.data.datoAseguradoPar.rutAsegurado, [
     Validators.required,
@@ -192,7 +195,7 @@ export class ModificaSolicitudAseguradoComponent {
 
   modificar() {
     this.asegurado = {
-      p_id_solicitud: this.data.idSolicitud,
+      p_id_solicitud: Number(this.data.idSolicitud),
       p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.modificaAsegurado().get('nombreAsegurado')!.value,
@@ -214,7 +217,7 @@ export class ModificaSolicitudAseguradoComponent {
         'deptoDireccionAsegurado'
       )!.value,
       p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value,
-      p_usuario_modificacion: 'EJE022',
+      p_usuario_modificacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Asegurado Modificado:', this.asegurado);

@@ -31,6 +31,7 @@ import {
   DatosBeneficiariosInterface,
   IBeneficiario,
   IBeneficiarioLista,
+  IBeneficiarioListaParametro,
 } from '../modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '../service/beneficiario.service';
 
@@ -156,13 +157,16 @@ export class BeneficiarioComponent {
   modificaBeneficiario(datoBeneficiarioPar: IBeneficiarioLista): void {
     console.log('Dato Modificar;', datoBeneficiarioPar);
     const dialogConfig = new MatDialogConfig();
-
+ const parametro:IBeneficiarioListaParametro={
+      datoBeneficiarioPar: datoBeneficiarioPar,
+      idSolicitud: this.idSolicitud(),
+    };
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = datoBeneficiarioPar;
+    dialogConfig.data = parametro;
     this.dialog
       .open(ModificaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()
@@ -191,6 +195,10 @@ export class BeneficiarioComponent {
 
   eliminaBeneficiario(datoBeneficiarioPar: any) {
     const dialogConfig = new MatDialogConfig();
+ const parametro:IBeneficiarioListaParametro={
+      datoBeneficiarioPar: datoBeneficiarioPar,
+      idSolicitud: this.idSolicitud(),
+    };
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -198,7 +206,7 @@ export class BeneficiarioComponent {
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
-    dialogConfig.data = datoBeneficiarioPar;
+    dialogConfig.data = parametro;
     this.dialog
       .open(EliminaSolicitudBeneficiarioComponent, dialogConfig)
       .afterClosed()

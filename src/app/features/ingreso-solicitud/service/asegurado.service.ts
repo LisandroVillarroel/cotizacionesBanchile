@@ -6,10 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import {
-  IAsegurado,
-  IAgregaAsegurado,
-  IModificaAsegurado,
+import { IAgregaAsegurado,
   DatosAseguradosInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
@@ -34,12 +31,11 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postModificaAsegurado(modificaAsegurado: IModificaAsegurado): Observable<any> {
+  postModificaAsegurado(modificaAsegurado: IAgregaAsegurado): Observable<any> {
     console.log('Modifica Asegurado Service:', modificaAsegurado);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/modificarAsegurado`,
-        modificaAsegurado,
+        `${environment.apiUrl}/modificarAsegurado`,   modificaAsegurado,
         {
           headers: this.headers,
         }
@@ -47,10 +43,12 @@ export class AseguradoService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  postEliminaAsegurado(eliminaAsegurado: IAsegurado): Observable<any> {
-    console.log('Elimina Asegurado Service:', eliminaAsegurado);
+  postEliminaAsegurado(isolicitud: number,rutAsegurado:string): Observable<any> {
+
+   const parametro={p_id_solicitud:isolicitud, p_rut_asegurado:rutAsegurado}
+   console.log('pazrametro elimina asegurado:', parametro)
     return this.http
-      .post<any>(`${environment.apiUrl}/eliminarAsegurado`, eliminaAsegurado, {
+      .post<any>(`${environment.apiUrl}/eliminarAsegurado`, parametro, {
         headers: this.headers,
       })
       .pipe(retry(1), catchError(this.errorHand));

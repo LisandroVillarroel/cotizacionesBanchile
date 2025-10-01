@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -31,6 +32,7 @@ import {
   DatosAseguradosInterface,
   IAsegurado,
   IAseguradoLista,
+  IAseguradoListaParametro,
 } from '../modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '../service/asegurado.service';
 
@@ -51,8 +53,9 @@ import { AseguradoService } from '../service/asegurado.service';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
+   idSolicitud = input.required<string>();
   datoAsegurados = signal<IAseguradoLista[]>([]);
-  idSolicitud = input.required<string>();
+
 
   //flagAsegurado = model(false);
 
@@ -100,17 +103,29 @@ export class AseguradoComponent {
     return tabla;
   });
 
+  constructor() {
+    effect(() => {
+      // Llamar al método cada vez que el valor cambie
+      this.rescataListaAsegurados(this.idSolicitud());
+    });
+  }
+
+   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
+
   ngAfterViewInit(): void {
+    console.log('entro a asegurado ngAfterViewInit',this.idSolicitud())
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
   async ngOnInit() {
+    console.log('entro a asegurado',this.idSolicitud())
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.rescataListaAsegurados(this.idSolicitud()!);
   }
 
   rescataListaAsegurados(p_id_solicitud: string) {
+    console.log('rescataListaAsegurados')
     const estructura_listaAsegurados = {
       p_id_solicitud: Number(p_id_solicitud),
     };
@@ -159,6 +174,10 @@ export class AseguradoComponent {
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
     console.log('Dato Modificar;', datoAseguradoPar);
+    const parametro:IAseguradoListaParametro={
+      datoAseguradoPar: datoAseguradoPar,
+      idSolicitud: this.idSolicitud(),
+    };
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -166,10 +185,7 @@ export class AseguradoComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {
-      datoAseguradoPar: datoAseguradoPar,
-      idSolicitud: this.idSolicitud(),
-    };
+    dialogConfig.data = parametro;
     this.dialog
       .open(ModificaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
@@ -198,6 +214,10 @@ export class AseguradoComponent {
 
   eliminaAsegurado(datoAseguradoPar: any) {
     const dialogConfig = new MatDialogConfig();
+ const parametro:IAseguradoListaParametro={
+      datoAseguradoPar: datoAseguradoPar,
+      idSolicitud: this.idSolicitud(),
+    };
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -205,7 +225,7 @@ export class AseguradoComponent {
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
 
-    dialogConfig.data = datoAseguradoPar;
+    dialogConfig.data = parametro;
     this.dialog
       .open(EliminaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
