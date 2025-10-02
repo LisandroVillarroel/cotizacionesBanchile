@@ -7,7 +7,7 @@ import {
   QueryList,
   inject,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,6 +29,7 @@ import { CuestionarioService } from '../service/cuestionario.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -81,41 +82,25 @@ export class CuestionarioComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      const actualizados = this.documentos().map((d) =>
-        d.p_id_documento_adjunto === doc.p_id_documento_adjunto
-          ? {
-              ...d,
-              p_id_solicitud: Number(this.idSolicitud()),
-              p_ruta_documento_origen: this.generarRuta('origen', file.name),
-              p_ruta_documento_destino: this.generarRuta('destino', file.name),
-              p_fecha_creacion: new Date().toISOString(),
-              p_usuario_creacion: 'Mauricio Lufin',
-            }
-          : d
-      );
-
-      this.documentos.set(actualizados);
+      // Modificación directa del objeto doc
+      doc.p_id_solicitud = Number(this.idSolicitud());
+      doc.p_ruta_documento_origen = this.generarRuta('origen', file.name);
+      doc.p_ruta_documento_destino = this.generarRuta('destino', file.name);
+      doc.p_fecha_creacion = new Date().toISOString();
+      doc.p_usuario_creacion = 'Mauricio Lufin';
 
       if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
         this.bloquearSeccion2.set(false);
       }
 
-      const documentoActualizado = actualizados.find(
-        (d) => d.p_id_documento_adjunto === doc.p_id_documento_adjunto
-      );
-
-      if (documentoActualizado) {
-        this.cuestionarioService
-          .postAgregaDocumento(documentoActualizado)
-          .subscribe({
-            next: (res) => {
-              console.log('Documento ingresado:', res.estado_creacion);
-            },
-            error: (err) => {
-              console.error('Error al ingresar documento:', err);
-            },
-          });
-      }
+      this.cuestionarioService.postAgregaDocumento(doc).subscribe({
+        next: (res) => {
+          console.log('Documento ingresado:', res.estado_creacion);
+        },
+        error: (err) => {
+          console.error('Error al ingresar documento:', err);
+        },
+      });
     }
   }
 
@@ -126,38 +111,6 @@ export class CuestionarioComponent {
     return `/${tipo}/${año}/${mes}/${nombreArchivo}`;
   }
 
-  eliminarDocumento(doc: IIngresarDocumento) {
-    const actualizados = this.documentos().map((d) => {
-      if (d.p_id_documento_adjunto === doc.p_id_documento_adjunto) {
-        return {
-          ...d,
-          p_ruta_documento_origen: '',
-          p_ruta_documento_destino: '',
-          p_fecha_creacion: '',
-          p_usuario_creacion: '',
-        };
-      }
-
-      if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
-        return {
-          ...d,
-          p_ruta_documento_origen: '',
-          p_ruta_documento_destino: '',
-          p_fecha_creacion: '',
-          p_usuario_creacion: '',
-        };
-      }
-
-      return d;
-    });
-
-    this.documentos.set(actualizados);
-
-    if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
-      this.bloquearSeccion2.set(true);
-    }
-  }
-
   archivoObligatorioCargado(): boolean {
     const doc = this.documentos().find(
       (d) => d.p_id_documento_adjunto === 'Cuestionario de cotización'
@@ -165,14 +118,32 @@ export class CuestionarioComponent {
     return !!doc?.p_ruta_documento_origen;
   }
 
-  guardarSolicitud() {
-    console.log('Solicitud guardada con los siguientes documentos:');
-    this.documentos().forEach((doc) => {
-      console.log(
-        `${doc.p_id_documento_adjunto}: ${
-          doc.p_ruta_documento_origen || 'No cargado'
-        }`
-      );
-    });
+  eliminarDocumento(doc: IIngresarDocumento) {
+    const idSolicitud = Number(this.idSolicitud());
+    const corr = doc.p_corr_documento ?? 1;
+
+    this.cuestionarioService
+      .postEliminaDocumento(idSolicitud, corr, 'Mauricio Lufin')
+      .subscribe({
+        next: () => {
+          // Modifica directamente el objeto referenciado por ngModel
+          doc.p_ruta_documento_origen = '';
+          doc.p_ruta_documento_destino = '';
+          doc.p_fecha_creacion = '';
+          doc.p_usuario_creacion = '';
+
+          if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
+            this.bloquearSeccion2.set(true);
+          }
+
+          console.log('Documento eliminado correctamente');
+        },
+        error: (err) => {
+          console.error('Error al eliminar documento:', err);
+          alert(
+            'No se pudo eliminar el documento. Verifica que esté correctamente cargado o contacta al administrador.'
+          );
+        },
+      });
   }
 }

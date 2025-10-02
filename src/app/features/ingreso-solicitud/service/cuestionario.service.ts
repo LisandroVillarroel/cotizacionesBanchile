@@ -9,6 +9,7 @@ import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
   IIngresarDocumento,
   IEstadoIngresarDocumento,
+  DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 // Definición base de documentos
@@ -61,27 +62,49 @@ export class CuestionarioService {
       .pipe(retry(1), catchError(this.errorHand));
   }
 
-  deleteDocumento(
-    p_id_solicitud: number,
-    p_corr_documento: number
-  ): Observable<IEstadoIngresarDocumento> {
-    const payload = {
-      p_id_solicitud,
-      p_corr_documento,
-      p_fecha_modificacion: new Date().toISOString(),
-      p_usuario_modificacion: '',
-    };
-
-    console.log('Eliminar Documento:', payload);
-
+  /* postModificaDocumento(modificaDocumento: IAgregaAsegurado): Observable<any> {
+    console.log('Modifica Documento Service:', modificaDocumento);
     return this.http
-      .post<IEstadoIngresarDocumento>(
+      .post<any>(
+        `${environment.apiUrl}/modificarDocumentos`,
+        modificaDocumento,
+        {
+          headers: this.headers,
+        }
+      )
+      .pipe(retry(1), catchError(this.errorHand));
+  } */
+
+  postEliminaDocumento(
+    idSolicitud: number,
+    corr: number,
+    usuario: string
+  ): Observable<any> {
+    return this.http
+      .post<any>(
         `${environment.apiUrl}/eliminarDocumentos`,
-        payload,
-        { headers: this.headers }
+        {
+          p_id_solicitud: idSolicitud,
+          p_corr_documento: corr,
+          p_fecha_modificacion: new Date().toISOString(),
+          p_usuario_modificacion: usuario,
+        },
+        {
+          headers: this.headers,
+        }
       )
       .pipe(retry(1), catchError(this.errorHand));
   }
+
+  /* postListadoDocumento(filtro: any): Observable<DatosDocumentoInterface> {
+    return this.http
+      .post<DatosDocumentoInterface>(
+        `${environment.apiUrl}/consultarDocumentos`,
+        filtro,
+        { headers: this.headers }
+      )
+      .pipe(retry(1), catchError(this.errorHand));
+  } */
 
   errorHand(error: HttpErrorResponse): Observable<never> {
     console.log('Paso Error Documento: ', error);
