@@ -1,26 +1,25 @@
 import { Component, computed, input, OnInit } from '@angular/core';
-import { IObservacion } from '../detalle-interface';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from "@angular/material/divider";
-import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ICompania } from '../detalle-interface';
 
 @Component({
-  selector: 'app-observaciones',
-  templateUrl: './observaciones.component.html',
-  styleUrls: ['./observaciones.component.css'],
+  selector: 'app-companias-contactadas',
+  templateUrl: './companias-contactadas.component.html',
+  styleUrls: ['./companias-contactadas.component.css'],
   standalone: true,
   imports: [
     MatCardModule,
     MatDividerModule,
     MatExpansionModule,
-],
+  ]
 })
-export class ObservacionesComponent implements OnInit {
+export class CompaniasContactadasComponent implements OnInit {
   panelOpenState = false;
 
-  observaciones = input.required<IObservacion[] | undefined>();
-  obsFiltradas = computed(()=> this.observaciones());
+  companias = input.required<ICompania[] | undefined>();
+  compFiltradas = computed(()=> this.companias());
 
   isEmpty(value: any): boolean {
     console.log("valor", value);
@@ -28,6 +27,7 @@ export class ObservacionesComponent implements OnInit {
     console.log("vacío ", value === null);
     return value === undefined || value === null;
   }
+
   constructor() { }
 
   ngOnInit() {

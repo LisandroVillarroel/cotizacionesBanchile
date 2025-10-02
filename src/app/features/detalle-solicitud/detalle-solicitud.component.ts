@@ -24,6 +24,7 @@ import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegur
 import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
 import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
 import { ObservacionesComponent } from './observaciones/observaciones.component';
+import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -34,6 +35,7 @@ import { ObservacionesComponent } from './observaciones/observaciones.component'
     BeneficiarioComponent,
     CuestionarioComponent,
     ObservacionesComponent,
+    CompaniasContactadasComponent,
     //DocumentosAsociadosComponent,
     MatButtonModule,
     MatDialogModule,
@@ -64,7 +66,7 @@ export default class DetalleSolicitudComponent {
   infoGral = signal<ISolicitud | undefined>(undefined);
   //documentos = signal<IDocumento[] | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
-  //companias = signal<ICompania[] | undefined>(undefined);
+  companias = signal<ICompania[] | undefined>(undefined);
   //asegurados = signal<IAseguradoDet[] | undefined>(undefined);
   //beneficiarios = signal<IBeneficiarioDet[] | undefined>(undefined);
 
