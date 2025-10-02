@@ -1,9 +1,11 @@
 import {
   Component,
+  input,
   signal,
   ViewChildren,
   ElementRef,
   QueryList,
+  inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,9 +16,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { ICuestionario } from '../modelo/ingresoSolicitud-Interface';
+import { IIngresarDocumento } from '../modelo/ingresoSolicitud-Interface';
 import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { CuestionarioService } from '../service/cuestionario.service';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -32,72 +35,36 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatTooltipModule,
     MatStepperModule,
-    MatInputModule,
     MatCardModule,
     MatDivider,
   ],
 })
 export class CuestionarioComponent {
-  documentForm = signal(this.fb.group({}));
+  idSolicitud = input.required<string>();
+  documentForm = signal(inject(FormBuilder).group({}));
+  documentos = signal<IIngresarDocumento[]>([]);
 
-  documentos = signal<ICuestionario[]>([
-    {
-      id: 1,
-      nombre: 'Cuestionario de cotización',
-      obligatorio: true,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 2,
-      nombre: 'Carta Gantt',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 3,
-      nombre: 'Descripción de la obra',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 4,
-      nombre: 'Medidas de seguridad',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 5,
-      nombre: 'Plano/Layout de la obra',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 6,
-      nombre: 'Presupuesto',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-    {
-      id: 7,
-      nombre: 'Documentos adicionales',
-      obligatorio: false,
-      archivo: '',
-      archivoNombre: 'Sin documento cargado',
-    },
-  ]);
+  ngOnInit() {
+    const base = this.cuestionarioService.getDocumentosBase();
+    const id = Number(this.idSolicitud());
 
-  // Estado reactivo para habilitar/deshabilitar sección 2
+    const documentosConId = base.map((doc) => ({
+      ...doc,
+      p_id_solicitud: id,
+    }));
+
+    this.documentos.set(documentosConId);
+  }
+
   bloquearSeccion2 = signal(true);
 
-  @ViewChildren('fileInputs') fileInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('fileInputs') fileInputs!: QueryList<
+    ElementRef<HTMLInputElement>
+  >;
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog) { }
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
+  private cuestionarioService = inject(CuestionarioService);
 
   abrirInputArchivo(nombre: string) {
     const id = this.sanitizarNombre(nombre);
@@ -109,66 +76,103 @@ export class CuestionarioComponent {
     return 'fileInput_' + nombre.replace(/\s+/g, '_');
   }
 
-  onFileSelected(event: Event, doc: ICuestionario) {
+  onFileSelected(event: Event, doc: IIngresarDocumento) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      const nuevosDocumentos = this.documentos().map((d) =>
-        d.id === doc.id
-          ? { ...d, archivo: file.name, archivoNombre: file.name }
+      const actualizados = this.documentos().map((d) =>
+        d.p_id_documento_adjunto === doc.p_id_documento_adjunto
+          ? {
+              ...d,
+              p_id_solicitud: Number(this.idSolicitud()),
+              p_ruta_documento_origen: this.generarRuta('origen', file.name),
+              p_ruta_documento_destino: this.generarRuta('destino', file.name),
+              p_fecha_creacion: new Date().toISOString(),
+              p_usuario_creacion: 'Mauricio Lufin',
+            }
           : d
       );
 
-      this.documentos.set(nuevosDocumentos);
+      this.documentos.set(actualizados);
 
-      // Habilitar sección 2 si se cargó el documento obligatorio
-      if (doc.id === 1 && file.name) {
+      if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
         this.bloquearSeccion2.set(false);
+      }
+
+      const documentoActualizado = actualizados.find(
+        (d) => d.p_id_documento_adjunto === doc.p_id_documento_adjunto
+      );
+
+      if (documentoActualizado) {
+        this.cuestionarioService
+          .postAgregaDocumento(documentoActualizado)
+          .subscribe({
+            next: (res) => {
+              console.log('Documento ingresado:', res.estado_creacion);
+            },
+            error: (err) => {
+              console.error('Error al ingresar documento:', err);
+            },
+          });
       }
     }
   }
 
-  eliminarDocumento(doc: ICuestionario) {
-    const nuevosDocumentos = this.documentos().map((d) => {
-      if (d.id === doc.id) {
+  generarRuta(tipo: 'origen' | 'destino', nombreArchivo: string): string {
+    const fecha = new Date();
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    return `/${tipo}/${año}/${mes}/${nombreArchivo}`;
+  }
+
+  eliminarDocumento(doc: IIngresarDocumento) {
+    const actualizados = this.documentos().map((d) => {
+      if (d.p_id_documento_adjunto === doc.p_id_documento_adjunto) {
         return {
           ...d,
-          archivo: '',
-          archivoNombre: 'Sin documento cargado',
+          p_ruta_documento_origen: '',
+          p_ruta_documento_destino: '',
+          p_fecha_creacion: '',
+          p_usuario_creacion: '',
         };
       }
 
-      // Si se eliminó el obligatorio, también limpiar los opcionales
-      if (doc.id === 1 && d.id !== 1) {
+      if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
         return {
           ...d,
-          archivo: '',
-          archivoNombre: 'Sin documento cargado',
+          p_ruta_documento_origen: '',
+          p_ruta_documento_destino: '',
+          p_fecha_creacion: '',
+          p_usuario_creacion: '',
         };
       }
 
       return d;
     });
 
-    this.documentos.set(nuevosDocumentos);
+    this.documentos.set(actualizados);
 
-    // Deshabilitar sección 2 si se eliminó el obligatorio
-    if (doc.id === 1) {
+    if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
       this.bloquearSeccion2.set(true);
     }
   }
 
   archivoObligatorioCargado(): boolean {
-    const doc = this.documentos().find((d) => d.id === 1);
-    return !!doc?.archivo;
+    const doc = this.documentos().find(
+      (d) => d.p_id_documento_adjunto === 'Cuestionario de cotización'
+    );
+    return !!doc?.p_ruta_documento_origen;
   }
 
   guardarSolicitud() {
     console.log('Solicitud guardada con los siguientes documentos:');
     this.documentos().forEach((doc) => {
-      console.log(`${doc.nombre}: ${doc.archivo || 'No cargado'}`);
+      console.log(
+        `${doc.p_id_documento_adjunto}: ${
+          doc.p_ruta_documento_origen || 'No cargado'
+        }`
+      );
     });
   }
 }
-

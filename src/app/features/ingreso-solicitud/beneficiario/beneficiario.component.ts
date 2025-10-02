@@ -3,7 +3,6 @@ import {
   computed,
   inject,
   input,
-  model,
   signal,
   ViewChild,
 } from '@angular/core';

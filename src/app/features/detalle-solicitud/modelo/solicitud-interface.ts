@@ -15,12 +15,12 @@ export interface ICompania{
   id_coordinador: string;
 }
 
-export interface IDocumento {
+/* export interface IDocumento {
   id: number;
   nombre: string;
   obligatorio: boolean;
   archivo: string;
   archivoNombre: string;
-}
+} */
 
 
