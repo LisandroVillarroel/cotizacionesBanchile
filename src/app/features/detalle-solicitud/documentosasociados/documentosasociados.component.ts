@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { DocumentosAsociadosService } from './documentosasociados.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,7 @@ import { MatTooltip } from "@angular/material/tooltip";
   styleUrls: ['./documentosasociados.component.css']
 })
 export class DocumentosAsociadosComponent implements OnInit {
+  idSolicitud = input.required<string>();
   registros: any[] = [];
 
   constructor(private documentosService: DocumentosAsociadosService) {}

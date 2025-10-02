@@ -1,4 +1,3 @@
-import { DevolverConObservacionesData } from './../devolver-con-observaciones.component';
 import { Component, Inject } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { MatLabel } from "@angular/material/form-field";
@@ -14,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 
-export interface SolicitudDevueltaData {
+export interface SolicitudEnviadaCiaData {
   solicitudId: string;
   fecha: string;
   ejecutivo: string;
@@ -23,18 +22,18 @@ export interface SolicitudDevueltaData {
 }
 
 
+
 @Component({
-  selector: 'app-solicitud-devuelta',
+  selector: 'app-solicitud-enviada-cia',
   standalone: true,
   imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
     MatInputModule, FormsModule],
-  templateUrl: './solicitud-devuelta.component.html',
-  styleUrl: './solicitud-devuelta.component.css'
+  templateUrl: './solicitud-enviada-cia.component.html',
+  styleUrl: './solicitud-enviada-cia.component.css'
 })
-
-export class SolicitudDevueltaComponent {
- constructor(@Inject(MAT_DIALOG_DATA) public data: SolicitudDevueltaData,
-   public dialogRef: MatDialogRef<SolicitudDevueltaComponent>) {}
+export class SolicitudEnviadaCiaComponent {
+constructor(@Inject(MAT_DIALOG_DATA) public data: SolicitudEnviadaCiaData,
+   public dialogRef: MatDialogRef<SolicitudEnviadaCiaComponent>) {}
 
  cerrar(): void {
     this.dialogRef.close();
@@ -43,5 +42,4 @@ export class SolicitudDevueltaComponent {
    confirmar(): void {
     this.dialogRef.close();
   }
-
 }

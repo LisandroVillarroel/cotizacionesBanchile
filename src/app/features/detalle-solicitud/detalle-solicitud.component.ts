@@ -46,7 +46,10 @@ import { CompaniasContactadasComponent } from './companias-contactadas/companias
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-  ],
+    BeneficiarioComponent,
+    AseguradoComponent,
+    DocumentosAsociadosComponent
+],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
@@ -62,6 +65,7 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
+  idSolicitudParametro=signal<string>('175')
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   //documentos = signal<IDocumento[] | undefined>(undefined);
@@ -121,7 +125,7 @@ export default class DetalleSolicitudComponent {
       id_estado_solicitud: 1,
       sla: "R"
     });
-    this.asegurados.set([]);
+   /* this.asegurados.set([]);
     this.beneficiarios.set([
         {
             rut_beneficiario: "1.615.222-2",
@@ -297,6 +301,32 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(CorregirSolicitudComponent, dialogConfig)
+      .afterClosed();
+  }
+
+  enviarCia(): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      rutContratante: '00.000.000-0',
+      nomContratante: 'Felipe Medina Suárez',
+      rubro: 'VIDA',
+      tipoSeguro: 'Oncologíco',
+    };
+
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed();
   }
 
