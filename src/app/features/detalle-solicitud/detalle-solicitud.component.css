@@ -27,7 +27,6 @@
   padding: 0px 0px 0px;
 }
 
-
 .bg-secondary {
     --bs-bg-opacity: 1;
     background-color: rgba((35, 78, 133), var(--bs-bg-opacity)) !important;

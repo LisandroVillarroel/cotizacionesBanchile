@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
@@ -20,14 +20,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { VerAseguradosComponent } from './ver-asegurados/ver-asegurados.component';
+import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
+import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
+import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
+import { ObservacionesComponent } from './observaciones/observaciones.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [
     InformacionGeneralComponent,
-    VerAseguradosComponent,
+    AseguradoComponent,
+    BeneficiarioComponent,
+    CuestionarioComponent,
+    ObservacionesComponent,
     //DocumentosAsociadosComponent,
     MatButtonModule,
     MatDialogModule,
@@ -48,6 +54,8 @@ export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+
+  idSol = computed(() => this.idSolicitud.toString() );
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));

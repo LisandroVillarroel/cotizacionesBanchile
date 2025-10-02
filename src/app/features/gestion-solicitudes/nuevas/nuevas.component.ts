@@ -93,7 +93,7 @@ export class NuevasComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-   datosFiltrados = computed(() =>
+  datosFiltrados = computed(() =>
     this.solicitudes()!.filter(r =>
       r['Contratante']?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
       r['Rubro']?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&

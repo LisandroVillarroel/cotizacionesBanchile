@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div class="barra-titulo card-con-titulo titulomodal" style="width: 100%">
+<div class="container-fluid" style="padding: 0px 0px 0px;">
+  <div class="barra-titulo card-con-titulo titulomodal" style="width: 100%;">
     <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
     <button mat-icon-button mat-dialog-close [disabled]="false">
       <mat-icon>close</mat-icon>
@@ -8,26 +8,46 @@
   <!-- <h1 mat-dialog-title class="mt-3 titulo">Detalle de solicitud - {{ idSolicitud }}</h1> -->
   <mat-tab-group>
     <mat-tab label="Información General">
-      <div class="container-fluid fondoGris">
+      <div class="container-fluid">
         <app-informacion-general [infoGral]="infoGral()"/>
-       </div>
+        <app-observaciones [observaciones]="observaciones()"/>
+        <!-- <app-companias-contactadas []=""/> -->
+
+        <div  class="table-con-titulo mat-elevation-z6"
+          data-titulo="Compañías contactadas" style="margin-top: 32px">
+        </div>
+      </div>
+      <div class="container-fluid d-flex">
+        <div style="justify-content: flex-start;">
+          <button mat-raised-button mat-dialog-close class="button-link"
+            [disabled]="false">Cerrar</button>
+        </div>
+        <div class="botones-derecha">
+          <button mat-stroked-button style="background-color: #FFC725; color: #ffffff; border-radius: 0px; border: none;"
+            (click)="devolverSolicitud()">Devolver con Observaciones</button>
+          <button mat-stroked-button  style="background-color: #6BAA1F; color: #ffffff; border-radius: 0px; border: none;"
+            (click)="aprobarSolicitud()">Aprobar Solicitud</button>
+        </div>
+      </div>
     </mat-tab>
     <mat-tab label="Asegurados">
-      <div class="container-fluid fondoGris">
-        <app-ver-asegurados [idSolicitud]="idSolicitud"/>
+      <div class="container-fluid">
+        <app-asegurado [idSolicitud]="idSol()" />
       </div>
     </mat-tab>
     <mat-tab label="Beneficiarios">
-      <div class="container-fluid fondoGris"> Content 3</div>
-      <!-- <app-en-cotizacion/> -->
+      <div class="container-fluid">
+        <app-beneficiario [idSolicitud]="idSol()" />
+      </div>
     </mat-tab>
     <mat-tab label="Materia Asegurada">
       <div class="container-fluid fondoGris"> Content 3</div>
       <!-- <app-en-cotizacion/> -->
     </mat-tab>
     <mat-tab label="Documentos Asociados">
-      <div class="container-fluid fondoGris"> Content 3</div>
-      <!--     <app-documentos-asociados /> -->
+      <div class="container-fluid">
+        <app-cuestionario-documentos [idSolicitud]="idSol()" />
+      </div>
     </mat-tab>
   </mat-tab-group>
 </div>
