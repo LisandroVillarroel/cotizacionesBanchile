@@ -17,19 +17,20 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { IAseguradoDet, IBeneficiarioDet, IDocumento } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { VerAseguradosComponent } from './ver-asegurados/ver-asegurados.component';
+import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
+import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegurado.component";
+import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
   imports: [
     InformacionGeneralComponent,
-    VerAseguradosComponent,
     //DocumentosAsociadosComponent,
     MatButtonModule,
     MatDialogModule,
@@ -41,7 +42,10 @@ import { VerAseguradosComponent } from './ver-asegurados/ver-asegurados.componen
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-  ],
+    BeneficiarioComponent,
+    AseguradoComponent,
+    DocumentosAsociadosComponent
+],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
   encapsulation:ViewEncapsulation.None
@@ -55,13 +59,14 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
+  idSolicitudParametro=signal<string>('175')
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
-  documentos = signal<IDocumento[] | undefined>(undefined);
+  documentos = signal<Document[] | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
-  asegurados = signal<IAseguradoDet[] | undefined>(undefined);
-  beneficiarios = signal<IBeneficiarioDet[] | undefined>(undefined);
+
+
 
   async ngOnInit(){
     this.cargarSolicitud(this.idSolicitud);
@@ -121,7 +126,7 @@ export default class DetalleSolicitudComponent {
       id_estado_solicitud: 1,
       sla: "R"
     });
-    this.asegurados.set([]);
+   /* this.asegurados.set([]);
     this.beneficiarios.set([
         {
             rut_beneficiario: "1.615.222-2",
@@ -202,6 +207,7 @@ export default class DetalleSolicitudComponent {
             casa_beneficiario: ""
         }
     ]);
+    */
     this.observaciones.set([]);
   }
 
@@ -297,6 +303,32 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(CorregirSolicitudComponent, dialogConfig)
+      .afterClosed();
+  }
+
+  enviarCia(): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      rutContratante: '00.000.000-0',
+      nomContratante: 'Felipe Medina Suárez',
+      rubro: 'VIDA',
+      tipoSeguro: 'Oncologíco',
+    };
+
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed();
   }
 

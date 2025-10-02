@@ -1,4 +1,3 @@
-import { IAseguradoDet, IBeneficiarioDet, IDocumento } from "@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface";
 
 export interface IObservacion{
   id_observacion: number;
@@ -46,8 +45,7 @@ export interface DetalleSolicitudInterface {
   p_id_estado_solicitud: number;
   //p_descripcion_estado: string;
 
-  c_asegurados: IAseguradoDet[];
-  c_beneficiarios: IBeneficiarioDet[];
+
   c_observaciones: any;//IObservacion[];
   //c_documentos: IDocumento[];
   //c_companias: ICompania[];

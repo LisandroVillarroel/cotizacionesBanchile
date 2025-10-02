@@ -104,8 +104,8 @@ export default class IngresoSolicitudComponent {
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  //storage = inject(StorageService);
+  //_storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   asegurado!: IAsegurado;
   aseguradoService = inject(AseguradoService);
