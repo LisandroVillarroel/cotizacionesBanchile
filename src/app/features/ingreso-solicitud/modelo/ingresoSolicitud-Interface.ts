@@ -165,6 +165,16 @@ export interface DatosBeneficiariosInterface {
   vcEstadoCreacion: string;
 }
 
+export interface IDocumentoLista {
+  id_documento_adjunto: string;
+  corr_documento: number;
+  documento_principal: string;
+  ruta_documento_origen: string;
+  ruta_documento_destino: string;
+  fecha_creacion: string;
+  usuario_creacion: string;
+}
+
 export interface IIngresarDocumento {
   p_id_solicitud: number;
   p_id_documento_adjunto: string;
@@ -176,10 +186,17 @@ export interface IIngresarDocumento {
   p_corr_documento?: number;
 }
 
-
 export interface IEstadoIngresarDocumento {
   codigo: number;
   mensaje: string;
   estado: string;
   estado_creacion: string;
+}
+
+export interface DatosDocumentoInterface {
+  codigo: number;
+  mensaje: string;
+  p_cursor: IDocumentoLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
