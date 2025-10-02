@@ -147,6 +147,8 @@ export default class IngresoSolicitudComponent {
     id: '0',
     rut_contratante: '',
     nombre: '',
+    idRubro:0,
+    idSeguro:0
   });
 
   agregaSolicitudContratante = signal<FormGroup>(
@@ -231,6 +233,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
+
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
@@ -273,6 +276,8 @@ export default class IngresoSolicitudComponent {
               rut_contratante:
                 this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
+              idRubro: this.agregaSolicitudContratante().get('rubro')!.value,
+              idSeguro: this.agregaSolicitudContratante().get('seguro')!.value,
             });
             if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value==true){
                 this.agregarAsegurado()

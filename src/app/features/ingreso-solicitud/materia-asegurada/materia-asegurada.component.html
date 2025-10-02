@@ -1,1 +1,11 @@
-<p>materia-asegurada works!</p>
+
+<div class="row">
+@for (elemento of datoMateria(); track $index){
+  @if ($index==0){
+    <div class="md-12">{{elemento.p_descripcion_seccion}}</div>
+  }@else{
+
+  }
+
+}
+</div>

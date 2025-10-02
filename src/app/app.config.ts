@@ -14,7 +14,7 @@ registerLocaleData(id);
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),),
-{ provide: LOCALE_ID, useValue: 'es-BO' },
+{ provide: LOCALE_ID, useValue: 'es-ES' },
 
   {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
 useValue: { appearance: 'outline', floatLabel: 'never', SubscripSizing:'dynamic' }
