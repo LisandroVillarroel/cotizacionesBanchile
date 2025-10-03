@@ -1,3 +1,19 @@
+export interface IMateriaIngresa {
+  p_id_solicitud: number;
+  p_id_rubro: number;
+  p_id_tipo_seguro: number;
+  p_id_seccion: number;
+  p_id_linea: number;
+  p_id_posicion: number;
+  p_tipo_dato: string;
+  p_valor_dato: string;
+  p_largo_dato: number;
+  p_decimales_dato: number;
+  p_id_listapadre: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+}
+
 export interface IMateria {
   p_id_rubro: number;
   p_id_tipo_seguro: number;
@@ -6,13 +22,23 @@ export interface IMateria {
   p_id_linea: number;
   p_id_posicion: number;
   p_tipo_dato: string;
+  p_lista: ILista[],
   p_valor_dato: string;
   p_largo_dato: number;
   p_decimales_dato: number;
-  p_fecha_creacion: string;
+  p_id_listapadre: string;
+  p_descripcion_listapadre: string;
+  p_id_listahijo: number;
+  p_descripcion_listahijo: string;
+  p_fecha_creacion:string;
   estiloClass?:string;
   nombreCampo?:string;
   nombreLabel?:string;
+}
+
+export interface ILista {
+  p_id_listahijo: number;
+  p_descripcion_listahijo: string;
 }
 
 export interface IMateriaResultado {

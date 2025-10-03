@@ -1,33 +1,64 @@
-
-<mat-dialog-content
-  [formGroup]="materiaForm()"
-  name="materiaForm"
-  class="agrega-container"
->
+<mat-dialog-content [formGroup]="materiaForm()" name="materiaForm" class="agrega-container">
   <div class="row">
-  @for (fila of datoMateriaEstructura(); track $index){
+    @for (fila of datoMateriaEstructura(); track $index){
       @for (columna of fila.datos; track $index){
-          @if (columna.p_tipo_dato=='TITULO'){
-          <div [ngClass]="columna.estiloClass">{{columna.p_valor_dato}}</div>
-          }@else{
-            <div [ngClass]="columna.estiloClass">
-            <mat-form-field class="inputInput">
-              <mat-label class="labelI">{{columna.nombreLabel}}</mat-label>
-              <input
-                matInput
-                aria-label="Nombre"
-                [formControlName]="columna.nombreCampo!"
+        @if (columna.p_tipo_dato=='TITULO'){
+        <div [ngClass]="columna.estiloClass">{{columna.p_valor_dato}}</div>
+        }@else{
+          @if (columna.p_tipo_dato=='LISTA'){
+          <div [ngClass]="columna.estiloClass">
+             <mat-form-field class="estiloCampo">
 
-              />
+                    <mat-select class="estilo-select" placeholder="{{columna.nombreLabel}}"
+                      [formControlName]="columna.nombreCampo!" >
+                      @for(_lista of columna.p_lista; track _lista){
+                      <mat-option class="fuenteOption" [value]="_lista">
+                        {{ _lista.p_descripcion_listahijo }}
+                      </mat-option>
+                      }
+                    </mat-select>
+
+                  </mat-form-field>
+          </div>
+          }@else{
+          <div [ngClass]="columna.estiloClass">
+            <mat-form-field class="estiloCampo">
+
+              <input matInput placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" />
               <!--
-              @if (nombreAsegurado.invalid) {
-              <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
-              }
-              -->
-        </mat-form-field>
-        </div>
+                    @if (nombreAsegurado.invalid) {
+                    <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
+                    }
+                    -->
+            </mat-form-field>
+          </div>
           }
+        }
       }
-  }
+    }
   </div>
 </mat-dialog-content>
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      class="colorFondoBotonCerrar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="grabarMateria()"
+      [disabled]="materiaForm().invalid"
+
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,24 +1,32 @@
 import { Component, input, OnInit, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEstructura, IMateriaResultado } from '../modelo/materia-Interface';
+import { IMateria, IMateriaEstructura, IMateriaIngresa, IMateriaResultado } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 
 @Component({
   selector: 'app-materia-asegurada',
   standalone: true,
-  imports: [NgClass,MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,],
+  imports: [NgClass, MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule, MatSelectModule, MatDialogModule],
   templateUrl: './materia-asegurada.component.html',
   styleUrl: './materia-asegurada.component.css',
 })
 export class MateriaAseguradaComponent {
+  idSolicitud = input.required<string>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
+
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   materiaService = inject(MateriaService);
 
@@ -27,17 +35,20 @@ export class MateriaAseguradaComponent {
   datoMateriaEstructura = signal<IMateriaEstructura[]>([])
   datoMateriaEstructura_arr: IMateriaEstructura[] = []
 
+  materiaIngresa: IMateriaIngresa[] = []
+
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
+      this.datoMateriaEstructura_arr = [];
       this.rescataListaAsegurados(this.idRubro(), this.idSeguro());
     });
   }
 
-    materiaForm = signal<FormGroup>(
-      new FormGroup({
+  materiaForm = signal<FormGroup>(
+    new FormGroup({
 
-      }))
+    }))
 
 
   rescataListaAsegurados(idRubro: number, idSeguro: number) {
@@ -100,30 +111,31 @@ export class MateriaAseguradaComponent {
     console.log('arreglo:', cuantaColumnasArreglo)
 
     let valoresFila;
-    let valorClass='';
-    let nombreCampo=''
-    let nombreLabel='';
+    let valorClass = '';
+    let nombreCampo = ''
+    let nombreLabel = '';
 
+    console.log('cuantaColumnasArreglo.length', cuantaColumnasArreglo.length)
     for (let a = 0; a < cuantaColumnasArreglo.length; a++) {
       valoresFila = this.datoMateria().filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0]))
-console.log('valoresFila:',valoresFila)
+      //console.log('valoresFila:',valoresFila)
 
-      for (let b = 0; b<Number(cuantaColumnasArreglo[a][1]); b++){
-        valorClass='col-md-'+(12/(Number(cuantaColumnasArreglo[a][1]))).toString();
-        if(valoresFila[b].p_tipo_dato=='TITULO'){
-          if(Number(cuantaColumnasArreglo[a][1])>1){
-            valorClass=valorClass+' subTitulo'
-          }else{
-             valorClass=valorClass+' titulo'
+      for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
+        valorClass = 'col-md-' + (12 / (Number(cuantaColumnasArreglo[a][1]))).toString() + ' border';
+        if (valoresFila[b].p_tipo_dato == 'TITULO') {
+          if (Number(cuantaColumnasArreglo[a][1]) > 1) {
+            valorClass = valorClass + ' subTitulo'
+          } else {
+            valorClass = valorClass + ' titulo'
           }
-          nombreLabel=valoresFila[b].p_valor_dato;
-        }else{ //Si es campo
-          nombreCampo=valoresFila[b].p_id_rubro+'_'+valoresFila[b].p_id_tipo_seguro+'_'+valoresFila[b].p_id_seccion+'_'+valoresFila[b].p_id_linea+'_'+valoresFila[b].p_id_posicion
-          this.agregaFormControl(nombreCampo,valoresFila[b].p_valor_dato,false)
+          nombreLabel = valoresFila[b].p_valor_dato;
+        } else { //Si es campo
+          nombreCampo = valoresFila[b].p_id_rubro + '_' + valoresFila[b].p_id_tipo_seguro + '_' + valoresFila[b].p_id_seccion + '_' + valoresFila[b].p_id_linea + '_' + valoresFila[b].p_id_posicion
+          this.agregaFormControl(nombreCampo, valoresFila[b].p_valor_dato, false)
         }
-        valoresFila[b].estiloClass=valorClass
-        valoresFila[b].nombreCampo=nombreCampo
-        valoresFila[b].nombreLabel=nombreLabel
+        valoresFila[b].estiloClass = valorClass
+        valoresFila[b].nombreCampo = nombreCampo
+        valoresFila[b].nombreLabel = nombreLabel
       }
 
       this.datoMateriaEstructura_arr.push({
@@ -131,14 +143,47 @@ console.log('valoresFila:',valoresFila)
         columnas: Number(cuantaColumnasArreglo[a][1]),
         datos: valoresFila
       })
-      console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
+      //  console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
     }
-    console.log('this.datoMateriaEstructura_arr:', this.datoMateriaEstructura_arr)
+    // console.log('this.datoMateriaEstructura_arr:', this.datoMateriaEstructura_arr)
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
 
-  agregaFormControl(nombreCampo:string,ValorInicial:any,requerido:boolean): void {
-  this.materiaForm().addControl(nombreCampo, new FormControl(''));
-}
+  agregaFormControl(nombreCampo: string, ValorInicial: any, requerido: boolean): void {
+    this.materiaForm().addControl(nombreCampo, new FormControl(''));
+  }
+
+  grabarMateria() {
+    console.log('this.datoMateriaEstructura()', this.datoMateriaEstructura());
+
+    let nombreCampo = '';
+
+    for (const fila of this.datoMateriaEstructura()) {
+      for (const columna of fila.datos) {
+        nombreCampo = ''
+        if (columna.p_tipo_dato != 'TITULO')
+          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value
+        console.log('nombreCampo:',nombreCampo)
+        this.materiaIngresa.push({
+          p_id_solicitud: Number(this.idSolicitud()),
+          p_id_rubro: columna.p_id_rubro,
+          p_id_tipo_seguro: columna.p_id_tipo_seguro,
+          p_id_seccion: columna.p_id_seccion,
+          p_id_linea: columna.p_id_linea,
+          p_id_posicion: columna.p_id_posicion,
+          p_tipo_dato: columna.p_tipo_dato,
+          p_valor_dato: nombreCampo,
+          p_largo_dato: columna.p_largo_dato,
+          p_decimales_dato: columna.p_decimales_dato,
+          p_id_listapadre: columna.p_id_listapadre,
+          p_fecha_creacion: '',
+          p_usuario_creacion: this._storage()?.usuarioLogin.usuario!
+        })
+      }
+    }
+
+
+    console.log('this.materiaIngresa:', this.materiaIngresa)
+  }
 }
