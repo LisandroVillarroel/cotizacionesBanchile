@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, NgModule, input, effect, computed, OnInit } from '@angular/core';
+import { Component, ViewChild, inject, signal, input, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/ma
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
 
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
@@ -48,7 +48,6 @@ import { IEstado } from '@shared/modelo/estado-interface';
     MatDividerModule,
     MatCardModule,
     CommonModule,
-
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'

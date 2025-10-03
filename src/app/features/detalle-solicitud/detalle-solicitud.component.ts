@@ -2,7 +2,7 @@ import { Component, computed, inject, input, signal, ViewEncapsulation } from '@
 import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
-import { MatCard } from "@angular/material/card";
+import { MatCard, MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
@@ -37,7 +37,7 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     CuestionarioComponent,
     ObservacionesComponent,
     CompaniasContactadasComponent,
-    //DocumentosAsociadosComponent,
+    MatCardModule,
     MatButtonModule,
     MatDialogModule,
     MatIcon,
@@ -49,7 +49,6 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     CommonModule,
     BeneficiarioComponent,
     AseguradoComponent,
-    DocumentosAsociadosComponent
 ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
@@ -83,7 +82,7 @@ export default class DetalleSolicitudComponent {
      this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
-          console.log('Detalle solicitud:', dato);
+          //console.log('Detalle solicitud:', dato);
           this.infoGral.set({
             id_solicitud : this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
@@ -111,7 +110,6 @@ export default class DetalleSolicitudComponent {
       error: (error) => {
         console.log('ERROR INESPERADO', error);
         console.log('ID Solicitud:', idSolicitud);
-
       },
     });
 /*     this.infoGral.set({

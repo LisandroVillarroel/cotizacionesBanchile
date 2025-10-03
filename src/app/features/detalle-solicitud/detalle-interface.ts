@@ -7,11 +7,16 @@ export interface IObservacion{
 
 export interface ICompania{
   id_compania: number;
-  id_solicitud: string;
+  nombre_compania: string;
+  correo_destino: string;
+  fecha_envio: string;
+  tiempo_transc: string; //horas o días???
   id_estado_cot: number;
   estado_cotizacion: string;
-  fecha_creacion: string;
-  id_coordinador: string;
+  color_edoCot: string;
+  fondo_edoCot: string;
+  id_solicitud: number;
+  id_cotizacion: number;
 }
 
 export interface ISolicitud {

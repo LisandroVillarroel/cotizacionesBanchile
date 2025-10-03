@@ -1,102 +1,63 @@
-<div class="container-fluid" style="padding: 0px 0px 0px;">
-  <div class="barra-titulo card-con-titulo titulomodal" style="width: 100%;">
+<mat-card class="container-fluid" style="padding: 0px 0px 0px;">
+  <mat-card-title class="barra-titulo card-con-titulo titulomodal" style="width: 100%;">
     <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
     <button mat-icon-button mat-dialog-close [disabled]="false">
       <mat-icon>close</mat-icon>
     </button>
-  </div>
-  <!-- <h1 mat-dialog-title class="mt-3 titulo">Detalle de solicitud - {{ idSolicitud }}</h1> -->
-  <mat-tab-group>
-    <mat-tab label="Información General">
-      <div class="container-fluid">
-        <app-informacion-general [infoGral]="infoGral()"/>
-        <app-observaciones [observaciones]="observaciones()"/>
-        <app-companias-contactadas [companias]="companias()"/>
-
-        <div  class="table-con-titulo mat-elevation-z6"
-          data-titulo="Compañías contactadas" style="margin-top: 32px">
+  </mat-card-title>
+  <mat-card-content>
+    <mat-tab-group>
+      <mat-tab label="Información General">
+        <div class="container-fluid mt-5">
+          <app-informacion-general [infoGral]="infoGral()"/>
+          <app-observaciones [observaciones]="observaciones()"/>
+          <app-companias-contactadas [idSolicitud]="idSolicitud"/>
         </div>
-      </div>
-      <div class="container-fluid d-flex">
-        <div style="justify-content: flex-start;">
-          <button mat-raised-button mat-dialog-close class="button-link"
-            [disabled]="false">Cerrar</button>
+      </mat-tab>
+      <mat-tab label="Asegurados">
+        <div class="container-fluid">
+          <app-asegurado [idSolicitud]="idSol()" />
         </div>
-        <div class="botones-derecha">
-          <button mat-stroked-button style="background-color: #FFC725; color: #ffffff; border-radius: 0px; border: none;"
-            (click)="devolverSolicitud()">Devolver con Observaciones</button>
-          <button mat-stroked-button  style="background-color: #6BAA1F; color: #ffffff; border-radius: 0px; border: none;"
-            (click)="aprobarSolicitud()">Aprobar Solicitud</button>
+      </mat-tab>
+      <mat-tab label="Beneficiarios">
+        <div class="container-fluid">
+          <app-beneficiario [idSolicitud]="idSol()" />
         </div>
-      </div>
-    </mat-tab>
-    <mat-tab label="Asegurados">
-      <div class="container-fluid">
-        <app-asegurado [idSolicitud]="idSol()" />
-      </div>
-    </mat-tab>
-    <mat-tab label="Beneficiarios">
-      <div class="container-fluid">
-        <app-beneficiario [idSolicitud]="idSol()" />
-      </div>
-    </mat-tab>
-    <mat-tab label="Materia Asegurada">
-      <div class="container-fluid fondoGris"></div>
-      <!-- <app-en-cotizacion/> -->
-    </mat-tab>
-    <mat-tab label="Documentos Asociados">
-      <div class="container-fluid">
-        <app-cuestionario-documentos [idSolicitud]="idSol()" />
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-</div>
-
-
-
-
-
-<!-- <content>
-
-  <mat-card class="container-fluid fondoGris flex card-con-titulo" data-titulo="Documentos Asociados"
-    style="width: 98%; margin-left: 1%">
-    <app-documentos-asociados />
-  </mat-card>
-  <div class="container-fluid fondoGris flex card-con-titulo justify-between p-2" style="width: 98%; margin-left: 1%">
-
-
-    -->
-
-    <div class="container d-flex justify-between p-2">
-      <mat-dialog-actions align="end" style="width: 100%;">
-        <div>
-          <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
-            [disabled]="false">Cerrar</button>
+      </mat-tab>
+      <mat-tab label="Materia Asegurada">
+        <div class="container-fluid fondoGris"></div>
+        <!-- <app-en-cotizacion/> -->
+      </mat-tab>
+      <mat-tab label="Documentos Asociados">
+        <div class="container-fluid">
+          <app-cuestionario-documentos [idSolicitud]="idSol()" />
         </div>
-        <div class="botones-derecha">
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="devolverSolicitud()">Devolver
-            con
-            Observaciones</button>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="aprobarSolicitud()">Aceptar
-            Solicitud</button>
-        </div>
-      </mat-dialog-actions>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="container-fluid d-flex p-4">
+      <div style="justify-content: flex-start;">
+        <button mat-stroked-button color="primary" class="colorFondoBotonSalir"
+            mat-dialog-close [disabled]="false">Cerrar</button>
+      </div>
+      <div class="botones-derecha">
+        <button mat-stroked-button
+          style="background-color: #F45516; color: #ffffff; border-radius: 0px; border: none;"
+          (click)="anularSolicitud()">Anular Solicitud</button>
+        <button mat-stroked-button
+          style="background-color: #FFC725; color: #ffffff; border-radius: 0px; border: none;"
+          (click)="devolverSolicitud()">Devolver solicitud</button>
+        <button mat-stroked-button  style="background-color: #6BAA1F; color: #ffffff; border-radius: 0px; border: none;"
+          (click)="aprobarSolicitud()">Aprobar Solicitud</button>
+        <button mat-stroked-button
+          style="background-color: #149DC9; color: #ffffff; border-radius: 0px; border: none;"
+          (click)="enviarCia()">Agregar Compañía</button>
+        <button mat-stroked-button
+          style="background-color: #002464; color: #ffffff; border-radius: 0px; border: none;"
+          (click)="corregirSolicitud()">Enviar Solicitud</button>
+
+      </div>
     </div>
-    <div>
-      <mat-dialog-actions align="end" style="width: 100%;">
-        <div>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="anularSolicitud()">Anular
-            Solicitud</button>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="corregirSolicitud()">Corregir
-            Solicitud</button>
-        </div>
-      </mat-dialog-actions>
-      <mat-dialog-actions align="end" style="width: 100%;">
-        <div>
-          <button mat-stroked-button color="primary" class="botonesDetalle">Volver</button>
-          <button mat-stroked-button color="primary" class="botonesDetalle" (click)="enviarCia()">Agregar Compañía
-            </button>
-        </div>
-      </mat-dialog-actions>
-    </div>
-
+  </mat-card-footer>
+</mat-card>
