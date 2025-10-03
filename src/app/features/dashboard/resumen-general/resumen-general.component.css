@@ -1,22 +1,3 @@
-.justify-around{
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Esto puede ser de uso general */
-.fondoGris{
-  background-color: #E8E8EA;
-  color: #666668;
-}
-
-.destacado{
-  color: #285B9B
-}
-
-.fontSmall{
-  font-size: 12px;
-}
-
 .alinea-cards{
   margin-top: 14px;
   align-content: center;
@@ -38,4 +19,5 @@
   margin-bottom: 0.5rem;
   /* padding-bottom: 0px; */
   padding: 10px 10px 0px;
+  background-color: #E8E8EA !important;
 }

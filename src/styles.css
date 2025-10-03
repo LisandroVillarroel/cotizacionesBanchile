@@ -10,6 +10,7 @@ body {
 body {
   margin: 0;
   font-family: "Roboto", sans-serif !important;
+  color: #333334;
 }
 /* FIN GENERAL */
 
@@ -585,6 +586,17 @@ th#opcionesI {
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
+.card-borde2 {
+  background-color: white;
+  border: 1px solid #285b9b !important;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 40px !important;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
+}
+
+
 /* Fondo para cards con título */
 .card-con-titulo-principal {
   background-color: white;
@@ -615,7 +627,7 @@ th#opcionesI {
 .card-con-titulo {
   background-color: white;
   border: 1px solid #285b9b !important;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 2rem;
   margin-bottom: 2rem;
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
@@ -643,7 +655,7 @@ th#opcionesI {
 
 .fondoGris {
   background-color: #e8e8ea;
-  color: #666668;
+  color: #333334;
 }
 
 /* Card de documentos opcionales deshabilitados */
@@ -879,4 +891,99 @@ mat-divider[vertical] {
   border: 2px solid #285b9b !important;
   border-radius: 12px;
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
+}
+
+/* Afgregado por Irma Chin  */
+.justify-around{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Esto puede ser de uso general */
+.fondoGris{
+  background-color: #E8E8EA;
+  color: #666668;
+}
+
+.fondoAzul{
+  background-color: #234E85;
+  color: white;
+}
+
+.titulo{
+  color: #234E85;
+}
+
+.danger{
+  color: #F45516;
+}
+
+.destacado{
+    color: #285B9B !important;
+}
+
+.warning{
+  color: #FFC725;
+}
+
+.success{
+  color: #6BAA1F;
+}
+
+.verde{
+  color: green;
+}
+.amarillo{
+  color: yellow;
+}
+.rojo{
+  color: red;
+}
+
+
+.gris {
+  color: #666668;
+}
+
+.gris-claro{
+  color: #CFCFD2;
+}
+
+.info {
+    color: #149DC9;
+}
+
+.fontSmall{
+  font-size: 12px;
+}
+
+.fontLarge{
+  font-size: 16px;
+}
+
+.cursiva{
+  font-style: italic;
+}
+
+.link{
+  background-color: inherit;
+  border: none !important;
+  box-shadow: none !important;
+  color: #149dc9 !important;
+  font-size: 12px !important;
+}
+
+.button-link {
+  background-color: inherit;
+  border: none !important;
+  box-shadow: none !important;
+  color: #149dc9 !important;
+  /*color: #234e85 !important;*/
+  /*padding: 0px 0px 0px !important;*/
+  font-size: 10px !important;
+}
+
+.button-link:hover {
+  background-color: #ffffff !important;
+  color: #0F8DBA !important;
 }

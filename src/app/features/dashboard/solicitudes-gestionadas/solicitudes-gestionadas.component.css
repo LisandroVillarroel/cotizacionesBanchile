@@ -9,39 +9,12 @@ p {
         font-size: 0.75rem; /* 12px */
     }
 
-.gris {
-  color: #666668;
-}
-
-.info {
-    color: #149DC9;
-}
-
-
-.justify-around{
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Esto puede ser de uso general */
-.fondoGris{
-  background-color: #E8E8EA;
-  color: #666668;
-}
-
-.destacado{
-  color: #285B9B
-}
-
-.fontSmall{
-  font-size: 12px;
-}
 /*MAT-TABLE*/
 /* Mantenedores Material*/
 /*Titulo Mantenedores Tablas principales*/
 .content {
   min-height: calc(100vh - 98px);
-    border-radius: 10px;
+  border-radius: 10px;
   margin: 16px;
   margin-left: 32px;
   justify-content: center;
@@ -50,13 +23,6 @@ p {
   color: #666668;
   padding: 0 1px !important;
 }
-
-/*Fin Titulo Mantenedores Tablas principales*/
-
-/*FIN MAT-TABLE*/
-
-/*Cambia color y fondo barra superior del sistema*/
-
 
 /*Botones*/
 
@@ -72,7 +38,7 @@ p {
 
 /*INICIO INPUT*/
 .inputInput {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-size: var(--mdc-typography-body1-font-size, 11px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
@@ -89,7 +55,7 @@ p {
 }
 
 .inputSelect {
-  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-size: var(--mdc-typography-body1-font-size, 12px) !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
   width:100%;
@@ -113,18 +79,6 @@ p {
   height: 65px !important;
   margin-bottom: 15px !important;
   color: #666668;
-}
-
-.button-link {
-  background-color: #ffffff !important;
-  color: #234e85 !important;
-  padding: 0px 0px 0px !important;
-  font-size: 12px !important;
-}
-
-.button-link:hover {
-  background-color: #ffffff !important;
-  color: #0F8DBA !important;
 }
 
 .mat-mdc-select-value-text {
@@ -160,7 +114,10 @@ p {
   margin-bottom: 0.5rem;
   /* padding-bottom: 0px; */
   padding: 10px 16px 10px;
+  background-color: #E8E8EA !important;
 }
+
+
 /*fin caja para filtros*/
 
 /*MAT-TABLE*/
@@ -222,79 +179,9 @@ tr.mat-header-row {
   /*Tamaño letra tabla*/
 }
 
-/*Color Barra hover de la tabla*/
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: rgba(208, 206, 205, 0.686);
-
-  button.tabla {
-    background-color: rgba(208, 206, 205, 0.686);
-  }
-
-}
-
-/* Color Barra Cuando se da Click*/
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #959597;
-}
-
-tr.mat-footer-row,
-tr.mat-row {
-  height: 30px !important;
-}
-
-
-
-/*iconos de tabla*/
-button.nuevo:hover {
-  color: white !important;
-   background-color: #149DC9 !important;
-}
-
-button.nuevo {
-  color: black !important;
-  border: 0;
-  background-color: #149DC9;
-  width: 40px !important;
-  height: 40px !important;
-}
-
-button.tabla:hover {
-  color: black !important;
- background-color: rgba(208, 206, 205, 0.686) !important;
-}
-
-button.tabla {
-  color: #149DC9 !important;
-  border: 0;
-  background-color: white;
-  width: 40px !important;
-  height: 40px !important;
-}
-
-/*Fin iconos de tabla*/
-
-/*Icono ordena tabla*/
-.mat-sort-header-arrow {
-  color: #cd1515 !important;
-}
-
-.mat-sort-header-arrow:hover {
-  color: #ffffff !important;
-}
-
-/*Foot Tabla*/
-.mat-mdc-paginator-page-size-select {
-  width: 84px !important;
-}
-
-/* Fin Foot Tabla*/
 /*Fin MAT-TABLE*/
 .border-none {
   border-radius: 0px;
-}
-
-.danger{
-  color: #F45516;
 }
 
 .edicion{

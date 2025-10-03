@@ -46,8 +46,11 @@ export default class DashboardComponent   {
 
   dashboardService = inject(DashboardService)
 
-  resumenGeneral = signal<IResumenSolicitudes | undefined>(undefined);
-  listadoSolicitudes = signal<IListadoSolicitudes[] | undefined>(undefined);
+  resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
+  p_EsperandoRespuesta: 0,
+  p_Aprobadas: 0,
+  p_ConObservaciones: 0});
+  listadoSolicitudes = signal<IListadoSolicitudes[] >([]);
 
   async ngOnInit(){
     this.seleccionaFecha();
@@ -68,8 +71,6 @@ export default class DashboardComponent   {
       next: (dato: any) => {
         if (dato.codigo === 200) {
           this.resumenGeneral.set({
-            vcEstado: dato.vcEstado,
-            vcEstadoCreacion: dato.vcEstadoCreacion,
             p_EnProceso: dato.p_EnProceso,
             p_EsperandoRespuesta: dato.p_EsperandoRespuesta,
             p_Aprobadas: dato.p_Aprobadas,

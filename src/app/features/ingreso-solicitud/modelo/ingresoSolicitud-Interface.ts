@@ -1,3 +1,4 @@
+//import { IDocumento } from './../../detalle-solicitud/modelo/solicitud-interface';
 export interface ISolicitudContratante {
   rut_contratante: string;
   nombre_razon_social_contratante: string;
@@ -71,8 +72,8 @@ export interface IAseguradoLista {
 }
 
 export interface IAseguradoListaParametro {
-datoAseguradoPar: IAseguradoLista,
-idSolicitud: string;
+  datoAseguradoPar: IAseguradoLista;
+  idSolicitud: string;
 }
 
 export interface IAgregaAsegurado {
@@ -89,9 +90,8 @@ export interface IAgregaAsegurado {
   p_departamento_block_asegurado: string;
   p_casa_asegurado: string;
   p_usuario_creacion?: string;
-  p_usuario_modificacion?:string;
+  p_usuario_modificacion?: string;
 }
-
 
 export interface DatosAseguradosInterface {
   codigo: number;
@@ -149,12 +149,12 @@ export interface IAgregaBeneficiario {
   p_departamento_block_beneficiario: string;
   p_casa_beneficiario: string;
   p_usuario_creacion?: string;
-  p_usuario_modificacion?:string;
+  p_usuario_modificacion?: string;
 }
 
 export interface IBeneficiarioListaParametro {
-datoBeneficiarioPar: IBeneficiarioLista,
-idSolicitud: string;
+  datoBeneficiarioPar: IBeneficiarioLista;
+  idSolicitud: string;
 }
 
 export interface DatosBeneficiariosInterface {
@@ -165,10 +165,38 @@ export interface DatosBeneficiariosInterface {
   vcEstadoCreacion: string;
 }
 
-export interface ICuestionario {
-  id: number;
-  nombre: string;
-  obligatorio: boolean;
-  archivo: string;
-  archivoNombre: string;
+export interface IDocumentoLista {
+  id_documento_adjunto: string;
+  corr_documento: number;
+  documento_principal: string;
+  ruta_documento_origen: string;
+  ruta_documento_destino: string;
+  fecha_creacion: string;
+  usuario_creacion: string;
+}
+
+export interface IIngresarDocumento {
+  p_id_solicitud: number;
+  p_id_documento_adjunto: string;
+  p_documento_principal: string;
+  p_ruta_documento_origen: string;
+  p_ruta_documento_destino: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_corr_documento?: number;
+}
+
+export interface IEstadoIngresarDocumento {
+  codigo: number;
+  mensaje: string;
+  estado: string;
+  estado_creacion: string;
+}
+
+export interface DatosDocumentoInterface {
+  codigo: number;
+  mensaje: string;
+  p_cursor: IDocumentoLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }

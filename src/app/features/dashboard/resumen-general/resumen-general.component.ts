@@ -27,6 +27,6 @@ export class ResumenGeneralComponent {
   conObs = 7;
   */
  //resumenGeneral=signal<IResumenSolicitudes  | undefined>(undefined);
-resumenGeneral=computed(()=> this.datoResumenGeneral());
+  resumenGeneral=computed(()=> this.datoResumenGeneral());
 
 }

@@ -28,7 +28,6 @@ import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interfac
 import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
 
-
 @Component({
   selector: 'app-solicitudes-gestionadas',
   standalone: true,
@@ -111,8 +110,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     "accion"
   ];
 
-
-
   dataSourceSolicitud = computed(() => {
     const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
     this.setSortingAndPagination(tabla);
@@ -129,7 +126,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
-   setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
+  setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
     dataSource.sort = this.sort;
     dataSource.paginator = this.paginator;
   }
@@ -198,25 +195,7 @@ this.formularioModificado();
   /*
   applyFilterSolicitud(campo: string, valor: String) {
     //  const filterValue = (valor.target as HTMLInputElement).value;
-    if (campo=='fecha_creacion'){
-        const fechaFiltrar = this.fecha.value;
-        let valorInicio = moment(fechaFiltrar).format('YYYY-MM-DD HH:mm:ss');
-        let valorFin = moment(fechaFiltrar).format('YYYY-MM-DD')+' 23:59:59';
-
-         this.dataSourceSolicitud().filterPredicate = (data: any, filter: string) => {
-          const fechaItem = moment(data.fecha_creacion, 'YYYY-MM-DD HH:mm:ss');
-
-      const estaEnRango = fechaItem.isBetween(valorInicio, valorFin, null, '[]'); // El '[]' hace que los límites sean inclusivos
-      return estaEnRango;
-    };
-    const filterValue = {
-      start: valorInicio ? moment(valorInicio).format('YYYY-MM-DD HH:mm:ss') : null,
-      end: valorFin ? moment(valorFin).format('YYYY-MM-DD HH:mm:ss') : null,
-    };
-    this.dataSourceSolicitud().filter = JSON.stringify(filterValue);
-
-    }else{
-    console.log('campo:',campo  + ' Valor Inicial:',valor)
+    console.log('campo:', campo + ' Valor Inicial:', valor)
     this.dataSourceSolicitud().filterPredicate = (data: any, filter: string) => {
       const dataValue = data[campo] ? data[campo].toString() : '';
       console.log('dataValue:',dataValue.toLowerCase().includes(filter.toLowerCase()))
@@ -245,7 +224,7 @@ this.formularioModificado();
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
 
-   // this.dataSourceSolicitud().data = this.datosSolicitud()!;
+    // this.dataSourceSolicitud().data = this.datosSolicitud()!;
     this.cargaRubros();
     this.cargaEstados();
     this.limpiaFiltros();
@@ -284,27 +263,27 @@ this.formularioModificado();
   }
 
   cargaEstados() {
-   this.estadoService.getEstado().subscribe({
-     next: (dato) => {
-       if (dato.codigo === 200) {
+    this.estadoService.getEstado().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
-       } else {
-         if (dato.codigo != 500) {
-           console.log('Error:',dato.mensaje);
-         } else {
-           console.log('ERROR DE SISTEMA:');
-         }
-       }
-     },
-     error: (error) => {
-       console.log('ERROR INESPERADO', error);
-     },
-   });
- }
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
 
   async seleccionaRubro(datos: IRubro) {
-    console.log("rubros: ",datos);
-    const _codigoRubro=datos.id_rubro
+    console.log("rubros: ", datos);
+    const _codigoRubro = datos.id_rubro
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
       next: (dato) => {
@@ -325,7 +304,18 @@ this.formularioModificado();
     });
   }
 
-  getCellClass(value: number): string {
+
+/*
+  get estilosTemperatura() {
+    return {
+      'background-color': this.temperatura > 30 ? 'red' :
+                         this.temperatura > 20 ? 'orange' : 'blue',
+      'color': 'white',
+      'display': this.isVisible ? 'block' : 'none',
+      'font-size': '20px'
+    };
+  }
+
     if (value == 1) { //'Aprobada'
       return 'aprobada';
     } else if (value == 2) {  //'Anulada'
@@ -334,7 +324,7 @@ this.formularioModificado();
       return 'observ';
     } else if (value == 4) {  //'En Cotizacion'
       return 'cotizacion';
-    }else if (value == 5) {  //'En Edicion'
+    } else if (value == 5) {  //'En Edicion'
       return 'edicion';
     } else if (value == 6) { //'En Revision'
       return 'revision';
@@ -342,12 +332,11 @@ this.formularioModificado();
       return 'emitida';
     } else if (value == 8) { //'Propuesta Pendiente'
       return 'pendiente';
-    } else if(value==9){  //'Rechazada'
+    } else if (value == 9) {  //'Rechazada'
       return 'rechazada';
     } else { //if (value == 10) { //'Terminada'
       return 'terminada';
-    }
-  }
+    } */
 
   /* Fin llamadas a servicios */
   verDetalle(IdSolicitud: number) {
@@ -355,7 +344,7 @@ this.formularioModificado();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '70%';
+    dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = IdSolicitud;
@@ -363,7 +352,26 @@ this.formularioModificado();
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
   }
+
+  getEstadoFiltrado(idEstado: number){
+    return this.datosEstados().filter(item =>
+      item.id_estado_solicitud===idEstado
+    );
+  }
+
+  getCellStyle(idEstado: number) {
+    const estado = this.getEstadoFiltrado(idEstado)[0];
+    return {
+      'color': estado.color_estado,
+      'background-color': estado.background_estado,
+      'border': '1px solid' + estado.color_estado,
+      'width': 'fit-content',
+      'padding-left': '5%',
+      'padding-right': '5%'
+    };
+  }
 }
+
 function takeUntilDestroyed(): import("rxjs").OperatorFunction<any, unknown> {
   throw new Error('Function not implemented.');
 }

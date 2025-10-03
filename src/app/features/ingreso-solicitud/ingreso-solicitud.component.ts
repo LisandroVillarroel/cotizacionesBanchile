@@ -41,16 +41,18 @@ import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
 import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
 
-import { RubroService } from '@shared/service/rubro.service';
-import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { IRubro } from '@shared/modelo/rubro-interface';
-import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { MatCardContent, MatCard } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IngresoSolicitudService } from './service/ingreso-solicitud.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { AseguradoService } from './service/asegurado.service';
+
+import { IRubro } from '@shared/modelo/rubro-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -94,15 +96,15 @@ import { AseguradoService } from './service/asegurado.service';
   ],
 })
 export default class IngresoSolicitudComponent {
+    storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
   idSolicitud = signal<string>('0');
 
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
-
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   asegurado!: IAsegurado;
   aseguradoService = inject(AseguradoService);
