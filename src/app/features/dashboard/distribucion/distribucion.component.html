@@ -1,7 +1,6 @@
 <div class="container-fluid justify-around p-2">
   <mat-card style="width: 49%;">
     <mat-card-header class="destacado" style="font-weight: bold;">Resumen Solicitudes por Rubro &nbsp;&nbsp;&nbsp;&nbsp;
-
       <mat-label class="labelI" style="width: 100px; margin-left: auto;">Rubro</mat-label>
       <mat-select  [formControl]="rubro" style="width: 160px; " class="card-borde2" (selectionChange)="seleccionaRubro($event.value)">
         @for(_rubros of datoRubros(); track _rubros){
@@ -15,8 +14,6 @@
       <app-grafico-pie [datosSolicitudGraficoPie]="resumenGeneral_Rubro()" />
     </mat-card-content>
   </mat-card>
-
-
 
   <mat-card style="width: 49%;">
     <mat-card-header class="destacado" style="font-weight: bold;">Tiempo promedio en Gestión de Solicitudes (días
