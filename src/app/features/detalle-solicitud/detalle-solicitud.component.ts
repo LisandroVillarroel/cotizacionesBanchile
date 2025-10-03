@@ -25,6 +25,7 @@ import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/
 import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
+import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
