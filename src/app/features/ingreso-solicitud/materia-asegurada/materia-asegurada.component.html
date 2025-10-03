@@ -1,11 +1,33 @@
 
-<div class="row">
-@for (elemento of datoMateria(); track $index){
-  @if ($index==0){
-    <div class="md-12">{{elemento.p_descripcion_seccion}}</div>
-  }@else{
+<mat-dialog-content
+  [formGroup]="materiaForm()"
+  name="materiaForm"
+  class="agrega-container"
+>
+  <div class="row">
+  @for (fila of datoMateriaEstructura(); track $index){
+      @for (columna of fila.datos; track $index){
+          @if (columna.p_tipo_dato=='TITULO'){
+          <div [ngClass]="columna.estiloClass">{{columna.p_valor_dato}}</div>
+          }@else{
+            <div [ngClass]="columna.estiloClass">
+            <mat-form-field class="inputInput">
+              <mat-label class="labelI">{{columna.nombreLabel}}</mat-label>
+              <input
+                matInput
+                aria-label="Nombre"
+                [formControlName]="columna.nombreCampo!"
 
+              />
+              <!--
+              @if (nombreAsegurado.invalid) {
+              <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
+              }
+              -->
+        </mat-form-field>
+        </div>
+          }
+      }
   }
-
-}
-</div>
+  </div>
+</mat-dialog-content>

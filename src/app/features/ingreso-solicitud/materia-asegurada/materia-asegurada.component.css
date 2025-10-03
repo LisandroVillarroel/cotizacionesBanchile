@@ -1,0 +1,12 @@
+.titulo{
+  text-align: center;
+  color: aliceblue;
+  background-color: rgb(6, 6, 45);
+  font-size: 12px;
+}
+
+.subTitulo{
+  text-align: left;
+  background-color: rgb(177, 176, 176);
+
+}

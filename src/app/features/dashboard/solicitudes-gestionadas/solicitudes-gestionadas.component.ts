@@ -79,6 +79,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   formularioModificado = signal(false);
 
+
+
   contratante = new FormControl();
     rubro = new FormControl();
     seguro = new FormControl();
@@ -141,77 +143,36 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
     const estado = this.filtroFormulario().value.estado??'';
-    console.log('his.filtroFormulario().value:',this.filtroFormulario().value)
-    const fechaInicio = new Date(this.filtroFormulario().value.fecha);
-    console.log('fechaInicio.getFullYear():',fechaInicio.getFullYear())
-this.formularioModificado();
-    console.log('this.datosSolicitud():',this.datosSolicitud())
-    console.log('contratante',contratante)
+    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+
+    let fechaInicio=new Date();
+    if (fechaInicio_Inicial!=null){
+         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    }
+
+    this.formularioModificado();
     return this.datosSolicitud()!.filter(item => {
 
       const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);
+      let cumpleFecha=true;
+      const fechaBase = new Date(item.fecha_creacion);
 
-    const fechaBase = new Date(item.fecha_creacion);
-
-      const cumpleFecha = !fechaInicio || (
+      if (fechaInicio_Inicial!=null){
+        cumpleFecha = !fechaInicio || (
         fechaBase.getFullYear() === fechaInicio.getFullYear() &&
         fechaBase.getMonth() === fechaInicio.getMonth() &&
         fechaBase.getDate() === fechaInicio.getDate()
       );
-
+    }
 
       return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
 
-//ngOnInit(): void {
-  // Suscribirse a los cambios del formulario y actualizar las señales
-  //  this.filtroContratante.set(this.filtroFormulario().get('contratante')?.valueChanges)
 
-/*
-    this.filterForm.get('estado')?.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(valor => this.filtroEstado.set(valor));
-
-    this.filterForm.get('fechaRange')?.get('start')?.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(valor => this.filtroFechaInicio.set(valor));
-
-    this.filterForm.get('fechaRange')?.get('end')?.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(valor => {
-        // Ajustar la fecha final para incluir todo el día
-        const fechaAjustada = valor ? new Date(valor) : null;
-        if (fechaAjustada) {
-          fechaAjustada.setHours(23, 59, 59, 999);
-        }
-        this.filtroFechaFin.set(fechaAjustada);
-      });
-      */
-  //  }
-  /*
-  applyFilterSolicitud(campo: string, valor: String) {
-    //  const filterValue = (valor.target as HTMLInputElement).value;
-    console.log('campo:', campo + ' Valor Inicial:', valor)
-    this.dataSourceSolicitud().filterPredicate = (data: any, filter: string) => {
-      const dataValue = data[campo] ? data[campo].toString() : '';
-      console.log('dataValue:',dataValue.toLowerCase().includes(filter.toLowerCase()))
-      return dataValue.toLowerCase().includes(filter.toLowerCase());
-    };
-
-    this.dataSourceSolicitud().filter = valor.trim().toLowerCase();
-  }
-
-    if (this.dataSourceSolicitud().paginator) {
-      this.dataSourceSolicitud().paginator!.firstPage();
-    }
-  }
-
-
-*/
   limpiaFiltros() {
     this.rubro.reset();
     this.seguro.reset();
@@ -232,14 +193,12 @@ this.formularioModificado();
     this.formularioModificado.set(true);
      // Suscribirse a los cambios del formulario
     this.filtroFormulario().valueChanges.subscribe(() => {
-      console.log('paso 1')
       this.datosFiltrados()
       this.updateTableData();
     });
   }
 
   private updateTableData(): void {
-    console.log('this.datosFiltrados():',this.datosFiltrados())
     this.dataSourceSolicitud().data = this.datosFiltrados();
   }
 
@@ -282,7 +241,6 @@ this.formularioModificado();
   }
 
   async seleccionaRubro(datos: IRubro) {
-    console.log("rubros: ", datos);
     const _codigoRubro = datos.id_rubro
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({

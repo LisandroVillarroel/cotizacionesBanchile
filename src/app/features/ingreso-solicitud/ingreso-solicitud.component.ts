@@ -235,6 +235,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
+ grabaContratanteAux(){}
 
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
@@ -271,7 +272,7 @@ export default class IngresoSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             alert('Grabó Bien');
-            this.idSolicitud.set(dato.p_id_solicitud);
+
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
               id: dato.p_id_solicitud,
@@ -282,8 +283,11 @@ export default class IngresoSolicitudComponent {
               idSeguro: this.agregaSolicitudContratante().get('seguro')!.value,
             });
             if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value==true){
-                this.agregarAsegurado()
+                 this.agregarAsegurado()
+            }else{
+              this.idSolicitud.set(dato.p_id_solicitud);
             }
+
           } else {
             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
@@ -324,6 +328,7 @@ export default class IngresoSolicitudComponent {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
           alert('Grabó En Asegurado');
+          this.idSolicitud.set(this.contratanteInfo().id);
         } else {
           alert('Error:' + dato.mensaje);
           console.log('Error:', dato.mensaje);
