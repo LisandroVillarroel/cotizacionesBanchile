@@ -10,6 +10,9 @@ export interface IMateria {
   p_largo_dato: number;
   p_decimales_dato: number;
   p_fecha_creacion: string;
+  estiloClass?:string;
+  nombreCampo?:string;
+  nombreLabel?:string;
 }
 
 export interface IMateriaResultado {
@@ -19,3 +22,10 @@ export interface IMateriaResultado {
   vcEstado: string;
   vcEstadoCreacion: string;
 }
+
+export interface IMateriaEstructura {
+  filas: number;
+  columnas: number;
+  datos:IMateria[];
+}
+
