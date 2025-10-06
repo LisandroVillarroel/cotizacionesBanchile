@@ -9,7 +9,6 @@ import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
   IIngresarDocumento,
   IEstadoIngresarDocumento,
-  DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 // Definición base de documentos
