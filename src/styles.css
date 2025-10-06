@@ -457,7 +457,7 @@ th#opcionesI {
     color: white;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 0px 0px 16px !important;
+    padding: 10px 0px 0px 10px !important;
   }
 
   .barra-titulo-form {
@@ -601,7 +601,7 @@ th#opcionesI {
 .card-con-titulo-principal {
   background-color: white;
   border: 2px solid #285b9b !important;
-  border-radius: 12px;
+  border-radius: 0px;
   padding: 2rem;
   margin-bottom: 2rem;
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
@@ -627,9 +627,9 @@ th#opcionesI {
 .card-con-titulo {
   background-color: white;
   border: 1px solid #285b9b !important;
-  border-radius: 10px;
+  border-radius: 0px;
   padding: 2rem;
-  margin-bottom: 2rem;
+  /*margin-bottom: 2rem;*/
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
@@ -646,7 +646,7 @@ th#opcionesI {
   font-size: 14px;
   font-family: "Roboto", sans-serif !important;
   color: #285b9b;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .contenido-card {
