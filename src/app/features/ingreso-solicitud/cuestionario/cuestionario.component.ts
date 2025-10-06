@@ -95,12 +95,19 @@ export class CuestionarioComponent {
 
       this.cuestionarioService.postAgregaDocumento(doc).subscribe({
         next: (res) => {
-          console.log('Documento ingresado:', res.estado_creacion);
+          console.log('Documento ingresado:', res.vcEstadoCreacion);
+
+          if (res.p_corr_documento != null) {
+            doc.p_corr_documento = res.p_corr_documento;
+          }
         },
         error: (err) => {
           console.error('Error al ingresar documento:', err);
         },
       });
+
+      // Resetear el input para permitir volver a cargar el mismo archivo
+      input.value = '';
     }
   }
 
@@ -120,13 +127,22 @@ export class CuestionarioComponent {
 
   eliminarDocumento(doc: IIngresarDocumento) {
     const idSolicitud = Number(this.idSolicitud());
-    const corr = doc.p_corr_documento ?? 1;
+
+    // Validación correcta del correlativo
+    if (doc.p_corr_documento == null) {
+      alert(
+        'No se puede eliminar el documento porque no tiene correlativo asignado.'
+      );
+      return;
+    }
+
+    const corr = doc.p_corr_documento;
 
     this.cuestionarioService
       .postEliminaDocumento(idSolicitud, corr, 'Mauricio Lufin')
       .subscribe({
         next: () => {
-          // Modifica directamente el objeto referenciado por ngModel
+          // ✅ Limpieza directa del objeto
           doc.p_ruta_documento_origen = '';
           doc.p_ruta_documento_destino = '';
           doc.p_fecha_creacion = '';

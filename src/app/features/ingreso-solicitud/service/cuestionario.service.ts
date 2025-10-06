@@ -55,7 +55,7 @@ export class CuestionarioService {
     console.log('Agrega Documento Service:', agregaDocumento);
     return this.http
       .post<IEstadoIngresarDocumento>(
-        `${environment.apiUrl}/ingresarDocumentos`,
+        `${environment.apiUrl}/ingresarDocumento`,
         agregaDocumento,
         { headers: this.headers }
       )

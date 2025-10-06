@@ -189,8 +189,9 @@ export interface IIngresarDocumento {
 export interface IEstadoIngresarDocumento {
   codigo: number;
   mensaje: string;
-  estado: string;
-  estado_creacion: string;
+  p_corr_documento: number;
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
 
 export interface DatosDocumentoInterface {
