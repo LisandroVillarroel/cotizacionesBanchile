@@ -1,20 +1,22 @@
 <div class="container-fluid p-2">
-  <div class="box-form-fields gap-2 fontSmall" style="align-items: center;">
-    <span> Filtrar por: </span>
+  <div class="box-form-fields gap-2 p-2" style="align-items: center;">
+    <div class="gap-1" style="width: 10%;">
+      <span class="gris"> Filtrar por: </span>
+    </div>
 
-      <div style="width: 20%;">
-        <mat-form-field class="inputBuscar">
-          <mat-label class="labelI">Contratante</mat-label>
-          <mat-icon matSuffix class="gris">search</mat-icon>
-            <input matInput #inContratante
-              (keyup)="filtroContratante.set(inContratante.value); pagina.set(0)"
-              (change)="filtroContratante.set(inContratante.value); pagina.set(0)"/>
-        </mat-form-field>
-      </div>
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="cursiva gris-claro">Contratante</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+          <input matInput #inContratante
+            (keyup)="filtroContratante.set(inContratante.value); pagina.set(0)"
+            (change)="filtroContratante.set(inContratante.value); pagina.set(0)"/>
+      </mat-form-field>
+    </div>
 
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
-          <mat-label class="labelI">Rubro</mat-label>
+          <mat-label class="cursiva gris-claro">Rubro</mat-label>
            <mat-select [formControl]="rubro"
             (selectionChange)="seleccionaRubro($event.value); filtroRubro.set($event.value.nombre_rubro); pagina.set(0)">
             @for(_rubros of datoRubros(); track _rubros){
@@ -28,7 +30,7 @@
 
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
-          <mat-label class="labelI">Tipo de seguro</mat-label>
+          <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
           <mat-select [formControl]="seguro" (selectionChange)="filtroProducto.set($event.value); pagina.set(0)">
             @for(_seguros of rescatadoSeguro(); track _seguros){
               <mat-option [value]="_seguros.nombre_tipo_seguro">
@@ -42,7 +44,7 @@
 
     <div style="width: 20%;">
       <mat-form-field class="inputFechaForm">
-        <mat-label class="fontSmall gris">Fecha</mat-label>
+        <mat-label class="cursiva gris-claro">Fecha</mat-label>
           <input matInput [matDatepicker]="picker" [formControl]="hoy" (dateChange)="seleccionaFecha()">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -50,7 +52,8 @@
     </div>
 
     <div>
-      <button mat-raised-button (click)="limpiaFiltros(); inContratante.value = ''" class="button-link"> Limpiar filtros
+      <button mat-raised-button (click)="limpiaFiltros();
+        inContratante.value = ''" class="button-link"> Limpiar filtros
       </button>
     </div>
   </div>

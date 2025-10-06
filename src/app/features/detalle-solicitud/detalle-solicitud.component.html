@@ -43,19 +43,15 @@
             mat-dialog-close [disabled]="false">Cerrar</button>
       </div>
       <div class="botones-derecha">
-        <button mat-stroked-button
-          style="background-color: #F45516; color: #ffffff; border-radius: 0px; border: none;"
+        <button mat-stroked-button class="btn-danger"
           (click)="anularSolicitud()">Anular Solicitud</button>
-        <button mat-stroked-button
-          style="background-color: #FFC725; color: #ffffff; border-radius: 0px; border: none;"
+        <button mat-stroked-button class="btn-warning"
           (click)="devolverSolicitud()">Devolver solicitud</button>
-        <button mat-stroked-button  style="background-color: #6BAA1F; color: #ffffff; border-radius: 0px; border: none;"
+        <button mat-stroked-button class="btn-success"
           (click)="aprobarSolicitud()">Aprobar Solicitud</button>
-        <button mat-stroked-button
-          style="background-color: #149DC9; color: #ffffff; border-radius: 0px; border: none;"
+        <button mat-stroked-button class="btn-info"
           (click)="enviarCia()">Agregar Compañía</button>
-        <button mat-stroked-button
-          style="background-color: #002464; color: #ffffff; border-radius: 0px; border: none;"
+        <button mat-stroked-button class="btn-primary"
           (click)="corregirSolicitud()">Enviar Solicitud</button>
       </div>
     </div>

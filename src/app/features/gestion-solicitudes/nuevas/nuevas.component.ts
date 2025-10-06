@@ -187,4 +187,5 @@ seleccionaFecha() {
         .open(DetalleSolicitudComponent, dialogConfig)
         .afterClosed()
     }
-}
+
+  }

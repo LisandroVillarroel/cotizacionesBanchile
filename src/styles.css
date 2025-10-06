@@ -185,15 +185,17 @@ h3[mat-dialog-title] {
 }
 
 .inputSelect {
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
-  width: 100%;
+  font-size: var(--mdc-typography-body1-font-size, 12px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 10px 0px 0px !important;
+  width:100%;
+  color: #666668;
 }
 
 .inputBuscar {
   font-size: 14px !important;
-  padding-top: 10px !important;
-  padding-bottom: 5px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 10px 0px 0px !important;
   height: 80%;
   width: 100%;
   color: #666668;
@@ -209,10 +211,12 @@ h3[mat-dialog-title] {
 
 .inputFechaForm {
   font-size: 14px !important;
-  padding-top: 10px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 5px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
   margin-bottom: 15px !important;
+  color: #666668;
 }
 
 .mat-mdc-select-value-text {
@@ -234,14 +238,6 @@ h3[mat-dialog-title] {
   padding-bottom: 16px;
 }
 /* FIN INPUTS */
-
-/* Caja para filtros */
-.box-form-fields {
-  display: flex;
-  align-items: flex-start;
-}
-
-/* Fin caja para filtros */
 
 /* MAT-TABLE */
 /* Mantenedores Material */
@@ -339,9 +335,7 @@ tr.mat-header-row {
 .mat-mdc-footer-row,
 .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
-  font-size: 12px !important;
   font-size: 14px !important;
-  /*Tamaño letra tabla*/
 }
 
 /* Color Barra hover de la tabla */
@@ -988,4 +982,50 @@ mat-divider[vertical] {
   color: #0F8DBA !important;
 }
 
+.btn-danger{
+  background-color: #F45516 !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  border: none !important;
+}
 
+.btn-warning{
+  background-color: #FFC725 !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  border: none !important;
+}
+
+.btn-success{
+  background-color: #6BAA1F !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  border: none !important;
+}
+
+.btn-info{
+  background-color: #149DC9 !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  border: none !important;
+}
+
+.btn-primary{
+  background-color: #002464 !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  border: none !important;
+}
+
+/*Caja para filtros*/
+.box-form-fields {
+  display: flex;
+  align-items: flex-start;
+  background-color: white;
+  padding: 0px 12px 0px;
+}
+/*Fin para filtros*/
+
+.border-none {
+  border-radius: 0px !important;
+}

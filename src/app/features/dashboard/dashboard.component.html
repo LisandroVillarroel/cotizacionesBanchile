@@ -1,7 +1,7 @@
   <div class="container-fluid d-flex justify-around">
     <h1 mat-dialog-title class="titulo">Te damos la bienvenida</h1>
-    <mat-form-field class="inputFechaForm">
-      <mat-label class="fontSmall gris">Actualizado el:</mat-label>
+    <mat-form-field class="inputFecha">
+      <mat-label class="gris">Actualizado el:</mat-label>
       <input matInput [matDatepicker]="picker" [formControl]="fechaActual" (dateChange)="seleccionaFecha()">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>

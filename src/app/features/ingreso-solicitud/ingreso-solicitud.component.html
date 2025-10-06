@@ -40,14 +40,13 @@
                 data-titulo="Ingreso de datos"
               >
                 <mat-card-content>
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-2">
                     <mat-form-field
                       appearance="outline"
-                      class="campo-blanco inputInput"
+                      class="inputBuscar"
                     >
-                      <mat-label class="labelI">RUT</mat-label>
-                      <input
-                        class="input-blanco"
+                    <mat-label class="cursiva gris-claro">RUT</mat-label>
+                    <input
                         autofocus
                         id="rutCliente"
                         aria-label="RUT"
@@ -59,31 +58,32 @@
                         required
                       />
                       @if (rutCliente.invalid) {
-                      <mat-error>{{ getErrorMessage("rut") }}</mat-error>
+                        <mat-error>{{ getErrorMessage("rut") }}</mat-error>
                       }
                     </mat-form-field>
                   </div>
 
-                  <mat-form-field class="inputSelect">
-                    <mat-label class="labelI">Selecciona un rubro</mat-label>
-                    <mat-select
-                      [formControl]="rubro"
-                      (selectionChange)="seleccionaRubro($event.value)"
-                    >
-                      @for(_rubros of datoRubros(); track _rubros){
-                      <mat-option [value]="_rubros.id_rubro">
-                        {{ _rubros.nombre_rubro }}
-                      </mat-option>
-                      }
-                    </mat-select>
-                    @if(seguro.invalid){
-                    <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
-                    }
-                  </mat-form-field>
-
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-2">
                     <mat-form-field class="inputSelect">
-                      <mat-label class="labelI"
+                      <mat-label class="cursiva gris-claro">Selecciona un rubro</mat-label>
+                      <mat-select
+                        [formControl]="rubro"
+                        (selectionChange)="seleccionaRubro($event.value)"
+                      >
+                        @for(_rubros of datoRubros(); track _rubros){
+                          <mat-option [value]="_rubros.id_rubro">
+                            {{ _rubros.nombre_rubro }}
+                          </mat-option>
+                        }
+                      </mat-select>
+                      @if(seguro.invalid){
+                        <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12 p-2">
+                    <mat-form-field class="inputSelect">
+                      <mat-label class="cursiva gris-claro"
                         >Selecciona un tipo de seguro</mat-label
                       >
                       <mat-select [formControl]="seguro">
@@ -107,9 +107,9 @@
                 data-titulo="Datos del contratante"
               >
                 <mat-card-content>
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-2">
                     <mat-form-field class="inputInput">
-                      <mat-label class="labelI"
+                      <mat-label class="cursiva gris-claro"
                         >Nombre o Razón Social</mat-label
                       >
                       <input
@@ -121,9 +121,9 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-2">
                     <mat-form-field class="inputInput">
-                      <mat-label class="labelI">Correo</mat-label>
+                      <mat-label class="cursiva gris-claro">Correo</mat-label>
                       <input
                         matInput
                         disabled
@@ -133,9 +133,9 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-md-12">
+                  <div class="col-md-12 p-2">
                     <mat-form-field class="inputInput">
-                      <mat-label class="labelI"
+                      <mat-label class="cursiva gris-claro"
                         >Teléfonos (Personal/Comercial)</mat-label
                       >
                       <input
