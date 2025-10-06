@@ -3,7 +3,7 @@
     @for (fila of datoMateriaEstructura(); track $index){
       @for (columna of fila.datos; track $index){
         @if (columna.p_tipo_dato=='TITULO'){
-        <div [ngClass]="columna.estiloClass">{{columna.p_valor_dato}}</div>
+        <div [ngClass]="columna.estiloClass"><span class="centraSubtitulo">{{columna.p_valor_dato}}</span></div>
         }@else{
           @if (columna.p_tipo_dato=='LISTA'){
           <div [ngClass]="columna.estiloClass">
@@ -23,8 +23,11 @@
           }@else{
           <div [ngClass]="columna.estiloClass">
             <mat-form-field class="estiloCampo">
-
-              <input matInput placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" />
+              @if(columna.p_tipo_dato=='NUMERICO'){
+                <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" [maxlength]="columna.p_largo_dato" directivaSoloDecimalNumeros [decimales]="columna.p_decimales_dato"/>
+              }@else{
+                <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" [maxlength]="columna.p_largo_dato" />
+              }
               <!--
                     @if (nombreAsegurado.invalid) {
                     <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>

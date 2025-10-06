@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { SoloDecimalNumerosDirective } from '@shared/directiva/solo-decimal-numeros.directive';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   standalone: true,
   imports: [NgClass, MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule, MatSelectModule, MatDialogModule],
+    MatInputModule, MatSelectModule, MatDialogModule,SoloDecimalNumerosDirective],
   templateUrl: './materia-asegurada.component.html',
   styleUrl: './materia-asegurada.component.css',
 })
@@ -31,6 +32,7 @@ export class MateriaAseguradaComponent {
   materiaService = inject(MateriaService);
 
   datoMateria = signal<IMateria[]>([]);
+  datoMateria_Recorre:IMateria[]=[];
 
   datoMateriaEstructura = signal<IMateriaEstructura[]>([])
   datoMateriaEstructura_arr: IMateriaEstructura[] = []
@@ -80,72 +82,75 @@ export class MateriaAseguradaComponent {
       });
   }
 
-  creaEstructura() {/*
-      let Arreglo=[{fila:0, columna:0}];
-      let cuentaColumnas=0;
-      let fila=0
-      for (let i = 0; i < this.datoMateria().length; i++) {
-          cuentaColumnas=0
-          fila=0;
-          for (let a = i; a < this.datoMateria().length; a++) {
-              if (this.datoMateria()[i].p_id_linea==this.datoMateria()[i].p_id_linea){
-                cuentaColumnas++;
-                fila=this.datoMateria()[i].p_id_linea;
-              }else{
-                Arreglo.push({fila:fila, columna:cuentaColumnas})
-                i=a;
-                exit
-              }
-      }
-              */
-    //Cuenta Columnas por fila
-    const cuantaColumnas = this.datoMateria().reduce((acumulador, dato) => {
-      const linea = dato.p_id_linea;
-      acumulador[linea] = (acumulador[linea] || 0) + 1;
-      return acumulador;
-    }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
-
-    const cuantaColumnasArreglo: [string, number][] = Object.entries(cuantaColumnas);
-
-    console.log('Record:', cuantaColumnas)
-    console.log('arreglo:', cuantaColumnasArreglo)
-
+  creaEstructura() {
     let valoresFila;
     let valorClass = '';
     let nombreCampo = ''
     let nombreLabel = '';
 
-    console.log('cuantaColumnasArreglo.length', cuantaColumnasArreglo.length)
-    for (let a = 0; a < cuantaColumnasArreglo.length; a++) {
-      valoresFila = this.datoMateria().filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0]))
-      //console.log('valoresFila:',valoresFila)
 
-      for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
-        valorClass = 'col-md-' + (12 / (Number(cuantaColumnasArreglo[a][1]))).toString() + ' border';
-        if (valoresFila[b].p_tipo_dato == 'TITULO') {
-          if (Number(cuantaColumnasArreglo[a][1]) > 1) {
-            valorClass = valorClass + ' subTitulo'
-          } else {
-            valorClass = valorClass + ' titulo'
+   //Cuenta secciones
+    const cuantaSecciones = this.datoMateria().reduce((acumulador, dato) => {
+        const seccion = dato.p_id_seccion;
+        acumulador[seccion] = (acumulador[seccion] || 0) + 1;
+        return acumulador;
+    }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
+
+      const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
+      console.log('cuantaSeccionesArreglo:',cuantaSeccionesArreglo)
+
+    for (let i = 0; i < cuantaSeccionesArreglo.length; i++) { //Recorre Secciones
+      this.datoMateria_Recorre=this.datoMateria().filter((valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])) //Compara la fila i el valor que esta en la fila 0 Numero de seccion
+      //Cuenta Columnas por fila
+      const cuantaColumnas = this.datoMateria_Recorre.reduce((acumulador, dato) => {
+        const linea = dato.p_id_linea;
+        acumulador[linea] = (acumulador[linea] || 0) + 1;
+        return acumulador;
+      }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
+
+      const cuantaColumnasArreglo: [string, number][] = Object.entries(cuantaColumnas); //Pasa a un arreglo
+
+      console.log('Record:', cuantaColumnas)
+      console.log('arreglo:', cuantaColumnasArreglo)
+
+
+      valorClass = '';
+      nombreCampo = ''
+      nombreLabel = '';
+
+      console.log('cuantaColumnasArreglo.length', cuantaColumnasArreglo.length)
+      for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //R
+        valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
+        //console.log('valoresFila:',valoresFila)
+
+        for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
+          valorClass = 'col-md-' + (12 / (Number(cuantaColumnasArreglo[a][1]))).toString() + ' border';
+          if (valoresFila[b].p_tipo_dato == 'TITULO') {
+            if (Number(cuantaColumnasArreglo[a][1]) > 1) {
+              valorClass = valorClass + ' subTitulo'
+            } else {
+              valorClass = valorClass + ' titulo'
+            }
+            nombreLabel = valoresFila[b].p_valor_dato;
+          } else { //Si es campo
+            nombreCampo = valoresFila[b].p_id_rubro + '_' + valoresFila[b].p_id_tipo_seguro + '_' + valoresFila[b].p_id_seccion + '_' + valoresFila[b].p_id_linea + '_' + valoresFila[b].p_id_posicion
+            this.agregaFormControl(nombreCampo, valoresFila[b].p_valor_dato, false)
           }
-          nombreLabel = valoresFila[b].p_valor_dato;
-        } else { //Si es campo
-          nombreCampo = valoresFila[b].p_id_rubro + '_' + valoresFila[b].p_id_tipo_seguro + '_' + valoresFila[b].p_id_seccion + '_' + valoresFila[b].p_id_linea + '_' + valoresFila[b].p_id_posicion
-          this.agregaFormControl(nombreCampo, valoresFila[b].p_valor_dato, false)
+          valoresFila[b].estiloClass = valorClass
+          valoresFila[b].nombreCampo = nombreCampo
+          valoresFila[b].nombreLabel = nombreLabel
         }
-        valoresFila[b].estiloClass = valorClass
-        valoresFila[b].nombreCampo = nombreCampo
-        valoresFila[b].nombreLabel = nombreLabel
-      }
 
-      this.datoMateriaEstructura_arr.push({
-        filas: Number(cuantaColumnasArreglo[a][0]),
-        columnas: Number(cuantaColumnasArreglo[a][1]),
-        datos: valoresFila
-      })
-      //  console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
+        this.datoMateriaEstructura_arr.push({
+          filas: Number(cuantaColumnasArreglo[a][0]),
+          columnas: Number(cuantaColumnasArreglo[a][1]),
+          datos: valoresFila
+        })
+        //  console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
+      }
     }
-    // console.log('this.datoMateriaEstructura_arr:', this.datoMateriaEstructura_arr)
+
+     console.log('this.datoMateriaEstructura_arr:', this.datoMateriaEstructura_arr)
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
