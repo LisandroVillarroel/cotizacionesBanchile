@@ -274,7 +274,7 @@
 
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
-      <app-materia-asegurada [idRubro]="contratanteInfo().idRubro" [idSeguro]="contratanteInfo().idSeguro" />
+      <app-materia-asegurada [idSolicitud]="contratanteInfo().id" [idRubro]="contratanteInfo().idRubro" [idSeguro]="contratanteInfo().idSeguro" />
       <div class="alinear-botones">
         <div class="botones-izquierda">
           <button
