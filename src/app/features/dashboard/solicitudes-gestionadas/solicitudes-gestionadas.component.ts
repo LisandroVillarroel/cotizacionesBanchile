@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, NgModule, input, effect, computed, OnInit } from '@angular/core';
+import { Component, ViewChild, inject, signal, input, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/ma
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
 
 //import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
@@ -48,7 +48,6 @@ import { IEstado } from '@shared/modelo/estado-interface';
     MatDividerModule,
     MatCardModule,
     CommonModule,
-
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
@@ -62,7 +61,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
-  tipoUsuario = "E";
+
+  tipoUsuario = "E"; //OJO!!! buscar en storage
   //estadoService = inject(EstadoService);
 
   datoRubros = signal<IRubro[]>([]);
@@ -79,8 +79,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   formularioModificado = signal(false);
 
-
-
   contratante = new FormControl();
     rubro = new FormControl();
     seguro = new FormControl();
@@ -95,8 +93,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     fecha : this.fecha
     })
   );
-
-
 
   displayedColumns: string[] = [
     'index',
@@ -118,8 +114,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     return tabla
   });
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
@@ -135,7 +130,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   // Señal computada para los datos filtrados
   datosFiltrados() {
@@ -167,11 +161,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         fechaBase.getDate() === fechaInicio.getDate()
       );
     }
-
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
-
 
   limpiaFiltros() {
     this.rubro.reset();
@@ -180,7 +172,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     this.fecha.reset();
     this.dataSourceSolicitud().filter= '';
   }
-
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';

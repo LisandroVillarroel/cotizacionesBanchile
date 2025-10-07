@@ -88,8 +88,9 @@ export class GraficoPieComponent implements OnInit {
   }
   getColor(index: number): string {
     const colores = [
-      '#666668', '#149DC9', '#FFC725', '#234E85', '#0c70f1ff',
-      '#bbec07ff', '#d31721ff', '#8021ceff', '#12a4e7ff'
+      '#002464', '#149DC9', '#D11D1A', '#F45516','#776D92',
+      '#C21589', '#6BAA1F', '#A6B118','#666668',
+      //'#234E85', '#89CEE4', '#DCF0F7',
     ];
     return colores[index % colores.length];
   }

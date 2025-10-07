@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
       <div style="display: flex">
         <a>
           <img
-            src="./../../../../assets/logo/bancochile.png"
+            src="assets/logo/bancochile.png"
             alt="Logo"
             class="logo-img me-2"
           />

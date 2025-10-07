@@ -3,15 +3,21 @@ export interface IObservacion{
   fecha_correccion_observacion: string;
   observacion: string;
   id_coordinador: string;
+  nombre_coordinador: string
 }
 
 export interface ICompania{
   id_compania: number;
-  id_solicitud: string;
+  nombre_compania: string;
+  correo_destino: string;
+  fecha_envio: string;
+  tiempo_transc: string; //horas o días???
   id_estado_cot: number;
   estado_cotizacion: string;
-  fecha_creacion: string;
-  id_coordinador: string;
+  color_edoCot: string;
+  fondo_edoCot: string;
+  id_solicitud: number;
+  id_cotizacion: number;
 }
 
 export interface ISolicitud {
@@ -26,6 +32,8 @@ export interface ISolicitud {
   sla: string;
   id_estado_solicitud: number;
   nombre_estado: string;
+  nombre_ejecutivo_banco: string;
+  id_ejecutivo_banco: string;
    nombre_ejecutivo:string;
 }
 
@@ -44,7 +52,7 @@ export interface DetalleSolicitudInterface {
   p_nombre_estado: string;
   p_sla: string;
   p_nombre_ejecutivo_banco: string;
-
+  p_id_ejecutivo_banco: string;
   c_asegurados: IAseguradoDet[];
   c_beneficiarios: IBeneficiarioDet[];
   c_observaciones: IObservacion[];

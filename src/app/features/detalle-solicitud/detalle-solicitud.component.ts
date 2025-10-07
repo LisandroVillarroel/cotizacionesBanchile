@@ -2,15 +2,13 @@ import { Component, computed, inject, input, signal, ViewEncapsulation } from '@
 import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
-import { MatCard } from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
 import { DetalleSolicitudService } from './detalle-solicitud.service';
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
-import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
-import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
-import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
+//import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 
@@ -26,6 +24,9 @@ import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
+import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
+import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
+import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -37,7 +38,9 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     CuestionarioComponent,
     ObservacionesComponent,
     CompaniasContactadasComponent,
-    //DocumentosAsociadosComponent,
+    MateriaAseguradaComponent,
+    //AprobarSolicitudComponent,
+    MatCardModule,
     MatButtonModule,
     MatDialogModule,
     MatIcon,
@@ -47,8 +50,6 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-    BeneficiarioComponent,
-    AseguradoComponent
 ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
@@ -82,7 +83,7 @@ export default class DetalleSolicitudComponent {
      this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
-          console.log('Detalle solicitud:', dato);
+          //console.log('Detalle solicitud:', dato);
           this.infoGral.set({
             id_solicitud : this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
@@ -94,8 +95,9 @@ export default class DetalleSolicitudComponent {
             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
             sla: dato.p_sla,
             id_estado_solicitud: dato.p_id_estado_solicitud,
-            nombre_estado: dato.p_nombre_estado
-            , nombre_ejecutivo: dato.p_nombre_ejecutivo_banco
+            nombre_estado: dato.p_nombre_estado,
+            nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
+            id_ejecutivo_banco: dato.p_id_ejecutivo_banco
           });
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
@@ -111,7 +113,6 @@ export default class DetalleSolicitudComponent {
       error: (error) => {
         console.log('ERROR INESPERADO', error);
         console.log('ID Solicitud:', idSolicitud);
-
       },
     });
   }
@@ -122,25 +123,95 @@ export default class DetalleSolicitudComponent {
   devolverSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
-      fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo,//'Manuel Sepúlveda',
+      fecha: this.infoGral()?.fecha_creacion_solicitud,
+      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
     };
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
     this.dialog
-      .open(DevolverConObservacionesComponent, dialogConfig)
-      .afterClosed();
+      .open(DevolverSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato)=>{
+        this.cargarSolicitud(this.idSolicitud)
+      });
   }
+
+
+
+
+
+
+
+
+
+
+//  devolverSolicitud(idSolicitud: number){
+//   console.log('devolverSolicitud idSolicitud',idSolicitud);
+//      this.detalleService.postDetalle(idSolicitud).subscribe({
+//       next: (dato: DetalleSolicitudInterface) => {
+//         if (dato.codigo === 200) {
+//           console.log('Detalle solicitud:', dato);
+//           this.infoGral.set({
+//             id_solicitud : this.idSolicitud,
+//             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
+//             rut_contratante: dato.p_rut_contratante,
+//             nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
+//             id_rubro: dato.p_id_rubro,
+//             nombre_rubro: dato.p_nombre_rubro,
+//             id_tipo_seguro: dato.p_id_tipo_seguro,
+//             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
+//             sla: dato.p_sla,
+//             id_estado_solicitud: dato.p_id_estado_solicitud,
+//             nombre_estado: dato.p_nombre_estado
+//           });
+//           this.observaciones.set(dato.c_observaciones);
+//         } else {
+//           if (dato.codigo != 500) {
+//             console.log('Error:', dato.mensaje);
+//           } else {
+//             console.log('ERROR DE SISTEMA:');
+//           }
+//         }
+//       },
+//       error: (error) => {
+//         console.log('ERROR INESPERADO', error);
+//         console.log('ID Solicitud:', idSolicitud);
+
+//       },
+//     });
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   aprobarSolicitud(): void {
     const dato = {
@@ -159,7 +230,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = dato;
 
     this.dialog
-      .open(AceptarSolicitudDetalleComponent, dialogConfig)
+      .open(AprobarSolicitudComponent, dialogConfig)
       .afterClosed();
   }
 
@@ -181,7 +252,10 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
-      .afterClosed();
+      .afterClosed()
+      .subscribe((dato)=>{
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
 
 
