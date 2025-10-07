@@ -22,12 +22,6 @@ export class ObservacionesComponent implements OnInit {
   observaciones = input.required<IObservacion[] | undefined>();
   obsFiltradas = computed(()=> this.observaciones());
 
-  isEmpty(value: any): boolean {
-    console.log("valor", value);
-    console.log("indefinido ", value === undefined);
-    console.log("vacío ", value === null);
-    return value === undefined || value === null;
-  }
   constructor() { }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+/* import { Component, Inject, inject, signal } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import {
   MAT_DIALOG_DATA,
@@ -14,10 +14,12 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-import { SolicitudCorregidaComponent } from '../corregir-solicitud/solicitud-corregida/solicitud-corregida.component';
 import { SolicitudDevueltaComponent } from './solicitud-devuelta/solicitud-devuelta.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { StorageService } from '@shared/service/storage.service';
 
 export interface DevolverConObservacionesData {
+[x: string]: any;
   solicitudId: string;
   fecha: string;
   ejecutivo: string;
@@ -27,13 +29,20 @@ export interface DevolverConObservacionesData {
 @Component({
   selector: 'app-devolver-con-observaciones',
   standalone: true,
-  imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
-    MatFormField, MatInputModule, FormsModule, MatDivider],
+  imports: [
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormField,
+    MatInputModule,
+    FormsModule,
+    MatDivider,
+    MatTooltipModule,
+  ],
   templateUrl: './devolver-con-observaciones.component.html',
   styleUrl: './devolver-con-observaciones.component.css'
 })
-
-
 
   export class DevolverConObservacionesComponent {
     constructor(
@@ -42,8 +51,11 @@ export interface DevolverConObservacionesData {
     @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
   ) {}
 
-
-
+   storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  idUsuario = this._storage()?.usuarioLogin.usuario!;
+  anularService = inject(AnularSolicitudService);
+  anulaRequest!: IAnulaRequest;
   cerrar(): void {
     this.dialogRef.close();
   }
@@ -55,9 +67,12 @@ export interface DevolverConObservacionesData {
   devolverConObs(): void {
       const dato = {
         solicitudId: this.data.solicitudId,
-        rutContratante: '00.000.000-0',
-        nomContratante: 'Devolver con Observaciones',
-        rubro: 'VIDA',
+        fecha: this.data.fecha,
+        ejecutivo: this.data.ejecutivo,
+        // rutContratante: '00.000.000-0',
+        // nomContratante: 'Devolver con Observaciones',
+        // rubro: 'VIDA',
+        //rutContratante: this.data.fecha
       };
 
 
@@ -79,3 +94,4 @@ export interface DevolverConObservacionesData {
 
   observaciones: string = '';
 }
+ */

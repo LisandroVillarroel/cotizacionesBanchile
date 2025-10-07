@@ -1,30 +1,37 @@
-import { EstadoInterface } from '@shared/modelo/estado-interface';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
+import { IDevuelveRequest, IDevuelveResponse } from './devolver-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EstadoService {
-
+export class DevolverSolicitudService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json',
   });
-  constructor() { }
 
-  getEstado(): Observable<EstadoInterface> {
-    return this.http
-      .get<EstadoInterface>(`${environment.apiUrl}/listarEstado`,{headers: this.headers})
+  constructor() {}
+
+  postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IDevuelveResponse> {
+    console.log('Devuelve Solicitud Service:', devuelveSolicitud);
+    return this.http.post<IDevuelveResponse>(
+        `${environment.apiUrl}/devolverSolicitud`,
+        devuelveSolicitud, { headers: this.headers, }
+      )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('error estado: ', error);
+    console.log('Error Devolviendo Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

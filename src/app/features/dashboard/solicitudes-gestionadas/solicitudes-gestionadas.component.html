@@ -6,7 +6,6 @@
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
     <div class="container-fluid p-0">
       <div [formGroup]="filtroFormulario()" class="box-form-fields p-2 gap-2" style="align-items: center;">
-
         <div class="gap-1" style="width: 10%;">
           <span class="gris"> Filtrar por: </span>
         </div>
@@ -136,7 +135,7 @@
             <th id="accionI" mat-header-cell *matHeaderCellDef style="width: 8%; text-align: center">
               Acción
             </th>
-            <td mat-cell *matCellDef="let element; let i = index" style="width: 8%; text-align: center">
+            <td mat-cell *matCellDef="let element; let i = index" style="width: 8%; text-align: center;">
               <button matTooltip="Ver detalles" mat-icon-button (click)="verDetalle(element.id_solicitud)">
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>

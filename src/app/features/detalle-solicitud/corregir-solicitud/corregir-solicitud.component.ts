@@ -60,9 +60,9 @@ export class CorregirSolicitudComponent {
 
  corregirYEnviar(): void {
     const dato = {
-      rutContratante: '00.000.000-0',
-      nomContratante: 'Felipe Medina Suárez',
-      rubro: 'VIDA',
+      rutContratante: this.data.rutContratante,//'00.000.000-0',
+      nomContratante: this.data.rutContratante,//'Felipe Medina Suárez',
+      rubro: this.data.rubro,//'VIDA',
     };
 
 
