@@ -1,4 +1,4 @@
-/* import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, Inject, inject, signal } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import {
   MAT_DIALOG_DATA,
@@ -14,20 +14,23 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-import { SolicitudDevueltaComponent } from './solicitud-devuelta/solicitud-devuelta.component';
+//import { SolicitudDevueltaComponent } from './solicitud-devuelta/solicitud-devuelta.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { DevolverSolicitudService } from './devolver-solicitud.service';
+import { IDevuelveRequest } from './devolver-interface';
 
 export interface DevolverConObservacionesData {
-[x: string]: any;
-  solicitudId: string;
+  [x: string]: any;
+  solicitudId: number;
   fecha: string;
   ejecutivo: string;
-  motivoDevolucion: string;
-
+  //motivoDevolucion: string;
 }
+
 @Component({
-  selector: 'app-devolver-con-observaciones',
+  selector: 'app-devolver-solicitud',
   standalone: true,
   imports: [
     MatIconModule,
@@ -40,41 +43,58 @@ export interface DevolverConObservacionesData {
     MatDivider,
     MatTooltipModule,
   ],
-  templateUrl: './devolver-con-observaciones.component.html',
-  styleUrl: './devolver-con-observaciones.component.css'
+  templateUrl: './devolver-solicitud.component.html',
+  styleUrl: './devolver-solicitud.component.css'
 })
 
-  export class DevolverConObservacionesComponent {
+  export class DevolverSolicitudComponent {
     constructor(
     private dialog: MatDialog,
-    public dialogRef: MatDialogRef<DevolverConObservacionesComponent>,
+    public dialogRef: MatDialogRef<DevolverSolicitudComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
   ) {}
 
    storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   idUsuario = this._storage()?.usuarioLogin.usuario!;
-  anularService = inject(AnularSolicitudService);
-  anulaRequest!: IAnulaRequest;
+  devolverService = inject(DevolverSolicitudService);
+  devolverRequest!: IDevuelveRequest;
   cerrar(): void {
     this.dialogRef.close();
   }
 
-  confirmar(): void {
-    this.dialogRef.close('confirmado');
+  cancelar(): void {
+    this.dialogRef.close('cancelado');
   }
 
-  devolverConObs(): void {
-      const dato = {
-        solicitudId: this.data.solicitudId,
-        fecha: this.data.fecha,
-        ejecutivo: this.data.ejecutivo,
-        // rutContratante: '00.000.000-0',
-        // nomContratante: 'Devolver con Observaciones',
-        // rubro: 'VIDA',
-        //rutContratante: this.data.fecha
-      };
-
+  devolver(motivo: string): void {
+    this.devolverRequest = {
+      p_id_solicitud: this.data.solicitudId,
+      p_id_usuario: this.idUsuario,
+      p_tipo_usuario: this.idUsuario.substring(0,1),
+      p_observacion: motivo
+    };
+    this.devolverService
+      .postDevuelveSolicitud(this.devolverRequest)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            alert('Devolvió Bien');
+          } else {
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('Error de Sistema:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
 
       const dialogConfig = new MatDialogConfig();
 
@@ -85,13 +105,11 @@ export interface DevolverConObservacionesData {
       dialogConfig.width = '600px'; // Tamaño fijo y controlado
       dialogConfig.maxHeight = '90vh'; // Altura máxima visible
       dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-      dialogConfig.data = dato;
+      dialogConfig.data = this.devolverRequest;
 
-      this.dialog
+/*       this.dialog
         .open(SolicitudDevueltaComponent, dialogConfig)
-        .afterClosed();
+        .afterClosed(); */
     }
 
-  observaciones: string = '';
 }
- */

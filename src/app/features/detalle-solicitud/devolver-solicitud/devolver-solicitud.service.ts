@@ -6,12 +6,12 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IAnulaRequest, IAnulaResponse } from './anular-interface';
+import { IDevuelveRequest, IDevuelveResponse } from './devolver-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnularSolicitudService {
+export class DevolverSolicitudService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -21,17 +21,17 @@ export class AnularSolicitudService {
 
   constructor() {}
 
-  postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IAnulaResponse> {
-    console.log('Anula Solicitud Service:', anulaSolicitud);
-    return this.http.post<IAnulaResponse>(
-        `${environment.apiUrl}/anularSolicitud`,
-        anulaSolicitud, { headers: this.headers, }
+  postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IDevuelveResponse> {
+    console.log('Devuelve Solicitud Service:', devuelveSolicitud);
+    return this.http.post<IDevuelveResponse>(
+        `${environment.apiUrl}/devolverSolicitud`,
+        devuelveSolicitud, { headers: this.headers, }
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('Error Anulando Solicitud:', error);
+    console.log('Error Devolviendo Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

@@ -7,6 +7,8 @@ import {
   MatDialogConfig,
   MatDialog,
 } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -73,34 +75,52 @@ export class AnularSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Anuló Bien');
+            Swal.fire({
+              title: 'La solicitud ha sido anulada exitosamente.',
+              icon: 'success',
+              confirmButtonColor: "#002464",
+              draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+            });
+            //alert('Anuló Bien');
           } else {
-            if (dato.codigo != 500) {
+            Swal.fire({
+              title: dato.mensaje,
+              icon: 'error',
+              draggable: false
+            });
+/*             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
               console.log('Error:', dato.mensaje);
             } else {
               alert('Error:' + dato.mensaje);
               console.log('Error de Sistema:');
-            }
+            } */
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          Swal.fire({
+            title: 'Error inesperado. '+ error,
+            icon: 'error',
+            draggable: false
+          });
+          //console.log('Error Inesperado', error);
         },
       });
 
-    const dialogConfig = new MatDialogConfig();
+    /* const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.width = "40%"; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = "40%"; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = this.anulaRequest;
 
     this.dialog
       .open(SolicitudAnuladaComponent, dialogConfig)
-      .afterClosed();
+      .afterClosed(); */
   }
 }

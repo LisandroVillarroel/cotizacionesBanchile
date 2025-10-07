@@ -3,6 +3,7 @@ export interface IObservacion{
   fecha_correccion_observacion: string;
   observacion: string;
   id_coordinador: string;
+  nombre_coordinador: string
 }
 
 export interface ICompania{

@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialog
 import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
 import { DetalleSolicitudService } from './detalle-solicitud.service';
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
-import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
+//import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 
@@ -25,6 +25,8 @@ import { ObservacionesComponent } from './observaciones/observaciones.component'
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
+import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
+import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -36,7 +38,8 @@ import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud
     CuestionarioComponent,
     ObservacionesComponent,
     CompaniasContactadasComponent,
-    AprobarSolicitudComponent,
+    MateriaAseguradaComponent,
+    //AprobarSolicitudComponent,
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
@@ -230,17 +233,9 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = dato;
 
     this.dialog
-      .open(DevolverConObservacionesComponent, dialogConfig)
+      .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed();
   }
-
-
-
-
-
-
-
-
 
 
 //  devolverSolicitud(idSolicitud: number){
@@ -278,29 +273,6 @@ export default class DetalleSolicitudComponent {
 //       },
 //     });
 //   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   aprobarSolicitud(): void {
@@ -342,7 +314,10 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
-      .afterClosed();
+      .afterClosed()
+      .subscribe((dato)=>{
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
 
 
