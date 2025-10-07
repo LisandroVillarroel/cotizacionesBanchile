@@ -10,14 +10,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { SoloDecimalNumerosDirective } from '@shared/directiva/solo-decimal-numeros.directive';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-materia-asegurada',
   standalone: true,
-  imports: [NgClass, MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule, MatSelectModule, MatDialogModule,SoloDecimalNumerosDirective],
+  imports: [NgClass, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatDialogModule, SoloDecimalNumerosDirective, MatDatepickerModule, MatIconModule],
+  providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS),],
   templateUrl: './materia-asegurada.component.html',
   styleUrl: './materia-asegurada.component.css',
 })
@@ -32,7 +35,7 @@ export class MateriaAseguradaComponent {
   materiaService = inject(MateriaService);
 
   datoMateria = signal<IMateria[]>([]);
-  datoMateria_Recorre:IMateria[]=[];
+  datoMateria_Recorre: IMateria[] = [];
 
   datoMateriaEstructura = signal<IMateriaEstructura[]>([])
   datoMateriaEstructura_arr: IMateriaEstructura[] = []
@@ -56,8 +59,8 @@ export class MateriaAseguradaComponent {
   rescataListaAsegurados(idRubro: number, idSeguro: number) {
     console.log('rescataListaAsegurados')
     const estructura_listaMateria = {
-      p_id_rubro: 1,
-      p_id_tipo_seguro: 1
+      p_id_rubro: idRubro,
+      p_id_tipo_seguro: idSeguro
     };
     console.log('estructura_listaMateria', estructura_listaMateria)
     this.materiaService
@@ -87,20 +90,23 @@ export class MateriaAseguradaComponent {
     let valorClass = '';
     let nombreCampo = ''
     let nombreLabel = '';
+    let valorResto = 0;
+    let valorEntero = 0;
+    let valorInicial = 0;
+    let valorColumna = 0;
 
-
-   //Cuenta secciones
+    //Cuenta secciones
     const cuantaSecciones = this.datoMateria().reduce((acumulador, dato) => {
-        const seccion = dato.p_id_seccion;
-        acumulador[seccion] = (acumulador[seccion] || 0) + 1;
-        return acumulador;
+      const seccion = dato.p_id_seccion;
+      acumulador[seccion] = (acumulador[seccion] || 0) + 1;
+      return acumulador;
     }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
 
-      const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
-      console.log('cuantaSeccionesArreglo:',cuantaSeccionesArreglo)
+    const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
+    console.log('cuantaSeccionesArreglo:', cuantaSeccionesArreglo)
 
     for (let i = 0; i < cuantaSeccionesArreglo.length; i++) { //Recorre Secciones
-      this.datoMateria_Recorre=this.datoMateria().filter((valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])) //Compara la fila i el valor que esta en la fila 0 Numero de seccion
+      this.datoMateria_Recorre = this.datoMateria().filter((valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])) //Compara la fila i el valor que esta en la fila 0 Numero de seccion
       //Cuenta Columnas por fila
       const cuantaColumnas = this.datoMateria_Recorre.reduce((acumulador, dato) => {
         const linea = dato.p_id_linea;
@@ -119,12 +125,19 @@ export class MateriaAseguradaComponent {
       nombreLabel = '';
 
       console.log('cuantaColumnasArreglo.length', cuantaColumnasArreglo.length)
-      for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //R
+      for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //Recorre file
         valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
         //console.log('valoresFila:',valoresFila)
-
-        for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
-          valorClass = 'col-md-' + (12 / (Number(cuantaColumnasArreglo[a][1]))).toString() + ' border';
+        //valorResto=12 % (Number(cuantaColumnasArreglo[a][1]))  //toma valor resto
+        valorEntero = Math.trunc(12 / (Number(cuantaColumnasArreglo[a][1]))) // Toma valor entero sin redondear
+        valorInicial = 12 - (valorEntero * Number(cuantaColumnasArreglo[a][1]))// resta el total(valor entero de la division*cantidad de columnas)
+        for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {//Recorre columna
+          if (b == 0) {
+            valorColumna = valorEntero + valorInicial
+          } else {
+            valorColumna = valorEntero
+          }
+          valorClass = 'col-md-' + (valorColumna).toString() + ' border';
           if (valoresFila[b].p_tipo_dato == 'TITULO') {
             if (Number(cuantaColumnasArreglo[a][1]) > 1) {
               valorClass = valorClass + ' subTitulo'
@@ -149,8 +162,6 @@ export class MateriaAseguradaComponent {
         //  console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
       }
     }
-
-     console.log('this.datoMateriaEstructura_arr:', this.datoMateriaEstructura_arr)
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
@@ -163,13 +174,19 @@ export class MateriaAseguradaComponent {
     console.log('this.datoMateriaEstructura()', this.datoMateriaEstructura());
 
     let nombreCampo = '';
-
+    this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
       for (const columna of fila.datos) {
         nombreCampo = ''
         if (columna.p_tipo_dato != 'TITULO')
           nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value
-        console.log('nombreCampo:',nombreCampo)
+
+        if (columna.p_tipo_dato == 'FECHA' && (this.materiaForm().get(columna.nombreCampo!)!.value != '') && (this.materiaForm().get(columna.nombreCampo!)!.value != null))
+          nombreCampo = (this.materiaForm().get(columna.nombreCampo!)!.value).format('DD/MM/YYYY')
+
+        if(nombreCampo==null)
+          nombreCampo = ''
+
         this.materiaIngresa.push({
           p_id_solicitud: Number(this.idSolicitud()),
           p_id_rubro: columna.p_id_rubro,

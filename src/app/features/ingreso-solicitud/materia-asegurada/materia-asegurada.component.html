@@ -1,66 +1,57 @@
 <mat-dialog-content [formGroup]="materiaForm()" name="materiaForm" class="agrega-container">
+
+  @for (fila of datoMateriaEstructura(); track $index){
   <div class="row">
-    @for (fila of datoMateriaEstructura(); track $index){
-      @for (columna of fila.datos; track $index){
-        @if (columna.p_tipo_dato=='TITULO'){
-        <div [ngClass]="columna.estiloClass"><span class="centraSubtitulo">{{columna.p_valor_dato}}</span></div>
+    @for (columna of fila.datos; track $index){
+    @if (columna.p_tipo_dato=='TITULO'){
+    <div [ngClass]="columna.estiloClass"><span class="centraSubtitulo">{{columna.p_valor_dato}}</span></div>
+    }@else{
+    @if (columna.p_tipo_dato=='LISTA'){
+    <div [ngClass]="columna.estiloClass">
+      <mat-form-field class="estiloCampo">
+        <mat-select class="estilo-select" placeholder="{{columna.nombreLabel}}"
+          [formControlName]="columna.nombreCampo!">
+          @for(_lista of columna.p_lista; track _lista){
+          <mat-option class="fuenteOption" [value]="_lista.p_id_listahijo">
+            {{ _lista.p_descripcion_listahijo }}
+          </mat-option>
+          }
+        </mat-select>
+
+      </mat-form-field>
+    </div>
+    }@else{
+    <div [ngClass]="columna.estiloClass">
+      <mat-form-field class="estiloCampo">
+        @if(columna.p_tipo_dato=='NUMERICO'){
+        <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!"
+          [maxlength]="columna.p_largo_dato" directivaSoloDecimalNumeros [decimales]="columna.p_decimales_dato" />
+        }@else if(columna.p_tipo_dato=='FECHA'){
+            <input matInput [matDatepicker]="picker" mask="00/00/0000" placeholder="dd/mm/aaaa" [formControlName]="columna.nombreCampo!" />
+
+          <mat-datepicker #picker></mat-datepicker>
         }@else{
-          @if (columna.p_tipo_dato=='LISTA'){
-          <div [ngClass]="columna.estiloClass">
-             <mat-form-field class="estiloCampo">
-
-                    <mat-select class="estilo-select" placeholder="{{columna.nombreLabel}}"
-                      [formControlName]="columna.nombreCampo!" >
-                      @for(_lista of columna.p_lista; track _lista){
-                      <mat-option class="fuenteOption" [value]="_lista">
-                        {{ _lista.p_descripcion_listahijo }}
-                      </mat-option>
-                      }
-                    </mat-select>
-
-                  </mat-form-field>
-          </div>
-          }@else{
-          <div [ngClass]="columna.estiloClass">
-            <mat-form-field class="estiloCampo">
-              @if(columna.p_tipo_dato=='NUMERICO'){
-                <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" [maxlength]="columna.p_largo_dato" directivaSoloDecimalNumeros [decimales]="columna.p_decimales_dato"/>
-              }@else{
-                <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!" [maxlength]="columna.p_largo_dato" />
-              }
-              <!--
+        <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!"
+          [maxlength]="columna.p_largo_dato" />
+        }
+        <!--
                     @if (nombreAsegurado.invalid) {
                     <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
                     }
                     -->
-            </mat-form-field>
-          </div>
-          }
-        }
-      }
+      </mat-form-field>
+    </div>
+    }
+    }
     }
   </div>
+  }
+
 </mat-dialog-content>
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
-  <div class="me-5">
-    <button
-      type="button"
-      mat-raised-button
-      class="colorFondoBotonCerrar"
-      mat-dialog-close
-      [disabled]="false"
-    >
-      Cerrar
-    </button>
-  </div>
-  <div class="ms-5">
-    <button
-      type="button"
-      mat-raised-button
-      (click)="grabarMateria()"
-      [disabled]="materiaForm().invalid"
 
-    >
+  <div class="md-5">
+    <button type="button" mat-raised-button (click)="grabarMateria()" [disabled]="materiaForm().invalid">
       Grabar
     </button>
   </div>

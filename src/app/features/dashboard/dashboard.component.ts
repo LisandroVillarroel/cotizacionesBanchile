@@ -31,7 +31,6 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     SolicitudesGestionadasComponent,
     DistribucionComponent,
     MatToolbarModule,
-    MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
     FormsModule,
