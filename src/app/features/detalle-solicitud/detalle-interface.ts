@@ -34,7 +34,6 @@ export interface ISolicitud {
   nombre_estado: string;
   nombre_ejecutivo_banco: string;
   id_ejecutivo_banco: string;
-   nombre_ejecutivo:string;
 }
 
 export interface DetalleSolicitudInterface {

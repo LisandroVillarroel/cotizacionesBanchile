@@ -289,7 +289,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo,//'Enviar a Compañia',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,//'Enviar a Compañia',
     };
 
 
