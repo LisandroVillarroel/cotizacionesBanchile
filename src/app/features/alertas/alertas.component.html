@@ -1,0 +1,45 @@
+<div>
+  <h2>Snack Bar Angular Materials</h2>
+  <mat-form-field>
+    <mat-label>Message</mat-label>
+    <input matInput value="Mensaje" #message>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Action</mat-label>
+    <input matInput value="Valor" #action>
+  </mat-form-field>
+  <button mat-stroked-button (click)="openSnackBar(message.value, action.value)">Mostrar Alert</button>
+</div>
+<div>
+  <mat-form-field>
+    <mat-label>Duracion en segundos</mat-label>
+    <input type="number" [(ngModel)]="durationInSeconds" matInput>
+  </mat-form-field>
+  <button mat-stroked-button (click)="openSnackBar2()" aria-label="Show an example snack-bar">
+    Prueba
+  </button>
+</div>
+
+
+<div>
+  <h2>Sweetalert2</h2>
+  <button mat-stroked-button (click)="mostrarAlertaDraggable()">Mostrar alerta draggable</button>
+</div>
+
+<div>
+  <h2>Sweetalert2 con opciones</h2>
+  <button mat-stroked-button (click)="mostrarAlertaDraggable2()">Mostrar alerta draggable con 3 botones</button>
+</div>
+
+<div>
+  <h2>Bootstrap</h2>
+  <!-- Botón para mostrar la alerta -->
+  <button class="btn btn-primary" (click)="mostrarAlertaBootstrap()">Mostrar alerta</button>
+</div>
+  <!-- Alerta controlada por Angular -->
+  <div *ngIf="mostrar" class="alert alert-primary mt-3 col-md-2" role="alert">
+    Alerta en Bootstrap
+    <button type="button" class="btn-close" aria-label="Close" (click)="cerrarAlertaBootstrap()"></button>
+  </div>
+
+

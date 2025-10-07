@@ -18,6 +18,7 @@ import { SolicitudCorregidaComponent } from '../corregir-solicitud/solicitud-cor
 import { SolicitudDevueltaComponent } from './solicitud-devuelta/solicitud-devuelta.component';
 
 export interface DevolverConObservacionesData {
+[x: string]: any;
   solicitudId: string;
   fecha: string;
   ejecutivo: string;
@@ -55,9 +56,12 @@ export interface DevolverConObservacionesData {
   devolverConObs(): void {
       const dato = {
         solicitudId: this.data.solicitudId,
-        rutContratante: '00.000.000-0',
-        nomContratante: 'Devolver con Observaciones',
-        rubro: 'VIDA',
+        fecha: this.data.fecha,
+        ejecutivo: this.data.ejecutivo,
+        // rutContratante: '00.000.000-0',
+        // nomContratante: 'Devolver con Observaciones',
+        // rubro: 'VIDA',
+        //rutContratante: this.data.fecha
       };
 
 

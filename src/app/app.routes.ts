@@ -32,6 +32,10 @@ export const routes: Routes = [
         path: 'detalle',
         loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
       },
+      {
+        path: 'alertas',
+        loadComponent: () => import('@features/alertas/alertas.component'),
+      },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },
