@@ -9,7 +9,6 @@ import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
   IIngresarDocumento,
   IEstadoIngresarDocumento,
-  DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 // Definición base de documentos
@@ -55,7 +54,7 @@ export class CuestionarioService {
     console.log('Agrega Documento Service:', agregaDocumento);
     return this.http
       .post<IEstadoIngresarDocumento>(
-        `${environment.apiUrl}/ingresarDocumentos`,
+        `${environment.apiUrl}/ingresarDocumento`,
         agregaDocumento,
         { headers: this.headers }
       )
