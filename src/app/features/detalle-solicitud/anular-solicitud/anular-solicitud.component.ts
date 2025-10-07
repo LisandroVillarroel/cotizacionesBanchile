@@ -90,7 +90,12 @@ export class AnularSolicitudComponent {
             Swal.fire({
               title: dato.mensaje,
               icon: 'error',
+              confirmButtonColor: "#002464",
               draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
             });
 /*             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
@@ -105,7 +110,12 @@ export class AnularSolicitudComponent {
           Swal.fire({
             title: 'Error inesperado. '+ error,
             icon: 'error',
+            confirmButtonColor: "#002464",
             draggable: false
+          }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
           });
           //console.log('Error Inesperado', error);
         },

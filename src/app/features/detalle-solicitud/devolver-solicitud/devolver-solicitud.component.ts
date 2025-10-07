@@ -7,6 +7,7 @@ import {
   MatDialogConfig,
   MatDialog,
 } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -80,32 +81,60 @@ export interface DevolverConObservacionesData {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Devolvió Bien');
+            //alert('Devolvió Bien');
+            Swal.fire({
+              title: 'La solicitud ha sido devuelta exitosamente.',
+              icon: 'success',
+              confirmButtonColor: "#002464",
+              draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+            });
           } else {
-            if (dato.codigo != 500) {
+/*             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
               console.log('Error:', dato.mensaje);
             } else {
               alert('Error:' + dato.mensaje);
               console.log('Error de Sistema:');
-            }
+            } */
+            Swal.fire({
+              title: dato.mensaje,
+              icon: 'error',
+              confirmButtonColor: "#002464",
+              draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+            });
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          //console.log('Error Inesperado', error);
+          Swal.fire({
+            title: 'Error inesperado. '+ error,
+            icon: 'error',
+            confirmButtonColor: "#002464",
+            draggable: false
+          }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+          });
         },
       });
 
-      const dialogConfig = new MatDialogConfig();
+/*       const dialogConfig = new MatDialogConfig();
 
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
-
-      //Ajustes clave para evitar espacio en blanco
       dialogConfig.width = '600px'; // Tamaño fijo y controlado
       dialogConfig.maxHeight = '90vh'; // Altura máxima visible
       dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-      dialogConfig.data = this.devolverRequest;
+      dialogConfig.data = this.devolverRequest; */
 
 /*       this.dialog
         .open(SolicitudDevueltaComponent, dialogConfig)

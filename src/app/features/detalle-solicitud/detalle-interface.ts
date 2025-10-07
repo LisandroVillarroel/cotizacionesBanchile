@@ -32,6 +32,8 @@ export interface ISolicitud {
   sla: string;
   id_estado_solicitud: number;
   nombre_estado: string;
+  nombre_ejecutivo_banco: string;
+  id_ejecutivo_banco: string;
 }
 
 export interface DetalleSolicitudInterface {
@@ -48,7 +50,8 @@ export interface DetalleSolicitudInterface {
   p_id_estado_solicitud: number;
   p_nombre_estado: string;
   p_sla: string;
-
+  p_nombre_ejecutivo_banco: string;
+  p_id_ejecutivo_banco: string;
   c_asegurados: IAseguradoDet[];
   c_beneficiarios: IBeneficiarioDet[];
   c_observaciones: IObservacion[];

@@ -95,9 +95,9 @@ export default class DetalleSolicitudComponent {
             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
             sla: dato.p_sla,
             id_estado_solicitud: dato.p_id_estado_solicitud,
-            nombre_estado: dato.p_nombre_estado
-            //, nombre_ejecutivo: dato.p_nombre_ejecutivo
-            //, nombre_ejecutivo: dato.p_nombre_ejecutivo
+            nombre_estado: dato.p_nombre_estado,
+            nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
+            id_ejecutivo_banco: dato.p_id_ejecutivo_banco
           });
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
@@ -218,15 +218,13 @@ export default class DetalleSolicitudComponent {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,
-      ejecutivo: 'Manuel Sepúlveda',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
     };
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
@@ -234,7 +232,10 @@ export default class DetalleSolicitudComponent {
 
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
-      .afterClosed();
+      .afterClosed()
+      .subscribe((dato)=>{
+        this.cargarSolicitud(this.idSolicitud)
+      });
   }
 
 
