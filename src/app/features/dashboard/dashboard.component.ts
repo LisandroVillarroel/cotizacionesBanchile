@@ -15,7 +15,8 @@ import { DashboardService } from './dashboard.service';
 import { DatosSolicitudesInterface, IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { StorageService } from '@shared/service/storage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +36,6 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     FormsModule,
     ReactiveFormsModule,
     FormsModule,
-
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -43,7 +43,8 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 export default class DashboardComponent   {
   fechaActual = new FormControl<Date>(new Date());
-
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   dashboardService = inject(DashboardService)
 
   resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
@@ -60,11 +61,11 @@ export default class DashboardComponent   {
     //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-      //"p_id_usuario": "CO001",
-      "p_id_usuario": "EJ001",
-      //"p_id_usuario": "EJ002",
+      //"p_id_usuario": "CO001", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
-      "p_tipo_usuario": "E"
+      //"p_tipo_usuario": "E"
+      "p_tipo_usuario": this._storage()?.usuarioLogin.usuario!.substring(0,1)
     }
     //console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({

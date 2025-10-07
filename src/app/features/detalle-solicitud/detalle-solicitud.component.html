@@ -1,5 +1,5 @@
-<mat-card class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
-  <mat-card-title class="barra-titulo card-con-titulo titulomodal" style="width: 100%;">
+<mat-card class="container-fluid mat-card-detalle">
+  <mat-card-title class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
     <h2>Detalle de solicitud - {{ idSolicitud }} </h2>
     <button mat-icon-button mat-dialog-close [disabled]="false"
       style="align-content: center; padding: 0px 0px 0px;">
@@ -36,7 +36,7 @@
       </mat-tab>
     </mat-tab-group>
   </mat-card-content>
-  <mat-card-footer>
+  <mat-card-actions>
     <div class="container-fluid d-flex p-4">
       <div style="justify-content: flex-start;">
         <button mat-stroked-button color="primary" class="colorFondoBotonSalir"
@@ -55,5 +55,5 @@
           (click)="corregirSolicitud()">Enviar Solicitud</button>
       </div>
     </div>
-  </mat-card-footer>
+  </mat-card-actions>
 </mat-card>

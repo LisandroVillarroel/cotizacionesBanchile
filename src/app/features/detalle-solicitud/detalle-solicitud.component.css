@@ -1,55 +1,6 @@
-
-/* Botones carga cuestionario */
-.boton-cargar {
-  background-color: #149dc9 !important;
-  color: #f2f2f4 !important;
-  font-size: 11px !important;
-  font-family: "Roboto", sans-serif !important;
-  margin-left: 12px;
-}
-
-.boton-cargar:hover {
-  background-color: #0f8dba !important;
-  color: #f2f2f4 !important;
-}
-
-.colorFondoBotonEliminar mat-icon {
-  color: #f45516 !important;
-}
-
-/* Barra azul con título */
-.barra-titulo {
-  background-color: #234e85;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.mat-card-detalle{
   padding: 0px 0px 0px;
+  border-radius: 0px;
+  max-width: 100%;
+  max-height: 100%;
 }
-
-.bg-secondary {
-    --bs-bg-opacity: 1;
-    background-color: rgba((35, 78, 133), var(--bs-bg-opacity)) !important;
-}
-
-/* Css Ejemplo */
-.example-header {
-  position: fixed;
-  background-color: #234E85;
-  color: white;
-  top: inherit;
-  left: inherit;
-  right: inherit;
-  height: 70%;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
-

@@ -61,7 +61,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
-  tipoUsuario = "E";
+
+  tipoUsuario = "E"; //OJO!!! buscar en storage
   //estadoService = inject(EstadoService);
 
   datoRubros = signal<IRubro[]>([]);
@@ -78,8 +79,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   formularioModificado = signal(false);
 
-
-
   contratante = new FormControl();
     rubro = new FormControl();
     seguro = new FormControl();
@@ -94,8 +93,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     fecha : this.fecha
     })
   );
-
-
 
   displayedColumns: string[] = [
     'index',
@@ -117,8 +114,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     return tabla
   });
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
@@ -134,7 +130,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   // Señal computada para los datos filtrados
   datosFiltrados() {
@@ -166,11 +161,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         fechaBase.getDate() === fechaInicio.getDate()
       );
     }
-
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
-
 
   limpiaFiltros() {
     this.rubro.reset();
@@ -179,7 +172,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     this.fecha.reset();
     this.dataSourceSolicitud().filter= '';
   }
-
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';

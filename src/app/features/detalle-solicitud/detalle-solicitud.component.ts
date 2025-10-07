@@ -2,15 +2,13 @@ import { Component, computed, inject, input, signal, ViewEncapsulation } from '@
 import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
-import { MatCard, MatCardModule } from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
 import { DetalleSolicitudService } from './detalle-solicitud.service';
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
-import { DocumentosAsociadosComponent } from "./documentosasociados/documentosasociados.component";
 import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
-import { AceptarSolicitudDetalleComponent } from './aceptar-solicitud-detalle/aceptar-solicitud-detalle.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 
@@ -26,6 +24,7 @@ import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
+import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -37,6 +36,7 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     CuestionarioComponent,
     ObservacionesComponent,
     CompaniasContactadasComponent,
+    AprobarSolicitudComponent,
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
@@ -47,8 +47,6 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-    BeneficiarioComponent,
-    AseguradoComponent,
 ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
@@ -252,7 +250,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = dato;
 
     this.dialog
-      .open(AceptarSolicitudDetalleComponent, dialogConfig)
+      .open(AprobarSolicitudComponent, dialogConfig)
       .afterClosed();
   }
 
