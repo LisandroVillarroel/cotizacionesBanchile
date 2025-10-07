@@ -19,7 +19,7 @@ export class EstadoService {
 
   getEstado(): Observable<EstadoInterface> {
     return this.http
-      .get<EstadoInterface>(`${environment.apiUrl}/listarEstados`,{headers: this.headers})
+      .get<EstadoInterface>(`${environment.apiUrl}/listarEstado`,{headers: this.headers})
       .pipe(retry(1), catchError(this.errorHandl));
   }
 

@@ -105,9 +105,6 @@ enviadoCia(): void {
 
     const dato = {
       solicitudId: this.data.solicitudId,
-      rutContratante: '00.000.000-0',
-      nomContratante: 'Devolver con Observaciones',
-      rubro: 'VIDA',
     };
 
     const dialogConfig = new MatDialogConfig();

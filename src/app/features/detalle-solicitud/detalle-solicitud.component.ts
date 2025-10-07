@@ -96,6 +96,7 @@ export default class DetalleSolicitudComponent {
             sla: dato.p_sla,
             id_estado_solicitud: dato.p_id_estado_solicitud,
             nombre_estado: dato.p_nombre_estado
+            //, nombre_ejecutivo: dato.p_nombre_ejecutivo
           });
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
@@ -216,7 +217,7 @@ export default class DetalleSolicitudComponent {
   devolverSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
-      fecha: '00-00-0000',
+      fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
       ejecutivo: 'Manuel Sepúlveda',
     };
 
@@ -235,6 +236,75 @@ export default class DetalleSolicitudComponent {
       .open(DevolverConObservacionesComponent, dialogConfig)
       .afterClosed();
   }
+
+
+
+
+
+
+
+
+
+
+//  devolverSolicitud(idSolicitud: number){
+//   console.log('devolverSolicitud idSolicitud',idSolicitud);
+//      this.detalleService.postDetalle(idSolicitud).subscribe({
+//       next: (dato: DetalleSolicitudInterface) => {
+//         if (dato.codigo === 200) {
+//           console.log('Detalle solicitud:', dato);
+//           this.infoGral.set({
+//             id_solicitud : this.idSolicitud,
+//             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
+//             rut_contratante: dato.p_rut_contratante,
+//             nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
+//             id_rubro: dato.p_id_rubro,
+//             nombre_rubro: dato.p_nombre_rubro,
+//             id_tipo_seguro: dato.p_id_tipo_seguro,
+//             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
+//             sla: dato.p_sla,
+//             id_estado_solicitud: dato.p_id_estado_solicitud,
+//             nombre_estado: dato.p_nombre_estado
+//           });
+//           this.observaciones.set(dato.c_observaciones);
+//         } else {
+//           if (dato.codigo != 500) {
+//             console.log('Error:', dato.mensaje);
+//           } else {
+//             console.log('ERROR DE SISTEMA:');
+//           }
+//         }
+//       },
+//       error: (error) => {
+//         console.log('ERROR INESPERADO', error);
+//         console.log('ID Solicitud:', idSolicitud);
+
+//       },
+//     });
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   aprobarSolicitud(): void {
     const dato = {
@@ -282,10 +352,10 @@ export default class DetalleSolicitudComponent {
  corregirSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,
-      rutContratante: '00.000.000-0',
-      nomContratante: 'Felipe Medina Suárez',
-      rubro: 'VIDA',
-      tipoSeguro: 'Oncologíco',
+      rutContratante: this.infoGral()?.rut_contratante,//'00-00-0000',//'00.000.000-0',
+      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
+      rubro: this.infoGral()?.nombre_rubro,
+      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
     };
 
 
@@ -307,11 +377,9 @@ export default class DetalleSolicitudComponent {
 
   enviarCia(): void {
     const dato = {
-      solicitudId: this.idSolicitud,
-      rutContratante: '00.000.000-0',
-      nomContratante: 'Felipe Medina Suárez',
-      rubro: 'VIDA',
-      tipoSeguro: 'Oncologíco',
+      solicitudId: this.idSolicitud,//'ID123456789',
+      fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
+      ejecutivo: 'Enviar a Compañia',
     };
 
 
