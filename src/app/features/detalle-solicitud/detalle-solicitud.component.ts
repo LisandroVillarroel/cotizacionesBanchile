@@ -95,7 +95,7 @@ export default class DetalleSolicitudComponent {
             sla: dato.p_sla,
             id_estado_solicitud: dato.p_id_estado_solicitud,
             nombre_estado: dato.p_nombre_estado
-            //, nombre_ejecutivo: dato.p_nombre_ejecutivo
+            , nombre_ejecutivo: dato.p_nombre_ejecutivo_banco
           });
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
@@ -123,7 +123,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: 'Manuel Sepúlveda',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo,//'Manuel Sepúlveda',
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -215,7 +215,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: 'Enviar a Compañia',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo,//'Enviar a Compañia',
     };
 
 
