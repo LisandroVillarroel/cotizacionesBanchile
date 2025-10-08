@@ -105,6 +105,8 @@ enviadoCia(): void {
 
     const dato = {
       solicitudId: this.data.solicitudId,
+        fecha: this.data.fecha,
+        ejecutivo: this.data.ejecutivo,
     };
 
     const dialogConfig = new MatDialogConfig();

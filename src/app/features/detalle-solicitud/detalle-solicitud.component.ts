@@ -27,6 +27,7 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -66,7 +67,7 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  idSolicitudParametro=signal<string>('175')
+  idSolicitudParametro=signal<string>('')
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   //documentos = signal<IDocumento[] | undefined>(undefined);
@@ -115,100 +116,6 @@ export default class DetalleSolicitudComponent {
         console.log('ID Solicitud:', idSolicitud);
       },
     });
-/*     this.infoGral.set({
-      id_solicitud: 1,
-      rut_contratante: "88.888.901-9",
-      nombre_razon_social_contratante: "Carlos Torres Navarro",
-      id_rubro: 1,
-      nombre_rubro: "AUTOMOTRIZ",
-      id_tipo_seguro: 1,
-      nombre_tipo_seguro: "VEHICULO LIVIANO",
-      fecha_creacion_solicitud: "2025-09-22T15:08:24Z",
-      id_estado_solicitud: 1,
-      sla: "R"
-    });
-   /* this.asegurados.set([]);
-    this.beneficiarios.set([
-        {
-            rut_beneficiario: "1.615.222-2",
-            nombre_razon_social_beneficiario: "María López Fernández1615",
-            mail_beneficiario: "maria.lopez@gmail.com",
-            telefono_beneficiario: "+56 9 8882 2222",
-            region_beneficiario: "Valparaíso",
-            ciudad_beneficiario: "Valparaíso",
-            comuna_beneficiario: "Viña del Mar",
-            direccion_beneficiario: "Calle 5 Norte",
-            numero_dir_beneficiario: "456",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: "1615"
-        },
-        {
-            rut_beneficiario: "8.882.222-2",
-            nombre_razon_social_beneficiario: "María López H1444",
-            mail_beneficiario: "maria.lopez1444@gmail.com",
-            telefono_beneficiario: "+56 9 8882 2222",
-            region_beneficiario: "Valparaíso",
-            ciudad_beneficiario: "Valparaíso",
-            comuna_beneficiario: "Viña del Mar",
-            direccion_beneficiario: "Calle 5 Norte",
-            numero_dir_beneficiario: "1444",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: "14"
-        },
-        {
-            rut_beneficiario: "14.555.888-8",
-            nombre_razon_social_beneficiario: "Pepido P1234 NAso",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "11.555.888-8",
-            nombre_razon_social_beneficiario: "Rodrigo acevedo",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "11.340.888-8",
-            nombre_razon_social_beneficiario: "Gonzalo o acevedo",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1134",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "8.232.165-3",
-            nombre_razon_social_beneficiario: "Pepido PagaTriple",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 8881 1653",
-            region_beneficiario: "Metropolitana de Santiago",
-            ciudad_beneficiario: "SANTIAGO",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "N",
-            casa_beneficiario: ""
-        }
-    ]);
-    this.observaciones.set([]); */
   }
 
   solicitudId: any;
@@ -237,6 +144,14 @@ export default class DetalleSolicitudComponent {
         this.cargarSolicitud(this.idSolicitud)
       });
   }
+
+
+
+
+
+
+
+
 
 
 //  devolverSolicitud(idSolicitud: number){
@@ -274,6 +189,29 @@ export default class DetalleSolicitudComponent {
 //       },
 //     });
 //   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   aprobarSolicitud(): void {
@@ -352,7 +290,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       solicitudId: this.idSolicitud,//'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: 'Enviar a Compañia',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,//'Enviar a Compañia',
     };
 
 
@@ -371,5 +309,41 @@ export default class DetalleSolicitudComponent {
       .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed();
   }
+
+
+
+
+
+
+
+
+
+  ingresarRespuesta(idSolicitud: number): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      rutContratante: this.infoGral()?.rut_contratante,//'00-00-0000',//'00.000.000-0',
+      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
+      rubro: this.infoGral()?.nombre_rubro,
+      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
+    };
+
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = idSolicitud;
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+  }//IngresoRespuestaComponent
+
+
+
+
+
 
 }

@@ -20,6 +20,8 @@ import { IIngresarDocumento } from '../modelo/ingresoSolicitud-Interface';
 import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { CuestionarioService } from '../service/cuestionario.service';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -66,6 +68,7 @@ export class CuestionarioComponent {
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private cuestionarioService = inject(CuestionarioService);
+  private storage = inject(StorageService);
 
   abrirInputArchivo(nombre: string) {
     const id = this.sanitizarNombre(nombre);
@@ -82,12 +85,17 @@ export class CuestionarioComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
+      // Obtener usuario logueado desde el storage
+      const sesion = this.storage.get('sesion') as ISesionInterface;
+      const usuarioLogueado =
+        sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
+
       // Modificación directa del objeto doc
       doc.p_id_solicitud = Number(this.idSolicitud());
       doc.p_ruta_documento_origen = this.generarRuta('origen', file.name);
       doc.p_ruta_documento_destino = this.generarRuta('destino', file.name);
       doc.p_fecha_creacion = new Date().toISOString();
-      doc.p_usuario_creacion = 'Mauricio Lufin';
+      doc.p_usuario_creacion = usuarioLogueado;
 
       if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
         this.bloquearSeccion2.set(false);
@@ -95,12 +103,19 @@ export class CuestionarioComponent {
 
       this.cuestionarioService.postAgregaDocumento(doc).subscribe({
         next: (res) => {
-          console.log('Documento ingresado:', res.estado_creacion);
+          console.log('Documento ingresado:', res.vcEstadoCreacion);
+
+          if (res.p_corr_documento != null) {
+            doc.p_corr_documento = res.p_corr_documento;
+          }
         },
         error: (err) => {
           console.error('Error al ingresar documento:', err);
         },
       });
+
+      // Resetear el input para permitir volver a cargar el mismo archivo
+      input.value = '';
     }
   }
 
@@ -120,13 +135,25 @@ export class CuestionarioComponent {
 
   eliminarDocumento(doc: IIngresarDocumento) {
     const idSolicitud = Number(this.idSolicitud());
-    const corr = doc.p_corr_documento ?? 1;
+
+    if (doc.p_corr_documento == null) {
+      alert(
+        'No se puede eliminar el documento porque no tiene correlativo asignado.'
+      );
+      return;
+    }
+
+    const corr = doc.p_corr_documento;
+
+    // Obtener usuario logueado desde el storage
+    const sesion = this.storage.get('sesion') as ISesionInterface;
+    const usuarioLogueado =
+      sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
 
     this.cuestionarioService
-      .postEliminaDocumento(idSolicitud, corr, 'Mauricio Lufin')
+      .postEliminaDocumento(idSolicitud, corr, usuarioLogueado)
       .subscribe({
         next: () => {
-          // Modifica directamente el objeto referenciado por ngModel
           doc.p_ruta_documento_origen = '';
           doc.p_ruta_documento_destino = '';
           doc.p_fecha_creacion = '';

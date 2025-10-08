@@ -69,10 +69,6 @@ export interface DevolverConObservacionesData {
         solicitudId: this.data.solicitudId,
         fecha: this.data.fecha,
         ejecutivo: this.data.ejecutivo,
-        // rutContratante: '00.000.000-0',
-        // nomContratante: 'Devolver con Observaciones',
-        // rubro: 'VIDA',
-        //rutContratante: this.data.fecha
       };
 
 
