@@ -45,7 +45,6 @@ export default class DashboardComponent   {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   dashboardService = inject(DashboardService)
-
   resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
   p_EsperandoRespuesta: 0,
   p_Aprobadas: 0,
@@ -77,7 +76,7 @@ export default class DashboardComponent   {
             p_ConObservaciones: dato.p_ConObservaciones
           });
           this.listadoSolicitudes.set(dato.p_cursor);
-          //console.log('rescata Datos:', dato)
+          console.log('rescata Datos:', dato)
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         } else {
           if (dato.codigo != 500) {

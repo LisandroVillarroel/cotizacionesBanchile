@@ -8,7 +8,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialog
 import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
 import { DetalleSolicitudService } from './detalle-solicitud.service';
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
-//import { DevolverConObservacionesComponent } from './devolver-con-observaciones/devolver-con-observaciones.component';
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 
@@ -65,25 +64,42 @@ export default class DetalleSolicitudComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  verEjec = true;
+  verCoord = true;
 
   idSolicitudParametro=signal<string>('175')
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
-  //documentos = signal<IDocumento[] | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
-  //asegurados = signal<IAseguradoDet[] | undefined>(undefined);
-  //beneficiarios = signal<IBeneficiarioDet[] | undefined>(undefined);
+  edoSolicitud = signal<string | undefined>(undefined);
+  flagAnular = true;
+  flagDevolver = true;
+  flagAprobar = true;
+  flagCompania = true;
+  flagCoordinador = true;
+  perfil = 0;
 
   async ngOnInit(){
     this.cargarSolicitud(this.idSolicitud);
+
+    switch(this._storage()?.usuarioLogin.perfilUsuario!){
+      case "PCSE_EJCBCO":        this.verEjec = false; break;
+
+//        this.verCoord = false; break;
+      case "PCSE_COORBCS":
+        this.verEjec = false; break;
+      case "PCSE_SUPBCS":
+        this.verEjec = false; this.verCoord = false; break;
+      case "PCSE_ADMIN":
+        this.verEjec = false; this.verCoord = false; break;
+    }
   }
 
   cargarSolicitud(idSolicitud: number){
      this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
-          //console.log('Detalle solicitud:', dato);
           this.infoGral.set({
             id_solicitud : this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
@@ -99,9 +115,39 @@ export default class DetalleSolicitudComponent {
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
             id_ejecutivo_banco: dato.p_id_ejecutivo_banco
           });
-          //this.asegurados.set(dato.c_asegurados);
-          //this.beneficiarios.set(dato.c_beneficiarios);
           this.observaciones.set(dato.c_observaciones);
+          this.edoSolicitud.set(dato.p_nombre_estado);
+
+        /* Inicio BackEnd */
+          if(this.edoSolicitud()! !== "Anulada" &&
+             this.edoSolicitud()! !== "Terminada" &&
+             this.edoSolicitud()! !== "Propuesta Pendiente" &&
+             this.edoSolicitud()! !== "Propuesta emitida")
+          { this.flagAnular = false;
+            this.flagCompania = false;
+            this.flagCoordinador = false;
+          } else
+          { this.flagAnular = true;
+            this.flagCompania = true;
+            this.flagCoordinador = true;
+          }
+          if( this.edoSolicitud()! !== "Revision" )
+          { this.flagDevolver = true;
+            this.flagAprobar = true;
+          } else {
+            this.flagDevolver = false;
+            this.flagAprobar = false;
+          }
+          if( this.edoSolicitud()! === "Edicion" ||
+             this.edoSolicitud()! === "Devuelta")
+          { this.flagCoordinador = false;
+            this.flagCompania = true;
+          } else {
+            this.flagCoordinador = true;
+            this.flagCompania = false;
+          }
+        /* Fin BackEnd */
+
         } else {
           if (dato.codigo != 500) {
             console.log('Error:', dato.mensaje);
@@ -115,100 +161,6 @@ export default class DetalleSolicitudComponent {
         console.log('ID Solicitud:', idSolicitud);
       },
     });
-/*     this.infoGral.set({
-      id_solicitud: 1,
-      rut_contratante: "88.888.901-9",
-      nombre_razon_social_contratante: "Carlos Torres Navarro",
-      id_rubro: 1,
-      nombre_rubro: "AUTOMOTRIZ",
-      id_tipo_seguro: 1,
-      nombre_tipo_seguro: "VEHICULO LIVIANO",
-      fecha_creacion_solicitud: "2025-09-22T15:08:24Z",
-      id_estado_solicitud: 1,
-      sla: "R"
-    });
-   /* this.asegurados.set([]);
-    this.beneficiarios.set([
-        {
-            rut_beneficiario: "1.615.222-2",
-            nombre_razon_social_beneficiario: "María López Fernández1615",
-            mail_beneficiario: "maria.lopez@gmail.com",
-            telefono_beneficiario: "+56 9 8882 2222",
-            region_beneficiario: "Valparaíso",
-            ciudad_beneficiario: "Valparaíso",
-            comuna_beneficiario: "Viña del Mar",
-            direccion_beneficiario: "Calle 5 Norte",
-            numero_dir_beneficiario: "456",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: "1615"
-        },
-        {
-            rut_beneficiario: "8.882.222-2",
-            nombre_razon_social_beneficiario: "María López H1444",
-            mail_beneficiario: "maria.lopez1444@gmail.com",
-            telefono_beneficiario: "+56 9 8882 2222",
-            region_beneficiario: "Valparaíso",
-            ciudad_beneficiario: "Valparaíso",
-            comuna_beneficiario: "Viña del Mar",
-            direccion_beneficiario: "Calle 5 Norte",
-            numero_dir_beneficiario: "1444",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: "14"
-        },
-        {
-            rut_beneficiario: "14.555.888-8",
-            nombre_razon_social_beneficiario: "Pepido P1234 NAso",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "11.555.888-8",
-            nombre_razon_social_beneficiario: "Rodrigo acevedo",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "11.340.888-8",
-            nombre_razon_social_beneficiario: "Gonzalo o acevedo",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 1111 1111",
-            region_beneficiario: "Región Metropolitana",
-            ciudad_beneficiario: "Santiago",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1134",
-            departamento_block_beneficiario: "",
-            casa_beneficiario: ""
-        },
-        {
-            rut_beneficiario: "8.232.165-3",
-            nombre_razon_social_beneficiario: "Pepido PagaTriple",
-            mail_beneficiario: "juan.1653@gmail.com",
-            telefono_beneficiario: "+56 9 8881 1653",
-            region_beneficiario: "Metropolitana de Santiago",
-            ciudad_beneficiario: "SANTIAGO",
-            comuna_beneficiario: "Providencia",
-            direccion_beneficiario: "Av. Providencia",
-            numero_dir_beneficiario: "1234",
-            departamento_block_beneficiario: "N",
-            casa_beneficiario: ""
-        }
-    ]);
-    this.observaciones.set([]); */
   }
 
   solicitudId: any;
@@ -234,59 +186,19 @@ export default class DetalleSolicitudComponent {
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
       .subscribe((dato)=>{
-        this.cargarSolicitud(this.idSolicitud)
+        this.cargarSolicitud(this.idSolicitud);
       });
   }
 
-
-//  devolverSolicitud(idSolicitud: number){
-//   console.log('devolverSolicitud idSolicitud',idSolicitud);
-//      this.detalleService.postDetalle(idSolicitud).subscribe({
-//       next: (dato: DetalleSolicitudInterface) => {
-//         if (dato.codigo === 200) {
-//           console.log('Detalle solicitud:', dato);
-//           this.infoGral.set({
-//             id_solicitud : this.idSolicitud,
-//             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
-//             rut_contratante: dato.p_rut_contratante,
-//             nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
-//             id_rubro: dato.p_id_rubro,
-//             nombre_rubro: dato.p_nombre_rubro,
-//             id_tipo_seguro: dato.p_id_tipo_seguro,
-//             nombre_tipo_seguro: dato.p_nombre_tipo_seguro,
-//             sla: dato.p_sla,
-//             id_estado_solicitud: dato.p_id_estado_solicitud,
-//             nombre_estado: dato.p_nombre_estado
-//           });
-//           this.observaciones.set(dato.c_observaciones);
-//         } else {
-//           if (dato.codigo != 500) {
-//             console.log('Error:', dato.mensaje);
-//           } else {
-//             console.log('ERROR DE SISTEMA:');
-//           }
-//         }
-//       },
-//       error: (error) => {
-//         console.log('ERROR INESPERADO', error);
-//         console.log('ID Solicitud:', idSolicitud);
-
-//       },
-//     });
-//   }
-
-
   aprobarSolicitud(): void {
     const dato = {
-      solicitudId: this.idSolicitud//'ID COT_12040_123412'
+      solicitudId: this.idSolicitud
     };
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
@@ -298,16 +210,11 @@ export default class DetalleSolicitudComponent {
   }
 
   anularSolicitud(): void {
-    const dato = {
-      solicitudId: this.idSolicitud//'ID COT_Anular_123412'
-    };
-
+    const dato = { solicitudId: this.idSolicitud };
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
@@ -321,16 +228,14 @@ export default class DetalleSolicitudComponent {
       });
   }
 
-
  corregirSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante,//'00-00-0000',//'00.000.000-0',
+      rutContratante: this.infoGral()?.rut_contratante,
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
     };
-
 
     const dialogConfig = new MatDialogConfig();
 
@@ -354,7 +259,6 @@ export default class DetalleSolicitudComponent {
       fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
       ejecutivo: 'Enviar a Compañia',
     };
-
 
     const dialogConfig = new MatDialogConfig();
 

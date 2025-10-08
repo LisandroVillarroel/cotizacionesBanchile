@@ -83,50 +83,58 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="id_solicitud">
-            <th id="_id" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.id_solicitud}} </td>
+            <th id="_id" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%"> ID </th>
+            <td mat-cell *matCellDef="let element" style="width: 5%"> {{element.id_solicitud}} </td>
           </ng-container>
           <ng-container matColumnDef="fecha_creacion">
             <th id="_fecha" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Fecha </th>
-            <td mat-cell *matCellDef="let element"> {{element.fecha_creacion | date: 'dd/MM/yyyy'  }} </td>
+            <td mat-cell *matCellDef="let element" style="width: 8%">
+              {{element.fecha_creacion | date: 'dd/MM/yyyy'  }} </td>
           </ng-container>
           <ng-container matColumnDef="rut_contratante">
             <th id="_rut" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               RUT
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.rut_contratante }}</td>
+            <td mat-cell *matCellDef="let element" style="width: 8%">
+              {{ element.rut_contratante }}</td>
           </ng-container>
           <ng-container matColumnDef="nombre_razon_social_contratante">
-            <th id="_contratante" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
+            <th id="_contratante" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%">
               Contratante
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.nombre_razon_social_contratante }}</td>
+            <td mat-cell *matCellDef="let element" style="width: 15%">
+              {{ element.nombre_razon_social_contratante }}</td>
           </ng-container>
 
           <ng-container matColumnDef="nombre_rubro">
             <th id="_rubro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
               Rubro
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.nombre_rubro }}</td>
+            <td mat-cell *matCellDef="let element" style="width: 8%">{{ element.nombre_rubro }}</td>
           </ng-container>
 
           <ng-container matColumnDef="nombre_tipo_seguro">
-            <th id="_tipoSeguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
+            <th id="_tipoSeguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 16%">
               Tipo Seguro
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.nombre_tipo_seguro }}</td>
+            <td mat-cell *matCellDef="let element" style="width: 16%">
+              {{ element.nombre_tipo_seguro }}</td>
           </ng-container>
           <ng-container matColumnDef="nombre_ejecutivo_banco">
-            <th id="_ejecutivo" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Ejecutivo </th>
-            <td mat-cell *matCellDef="let element">{{element.nombre_ejecutivo_banco}}</td>
+            <th id="_ejecutivo" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%"
+              [hidden]="this.verEjec"> Ejecutivo </th>
+            <td mat-cell *matCellDef="let element" style="width: 15%" [hidden]="this.verEjec">
+              {{element.nombre_ejecutivo_banco}}</td>
           </ng-container>
           <ng-container matColumnDef="nombre_coordinador">
-            <th id="_coordinador" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Coordinador </th>
-            <td mat-cell *matCellDef="let element">{{element.nombre_coordinador}}</td>
+            <th id="_coordinador" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%"
+            [hidden]="this.verCoord"> Coordinador </th>
+            <td mat-cell *matCellDef="let element" style="width: 15%" [hidden]="this.verCoord">
+              {{element.nombre_coordinador}}</td>
           </ng-container>
           <ng-container matColumnDef="id_estado_solicitud">
-            <th id="_estado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%"> Estado </th>
-            <td mat-cell *matCellDef="let element">
+            <th id="_estado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%"> Estado </th>
+            <td mat-cell *matCellDef="let element" style="width: 15%">
               <div [ngStyle]="getCellStyle(element.id_estado_solicitud)">{{element.descripcion_estado}}</div>
             </td>
           </ng-container>

@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { SolicitudAnuladaComponent } from './solicitud-anulada/solicitud-anulada.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -36,6 +36,7 @@ import { IAnulaRequest } from './anular-interface';
     FormsModule,
     MatDivider,
     MatTooltipModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './anular-solicitud.component.html',
   styleUrl: './anular-solicitud.component.css'
@@ -52,6 +53,11 @@ export class AnularSolicitudComponent {
   idUsuario = this._storage()?.usuarioLogin.usuario!;
   anularService = inject(AnularSolicitudService);
   anulaRequest!: IAnulaRequest;
+  motivo = new FormControl('', [Validators.required]);
+  anularSolicitud= signal<FormGroup>(
+    new FormGroup({
+        motivo: this.motivo
+    }));
 
   cerrar(): void {
     this.dialogRef.close();
@@ -61,12 +67,15 @@ export class AnularSolicitudComponent {
     this.dialogRef.close('cancelado');
   }
 
-  confirmar(motivo: string): void {
+  confirmar(): void {
+    if(this.anularSolicitud().get('motivo')!.value===''){
+      return
+    }
     this.anulaRequest = {
       p_id_solicitud: this.data.solicitudId,
       p_id_usuario: this.idUsuario,
       p_tipo_usuario: this.idUsuario.substring(0,1),
-      p_observacion: motivo
+      p_observacion: this.anularSolicitud().get('motivo')!.value
     };
 
     this.anularService
@@ -85,7 +94,6 @@ export class AnularSolicitudComponent {
                 this.dialogRef.close(true);
               }
             });
-            //alert('Anuló Bien');
           } else {
             Swal.fire({
               title: dato.mensaje,
@@ -97,13 +105,6 @@ export class AnularSolicitudComponent {
                 this.dialogRef.close(true);
               }
             });
-/*             if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('Error de Sistema:');
-            } */
           }
         },
         error: (error) => {
@@ -117,20 +118,13 @@ export class AnularSolicitudComponent {
                 this.dialogRef.close(true);
               }
           });
-          //console.log('Error Inesperado', error);
         },
       });
-
-    /* const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "40%"; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = "40%"; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = this.anulaRequest;
-
-    this.dialog
-      .open(SolicitudAnuladaComponent, dialogConfig)
-      .afterClosed(); */
   }
+
+  getErrorMessage() {
+    return this.motivo.hasError('required')
+    ? 'Debe ingresar el motivo de la anulación.' : '';
+  }
+
 }

@@ -16,9 +16,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
-
-//import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
@@ -27,6 +24,8 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -55,9 +54,10 @@ import { IEstado } from '@shared/modelo/estado-interface';
 
 export class SolicitudesGestionadasComponent  implements OnInit {
   datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
-
-  //datosSolicitudActual=signal<IListadoSolicitudes[]>([]);
-
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  verEjec = true;
+  verCoord = true;
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
@@ -187,6 +187,17 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       this.datosFiltrados()
       this.updateTableData();
     });
+
+    switch(this._storage()?.usuarioLogin.perfilUsuario!){
+      case "PCSE_EJCBCO":
+        this.verCoord = false; break;
+      case "PCSE_COORBCS":
+        this.verEjec = false; break;
+      case "PCSE_SUPBCS":
+        this.verEjec = false; this.verCoord = false; break;
+      case "PCSE_ADMIN":
+        this.verEjec = false; this.verCoord = false; break;
+    }
   }
 
   private updateTableData(): void {
