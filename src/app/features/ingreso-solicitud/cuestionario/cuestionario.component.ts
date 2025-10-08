@@ -51,7 +51,6 @@ export class CuestionarioComponent {
   idSolicitud = input.required<string>();
   documentForm = signal(inject(FormBuilder).group({}));
   documentos = signal<IIngresarDocumento[]>([]);
-  bloquearSeccion2 = signal(true);
 
   @ViewChildren('fileInputs') fileInputs!: QueryList<
     ElementRef<HTMLInputElement>
@@ -73,6 +72,8 @@ export class CuestionarioComponent {
 
     this.documentos.set(documentosConId);
   }
+
+  bloquearSeccion2 = signal(true);
 
   abrirInputArchivo(nombre: string) {
     const id = this.sanitizarNombre(nombre);
@@ -108,6 +109,10 @@ export class CuestionarioComponent {
           }
 
           this.consultarDocumentos();
+
+          if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
+            this.bloquearSeccion2.set(false);
+          }
         },
         error: (err) => {
           console.error('Error al ingresar documento:', err);
