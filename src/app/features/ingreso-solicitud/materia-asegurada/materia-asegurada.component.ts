@@ -1,6 +1,6 @@
-import { Component, input, OnInit, signal, inject, effect } from '@angular/core';
+import { Component, input, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaResultado } from '../modelo/materia-Interface';
+import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaResultado, IMateriaTiene } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,6 +34,7 @@ export class MateriaAseguradaComponent {
 
   materiaService = inject(MateriaService);
 
+  datoMateriaTiene = signal<IMateria[]>([]);
   datoMateria = signal<IMateria[]>([]);
   datoMateria_Recorre: IMateria[] = [];
 
@@ -46,7 +47,7 @@ export class MateriaAseguradaComponent {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
       this.datoMateriaEstructura_arr = [];
-      this.rescataListaAsegurados(this.idRubro(), this.idSeguro());
+      this.rescataListaMaterias(this.idRubro(), this.idSeguro());
     });
   }
 
@@ -56,20 +57,37 @@ export class MateriaAseguradaComponent {
     }))
 
 
-  rescataListaAsegurados(idRubro: number, idSeguro: number) {
-    console.log('rescataListaAsegurados')
-    const estructura_listaMateria = {
-      p_id_rubro: idRubro,
-      p_id_tipo_seguro: idSeguro
-    };
-    console.log('estructura_listaMateria', estructura_listaMateria)
+  rescataListaMaterias(idRubro: number, idSeguro: number) {
     this.materiaService
-      .postListadoMatetria(estructura_listaMateria)
+      .postListadoMatetria(idRubro, idSeguro)
       .subscribe({
         next: (dato: IMateriaResultado) => {
           if (dato.codigo === 200) {
-            console.log('dato.p_cursor', dato.p_cursor)
             this.datoMateria.set(dato.p_cursor);
+            this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
+
+          } else {
+            if (dato.codigo != 500) {
+              console.log('Error:', dato.mensaje);
+            } else {
+              console.log('Error de Sistema:');
+            }
+          }
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
+  }
+
+  rescataTieneMateria(idSolicitud: number, idRubro: number, idSeguro: number) {
+    this.materiaService
+      .postConsultaMatetria(idSolicitud, idRubro, idSeguro)
+      .subscribe({
+        next: (dato: IMateriaTiene) => {
+          if (dato.codigo === 200) {
+            this.datoMateriaTiene.set(dato.p_cursor);
+            this.modificaOriginal(); /// Busca y modifica lo encontrado
             this.creaEstructura()
           } else {
             if (dato.codigo != 500) {
@@ -85,12 +103,24 @@ export class MateriaAseguradaComponent {
       });
   }
 
+
+  modificaOriginal() {
+    if (this.datoMateriaTiene().length != 0) {
+      const datoMateriaTiene_final = this.datoMateriaTiene().filter((valor) => valor.p_valor_dato != null && valor.p_valor_dato != '' && (valor.p_tipo_dato != 'TITULO'))
+      this.datoMateria.set(this.datoMateria().map(valorOriginal => {
+        const modificadoItem = datoMateriaTiene_final.find(modifica => modifica.p_id_seccion === valorOriginal.p_id_seccion && modifica.p_id_linea === valorOriginal.p_id_linea && modifica.p_id_posicion === valorOriginal.p_id_posicion);
+        return modificadoItem ? { ...valorOriginal, p_valor_dato: modificadoItem.p_valor_dato } : valorOriginal;
+      })
+    )
+    }
+  }
+
+
   creaEstructura() {
     let valoresFila;
     let valorClass = '';
     let nombreCampo = ''
     let nombreLabel = '';
-    let valorResto = 0;
     let valorEntero = 0;
     let valorInicial = 0;
     let valorColumna = 0;
@@ -103,7 +133,6 @@ export class MateriaAseguradaComponent {
     }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
 
     const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
-    console.log('cuantaSeccionesArreglo:', cuantaSeccionesArreglo)
 
     for (let i = 0; i < cuantaSeccionesArreglo.length; i++) { //Recorre Secciones
       this.datoMateria_Recorre = this.datoMateria().filter((valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])) //Compara la fila i el valor que esta en la fila 0 Numero de seccion
@@ -115,16 +144,10 @@ export class MateriaAseguradaComponent {
       }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
 
       const cuantaColumnasArreglo: [string, number][] = Object.entries(cuantaColumnas); //Pasa a un arreglo
-
-      console.log('Record:', cuantaColumnas)
-      console.log('arreglo:', cuantaColumnasArreglo)
-
-
       valorClass = '';
       nombreCampo = ''
       nombreLabel = '';
 
-      console.log('cuantaColumnasArreglo.length', cuantaColumnasArreglo.length)
       for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //Recorre file
         valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
         //console.log('valoresFila:',valoresFila)
@@ -167,12 +190,10 @@ export class MateriaAseguradaComponent {
 
 
   agregaFormControl(nombreCampo: string, ValorInicial: any, requerido: boolean): void {
-    this.materiaForm().addControl(nombreCampo, new FormControl(''));
+    this.materiaForm().addControl(nombreCampo, new FormControl(ValorInicial.trim()));
   }
 
   grabarMateria() {
-    console.log('this.datoMateriaEstructura()', this.datoMateriaEstructura());
-console.log('paso 1')
     let nombreCampo = '';
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
@@ -184,13 +205,10 @@ console.log('paso 1')
         if (columna.p_tipo_dato == 'FECHA' && (this.materiaForm().get(columna.nombreCampo!)!.value != '') && (this.materiaForm().get(columna.nombreCampo!)!.value != null))
           nombreCampo = (this.materiaForm().get(columna.nombreCampo!)!.value).format('DD/MM/YYYY')
 
-        if(nombreCampo==null)
+        if (nombreCampo == null)
           nombreCampo = ''
 
         this.materiaIngresa.push({
-          p_id_solicitud: Number(this.idSolicitud()),
-          p_id_rubro: columna.p_id_rubro,
-          p_id_tipo_seguro: columna.p_id_tipo_seguro,
           p_id_seccion: columna.p_id_seccion,
           p_id_linea: columna.p_id_linea,
           p_id_posicion: columna.p_id_posicion,
@@ -199,22 +217,20 @@ console.log('paso 1')
           p_largo_dato: columna.p_largo_dato,
           p_decimales_dato: columna.p_decimales_dato,
           p_id_listapadre: columna.p_id_listapadre,
-          p_fecha_creacion: '02/10/2025',
           p_usuario_creacion: this._storage()?.usuarioLogin.usuario!
         })
       }
     }
-console.log('paso 2')
-    const envioMateria:IMateriaEnvia={
+    console.log('paso 2')
+    const envioMateria: IMateriaEnvia = {
       p_id_solicitud: Number(this.idSolicitud()),
-    p_id_rubro: this.idRubro(),
-    p_id_tipo_seguro: this.idSeguro(),
-    items:this.materiaIngresa
+      p_id_rubro: this.idRubro(),
+      p_id_tipo_seguro: this.idSeguro(),
+      items: this.materiaIngresa
     }
 
     this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
       next: (dato) => {
-        console.log('dato:', dato);
         if (dato.codigo === 200) {
           alert('Grabó Asegurado Bien');
         } else {
@@ -226,8 +242,9 @@ console.log('paso 2')
         console.log('Error Inesperado', error);
       },
     });
+  }
 
-   console.log('paso 3')
-    console.log('this.materiaIngresa:', envioMateria)
+comparavalorLista(v1: any, v2: any): boolean {
+    return Number(v1) === Number(v2);
   }
 }

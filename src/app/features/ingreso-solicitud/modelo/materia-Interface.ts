@@ -1,7 +1,4 @@
 export interface IMateriaIngresa {
-  p_id_solicitud: number;
-  p_id_rubro: number;
-  p_id_tipo_seguro: number;
   p_id_seccion: number;
   p_id_linea: number;
   p_id_posicion: number;
@@ -10,7 +7,6 @@ export interface IMateriaIngresa {
   p_largo_dato: number;
   p_decimales_dato: number;
   p_id_listapadre: string;
-  p_fecha_creacion: string;
   p_usuario_creacion: string;
 }
 
@@ -60,4 +56,12 @@ p_id_solicitud: number;
     p_id_rubro: number;
     p_id_tipo_seguro: number;
     items:IMateriaIngresa[];
+}
+
+export interface IMateriaTiene {
+  codigo: 200,
+  mensaje: string;
+  p_cursor: IMateria[]
+  vcEstado: string
+  vcEstadoCreacion: string;
 }

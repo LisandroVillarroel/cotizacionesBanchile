@@ -44,9 +44,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
                 <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
               </ul>
             </li>
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="alertas">Prueba de Alertas</a>
-            </li>
           </ul>
         </div>
       </div>
