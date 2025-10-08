@@ -14,12 +14,9 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-
 import { SolicitudEnviadaCiaComponent } from './solicitud-enviada-cia/solicitud-enviada-cia.component';
 import { MatRadioGroup, MatRadioButton } from "@angular/material/radio";
 import { MatCheckbox } from "@angular/material/checkbox";
-import { DocumentosAsociadosComponent } from "@features/detalle-solicitud/documentosasociados/documentosasociados.component";
-import { DocumentosAsociadosService } from '@features/detalle-solicitud/documentosasociados/documentosasociados.service';
 
 export interface EnviarACompaniaData {
   solicitudId: string;
@@ -34,7 +31,7 @@ export interface EnviarACompaniaData {
   standalone: true,
   imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
     MatFormField, MatInputModule, FormsModule, MatDivider, MatRadioGroup, MatRadioButton,
-    MatCheckbox, DocumentosAsociadosComponent],
+    MatCheckbox,],
   templateUrl: './enviar-a-compania.component.html',
   styleUrl: './enviar-a-compania.component.css'
 })
@@ -52,7 +49,7 @@ export interface EnviarACompaniaData {
     constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<EnviarACompaniaComponent>,
-    private documentosService: DocumentosAsociadosService,
+    //private documentosService: DocumentosAsociadosService,
     @Inject(MAT_DIALOG_DATA) public data: EnviarACompaniaData
   ) {}
 
@@ -65,7 +62,7 @@ export interface EnviarACompaniaData {
 
 
     ngOnInit(): void {
-      this.registros = this.documentosService.obtenerRegistrosConDocumentos();
+      //this.registros = this.documentosService.obtenerRegistrosConDocumentos();
     }
 
 
