@@ -27,6 +27,7 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -308,5 +309,41 @@ export default class DetalleSolicitudComponent {
       .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed();
   }
+
+
+
+
+
+
+
+
+
+  ingresarRespuesta(idSolicitud: number): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      rutContratante: this.infoGral()?.rut_contratante,//'00-00-0000',//'00.000.000-0',
+      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
+      rubro: this.infoGral()?.nombre_rubro,
+      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
+    };
+
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = idSolicitud;
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+  }//IngresoRespuestaComponent
+
+
+
+
+
 
 }

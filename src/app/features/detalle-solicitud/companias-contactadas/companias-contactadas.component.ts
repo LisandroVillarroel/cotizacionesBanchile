@@ -109,9 +109,10 @@ export class CompaniasContactadasComponent implements OnInit {
       'color': color,
       'background-color': fondo,
       'border': '1px solid' + color,
-      'width': 'fit-content',
-      'padding-left': '5%',
-      'padding-right': '5%'
+      'width': '170px',//'fit-content',
+      'text-align': 'center',
+      'padding-left': '1%',
+      'padding-right': '1%'
     };
   }
 }
