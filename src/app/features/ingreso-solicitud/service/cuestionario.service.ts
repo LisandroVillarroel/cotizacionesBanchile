@@ -9,6 +9,7 @@ import { catchError, Observable, retry, throwError } from 'rxjs';
 import {
   IIngresarDocumento,
   IEstadoIngresarDocumento,
+  DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
 
 // Definición base de documentos
@@ -79,23 +80,15 @@ export class CuestionarioService {
     corr: number,
     usuario: string
   ): Observable<any> {
-    return this.http
-      .post<any>(
-        `${environment.apiUrl}/eliminarDocumentos`,
-        {
-          p_id_solicitud: idSolicitud,
-          p_corr_documento: corr,
-          p_fecha_modificacion: new Date().toISOString(),
-          p_usuario_modificacion: usuario,
-        },
-        {
-          headers: this.headers,
-        }
-      )
-      .pipe(retry(1), catchError(this.errorHand));
+    return this.http.post<any>(`${environment.apiUrl}/eliminarDocumentos`, {
+      p_id_solicitud: idSolicitud,
+      p_corr_documento: corr,
+      p_fecha_modificacion: new Date().toISOString(),
+      p_usuario_modificacion: usuario, //
+    });
   }
 
-  /* postListadoDocumento(filtro: any): Observable<DatosDocumentoInterface> {
+  postListadoDocumento(filtro: any): Observable<DatosDocumentoInterface> {
     return this.http
       .post<DatosDocumentoInterface>(
         `${environment.apiUrl}/consultarDocumentos`,
@@ -103,7 +96,7 @@ export class CuestionarioService {
         { headers: this.headers }
       )
       .pipe(retry(1), catchError(this.errorHand));
-  } */
+  }
 
   errorHand(error: HttpErrorResponse): Observable<never> {
     console.log('Paso Error Documento: ', error);

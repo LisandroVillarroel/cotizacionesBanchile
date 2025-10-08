@@ -19,9 +19,14 @@ import { MatCardModule } from '@angular/material/card';
 import { IIngresarDocumento } from '../modelo/ingresoSolicitud-Interface';
 import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CuestionarioService } from '../service/cuestionario.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import {
+  IDocumentoLista,
+  DatosDocumentoInterface,
+} from '../modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -46,6 +51,16 @@ export class CuestionarioComponent {
   idSolicitud = input.required<string>();
   documentForm = signal(inject(FormBuilder).group({}));
   documentos = signal<IIngresarDocumento[]>([]);
+  bloquearSeccion2 = signal(true);
+
+  @ViewChildren('fileInputs') fileInputs!: QueryList<
+    ElementRef<HTMLInputElement>
+  >;
+
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
+  private cuestionarioService = inject(CuestionarioService);
+  private storage = inject(StorageService);
 
   ngOnInit() {
     const base = this.cuestionarioService.getDocumentosBase();
@@ -58,17 +73,6 @@ export class CuestionarioComponent {
 
     this.documentos.set(documentosConId);
   }
-
-  bloquearSeccion2 = signal(true);
-
-  @ViewChildren('fileInputs') fileInputs!: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
-
-  private fb = inject(FormBuilder);
-  private dialog = inject(MatDialog);
-  private cuestionarioService = inject(CuestionarioService);
-  private storage = inject(StorageService);
 
   abrirInputArchivo(nombre: string) {
     const id = this.sanitizarNombre(nombre);
@@ -85,21 +89,15 @@ export class CuestionarioComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      // Obtener usuario logueado desde el storage
       const sesion = this.storage.get('sesion') as ISesionInterface;
       const usuarioLogueado =
         sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
 
-      // Modificación directa del objeto doc
       doc.p_id_solicitud = Number(this.idSolicitud());
       doc.p_ruta_documento_origen = this.generarRuta('origen', file.name);
       doc.p_ruta_documento_destino = this.generarRuta('destino', file.name);
       doc.p_fecha_creacion = new Date().toISOString();
       doc.p_usuario_creacion = usuarioLogueado;
-
-      if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
-        this.bloquearSeccion2.set(false);
-      }
 
       this.cuestionarioService.postAgregaDocumento(doc).subscribe({
         next: (res) => {
@@ -108,13 +106,14 @@ export class CuestionarioComponent {
           if (res.p_corr_documento != null) {
             doc.p_corr_documento = res.p_corr_documento;
           }
+
+          this.consultarDocumentos();
         },
         error: (err) => {
           console.error('Error al ingresar documento:', err);
         },
       });
 
-      // Resetear el input para permitir volver a cargar el mismo archivo
       input.value = '';
     }
   }
@@ -133,6 +132,45 @@ export class CuestionarioComponent {
     return !!doc?.p_ruta_documento_origen;
   }
 
+  consultarDocumentos() {
+    const idSolicitud = Number(this.idSolicitud());
+    console.log('ID de solicitud enviado al backend:', idSolicitud);
+
+    const filtro = { p_id_solicitud: idSolicitud };
+    console.log('Filtro enviado al backend:', filtro);
+
+    this.cuestionarioService.postListadoDocumento(filtro).subscribe({
+      next: (res: DatosDocumentoInterface) => {
+        if (res.codigo === 200) {
+          const documentosFiltrados: IIngresarDocumento[] = res.p_cursor
+            .filter(
+              (doc) => doc.id_documento_adjunto && doc.ruta_documento_origen
+            )
+            .map((doc: IDocumentoLista) => ({
+              p_id_solicitud: idSolicitud,
+              p_id_documento_adjunto: doc.id_documento_adjunto,
+              p_documento_principal: doc.documento_principal,
+              p_ruta_documento_origen: doc.ruta_documento_origen,
+              p_ruta_documento_destino: doc.ruta_documento_destino,
+              p_fecha_creacion: doc.fecha_creacion,
+              p_usuario_creacion: doc.usuario_creacion,
+              p_corr_documento: doc.corr_documento,
+            }));
+
+          console.log(
+            `Documentos para solicitud ${idSolicitud}:`,
+            documentosFiltrados
+          );
+        } else {
+          console.warn('Consulta con estado:', res.vcEstado);
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al consultar documentos:', err.message);
+      },
+    });
+  }
+
   eliminarDocumento(doc: IIngresarDocumento) {
     const idSolicitud = Number(this.idSolicitud());
 
@@ -144,8 +182,6 @@ export class CuestionarioComponent {
     }
 
     const corr = doc.p_corr_documento;
-
-    // Obtener usuario logueado desde el storage
     const sesion = this.storage.get('sesion') as ISesionInterface;
     const usuarioLogueado =
       sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
