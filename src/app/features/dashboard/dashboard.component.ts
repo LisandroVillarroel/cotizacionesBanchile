@@ -32,7 +32,6 @@ import { StorageService } from '@shared/service/storage.service';
     SolicitudesGestionadasComponent,
     DistribucionComponent,
     MatToolbarModule,
-    MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
     FormsModule,

@@ -8,12 +8,13 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { registerLocaleData } from '@angular/common';
 import id from '@angular/common/locales/id';
+import { provideNgxMask } from 'ngx-mask';
 
 
 registerLocaleData(id);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),),
+  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),),  provideNgxMask(),
 { provide: LOCALE_ID, useValue: 'es-ES' },
 
   {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
