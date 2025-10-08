@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IMateriaResultado } from '../modelo/materia-Interface';
+import { IMateriaEnvia, IMateriaIngresa, IMateriaResultado } from '../modelo/materia-Interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,15 @@ export class MateriaService {
       )
       .pipe(retry(1), catchError(this.errorHand));
   }
+
+    postAgregaAsegurado(agregaMateria: IMateriaEnvia): Observable<any> {
+      console.log('datos de envio materia',agregaMateria)
+      return this.http
+        .post<any>(`${environment.apiUrl}/ingresarMateriaAsegurada`, agregaMateria, {
+          headers: this.headers,
+        })
+        .pipe(retry(1), catchError(this.errorHand));
+    }
 
   errorHand(error: HttpErrorResponse) {
     console.log('Paso Error Beneficiario: ', error);

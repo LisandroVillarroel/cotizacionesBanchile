@@ -55,3 +55,9 @@ export interface IMateriaEstructura {
   datos:IMateria[];
 }
 
+export interface IMateriaEnvia {
+p_id_solicitud: number;
+    p_id_rubro: number;
+    p_id_tipo_seguro: number;
+    items:IMateriaIngresa[];
+}

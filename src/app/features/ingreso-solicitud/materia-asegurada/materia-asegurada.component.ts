@@ -1,6 +1,6 @@
 import { Component, input, OnInit, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEstructura, IMateriaIngresa, IMateriaResultado } from '../modelo/materia-Interface';
+import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaResultado } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -172,7 +172,7 @@ export class MateriaAseguradaComponent {
 
   grabarMateria() {
     console.log('this.datoMateriaEstructura()', this.datoMateriaEstructura());
-
+console.log('paso 1')
     let nombreCampo = '';
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
@@ -199,13 +199,35 @@ export class MateriaAseguradaComponent {
           p_largo_dato: columna.p_largo_dato,
           p_decimales_dato: columna.p_decimales_dato,
           p_id_listapadre: columna.p_id_listapadre,
-          p_fecha_creacion: '',
+          p_fecha_creacion: '02/10/2025',
           p_usuario_creacion: this._storage()?.usuarioLogin.usuario!
         })
       }
     }
+console.log('paso 2')
+    const envioMateria:IMateriaEnvia={
+      p_id_solicitud: Number(this.idSolicitud()),
+    p_id_rubro: this.idRubro(),
+    p_id_tipo_seguro: this.idSeguro(),
+    items:this.materiaIngresa
+    }
 
+    this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          alert('Grabó Asegurado Bien');
+        } else {
+          alert('Error:' + dato.mensaje);
+          console.log('Error:', dato.mensaje);
+        }
+      },
+      error: (error) => {
+        console.log('Error Inesperado', error);
+      },
+    });
 
-    console.log('this.materiaIngresa:', this.materiaIngresa)
+   console.log('paso 3')
+    console.log('this.materiaIngresa:', envioMateria)
   }
 }

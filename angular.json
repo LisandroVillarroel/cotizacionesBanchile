@@ -36,7 +36,14 @@
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+            "moment",
+            "moment/locale/es",
+            "@fdograph/rut-utilities",
+            "sweetalert2",
+            "crypto-js"
+          ]
           },
           "configurations": {
             "production": {
