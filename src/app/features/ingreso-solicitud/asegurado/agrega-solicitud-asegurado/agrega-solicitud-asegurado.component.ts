@@ -37,7 +37,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
 
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);

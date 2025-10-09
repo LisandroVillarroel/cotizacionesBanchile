@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-
 /**
  * Notificacion sevicio usando Signal
  * Gestiona las notificaciones de brindis de forma reactiva
@@ -11,7 +10,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 })
 export class NotificacionBootstrapService {
   constructor(private _snackBar: MatSnackBar) {}
-
 
   /**
    * Mostrar una notificación de éxito
@@ -37,29 +35,25 @@ export class NotificacionBootstrapService {
   /**
    * Mostrar una notificación de información
    */
-    showInfo(mensaje: string, duracion = 5000): void {
+  showInfo(mensaje: string, duracion = 5000): void {
     this.muestraNotificacion('info', mensaje, duracion);
   }
 
+  private muestraNotificacion(
+    type: string,
+    mensaje: string,
+    duracion: number
+  ): void {
+    const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
-  private muestraNotificacion(type: string, mensaje: string, duracion: number): void {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = [
+      `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+      `   <div>${mensaje}</div>`,
+      '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+      '</div>',
+    ].join('');
 
-
-
-const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-
-  const wrapper = document.createElement('div')
-  wrapper.innerHTML = [
-    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-    `   <div>${mensaje}</div>`,
-    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-    '</div>'
-  ].join('')
-
-  alertPlaceholder!.append(wrapper)
-
-
-
+    alertPlaceholder!.append(wrapper);
   }
-
 }
