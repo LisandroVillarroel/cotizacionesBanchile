@@ -2,7 +2,7 @@ import { Component, computed, input, signal } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardContent } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
-import { ISolicitud } from '@features/detalle-solicitud/detalle-interface';
+import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { catchError } from 'rxjs';
 
 

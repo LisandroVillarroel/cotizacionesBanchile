@@ -7,7 +7,7 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-<mat-card>
+  <mat-card>
   <mat-card-content>
     <div class="d-flex" style="margin:auto;">
         <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
@@ -21,7 +21,7 @@
         autofocus maxlength="500" rows="6" required></textarea>
         <mat-hint align="end">{{motivo.value?.length}} / 500</mat-hint>
         @if (motivo.invalid) {
-        <mat-error>{{ getErrorMessage() }}</mat-error>
+          <mat-error>{{ getErrorMessage() }}</mat-error>
         }
     </mat-form-field>
     <mat-label class="gris">
@@ -38,7 +38,7 @@
         <button mat-stroked-button class="btn-danger"
           (click)="cancelar()">Cancelar</button>
         <button mat-stroked-button class="btn-success"
-          (click)="confirmar()">Confirmar anulación</button>
+          (click)="anular()">Confirmar anulación</button>
       </div>
     </div>
   </mat-card-actions>

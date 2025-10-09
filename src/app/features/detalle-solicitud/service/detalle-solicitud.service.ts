@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { DetalleSolicitudInterface } from '@features/detalle-solicitud/detalle-interface';
+import { DetalleSolicitudInterface } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 
 @Injectable({

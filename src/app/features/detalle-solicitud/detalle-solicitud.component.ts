@@ -1,31 +1,40 @@
 import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-
-import { DetalleSolicitudInterface, ICompania, IObservacion, ISolicitud, IAseguradoDet, IBeneficiarioDet } from './detalle-interface';
-import { DetalleSolicitudService } from './detalle-solicitud.service';
-import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
-import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
-import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
-
+import Swal from 'sweetalert2';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+//interfaces
+import {
+  DetalleSolicitudInterface,
+  ICompania,
+  IObservacion,
+  ISolicitud } from './modelo/detalle-interface';
+import { IApruebaRequest } from './modelo/aprobar-interface';
+//Servicios
+import { DetalleSolicitudService } from './service/detalle-solicitud.service';
+import { AprobarSolicitudService } from './service/aprobar-solicitud.service';
+//Componentes reutilizados
+import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
 import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
 import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
+import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+//Componentes nuevos
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
-import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
-import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
+import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
-import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+
+import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
+import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -67,12 +76,17 @@ export default class DetalleSolicitudComponent {
   verEjec = true;
   verCoord = true;
 
-  idSolicitudParametro=signal<string>('175')
+  idSolicitudParametro = signal<string>('175')  //???
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
+
+  aprobarService = inject(AprobarSolicitudService);
+  apruebaRequest!: IApruebaRequest;
+
+  //flags para habilitar/deshabilitar botones
   flagAnular = true;
   flagDevolver = true;
   flagAprobar = true;
@@ -82,11 +96,9 @@ export default class DetalleSolicitudComponent {
 
   async ngOnInit(){
     this.cargarSolicitud(this.idSolicitud);
-
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
-      case "PCSE_EJCBCO":        this.verEjec = false; break;
-
-//        this.verCoord = false; break;
+      case "PCSE_EJCBCO":
+        this.verCoord = false; break;
       case "PCSE_COORBCS":
         this.verEjec = false; break;
       case "PCSE_SUPBCS":
@@ -174,14 +186,12 @@ export default class DetalleSolicitudComponent {
     };
 
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
     dialogConfig.maxHeight = '90vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
-
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
@@ -191,22 +201,56 @@ export default class DetalleSolicitudComponent {
   }
 
   aprobarSolicitud(): void {
-    const dato = {
-      solicitudId: this.idSolicitud
+    this.apruebaRequest = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
     };
 
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(AprobarSolicitudComponent, dialogConfig)
-      .afterClosed();
+    this.aprobarService
+      .postApruebaSolicitud(this.apruebaRequest)
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            Swal.fire({
+              title: 'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
+                    ' y está disponible para ser enviada a las compañías de seguros. \n' +
+                    ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
+                    ' de gestión de solicitudes.',
+              icon: 'success',
+              confirmButtonColor: "#002464",
+              draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+            });
+          } else {
+            Swal.fire({
+              title: dato.mensaje,
+              icon: 'error',
+              confirmButtonColor: "#002464",
+              draggable: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+            });
+          }
+        },
+        error: (error) => {
+          Swal.fire({
+            title: 'Error inesperado. '+ error,
+            icon: 'error',
+            confirmButtonColor: "#002464",
+            draggable: false
+          }).then((result) => {
+              if (result.isConfirmed) {
+                this.dialogRef.close(true);
+              }
+          });
+        },
+      });
   }
 
   anularSolicitud(): void {

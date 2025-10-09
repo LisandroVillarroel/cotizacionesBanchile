@@ -8,15 +8,14 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule,
+  ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-import { SolicitudAnuladaComponent } from './solicitud-anulada/solicitud-anulada.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -67,7 +66,7 @@ export class AnularSolicitudComponent {
     this.dialogRef.close('cancelado');
   }
 
-  confirmar(): void {
+  anular(): void {
     if(this.anularSolicitud().get('motivo')!.value===''){
       return
     }
@@ -126,5 +125,4 @@ export class AnularSolicitudComponent {
     return this.motivo.hasError('required')
     ? 'Debe ingresar el motivo de la anulación.' : '';
   }
-
 }
