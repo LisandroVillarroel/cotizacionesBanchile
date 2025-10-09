@@ -4,7 +4,6 @@ import {
   effect,
   inject,
   input,
-  model,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -24,6 +23,8 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { WritableSignal } from '@angular/core';
+
 import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
 import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
@@ -53,9 +54,10 @@ import { AseguradoService } from '../service/asegurado.service';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-   idSolicitud = input.required<string>();
+  idSolicitud = input.required<string>();
   datoAsegurados = signal<IAseguradoLista[]>([]);
-
+  mostrarBotonAtras = input<boolean>(true);
+  hayAsegurados = input<WritableSignal<boolean>>();
 
   //flagAsegurado = model(false);
 
@@ -110,22 +112,22 @@ export class AseguradoComponent {
     });
   }
 
-   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
+  //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
 
   ngAfterViewInit(): void {
-    console.log('entro a asegurado ngAfterViewInit',this.idSolicitud())
+    console.log('entro a asegurado ngAfterViewInit', this.idSolicitud());
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
   async ngOnInit() {
-    console.log('entro a asegurado',this.idSolicitud())
+    console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.rescataListaAsegurados(this.idSolicitud()!);
   }
 
   rescataListaAsegurados(p_id_solicitud: string) {
-    console.log('rescataListaAsegurados')
+    console.log('rescataListaAsegurados');
     const estructura_listaAsegurados = {
       p_id_solicitud: Number(p_id_solicitud),
     };
@@ -135,6 +137,7 @@ export class AseguradoComponent {
         next: (dato: DatosAseguradosInterface) => {
           if (dato.codigo === 200) {
             this.datoAsegurados.set(dato.p_cursor);
+            this.hayAsegurados()?.set(dato.p_cursor.length > 0);
           } else {
             if (dato.codigo != 500) {
               console.log('Error:', dato.mensaje);
@@ -168,13 +171,14 @@ export class AseguradoComponent {
       .subscribe((data) => {
         if (data === 'agregado') {
           this.rescataListaAsegurados(this.idSolicitud()!);
+          this.hayAsegurados()?.set(data.p_cursor.length > 0);
         }
       });
   }
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
     console.log('Dato Modificar;', datoAseguradoPar);
-    const parametro:IAseguradoListaParametro={
+    const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),
     };
@@ -214,7 +218,7 @@ export class AseguradoComponent {
 
   eliminaAsegurado(datoAseguradoPar: any) {
     const dialogConfig = new MatDialogConfig();
- const parametro:IAseguradoListaParametro={
+    const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),
     };
@@ -232,6 +236,7 @@ export class AseguradoComponent {
       .subscribe((data) => {
         if (data === 'eliminado') {
           this.rescataListaAsegurados(this.idSolicitud()!);
+          this.hayAsegurados()?.set(data.p_cursor.length > 0);
         }
       });
   }
