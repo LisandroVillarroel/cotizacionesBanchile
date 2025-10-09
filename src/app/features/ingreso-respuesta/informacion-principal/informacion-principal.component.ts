@@ -1,3 +1,5 @@
+import { TipoCuentaService } from './../../../shared/service/tipo-cuenta.service';
+import { MedioPagoService } from './../../../shared/service/medio-pago.service';
 import {
   Component,
   input,
@@ -7,7 +9,7 @@ import {
   QueryList,
   inject,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +22,19 @@ import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { MatSelect } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
+import { MatDatepicker } from "@angular/material/datepicker";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MonedaService } from '@shared/service/moneda.service';
+import { IMoneda } from '@shared/modelo/moneda-interface';
+import { IMedioPago } from '@shared/modelo/medio-pago-interface';
+import { BancoService } from '@shared/service/banco.service';
+import { IBanco } from '@shared/modelo/banco-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
+
 
 @Component({
   selector: 'app-informacion-principal',
@@ -36,10 +51,158 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatStepperModule,
     MatCardModule,
     MatDivider,
+    MatSelect,
+    MatOptionModule,
+    MatDatepicker,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
   templateUrl: './informacion-principal.component.html',
   styleUrl: './informacion-principal.component.css'
 })
-export class InformacionPrincipalComponent {
+export default class InformacionPrincipalComponent {
+  fechaActual = new FormControl<Date>(new Date());
+
+  monedaService = inject(MonedaService);
+  medioPagoService = inject(MedioPagoService);
+  bancoService = inject(BancoService);
+  tipoCuentaService = inject(TipoCuentaService);
+
+  datosMoneda = signal<IMoneda[]>([]);
+  datosMedioPago = signal<IMedioPago[]>([]);
+  datosBanco = signal<IBanco[]>([]);
+  datosTipoCuenta = signal<ITipoCuenta[]>([]);
+
+  panelOpenState = false;
+  moneda = new FormControl();
+  mPago = new FormControl();
+  banco = new FormControl();
+  tipoCuenta = new FormControl();
+
+  constructor() {
+
+  }
+
+  cargaMoneda() {
+    //console.log('Entro cargaRubros');
+
+    this.monedaService.postMoneda().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datosMoneda.set(dato.p_cursor);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+  cargaMedioPago() {
+    //console.log('Entro cargaRubros');
+
+    this.medioPagoService.postMedioPago().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datosMedioPago.set(dato.p_cursor);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+  cargaBanco() {
+    //console.log('Entro cargaRubros');
+
+    this.bancoService.postBanco().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datosBanco.set(dato.p_cursor);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+  cargaTipoCuenta() {
+    //console.log('Entro cargaRubros');
+
+    this.tipoCuentaService.postTipoCuenta().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datosTipoCuenta.set(dato.p_cursor);
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+
+  async ngOnInit() {
+    this.cargaMoneda();
+    this.cargaMedioPago();
+    this.cargaBanco();
+    this.cargaTipoCuenta();
+  }
+
+
+fechaInicio: Date | null = null;
+fechaTermino: Date | null = null;
+fechaVencimiento: Date | null = null;
+
+filtrarFechasTermino = (fecha: Date | null): boolean => {
+  if (!fecha || !this.fechaInicio) {
+    return false; // Bloquea todo si no hay fechaInicio
+  }
+  return fecha >= this.fechaInicio;
+};
+
+soloNumeros(event: KeyboardEvent) {
+  const charCode = event.key;
+  if (!/^\d$/.test(charCode)) {
+    event.preventDefault();
+  }
+}
+
+
+
 
 }
+
+
+
+
+
+

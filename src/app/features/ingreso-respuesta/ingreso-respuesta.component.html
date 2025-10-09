@@ -8,7 +8,36 @@
   <div class="container-fluid mt-5">
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
+
+
   <div class="container-fluid mt-5">
-    <app-informacion-principal/>
+    <mat-expansion-panel class="mat-elevation-z6"
+      style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
+      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="destacado"> Información Asegurados
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-asegurado [idSolicitud]="idSol()" />
+    </mat-expansion-panel>
+  </div>
+
+  <div class="container-fluid mt-5">
+    <mat-expansion-panel class="mat-elevation-z6"
+      style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
+      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="destacado"> Información Beneficiarios
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-beneficiario [idSolicitud]="idSol()" />
+    </mat-expansion-panel>
+  </div>
+
+
+
+
+  <div class="container-fluid mt-5">
+    <app-informacion-principal />
   </div>
 </mat-dialog-content>
