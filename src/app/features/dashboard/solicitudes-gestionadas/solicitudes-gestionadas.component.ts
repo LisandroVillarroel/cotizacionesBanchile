@@ -166,11 +166,12 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   };
 
   limpiaFiltros() {
-    this.rubro.reset();
-    this.seguro.reset();
-    this.estado.reset();
-    this.fecha.reset();
-    this.dataSourceSolicitud().filter= '';
+   // this.rubro.reset();
+   // this.seguro.reset();
+   // this.estado.reset();
+   // this.fecha.reset();
+  //  this.dataSourceSolicitud().filter= '';
+    this.filtroFormulario().reset();
   }
 
   async ngOnInit() {
@@ -325,9 +326,10 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       'color': estado.color_estado,
       'background-color': estado.background_estado,
       'border': '1px solid' + estado.color_estado,
-      'width': 'fit-content',
-      'padding-left': '5%',
-      'padding-right': '5%'
+      'width': '140px',//'fit-content',
+      'text-align': 'center',
+      'padding-left': '1%',
+      'padding-right': '1%'
     };
   }
 }

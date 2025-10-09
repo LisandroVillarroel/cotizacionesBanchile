@@ -6,12 +6,13 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
+
 import { registerLocaleData } from '@angular/common';
-import id from '@angular/common/locales/id';
+import es from '@angular/common/locales/es';
 import { provideNgxMask } from 'ngx-mask';
 
 
-registerLocaleData(id);
+registerLocaleData(es);
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),),  provideNgxMask(),

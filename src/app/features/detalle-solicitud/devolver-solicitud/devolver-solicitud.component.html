@@ -52,6 +52,7 @@
         <button mat-stroked-button class="btn-danger"
           (click)="cancelar()">Cancelar</button>
         <button mat-stroked-button class="btn-success"
+          [disabled]="motivo.value === null || motivo.value === ''"
           (click)="devolver()">Confirmar devolución</button>
       </div>
     </div>
