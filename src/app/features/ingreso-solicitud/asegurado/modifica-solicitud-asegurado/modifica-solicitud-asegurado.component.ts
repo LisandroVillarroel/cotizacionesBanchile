@@ -225,7 +225,7 @@ export class ModificaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Modificó Asegurado Bien');
+          //alert('Modificó Asegurado Bien');
           this.dialogRef.close('modificado');
         } else {
           if (dato.codigo != 500) {

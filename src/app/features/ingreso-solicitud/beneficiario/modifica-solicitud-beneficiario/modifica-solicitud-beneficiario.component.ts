@@ -230,7 +230,7 @@ export class ModificaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Modificó Beneficiario Bien');
+            //alert('Modificó Beneficiario Bien');
             this.dialogRef.close('modificado');
           } else {
             if (dato.codigo != 500) {

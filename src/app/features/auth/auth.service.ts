@@ -30,7 +30,7 @@ export class AuthService {
 
      errorHandl(error: HttpErrorResponse) {
        alert('Error:' + error.message);
-       console.log('paso error tipo seguro: ', error);
+       console.log('Paso Error: ', error);
        let errorMessage = '';
        if (error.error instanceof ErrorEvent) {
          // Get client-side error

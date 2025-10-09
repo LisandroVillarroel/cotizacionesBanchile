@@ -202,7 +202,7 @@ export class AgregaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó Beneficiario Bien');
+            //alert('Grabó Beneficiario Bien');
             this.dialogRef.close('agregado');
           } else {
             alert('Error:' + dato.mensaje);

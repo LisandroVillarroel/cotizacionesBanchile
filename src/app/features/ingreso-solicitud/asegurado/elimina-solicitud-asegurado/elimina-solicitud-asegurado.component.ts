@@ -56,7 +56,7 @@ export class EliminaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Eliminó Asegurado Bien');
+          //alert('Eliminó Asegurado Bien');
           this.dialogRef.close('eliminado');
         } else {
           if (dato.codigo != 500) {

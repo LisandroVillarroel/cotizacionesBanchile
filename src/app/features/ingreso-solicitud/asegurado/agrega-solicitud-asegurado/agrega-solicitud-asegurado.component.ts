@@ -193,7 +193,7 @@ export class AgregaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó Asegurado Bien');
+          //alert('Grabó Asegurado Bien');
           this.dialogRef.close('agregado');
         } else {
           alert('Error:' + dato.mensaje);

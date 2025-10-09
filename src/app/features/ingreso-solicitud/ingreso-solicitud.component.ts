@@ -277,7 +277,7 @@ export default class IngresoSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó Bien');
+            //alert('Grabó Bien');
 
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
@@ -342,7 +342,7 @@ export default class IngresoSolicitudComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó En Asegurado');
+          //alert('Grabó En Asegurado');
           this.idSolicitud.set(this.contratanteInfo().id);
         } else {
           alert('Error:' + dato.mensaje);
