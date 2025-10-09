@@ -22,7 +22,11 @@
   </div>
   <mat-divider></mat-divider>
 
-  <mat-stepper linear #stepper>
+  <mat-stepper
+    #stepper
+    [linear]="true"
+    (selectionChange)="validarCambioPaso($event, stepper)"
+  >
     <mat-step [stepControl]="agregaSolicitudContratante()">
       <!-- <form [formGroup]="agregaSolicitudContratante()">-->
       <ng-template matStepLabel>Información del Contratante</ng-template>
