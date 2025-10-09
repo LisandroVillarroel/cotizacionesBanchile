@@ -147,7 +147,6 @@
           matInput
           aria-label="Número Departamento"
           [formControl]="deptoDireccionBeneficiario"
-          required
         />
         @if (deptoDireccionBeneficiario.invalid) {
         <mat-error>{{
@@ -162,7 +161,6 @@
           matInput
           aria-label="Número Casa"
           [formControl]="casaBeneficiario"
-          required
         />
         @if (casaBeneficiario.invalid) {
         <mat-error>{{ getErrorMessage("casaBeneficiario") }}</mat-error>

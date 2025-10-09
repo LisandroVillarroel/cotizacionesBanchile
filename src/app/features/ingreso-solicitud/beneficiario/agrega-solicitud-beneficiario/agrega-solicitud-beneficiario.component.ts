@@ -56,8 +56,8 @@ export class AgregaSolicitudBeneficiarioComponent {
   comunaBeneficiario = new FormControl('', [Validators.required]);
   direccionBeneficiario = new FormControl('', [Validators.required]);
   numeroDireccionBeneficiario = new FormControl('', [Validators.required]);
-  deptoDireccionBeneficiario = new FormControl('', [Validators.required]);
-  casaBeneficiario = new FormControl('', [Validators.required]);
+  deptoDireccionBeneficiario = new FormControl('');
+  casaBeneficiario = new FormControl('');
 
   agregaBeneficiario = signal<FormGroup>(
     new FormGroup({

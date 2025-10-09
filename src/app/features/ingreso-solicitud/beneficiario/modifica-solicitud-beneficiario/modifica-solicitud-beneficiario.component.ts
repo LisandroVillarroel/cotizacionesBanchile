@@ -82,12 +82,8 @@ export class ModificaSolicitudBeneficiarioComponent {
     [Validators.required]
   );
   deptoDireccionBeneficiario = new FormControl(
-    this.data.datoBeneficiarioPar.departamento_block_beneficiario,
-    [Validators.required]
-  );
-  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario, [
-    Validators.required,
-  ]);
+    this.data.datoBeneficiarioPar.departamento_block_beneficiario);
+  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario);
 
   modificaBeneficiario = signal<FormGroup>(
     new FormGroup({

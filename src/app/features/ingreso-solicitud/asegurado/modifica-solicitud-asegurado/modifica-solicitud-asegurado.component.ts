@@ -83,12 +83,9 @@ export class ModificaSolicitudAseguradoComponent {
     [Validators.required]
   );
   deptoDireccionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.departamentoBlockAsegurado,
-    [Validators.required]
+    this.data.datoAseguradoPar.departamentoBlockAsegurado
   );
-  casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado, [
-    Validators.required,
-  ]);
+  casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado);
 
   modificaAsegurado = signal<FormGroup>(
     new FormGroup({

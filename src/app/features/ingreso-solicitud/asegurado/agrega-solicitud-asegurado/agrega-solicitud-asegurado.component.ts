@@ -57,8 +57,8 @@ export class AgregaSolicitudAseguradoComponent {
   comunaAsegurado = new FormControl('', [Validators.required]);
   direccionAsegurado = new FormControl('', [Validators.required]);
   numeroDireccionAsegurado = new FormControl('', [Validators.required]);
-  deptoDireccionAsegurado = new FormControl('', [Validators.required]);
-  casaAsegurado = new FormControl('', [Validators.required]);
+  deptoDireccionAsegurado = new FormControl('');
+  casaAsegurado = new FormControl('');
 
   agregaAsegurado = signal<FormGroup>(
     new FormGroup({
