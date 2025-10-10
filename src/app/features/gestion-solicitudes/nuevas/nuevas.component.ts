@@ -7,10 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
@@ -22,9 +22,9 @@ import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
 import { ISolicitudG} from '@features/gestion-solicitudes/gestionSolicitud-interface';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
-import { IRubro, InterfazRubro } from '@shared/modelo/rubro-interface';
+import { IRubro } from '@shared/modelo/rubro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { ITipoSeguro, InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
   selector: 'app-nuevas',
@@ -95,10 +95,10 @@ export class NuevasComponent {
 
   datosFiltrados = computed(() =>
     this.solicitudes()!.filter(r =>
-      r['Contratante']?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
-      r['Rubro']?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
-      r['TipoSeguro']?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
-      (new Date(r['Fecha']?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
+      r['nombre_contratante']?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
+      r['nombre_rubro']?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
+      r['descripcion_tipo_seguro']?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
+      (new Date(r['fecha_creacion']?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
     )
   );
 
@@ -175,8 +175,9 @@ seleccionaFecha() {
     }
   }
 
-  verDetalle(IdSolicitud: any) {
+  verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
+
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
@@ -184,8 +185,8 @@ seleccionaFecha() {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = IdSolicitud;
     this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-    }
-
+      .open(DetalleSolicitudComponent, dialogConfig)
+      .afterClosed()
   }
+
+}

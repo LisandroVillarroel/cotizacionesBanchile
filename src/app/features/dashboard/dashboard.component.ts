@@ -59,7 +59,7 @@ export default class DashboardComponent   {
     //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-      //"p_id_usuario": "CO001", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
+      //"p_id_usuario": "CO002", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
       //"p_tipo_usuario": "E"
@@ -90,7 +90,5 @@ export default class DashboardComponent   {
         console.log('ERROR INESPERADO', error);
       },
     });
-    // this.truncarFechas();
   }
-
 }

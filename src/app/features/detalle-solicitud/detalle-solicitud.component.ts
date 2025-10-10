@@ -108,7 +108,13 @@ export default class DetalleSolicitudComponent {
   }
 
   cargarSolicitud(idSolicitud: number){
-     this.detalleService.postDetalle(idSolicitud).subscribe({
+    this.flagAnular = true;
+    this.flagDevolver = true;
+    this.flagAprobar = true;
+    this.flagCompania = true;
+    this.flagCoordinador = true;
+
+    this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
@@ -134,28 +140,18 @@ export default class DetalleSolicitudComponent {
              this.edoSolicitud()! !== "Terminada" &&
              this.edoSolicitud()! !== "Propuesta Pendiente" &&
              this.edoSolicitud()! !== "Propuesta emitida")
-          { this.flagAnular = false;
-            this.flagCompania = false;
-            this.flagCoordinador = false;
-          } else
-          { this.flagAnular = true;
-            this.flagCompania = true;
-            this.flagCoordinador = true;
-          }
-          if( this.edoSolicitud()! !== "Revision" )
-          { this.flagDevolver = true;
-            this.flagAprobar = true;
-          } else {
-            this.flagDevolver = false;
-            this.flagAprobar = false;
-          }
-          if( this.edoSolicitud()! === "Edicion" ||
-             this.edoSolicitud()! === "Devuelta")
-          { this.flagCoordinador = false;
-            this.flagCompania = true;
-          } else {
-            this.flagCoordinador = true;
-            this.flagCompania = false;
+          {
+            this.flagAnular = false;
+            if(this.edoSolicitud()! === "Aprobada"){
+              this.flagCompania = false;
+            }
+            if(this.edoSolicitud()! === "Edicion" || this.edoSolicitud()! === "Devuelta"){
+              this.flagCoordinador = false;
+            }
+            if( this.edoSolicitud()! === "Revision"){
+              this.flagDevolver = false;
+              this.flagAprobar = false;
+            }
           }
         /* Fin BackEnd */
 
