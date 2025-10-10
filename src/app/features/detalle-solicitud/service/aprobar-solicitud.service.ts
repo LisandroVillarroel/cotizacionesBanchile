@@ -25,7 +25,7 @@ export class AprobarSolicitudService {
   constructor() {}
 
   postApruebaSolicitud(apruebaSolicitud: IApruebaRequest): Observable<IApruebaResponse> {
-    console.log('Anula Solicitud Service:', apruebaSolicitud);
+    //console.log('Anula Solicitud Service:', apruebaSolicitud);
     return this.http.post<IApruebaResponse>(
         `${environment.apiUrl}/aprobarSolicitud`,
         apruebaSolicitud, { headers: this.headers, }
@@ -34,7 +34,7 @@ export class AprobarSolicitudService {
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('Error Aprobando Solicitud:', error);
+    //console.log('Error Aprobando Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
@@ -43,7 +43,7 @@ export class AprobarSolicitudService {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log('Error: ', errorMessage);
+    //console.log('Error: ', errorMessage);
     return throwError(errorMessage);
   }
 }

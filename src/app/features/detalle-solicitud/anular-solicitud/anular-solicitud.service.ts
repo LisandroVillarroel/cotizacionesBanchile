@@ -22,7 +22,7 @@ export class AnularSolicitudService {
   constructor() {}
 
   postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IAnulaResponse> {
-    console.log('Anula Solicitud Service:', anulaSolicitud);
+    //console.log('Anula Solicitud Service:', anulaSolicitud);
     return this.http.post<IAnulaResponse>(
         `${environment.apiUrl}/anularSolicitud`,
         anulaSolicitud, { headers: this.headers, }
@@ -31,7 +31,7 @@ export class AnularSolicitudService {
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('Error Anulando Solicitud:', error);
+    //console.log('Error Anulando Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
@@ -40,7 +40,7 @@ export class AnularSolicitudService {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log('Error: ', errorMessage);
+    //console.log('Error: ', errorMessage);
     return throwError(errorMessage);
   }
 }

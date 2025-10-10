@@ -22,7 +22,7 @@ import { RubroService } from '@shared/service/rubro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-distribucion',
@@ -37,7 +37,6 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     ChartModule,
     GraficoPieComponent,
     GraficoBarraComponent,
-    MatFormField,
     MatLabel,
     MatSelectModule,
     MatSelect,ReactiveFormsModule
@@ -46,77 +45,53 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
   styleUrls: ['./distribucion.component.css'] // ✅ Corrección: debe ser "styleUrls" (plural)
 })
 
-
-
 export default class DistribucionComponent {
-listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
-resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
-resumenGeneral_Rubro =signal<IListadoSolicitudes[]>([]);
+  listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
+  resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
+  resumenGeneral_Rubro =signal<IListadoSolicitudes[]>([]);
 
-rubroService = inject(RubroService);
-tipoSeguroService = inject(TipoSeguroService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
+  rubroService = inject(RubroService);
+  tipoSeguroService = inject(TipoSeguroService);
 
-datoRubros = signal<IRubro[]>([]);
-rescatadoSeguro = signal<ITipoSeguro[]>([]);
+  datoRubros = signal<IRubro[]>([]);
+  rescatadoSeguro = signal<ITipoSeguro[]>([]);
 
-panelOpenState = false;
+  anelOpenState = false;
   rubro = new FormControl();
   seguro = new FormControl();
 
-
-
-// opciones = [
-//     { id: 1, nombre: 'Automotriz' },
-//     { id: 2, nombre: 'Hogar' },
-//     { id: 3, nombre: 'Vida' }
-//   ];
-//   seleccionada = null;
-
   constructor(){
-
   }
 
-
   cargaRubros() {
-    //console.log('Entro cargaRubros');
-
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:',dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            this.notificacioAlertnService.error("ERROR",'Error de sistema');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
 
-
-
-
- seleccionaRubro(_codigoRubro: number) {
-this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
-console.log('resumenGeneral()1111',this.resumenGeneral_Rubro())
+  seleccionaRubro(_codigoRubro: number) {
+    this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
+    //console.log('resumenGeneral()1111',this.resumenGeneral_Rubro())
   }
 
-async ngOnInit() {
-this.resumenGeneral_Rubro.set(this.resumenGeneral())
+  async ngOnInit() {
+    this.resumenGeneral_Rubro.set(this.resumenGeneral());
     this.cargaRubros();
-    //this.cargaEstados();
-    console.log('resumenGeneral()',this.resumenGeneral())
+    //console.log('resumenGeneral()',this.resumenGeneral());
   }
 
 }
-
-
-
-
-
-

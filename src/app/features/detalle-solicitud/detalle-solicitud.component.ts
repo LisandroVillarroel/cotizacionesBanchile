@@ -42,6 +42,7 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -78,6 +79,8 @@ export default class DetalleSolicitudComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
+
   verEjec = true;
   verCoord = true;
 
@@ -164,15 +167,14 @@ export default class DetalleSolicitudComponent {
 
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            this.notificacioAlertnService.error("ERROR","Error de sistema");
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
-        console.log('ID Solicitud:', idSolicitud);
+        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
@@ -214,43 +216,17 @@ export default class DetalleSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            Swal.fire({
-              title: 'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
-                    ' y está disponible para ser enviada a las compañías de seguros. \n' +
-                    ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
-                    ' de gestión de solicitudes.',
-              icon: 'success',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
+              ' y está disponible para ser enviada a las compañías de seguros. \n' +
+              ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
+              ' de gestión de solicitudes.');
           } else {
-            Swal.fire({
-              title: dato.mensaje,
-              icon: 'error',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
         },
         error: (error) => {
-          Swal.fire({
-            title: 'Error inesperado. '+ error,
-            icon: 'error',
-            confirmButtonColor: "#002464",
-            draggable: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-          });
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
         },
       });
   }
@@ -318,7 +294,7 @@ export default class DetalleSolicitudComponent {
     this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
 
-/*   ingresarRespuesta(idSolicitud: number): void {
+  /*   ingresarRespuesta(idSolicitud: number): void {
     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',

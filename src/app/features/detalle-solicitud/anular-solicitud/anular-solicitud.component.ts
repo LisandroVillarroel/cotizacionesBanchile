@@ -21,6 +21,7 @@ import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { AnularSolicitudService } from './anular-solicitud.service';
 import { IAnulaRequest } from './anular-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-anular-solicitud',
@@ -49,6 +50,8 @@ export class AnularSolicitudComponent {
 
    storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
+
   idUsuario = this._storage()?.usuarioLogin.usuario!;
   anularService = inject(AnularSolicitudService);
   anulaRequest!: IAnulaRequest;
@@ -83,42 +86,23 @@ export class AnularSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            Swal.fire({
-              title: 'La solicitud ha sido anulada exitosamente.',
-              icon: 'success',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.confirmar();
           } else {
-            Swal.fire({
-              title: dato.mensaje,
-              icon: 'error',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
         },
         error: (error) => {
-          Swal.fire({
-            title: 'Error inesperado. '+ error,
-            icon: 'error',
-            confirmButtonColor: "#002464",
-            draggable: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-          });
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
         },
       });
+  }
+
+  async confirmar(){
+    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido anulada exitosamente.");
+    if (result) {
+      this.dialogRef.close(true);
+    }
   }
 
   getErrorMessage() {
