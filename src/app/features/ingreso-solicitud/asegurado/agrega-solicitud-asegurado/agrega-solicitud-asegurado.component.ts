@@ -64,6 +64,8 @@ export class AgregaSolicitudAseguradoComponent {
     new FormGroup({
       rutAsegurado: this.rutAsegurado,
       nombreAsegurado: this.nombreAsegurado,
+      correoAsegurado: this.correoAsegurado,
+      telefonoAsegurado: this.telefonoAsegurado,
       regionAsegurado: this.regionAsegurado,
       ciudadAsegurado: this.ciudadAsegurado,
       comunaAsegurado: this.comunaAsegurado,
@@ -71,8 +73,6 @@ export class AgregaSolicitudAseguradoComponent {
       numeroDireccionAsegurado: this.numeroDireccionAsegurado,
       deptoDireccionAsegurado: this.deptoDireccionAsegurado,
       casaAsegurado: this.casaAsegurado,
-      telefonoAsegurado: this.telefonoAsegurado,
-      correoAsegurado: this.correoAsegurado,
     })
   );
 

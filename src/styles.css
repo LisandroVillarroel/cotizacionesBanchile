@@ -454,7 +454,7 @@ th#opcionesI {
     padding: 10px 0px 0px 10px !important;
   }
 
-  .barra-titulo-form {
+  .barra-titulo-form * {
     background-color: #234e85;
     color: white;
     align-items: center;
