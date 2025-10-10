@@ -26,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
   IAsegurado,
@@ -277,7 +278,7 @@ export default class IngresoSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó Bien');
+            //alert('Grabó Bien');
 
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
@@ -342,7 +343,7 @@ export default class IngresoSolicitudComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó En Asegurado');
+          //alert('Grabó En Asegurado');
           this.idSolicitud.set(this.contratanteInfo().id);
         } else {
           alert('Error:' + dato.mensaje);
@@ -382,6 +383,37 @@ export default class IngresoSolicitudComponent {
 
   puedeEnviar(): boolean {
     return this.cuestionarioComponent?.archivoObligatorioCargado() ?? false;
+  }
+
+  validarCambioPaso(event: StepperSelectionEvent, stepper: MatStepper) {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+
+    const pasoActual = event.previouslySelectedIndex;
+    const pasoDestino = event.selectedIndex;
+
+    // Si estoy en paso (asegurado) y quiero ir al paso (contratante)
+    if (pasoActual >= 1 && pasoDestino === 0) {
+      if (!this.mostrarBotonAtras()) {
+        alert('No puede volver al paso de contratante desde este paso.');
+        setTimeout(() => {
+          stepper.selectedIndex = pasoActual;
+        });
+        return;
+      }
+    }
+
+    // Si estoy en paso (asegurado) y quiero ir a pasos siguientes (3, 4, 5)
+    if (pasoActual === 1 && pasoDestino > 1) {
+      if (!this.hayAsegurados()) {
+        alert('Debe ingresar al menos un asegurado antes de continuar.');
+        setTimeout(() => {
+          stepper.selectedIndex = pasoActual;
+        });
+        return;
+      }
+    }
   }
 
   abrirDialogoYAvanzar(): void {

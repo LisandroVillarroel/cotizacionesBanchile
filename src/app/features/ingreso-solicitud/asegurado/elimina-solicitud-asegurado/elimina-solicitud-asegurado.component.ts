@@ -51,26 +51,30 @@ export class EliminaSolicitudAseguradoComponent {
   public readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);
 
   eliminar() {
-
-    this.aseguradoService.postEliminaAsegurado(Number(this.data.idSolicitud),this.data.datoAseguradoPar.rutAsegurado).subscribe({
-      next: (dato) => {
-        console.log('dato:', dato);
-        if (dato.codigo === 200) {
-          alert('Eliminó Asegurado Bien');
-          this.dialogRef.close('eliminado');
-        } else {
-          if (dato.codigo != 500) {
-            alert('Error:' + dato.mensaje);
-            console.log('Error:', dato.mensaje);
+    this.aseguradoService
+      .postEliminaAsegurado(
+        Number(this.data.idSolicitud),
+        this.data.datoAseguradoPar.rutAsegurado
+      )
+      .subscribe({
+        next: (dato) => {
+          console.log('dato:', dato);
+          if (dato.codigo === 200) {
+            //alert('Eliminó Asegurado Bien');
+            this.dialogRef.close('eliminado');
           } else {
-            alert('Error:' + dato.mensaje);
-            console.log('Error de Sistema:');
+            if (dato.codigo != 500) {
+              alert('Error:' + dato.mensaje);
+              console.log('Error:', dato.mensaje);
+            } else {
+              alert('Error:' + dato.mensaje);
+              console.log('Error de Sistema:');
+            }
           }
-        }
-      },
-      error: (error) => {
-        console.log('Error Inesperado', error);
-      },
-    });
+        },
+        error: (error) => {
+          console.log('Error Inesperado', error);
+        },
+      });
   }
 }

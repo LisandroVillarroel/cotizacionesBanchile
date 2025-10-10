@@ -36,8 +36,8 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 })
 export class AgregaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
-   storage = inject(StorageService);
-    _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);
 
@@ -202,7 +202,7 @@ export class AgregaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó Beneficiario Bien');
+            //alert('Grabó Beneficiario Bien');
             this.dialogRef.close('agregado');
           } else {
             alert('Error:' + dato.mensaje);
