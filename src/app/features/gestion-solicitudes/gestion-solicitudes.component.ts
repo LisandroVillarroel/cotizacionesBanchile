@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { NuevasComponent } from './nuevas/nuevas.component';
 import { ConObservacionesComponent } from './con-observaciones/con-observaciones.component';
 import { ISolicitudG } from './gestionSolicitud-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { GestionSolicitudesService } from './gestion-solicitudes.service';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -28,9 +31,60 @@ import { ISolicitudG } from './gestionSolicitud-interface';
 })
 export default class GestionSolicitudesComponent {
   fechaActual: Date = new Date();
-  //datosSolicitud = signal<ISolicitudG[] | undefined>(undefined);
+  datosSolicitud = signal<ISolicitudG[] | undefined>(undefined);
 
-  datosSolicitud = signal<ISolicitudG[]>([
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  gestionService = inject(GestionSolicitudesService);
+
+  nuevas = computed(() =>
+    this.datosSolicitud()!.filter(r =>
+      r.nombre_estado_solicitud?.toLowerCase()=="edicion" )
+  );
+
+  devueltas = computed(() =>
+    this.datosSolicitud()!.filter(r =>
+      r.nombre_estado_solicitud?.toLowerCase()=="devuelta")
+  );
+
+  cotizadas = computed(() =>
+    this.datosSolicitud()!.filter(r =>
+      r.nombre_estado_solicitud?.toLowerCase()=="cotizacion")
+  );
+
+  async ngOnInit(){
+    this.cargarSolicitudes();
+  }
+
+  cargarSolicitudes() {
+    //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
+    const request = {
+      id_usuario:  this._storage()?.usuarioLogin.usuario!,
+      fecha_solicitud: "",
+      estado_solicitud: "",
+      tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)
+    };
+
+    this.gestionService.postListaGestion(request).subscribe({
+      next: (dato: any) => {
+        if (dato.codigo === 200) {
+          this.datosSolicitud.set(dato.p_cursor)
+          //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
+        } else {
+          if (dato.codigo != 500) {
+            console.log('Error:', dato.mensaje);
+          } else {
+            console.log('ERROR DE SISTEMA:');
+          }
+        }
+      },
+      error: (error) => {
+        console.log('ERROR INESPERADO', error);
+      },
+    });
+  }
+
+/*   datosSolicitud = signal<ISolicitudG[]>([
       {
         Sla: 1,
         ID: "COT-1243123",
@@ -226,6 +280,6 @@ export default class GestionSolicitudesComponent {
         //Companias:[]
 
       },
-    ]);
+    ]); */
 
 }

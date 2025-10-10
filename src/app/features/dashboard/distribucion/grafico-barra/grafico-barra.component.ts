@@ -4,7 +4,7 @@ import { EstadoService } from '@shared/service/estado.service';
 import { Component, signal, computed, input, effect, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { MatCardModule } from '@angular/material/card';
-
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-grafico-barra',
@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class GraficoBarraComponent implements OnInit {
   datoResumenGeneral_Grafico = input.required<IListadoSolicitudes[] | undefined>();
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   datoEstado = signal<IEstado[]>([]);
   datoEstadoNombre = signal<string[]>([]);
@@ -41,9 +42,6 @@ export class GraficoBarraComponent implements OnInit {
           .reduce((contador) => contador = contador + 1, 0);
       }
       this.arrTotalesSignal.set(arrTotales)
-      console.log('arrTotales', arrTotales)
-      console.log('Resumen cargado:', resumen);
-
       this.data.set({
         labels: this.datoEstadoNombre(),
         datasets: [{
@@ -76,14 +74,17 @@ export class GraficoBarraComponent implements OnInit {
           this.datoEstadoNombre.set(dato.p_cursor.map(x => x.nombre_estado))
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            //console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            //console.log('ERROR DE SISTEMA:');
+            this.notificacioAlertnService.error("ERROR",'Error del sistema.');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        //console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }

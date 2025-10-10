@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { DetalleSolicitudInterface } from '@features/detalle-solicitud/detalle-interface';
+import { DetalleSolicitudInterface } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 
 @Injectable({
@@ -25,14 +25,14 @@ export class DetalleSolicitudService {
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('Error en detalle de solicitud: ', error);
+    //console.log('Error en detalle de solicitud: ', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log('Error: ', errorMessage);
+    //console.log('Error: ', errorMessage);
     return throwError(errorMessage);
   }
 }

@@ -1,11 +1,7 @@
-import { Component, computed, inject, input, OnInit, signal, ViewChild } from '@angular/core';
-
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ChartModule } from 'primeng/chart';
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-
 import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
-import { MatSelect } from "@angular/material/select";
 import { MatOptionModule } from "@angular/material/core";
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +9,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { RubroService } from '@shared/service/rubro.service';
 import { EstadoService } from '@shared/service/estado.service';
+
 @Component({
   selector: 'app-grafico-pie',
   standalone: true,
@@ -20,6 +17,7 @@ import { EstadoService } from '@shared/service/estado.service';
   templateUrl: './grafico-pie.component.html',
   styleUrls: ['./grafico-pie.component.css'],
 })
+
 export class GraficoPieComponent implements OnInit {
   datosSolicitudGraficoPie = input.required<IListadoSolicitudes[]>();
   datosSolicitudGraficoPie_Recibe = computed(() => this.datosSolicitudGraficoPie())

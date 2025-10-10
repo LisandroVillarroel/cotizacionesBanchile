@@ -16,9 +16,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
-
-//import { ISolicitud, ITipoRubro, ITipoSeguro } from '@shared/modelo/common';
-
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
@@ -27,6 +24,9 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -55,9 +55,12 @@ import { IEstado } from '@shared/modelo/estado-interface';
 
 export class SolicitudesGestionadasComponent  implements OnInit {
   datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
-  //datosSolicitudActual=signal<IListadoSolicitudes[]>([]);
-
+  verEjec = true;
+  verCoord = true;
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
@@ -118,8 +121,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
-    //this.dataSourceSolicitud().paginator = this.paginatorSolicitud;
-    //this.dataSourceSolicitud().sort = this.sortSolicitud;
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
@@ -166,28 +167,31 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   };
 
   limpiaFiltros() {
-   // this.rubro.reset();
-   // this.seguro.reset();
-   // this.estado.reset();
-   // this.fecha.reset();
-  //  this.dataSourceSolicitud().filter= '';
     this.filtroFormulario().reset();
   }
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-
-    // this.dataSourceSolicitud().data = this.datosSolicitud()!;
     this.cargaRubros();
     this.cargaEstados();
     this.limpiaFiltros();
 
     this.formularioModificado.set(true);
-     // Suscribirse a los cambios del formulario
     this.filtroFormulario().valueChanges.subscribe(() => {
-      this.datosFiltrados()
-      this.updateTableData();
-    });
+    this.datosFiltrados()
+    this.updateTableData();
+  });
+
+    switch(this._storage()?.usuarioLogin.perfilUsuario!){
+      case "PCSE_EJCBCO":
+        this.verCoord = false; break;
+      case "PCSE_COORBCS":
+        this.verEjec = false; break;
+      case "PCSE_SUPBCS":
+        this.verEjec = false; this.verCoord = false; break;
+      case "PCSE_ADMIN":
+        this.verEjec = false; this.verCoord = false; break;
+    }
   }
 
   private updateTableData(): void {
@@ -201,14 +205,14 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           this.datoRubros.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
@@ -220,14 +224,14 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           this.datosEstados.set(dato.p_cursor);
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
@@ -242,51 +246,17 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           //console.log("Cargó productos", this.rescatadoSeguro());
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
-
-
-/*
-  get estilosTemperatura() {
-    return {
-      'background-color': this.temperatura > 30 ? 'red' :
-                         this.temperatura > 20 ? 'orange' : 'blue',
-      'color': 'white',
-      'display': this.isVisible ? 'block' : 'none',
-      'font-size': '20px'
-    };
-  }
-
-    if (value == 1) { //'Aprobada'
-      return 'aprobada';
-    } else if (value == 2) {  //'Anulada'
-      return 'anulada';
-    } else if (value == 3) { //'Devuelta'
-      return 'observ';
-    } else if (value == 4) {  //'En Cotizacion'
-      return 'cotizacion';
-    } else if (value == 5) {  //'En Edicion'
-      return 'edicion';
-    } else if (value == 6) { //'En Revision'
-      return 'revision';
-    } else if (value == 7) { //'Propuesta Emitida'
-      return 'emitida';
-    } else if (value == 8) { //'Propuesta Pendiente'
-      return 'pendiente';
-    } else if (value == 9) {  //'Rechazada'
-      return 'rechazada';
-    } else { //if (value == 10) { //'Terminada'
-      return 'terminada';
-    } */
 
   /* Fin llamadas a servicios */
   verDetalle(IdSolicitud: number) {
@@ -326,4 +296,3 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 function takeUntilDestroyed(): import("rxjs").OperatorFunction<any, unknown> {
   throw new Error('Function not implemented.');
 }
-

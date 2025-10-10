@@ -1,10 +1,13 @@
-<mat-card class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
-  <mat-card-title class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
-    <h2>Devolver con observaciones</h2>
+<mat-dialog-content [formGroup]="devolverSolicitud()" name="devolverSolicitud"
+  class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
+  <div class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
+    <h2>&nbsp; Devolver con observaciones</h2>
     <button mat-icon-button mat-dialog-close [disabled]="false"
-      style="padding: 0px 0px 0px;"><mat-icon>close</mat-icon>
+      style="align-content: center; padding: 0px 0px 0px;">
+      <mat-icon>close</mat-icon>
     </button>
-  </mat-card-title>
+  </div>
+<mat-card>
   <mat-card-header class="fondoGris d-flex justify-around">
     <div style="width: 20%;">
       <p class="destacado">ID solicitud</p>
@@ -32,19 +35,25 @@
       matTooltip="Motivo de devolución"
       matTooltipPosition="above">
         <mat-label class="gris-claro">Observación</mat-label>
-        <textarea matInput #motivo maxlength="500" rows="6"></textarea>
-        <mat-hint align="end">{{motivo.value.length}} / 500</mat-hint>
+        <textarea matInput [formControl]="motivo"
+          maxlength="500" rows="6"></textarea>
+        <mat-hint align="end">{{motivo.value?.length}} / 500</mat-hint>
+        @if (motivo.invalid) {
+          <mat-error>{{ getErrorMessage() }}</mat-error>
+        }
       </mat-form-field>
     <mat-divider></mat-divider>
   </mat-card-content>
+</mat-card>
+</mat-dialog-content>
   <mat-card-actions>
     <div class="container-fluid d-flex p-2">
       <div class="botones-derecha">
         <button mat-stroked-button class="btn-danger"
           (click)="cancelar()">Cancelar</button>
         <button mat-stroked-button class="btn-success"
-          (click)="devolver(motivo.value)">Confirmar devolución</button>
+          [disabled]="motivo.value === null || motivo.value === ''"
+          (click)="devolver()">Confirmar devolución</button>
       </div>
     </div>
   </mat-card-actions>
-</mat-card>

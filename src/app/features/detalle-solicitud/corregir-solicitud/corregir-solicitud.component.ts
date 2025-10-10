@@ -15,7 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { SolicitudCorregidaComponent } from './solicitud-corregida/solicitud-corregida.component';
-import { DocumentosAsociadosService } from '../documentosasociados/documentosasociados.service';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 
@@ -36,27 +35,18 @@ tipoSeguro: string;
   styleUrl: './corregir-solicitud.component.css'
 })
 
-
-
-
-
-
 export class CorregirSolicitudComponent {
   constructor(
   private dialog: MatDialog,
   public dialogRef: MatDialogRef<CorregirSolicitudComponent>,
   @Inject(MAT_DIALOG_DATA) public data: CorregirSolicitudData,
-  private documentosService: DocumentosAsociadosService
+  //private documentosService: DocumentosAsociadosService
 ) {}
 
 
   cerrar(): void {
     this.dialogRef.close();
   }
-
-
-
-
 
  corregirYEnviar(): void {
     const dato = {
@@ -89,7 +79,7 @@ registros: any[] = [];
   // constructor(private documentosService: DocumentosAsociadosService) {}
 
   ngOnInit(): void {
-    this.registros = this.documentosService.obtenerRegistrosConDocumentos();
+    //this.registros = this.documentosService.obtenerRegistrosConDocumentos();
   }
 
 }

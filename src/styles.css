@@ -989,11 +989,20 @@ mat-divider[vertical] {
   border: none !important;
 }
 
+.btn-danger:disabled {
+  background-color: #CFCFD2 !important;
+  /*opacity: 50%;*/
+}
+
 .btn-warning{
   background-color: #FFC725 !important;
   color: #ffffff !important;
   border-radius: 0px !important;
   border: none !important;
+}
+.btn-warning:disabled {
+  background-color: #CFCFD2 !important;
+  /*opacity: 50%;*/
 }
 
 .btn-success{
@@ -1002,6 +1011,10 @@ mat-divider[vertical] {
   border-radius: 0px !important;
   border: none !important;
 }
+.btn-success:disabled {
+  background-color: #CFCFD2 !important;
+  /*opacity: 50%;*/
+}
 
 .btn-info{
   background-color: #149DC9 !important;
@@ -1009,12 +1022,20 @@ mat-divider[vertical] {
   border-radius: 0px !important;
   border: none !important;
 }
+.btn-info:disabled {
+  background-color: #CFCFD2 !important;
+  /*opacity: 50%;*/
+}
 
 .btn-primary{
   background-color: #002464 !important;
   color: #ffffff !important;
   border-radius: 0px !important;
   border: none !important;
+}
+.btn-primary:disabled {
+  background-color: #CFCFD2 !important;
+  /*opacity: 50%;*/
 }
 
 /*Caja para filtros*/

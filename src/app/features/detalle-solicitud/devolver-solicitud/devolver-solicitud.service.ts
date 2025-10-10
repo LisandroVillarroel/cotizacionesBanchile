@@ -22,7 +22,7 @@ export class DevolverSolicitudService {
   constructor() {}
 
   postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IDevuelveResponse> {
-    console.log('Devuelve Solicitud Service:', devuelveSolicitud);
+    //console.log('Devuelve Solicitud Service:', devuelveSolicitud);
     return this.http.post<IDevuelveResponse>(
         `${environment.apiUrl}/devolverSolicitud`,
         devuelveSolicitud, { headers: this.headers, }
@@ -31,7 +31,7 @@ export class DevolverSolicitudService {
   }
 
   errorHandl(error: HttpErrorResponse) {
-    console.log('Error Devolviendo Solicitud:', error);
+    //console.log('Error Devolviendo Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
@@ -40,7 +40,7 @@ export class DevolverSolicitudService {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log('Error: ', errorMessage);
+    //console.log('Error: ', errorMessage);
     return throwError(errorMessage);
   }
 }

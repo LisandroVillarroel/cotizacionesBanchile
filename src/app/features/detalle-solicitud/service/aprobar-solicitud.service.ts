@@ -6,12 +6,15 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IAnulaRequest, IAnulaResponse } from './anular-interface';
+import {
+  IApruebaRequest,
+  IApruebaResponse
+} from '@features/detalle-solicitud/modelo/aprobar-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnularSolicitudService {
+export class AprobarSolicitudService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -21,17 +24,17 @@ export class AnularSolicitudService {
 
   constructor() {}
 
-  postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IAnulaResponse> {
-    //console.log('Anula Solicitud Service:', anulaSolicitud);
-    return this.http.post<IAnulaResponse>(
-        `${environment.apiUrl}/anularSolicitud`,
-        anulaSolicitud, { headers: this.headers, }
+  postApruebaSolicitud(apruebaSolicitud: IApruebaRequest): Observable<IApruebaResponse> {
+    //console.log('Anula Solicitud Service:', apruebaSolicitud);
+    return this.http.post<IApruebaResponse>(
+        `${environment.apiUrl}/aprobarSolicitud`,
+        apruebaSolicitud, { headers: this.headers, }
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   errorHandl(error: HttpErrorResponse) {
-    //console.log('Error Anulando Solicitud:', error);
+    //console.log('Error Aprobando Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

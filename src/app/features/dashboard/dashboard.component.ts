@@ -1,22 +1,21 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { MatLabel, MatHint } from "@angular/material/form-field";
+import { Component, inject, signal } from '@angular/core';
+import { MatLabel } from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-//import { DatePipe } from '@angular/common';
 import { ResumenGeneralComponent } from './resumen-general/resumen-general.component';
 import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solicitudes-gestionadas.component';
 import DistribucionComponent from './distribucion/distribucion.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardService } from './dashboard.service';
-import { DatosSolicitudesInterface, IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
+import { IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,8 +43,9 @@ export default class DashboardComponent   {
   fechaActual = new FormControl<Date>(new Date());
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  dashboardService = inject(DashboardService)
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
+  dashboardService = inject(DashboardService)
   resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
   p_EsperandoRespuesta: 0,
   p_Aprobadas: 0,
@@ -60,7 +60,7 @@ export default class DashboardComponent   {
     //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-      //"p_id_usuario": "CO001", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
+      //"p_id_usuario": "CO002", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
       //"p_tipo_usuario": "E"
@@ -77,21 +77,18 @@ export default class DashboardComponent   {
             p_ConObservaciones: dato.p_ConObservaciones
           });
           this.listadoSolicitudes.set(dato.p_cursor);
-          //console.log('rescata Datos:', dato)
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         } else {
           if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           } else {
-            console.log('ERROR DE SISTEMA:');
+            this.notificacioAlertnService.error("ERROR","Error de sistema");
           }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
-    // this.truncarFechas();
   }
-
 }

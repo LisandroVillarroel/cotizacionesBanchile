@@ -8,20 +8,20 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule,
+  ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-import { SolicitudAnuladaComponent } from './solicitud-anulada/solicitud-anulada.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { AnularSolicitudService } from './anular-solicitud.service';
 import { IAnulaRequest } from './anular-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-anular-solicitud',
@@ -36,6 +36,7 @@ import { IAnulaRequest } from './anular-interface';
     FormsModule,
     MatDivider,
     MatTooltipModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './anular-solicitud.component.html',
   styleUrl: './anular-solicitud.component.css'
@@ -49,9 +50,16 @@ export class AnularSolicitudComponent {
 
    storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
+
   idUsuario = this._storage()?.usuarioLogin.usuario!;
   anularService = inject(AnularSolicitudService);
   anulaRequest!: IAnulaRequest;
+  motivo = new FormControl('', [Validators.required]);
+  anularSolicitud= signal<FormGroup>(
+    new FormGroup({
+        motivo: this.motivo
+    }));
 
   cerrar(): void {
     this.dialogRef.close();
@@ -61,12 +69,15 @@ export class AnularSolicitudComponent {
     this.dialogRef.close('cancelado');
   }
 
-  confirmar(motivo: string): void {
+  anular(): void {
+    if(this.anularSolicitud().get('motivo')!.value===''){
+      return
+    }
     this.anulaRequest = {
       p_id_solicitud: this.data.solicitudId,
       p_id_usuario: this.idUsuario,
       p_tipo_usuario: this.idUsuario.substring(0,1),
-      p_observacion: motivo
+      p_observacion: this.anularSolicitud().get('motivo')!.value
     };
 
     this.anularService
@@ -75,62 +86,27 @@ export class AnularSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            Swal.fire({
-              title: 'La solicitud ha sido anulada exitosamente.',
-              icon: 'success',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
-            //alert('Anuló Bien');
+            this.confirmar();
           } else {
-            Swal.fire({
-              title: dato.mensaje,
-              icon: 'error',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
-/*             if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('Error de Sistema:');
-            } */
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
         },
         error: (error) => {
-          Swal.fire({
-            title: 'Error inesperado. '+ error,
-            icon: 'error',
-            confirmButtonColor: "#002464",
-            draggable: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-          });
-          //console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
         },
       });
+  }
 
-    /* const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "40%"; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = "40%"; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = this.anulaRequest;
+  async confirmar(){
+    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido anulada exitosamente.");
+    if (result) {
+      this.dialogRef.close(true);
+    }
+  }
 
-    this.dialog
-      .open(SolicitudAnuladaComponent, dialogConfig)
-      .afterClosed(); */
+  getErrorMessage() {
+    return this.motivo.hasError('required')
+    ? 'Debe ingresar el motivo de la anulación.' : '';
   }
 }
