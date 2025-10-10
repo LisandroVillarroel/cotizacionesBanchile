@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   input,
   signal,
@@ -56,6 +57,16 @@ export class BeneficiarioComponent {
 
   beneficiarioService = inject(BeneficiarioService);
 
+
+  constructor() {
+      effect(() => {
+        // Llamar al método cada vez que el valor cambie
+         if (this.idSolicitud()!='0'){
+        this.rescataListaBeneficiarios(this.idSolicitud());
+         }
+      });
+    }
+
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
@@ -104,10 +115,12 @@ export class BeneficiarioComponent {
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.rescataListaBeneficiarios(this.idSolicitud());
+
   }
 
   rescataListaBeneficiarios(idSolicitud: string) {
+
+    console.log('idSolicitud:',idSolicitud)
     const estructura_listaBeneficiarios = {
       p_id_solicitud: Number(idSolicitud),
     };

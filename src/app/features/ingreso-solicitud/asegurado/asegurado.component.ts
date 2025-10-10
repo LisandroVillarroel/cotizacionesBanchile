@@ -108,7 +108,9 @@ export class AseguradoComponent {
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
+       if (this.idSolicitud()!='0'){
       this.rescataListaAsegurados(this.idSolicitud());
+       }
     });
   }
 
@@ -123,11 +125,10 @@ export class AseguradoComponent {
   async ngOnInit() {
     console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.rescataListaAsegurados(this.idSolicitud()!);
   }
 
   rescataListaAsegurados(p_id_solicitud: string) {
-    console.log('rescataListaAsegurados');
+    console.log('rescataListaAsegurados',p_id_solicitud);
     const estructura_listaAsegurados = {
       p_id_solicitud: Number(p_id_solicitud),
     };
@@ -171,7 +172,6 @@ export class AseguradoComponent {
       .subscribe((data) => {
         if (data === 'agregado') {
           this.rescataListaAsegurados(this.idSolicitud()!);
-          this.hayAsegurados()?.set(data.p_cursor.length > 0);
         }
       });
   }
