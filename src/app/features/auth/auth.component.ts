@@ -8,6 +8,7 @@
   import { ISesionInterface } from '@shared/modelo/sesion-interface';
   import { StorageService } from '@shared/service/storage.service';
   import { AuthService } from './auth.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
   @Component({
     selector: 'app-auth',
@@ -23,6 +24,8 @@
   export default class AuthComponent {
     authService = inject(AuthService)
     storage = inject(StorageService);
+    notificacioAlertnService=inject(NotificacioAlertnService);
+
     readonly router = inject(Router);
 
     sesion!: ISesionInterface;
@@ -45,10 +48,9 @@
       return '';
     }
 
-    ingresar() {
-      this.authService.postLogin(this.ingresoLogin().value?.usuario.toUpperCase()).subscribe({
+     ingresar() {
+       this.authService.postLogin(this.ingresoLogin().value?.usuario.toUpperCase()).subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.sesion = {
               usuarioLogin: {
@@ -68,7 +70,9 @@
               alert('Error:' + dato.mensaje);
               console.log('Error:', dato.mensaje);
             } else {
-              alert('Error:' + dato.mensaje);
+                 this.notificacioAlertnService.error('ERROR',dato.mensaje)
+
+
               console.log('Error:', dato.mensaje);
             }
           }
@@ -79,4 +83,10 @@
       });
 
     }
+/*
+    async muestraResultado(mensaje:string){
+      const resultado = await this.notificacioAlertnService.confirmacionSelectiva('ERROR LOGIN',mensaje)
+                 console.log('resultado:', resultado)
+    }
+    */
   }
