@@ -1,4 +1,11 @@
-import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
@@ -57,18 +64,17 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-],
+  ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-
 export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
 
-  idSol = computed(() => this.idSolicitud.toString() );
+  idSol = computed(() => this.idSolicitud.toString());
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -93,7 +99,7 @@ export default class DetalleSolicitudComponent {
   flagCompania = true;
   flagCoordinador = true;
 
-  async ngOnInit(){
+  async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
@@ -118,10 +124,11 @@ export default class DetalleSolicitudComponent {
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
-            id_solicitud : this.idSolicitud,
+            id_solicitud: this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
-            nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
+            nombre_razon_social_contratante:
+              dato.p_nombre_razon_social_contratante,
             id_rubro: dato.p_id_rubro,
             nombre_rubro: dato.p_nombre_rubro,
             id_tipo_seguro: dato.p_id_tipo_seguro,
@@ -130,7 +137,7 @@ export default class DetalleSolicitudComponent {
             id_estado_solicitud: dato.p_id_estado_solicitud,
             nombre_estado: dato.p_nombre_estado,
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
-            id_ejecutivo_banco: dato.p_id_ejecutivo_banco
+            id_ejecutivo_banco: dato.p_id_ejecutivo_banco,
           });
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
@@ -175,7 +182,7 @@ export default class DetalleSolicitudComponent {
 
   devolverSolicitud(): void {
     const dato = {
-      solicitudId: this.idSolicitud,//'ID123456789',
+      solicitudId: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
     };
@@ -262,7 +269,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato)=>{
+      .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
       });
   }
@@ -287,16 +294,14 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog
-      .open(CorregirSolicitudComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
   }
 
   enviarCia(): void {
     const dato = {
-      solicitudId: this.idSolicitud,//'ID123456789',
-      fecha: this.infoGral()?.fecha_creacion_solicitud,//'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,//'Enviar a Compañia',
+      solicitudId: this.idSolicitud, //'ID123456789',
+      fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
+      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -310,15 +315,13 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog
-      .open(EnviarACompaniaComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
 
 /*   ingresarRespuesta(idSolicitud: number): void {
     const dato = {
       solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante,//'00-00-0000',//'00.000.000-0',
+      rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,

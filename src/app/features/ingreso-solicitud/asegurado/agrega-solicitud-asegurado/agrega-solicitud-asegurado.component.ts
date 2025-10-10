@@ -37,7 +37,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 export class AgregaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
 
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);
@@ -57,8 +57,8 @@ export class AgregaSolicitudAseguradoComponent {
   comunaAsegurado = new FormControl('', [Validators.required]);
   direccionAsegurado = new FormControl('', [Validators.required]);
   numeroDireccionAsegurado = new FormControl('', [Validators.required]);
-  deptoDireccionAsegurado = new FormControl('', [Validators.required]);
-  casaAsegurado = new FormControl('', [Validators.required]);
+  deptoDireccionAsegurado = new FormControl('');
+  casaAsegurado = new FormControl('');
 
   agregaAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -193,7 +193,7 @@ export class AgregaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó Asegurado Bien');
+          //alert('Grabó Asegurado Bien');
           this.dialogRef.close('agregado');
         } else {
           alert('Error:' + dato.mensaje);

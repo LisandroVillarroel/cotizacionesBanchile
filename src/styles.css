@@ -1050,3 +1050,16 @@ mat-divider[vertical] {
 .border-none {
   border-radius: 0px !important;
 }
+
+
+.swal2-toast div:where(.swal2-actions) {
+    justify-content: center !important;
+}
+
+.swal2-confirm{
+  width: 100%;
+}
+
+div:where(.swal2-container) div:where(.swal2-actions) {
+    flex-wrap: unset !important;
+}

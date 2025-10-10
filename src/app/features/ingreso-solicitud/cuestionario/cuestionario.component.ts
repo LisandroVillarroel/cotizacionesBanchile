@@ -186,6 +186,26 @@ export class CuestionarioComponent {
       return;
     }
 
+    // Verificar si es el documento obligatorio
+    const esObligatorio =
+      doc.p_id_documento_adjunto === 'Cuestionario de cotización';
+
+    if (esObligatorio) {
+      // Verificar si hay documentos opcionales cargados
+      const documentosOpcionales = this.documentos().filter(
+        (d) =>
+          d.p_id_documento_adjunto !== 'Cuestionario de cotización' &&
+          d.p_ruta_documento_origen
+      );
+
+      if (documentosOpcionales.length > 0) {
+        alert(
+          'Primero debe eliminar los documentos opcionales antes de eliminar el documento obligatorio.'
+        );
+        return;
+      }
+    }
+
     const corr = doc.p_corr_documento;
     const sesion = this.storage.get('sesion') as ISesionInterface;
     const usuarioLogueado =
@@ -200,7 +220,7 @@ export class CuestionarioComponent {
           doc.p_fecha_creacion = '';
           doc.p_usuario_creacion = '';
 
-          if (doc.p_id_documento_adjunto === 'Cuestionario de cotización') {
+          if (esObligatorio) {
             this.bloquearSeccion2.set(true);
           }
 

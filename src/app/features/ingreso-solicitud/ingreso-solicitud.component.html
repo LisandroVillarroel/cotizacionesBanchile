@@ -22,7 +22,11 @@
   </div>
   <mat-divider></mat-divider>
 
-  <mat-stepper linear #stepper>
+  <mat-stepper
+    #stepper
+    [linear]="true"
+    (selectionChange)="validarCambioPaso($event, stepper)"
+  >
     <mat-step [stepControl]="agregaSolicitudContratante()">
       <!-- <form [formGroup]="agregaSolicitudContratante()">-->
       <ng-template matStepLabel>Información del Contratante</ng-template>
@@ -41,12 +45,9 @@
               >
                 <mat-card-content>
                   <div class="col-md-12 p-2">
-                    <mat-form-field
-                      appearance="outline"
-                      class="inputInput"
-                    >
-                    <mat-label class="cursiva gris-claro">RUT</mat-label>
-                    <input
+                    <mat-form-field appearance="outline" class="inputInput">
+                      <mat-label class="cursiva gris-claro">RUT</mat-label>
+                      <input
                         autofocus
                         id="rutCliente"
                         aria-label="RUT"
@@ -58,26 +59,28 @@
                         required
                       />
                       @if (rutCliente.invalid) {
-                        <mat-error>{{ getErrorMessage("rut") }}</mat-error>
+                      <mat-error>{{ getErrorMessage("rut") }}</mat-error>
                       }
                     </mat-form-field>
                   </div>
 
                   <div class="col-md-12 p-2">
                     <mat-form-field class="inputSelect">
-                      <mat-label class="cursiva gris-claro">Selecciona un rubro</mat-label>
+                      <mat-label class="cursiva gris-claro"
+                        >Selecciona un rubro</mat-label
+                      >
                       <mat-select
                         [formControl]="rubro"
                         (selectionChange)="seleccionaRubro($event.value)"
                       >
                         @for(_rubros of datoRubros(); track _rubros){
-                          <mat-option [value]="_rubros.id_rubro">
-                            {{ _rubros.nombre_rubro }}
-                          </mat-option>
+                        <mat-option [value]="_rubros.id_rubro">
+                          {{ _rubros.nombre_rubro }}
+                        </mat-option>
                         }
                       </mat-select>
                       @if(seguro.invalid){
-                        <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
+                      <mat-error>{{ getErrorMessage("seguro") }}</mat-error>
                       }
                     </mat-form-field>
                   </div>
@@ -200,7 +203,11 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado [idSolicitud]="idSolicitud()" />
+        <app-asegurado
+          [idSolicitud]="idSolicitud()"
+          [mostrarBotonAtras]="mostrarBotonAtras()"
+          [hayAsegurados]="hayAsegurados"
+        />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
@@ -208,6 +215,7 @@
               mat-raised-button
               matStepperPrevious
               class="colorFondoBotonAtras"
+              [style.visibility]="mostrarBotonAtras() ? 'visible' : 'hidden'"
             >
               Atrás
             </button>
@@ -225,6 +233,7 @@
               mat-raised-button
               matStepperNext
               class="colorFondoBotonSiguiente"
+              [disabled]="!hayAsegurados()"
             >
               Siguiente
             </button>
@@ -274,7 +283,11 @@
 
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
-      <app-materia-asegurada [idSolicitud]="contratanteInfo().id" [idRubro]="contratanteInfo().idRubro" [idSeguro]="contratanteInfo().idSeguro" />
+      <app-materia-asegurada
+        [idSolicitud]="contratanteInfo().id"
+        [idRubro]="contratanteInfo().idRubro"
+        [idSeguro]="contratanteInfo().idSeguro"
+      />
       <div class="alinear-botones">
         <div class="botones-izquierda">
           <button

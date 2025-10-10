@@ -15,12 +15,21 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { MatIconModule } from '@angular/material/icon';
 
-
 @Component({
   selector: 'app-materia-asegurada',
   standalone: true,
-  imports: [NgClass, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatDialogModule, SoloDecimalNumerosDirective, MatDatepickerModule, MatIconModule],
-  providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS),],
+  imports: [
+    NgClass,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDialogModule,
+    SoloDecimalNumerosDirective,
+    MatDatepickerModule,
+    MatIconModule,
+  ],
+  providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS)],
   templateUrl: './materia-asegurada.component.html',
   styleUrl: './materia-asegurada.component.css',
 })
@@ -38,10 +47,10 @@ export class MateriaAseguradaComponent {
   datoMateria = signal<IMateria[]>([]);
   datoMateria_Recorre: IMateria[] = [];
 
-  datoMateriaEstructura = signal<IMateriaEstructura[]>([])
-  datoMateriaEstructura_arr: IMateriaEstructura[] = []
+  datoMateriaEstructura = signal<IMateriaEstructura[]>([]);
+  datoMateriaEstructura_arr: IMateriaEstructura[] = [];
 
-  materiaIngresa: IMateriaIngresa[] = []
+  materiaIngresa: IMateriaIngresa[] = [];
 
   constructor() {
     effect(() => {
@@ -51,11 +60,7 @@ export class MateriaAseguradaComponent {
     });
   }
 
-  materiaForm = signal<FormGroup>(
-    new FormGroup({
-
-    }))
-
+  materiaForm = signal<FormGroup>(new FormGroup({}));
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
     this.materiaService
@@ -119,7 +124,7 @@ export class MateriaAseguradaComponent {
   creaEstructura() {
     let valoresFila;
     let valorClass = '';
-    let nombreCampo = ''
+    let nombreCampo = '';
     let nombreLabel = '';
     let valorEntero = 0;
     let valorInicial = 0;
@@ -134,54 +139,75 @@ export class MateriaAseguradaComponent {
 
     const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
 
-    for (let i = 0; i < cuantaSeccionesArreglo.length; i++) { //Recorre Secciones
-      this.datoMateria_Recorre = this.datoMateria().filter((valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])) //Compara la fila i el valor que esta en la fila 0 Numero de seccion
+    for (let i = 0; i < cuantaSeccionesArreglo.length; i++) {
+      //Recorre Secciones
+      this.datoMateria_Recorre = this.datoMateria().filter(
+        (valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])
+      ); //Compara la fila i el valor que esta en la fila 0 Numero de seccion
       //Cuenta Columnas por fila
-      const cuantaColumnas = this.datoMateria_Recorre.reduce((acumulador, dato) => {
-        const linea = dato.p_id_linea;
-        acumulador[linea] = (acumulador[linea] || 0) + 1;
-        return acumulador;
-      }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
+      const cuantaColumnas = this.datoMateria_Recorre.reduce(
+        (acumulador, dato) => {
+          const linea = dato.p_id_linea;
+          acumulador[linea] = (acumulador[linea] || 0) + 1;
+          return acumulador;
+        },
+        {} as Record<number, number>
+      ); // Se usa una aserción de tipo para el acumulador
 
       const cuantaColumnasArreglo: [string, number][] = Object.entries(cuantaColumnas); //Pasa a un arreglo
       valorClass = '';
-      nombreCampo = ''
+      nombreCampo = '';
       nombreLabel = '';
 
       for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //Recorre file
         valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
         //console.log('valoresFila:',valoresFila)
         //valorResto=12 % (Number(cuantaColumnasArreglo[a][1]))  //toma valor resto
-        valorEntero = Math.trunc(12 / (Number(cuantaColumnasArreglo[a][1]))) // Toma valor entero sin redondear
-        valorInicial = 12 - (valorEntero * Number(cuantaColumnasArreglo[a][1]))// resta el total(valor entero de la division*cantidad de columnas)
-        for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {//Recorre columna
+        valorEntero = Math.trunc(12 / Number(cuantaColumnasArreglo[a][1])); // Toma valor entero sin redondear
+        valorInicial = 12 - valorEntero * Number(cuantaColumnasArreglo[a][1]); // resta el total(valor entero de la division*cantidad de columnas)
+        for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
+          //Recorre columna
           if (b == 0) {
-            valorColumna = valorEntero + valorInicial
+            valorColumna = valorEntero + valorInicial;
           } else {
-            valorColumna = valorEntero
+            valorColumna = valorEntero;
           }
-          valorClass = 'col-md-' + (valorColumna).toString() + ' border';
+          valorClass = 'col-md-' + valorColumna.toString() + ' border';
           if (valoresFila[b].p_tipo_dato == 'TITULO') {
             if (Number(cuantaColumnasArreglo[a][1]) > 1) {
-              valorClass = valorClass + ' subTitulo'
+              valorClass = valorClass + ' subTitulo';
             } else {
-              valorClass = valorClass + ' titulo'
+              valorClass = valorClass + ' titulo';
             }
             nombreLabel = valoresFila[b].p_valor_dato;
-          } else { //Si es campo
-            nombreCampo = valoresFila[b].p_id_rubro + '_' + valoresFila[b].p_id_tipo_seguro + '_' + valoresFila[b].p_id_seccion + '_' + valoresFila[b].p_id_linea + '_' + valoresFila[b].p_id_posicion
-            this.agregaFormControl(nombreCampo, valoresFila[b].p_valor_dato, false)
+          } else {
+            //Si es campo
+            nombreCampo =
+              valoresFila[b].p_id_rubro +
+              '_' +
+              valoresFila[b].p_id_tipo_seguro +
+              '_' +
+              valoresFila[b].p_id_seccion +
+              '_' +
+              valoresFila[b].p_id_linea +
+              '_' +
+              valoresFila[b].p_id_posicion;
+            this.agregaFormControl(
+              nombreCampo,
+              valoresFila[b].p_valor_dato,
+              false
+            );
           }
-          valoresFila[b].estiloClass = valorClass
-          valoresFila[b].nombreCampo = nombreCampo
-          valoresFila[b].nombreLabel = nombreLabel
+          valoresFila[b].estiloClass = valorClass;
+          valoresFila[b].nombreCampo = nombreCampo;
+          valoresFila[b].nombreLabel = nombreLabel;
         }
 
         this.datoMateriaEstructura_arr.push({
           filas: Number(cuantaColumnasArreglo[a][0]),
           columnas: Number(cuantaColumnasArreglo[a][1]),
-          datos: valoresFila
-        })
+          datos: valoresFila,
+        });
         //  console.log('valor fila:', Number(cuantaColumnasArreglo[a][0]), '-', valoresFila)
       }
     }
@@ -198,12 +224,18 @@ export class MateriaAseguradaComponent {
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
       for (const columna of fila.datos) {
-        nombreCampo = ''
+        nombreCampo = '';
         if (columna.p_tipo_dato != 'TITULO')
-          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value
+          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value;
 
-        if (columna.p_tipo_dato == 'FECHA' && (this.materiaForm().get(columna.nombreCampo!)!.value != '') && (this.materiaForm().get(columna.nombreCampo!)!.value != null))
-          nombreCampo = (this.materiaForm().get(columna.nombreCampo!)!.value).format('DD/MM/YYYY')
+        if (
+          columna.p_tipo_dato == 'FECHA' &&
+          this.materiaForm().get(columna.nombreCampo!)!.value != '' &&
+          this.materiaForm().get(columna.nombreCampo!)!.value != null
+        )
+          nombreCampo = this.materiaForm()
+            .get(columna.nombreCampo!)!
+            .value.format('DD/MM/YYYY');
 
         if (nombreCampo == null)
           nombreCampo = ''

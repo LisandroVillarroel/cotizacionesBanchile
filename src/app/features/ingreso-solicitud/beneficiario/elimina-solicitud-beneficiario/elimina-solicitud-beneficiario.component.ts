@@ -1,7 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -37,7 +35,7 @@ import { StorageService } from '@shared/service/storage.service';
 export class EliminaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
 
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   beneficiarioService = inject(BeneficiarioService);
@@ -47,18 +45,17 @@ export class EliminaSolicitudBeneficiarioComponent {
   );
   public readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
-
-
-
   eliminar() {
-
     this.beneficiarioService
-      .postEliminaBeneficiario(Number(this.data.idSolicitud),this.data.datoBeneficiarioPar.rut_beneficiario)
+      .postEliminaBeneficiario(
+        Number(this.data.idSolicitud),
+        this.data.datoBeneficiarioPar.rut_beneficiario
+      )
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Eliminó Beneficiario Bien');
+            //alert('Eliminó Beneficiario Bien');
             this.dialogRef.close('eliminado');
           } else {
             if (dato.codigo != 500) {

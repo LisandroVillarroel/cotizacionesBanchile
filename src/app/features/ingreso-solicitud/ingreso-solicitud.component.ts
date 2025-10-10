@@ -26,8 +26,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { IAsegurado, IIngresoSolicitud } from './modelo/ingresoSolicitud-Interface';
+import {
+  IAsegurado,
+  IIngresoSolicitud,
+} from './modelo/ingresoSolicitud-Interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
@@ -96,7 +100,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
   ],
 })
 export default class IngresoSolicitudComponent {
-    storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   ingresoSolicitud!: IIngresoSolicitud;
@@ -121,6 +125,9 @@ export default class IngresoSolicitudComponent {
   datoRubros = signal<IRubro[]>([]);
 
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
+
+  mostrarBotonAtras = signal(true);
+  hayAsegurados = signal(false);
 
   //mostrarAnular: boolean = true;
   pasoActivoLabel: string = '';
@@ -149,8 +156,8 @@ export default class IngresoSolicitudComponent {
     id: '0',
     rut_contratante: '',
     nombre: '',
-    idRubro:0,
-    idSeguro:0
+    idRubro: 0,
+    idSeguro: 0,
   });
 
   agregaSolicitudContratante = signal<FormGroup>(
@@ -235,7 +242,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
- grabaContratanteAux(){}
+  grabaContratanteAux() {}
 
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
@@ -271,7 +278,7 @@ export default class IngresoSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Grabó Bien');
+            //alert('Grabó Bien');
 
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
@@ -282,12 +289,16 @@ export default class IngresoSolicitudComponent {
               idRubro: this.agregaSolicitudContratante().get('rubro')!.value,
               idSeguro: this.agregaSolicitudContratante().get('seguro')!.value,
             });
-            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value==true){
-                 this.agregarAsegurado()
-            }else{
+            if (
+              this.agregaSolicitudContratante().get('aseguradeCheck')!.value ==
+              true
+            ) {
+              this.agregarAsegurado();
+            } else {
               this.idSolicitud.set(dato.p_id_solicitud);
+              this.mostrarBotonAtras.set(false);
+              console.log('Botón atrás ocultado');
             }
-
           } else {
             if (dato.codigo != 500) {
               alert('Error:' + dato.mensaje);
@@ -304,19 +315,24 @@ export default class IngresoSolicitudComponent {
       });
   }
 
- async agregarAsegurado() {
+  async agregarAsegurado() {
     this.asegurado = {
       p_id_solicitud: Number(this.contratanteInfo().id),
       p_rut_asegurado: this.ingresoSolicitud.contratante.rut_contratante,
-      p_nombre_razon_social_asegurado:this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
+      p_nombre_razon_social_asegurado:
+        this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
       p_mail_asegurado: this.ingresoSolicitud.contratante.mail_contratante,
-      p_telefono_asegurado: this.ingresoSolicitud.contratante.telefono_contratante,
+      p_telefono_asegurado:
+        this.ingresoSolicitud.contratante.telefono_contratante,
       p_region_asegurado: this.ingresoSolicitud.contratante.region_contratante,
       p_ciudad_asegurado: this.ingresoSolicitud.contratante.ciudad_contratante,
       p_comuna_asegurado: this.ingresoSolicitud.contratante.comuna_contratante,
-      p_direccion_asegurado:this.ingresoSolicitud.contratante.direccion_contratante,
-      p_numero_dir_asegurado: this.ingresoSolicitud.contratante.numero_dir_contratante,
-      p_departamento_block_asegurado: this.ingresoSolicitud.contratante.departamento_block_contratante,
+      p_direccion_asegurado:
+        this.ingresoSolicitud.contratante.direccion_contratante,
+      p_numero_dir_asegurado:
+        this.ingresoSolicitud.contratante.numero_dir_contratante,
+      p_departamento_block_asegurado:
+        this.ingresoSolicitud.contratante.departamento_block_contratante,
       p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
       p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
@@ -327,7 +343,7 @@ export default class IngresoSolicitudComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Grabó En Asegurado');
+          //alert('Grabó En Asegurado');
           this.idSolicitud.set(this.contratanteInfo().id);
         } else {
           alert('Error:' + dato.mensaje);
@@ -338,10 +354,6 @@ export default class IngresoSolicitudComponent {
         console.log('Error Inesperado', error);
       },
     });
-  }
-
-  salir() {
-    this.router.navigate(['/principal/inicio']);
   }
 
   async onBlurRutCliente(event: any) {
@@ -362,8 +374,46 @@ export default class IngresoSolicitudComponent {
     return null as any;
   }
 
+  validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
+    }
+    return null;
+  }
+
   puedeEnviar(): boolean {
     return this.cuestionarioComponent?.archivoObligatorioCargado() ?? false;
+  }
+
+  validarCambioPaso(event: StepperSelectionEvent, stepper: MatStepper) {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+
+    const pasoActual = event.previouslySelectedIndex;
+    const pasoDestino = event.selectedIndex;
+
+    // Si estoy en paso (asegurado) y quiero ir al paso (contratante)
+    if (pasoActual >= 1 && pasoDestino === 0) {
+      if (!this.mostrarBotonAtras()) {
+        alert('No puede volver al paso de contratante desde este paso.');
+        setTimeout(() => {
+          stepper.selectedIndex = pasoActual;
+        });
+        return;
+      }
+    }
+
+    // Si estoy en paso (asegurado) y quiero ir a pasos siguientes (3, 4, 5)
+    if (pasoActual === 1 && pasoDestino > 1) {
+      if (!this.hayAsegurados()) {
+        alert('Debe ingresar al menos un asegurado antes de continuar.');
+        setTimeout(() => {
+          stepper.selectedIndex = pasoActual;
+        });
+        return;
+      }
+    }
   }
 
   abrirDialogoYAvanzar(): void {
@@ -393,11 +443,8 @@ export default class IngresoSolicitudComponent {
       .afterClosed();
   }
 
-  validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-    if (control.value !== true) {
-      return { isTrue: true }; // La clave del error es 'isTrue'
-    }
-    return null;
+  salir() {
+    this.router.navigate(['/principal/inicio']);
   }
 
   get mostrarDatosAsegurado(): boolean {

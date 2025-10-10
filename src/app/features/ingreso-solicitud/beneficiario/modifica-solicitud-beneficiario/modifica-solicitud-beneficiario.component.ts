@@ -37,7 +37,7 @@ import { StorageService } from '@shared/service/storage.service';
 })
 export class ModificaSolicitudBeneficiarioComponent {
   beneficiario!: IAgregaBeneficiario;
- storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   beneficiarioService = inject(BeneficiarioService);
@@ -48,46 +48,48 @@ export class ModificaSolicitudBeneficiarioComponent {
 
   readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
-  rutBeneficiario = new FormControl(this.data.datoBeneficiarioPar.rut_beneficiario, [
-    Validators.required,
-    this.validaRut,
-  ]);
+  rutBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.rut_beneficiario,
+    [Validators.required, this.validaRut]
+  );
   nombreBeneficiario = new FormControl(
     this.data.datoBeneficiarioPar.nombre_razon_social_beneficiario,
     [Validators.required]
   );
 
-  correoBeneficiario = new FormControl(this.data.datoBeneficiarioPar.mail_beneficiario, [
-    Validators.required,
-  ]);
+  correoBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.mail_beneficiario,
+    [Validators.required]
+  );
 
-  telefonoBeneficiario = new FormControl(this.data.datoBeneficiarioPar.telefono_beneficiario, [
-    Validators.required,
-  ]);
+  telefonoBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.telefono_beneficiario,
+    [Validators.required]
+  );
 
-  regionBeneficiario = new FormControl(this.data.datoBeneficiarioPar.region_beneficiario, [
-    Validators.required,
-  ]);
-  ciudadBeneficiario = new FormControl(this.data.datoBeneficiarioPar.ciudad_beneficiario, [
-    Validators.required,
-  ]);
-  comunaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.comuna_beneficiario, [
-    Validators.required,
-  ]);
-  direccionBeneficiario = new FormControl(this.data.datoBeneficiarioPar.direccion_beneficiario, [
-    Validators.required,
-  ]);
+  regionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.region_beneficiario,
+    [Validators.required]
+  );
+  ciudadBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.ciudad_beneficiario,
+    [Validators.required]
+  );
+  comunaBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.comuna_beneficiario,
+    [Validators.required]
+  );
+  direccionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.direccion_beneficiario,
+    [Validators.required]
+  );
   numeroDireccionBeneficiario = new FormControl(
     this.data.datoBeneficiarioPar.numero_dir_beneficiario,
     [Validators.required]
   );
   deptoDireccionBeneficiario = new FormControl(
-    this.data.datoBeneficiarioPar.departamento_block_beneficiario,
-    [Validators.required]
-  );
-  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario, [
-    Validators.required,
-  ]);
+    this.data.datoBeneficiarioPar.departamento_block_beneficiario);
+  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario);
 
   modificaBeneficiario = signal<FormGroup>(
     new FormGroup({
@@ -230,7 +232,7 @@ export class ModificaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            alert('Modificó Beneficiario Bien');
+            //alert('Modificó Beneficiario Bien');
             this.dialogRef.close('modificado');
           } else {
             if (dato.codigo != 500) {

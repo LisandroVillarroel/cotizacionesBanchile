@@ -1,4 +1,3 @@
-
 <mat-dialog-content class="container-fluid mat-card-detalle p-0">
   <div class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
     <h2>&nbsp; Detalle de solicitud - {{ idSolicitud }} </h2>
@@ -7,38 +6,44 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-<mat-card>
-  <mat-card-content>
-    <mat-tab-group>
-      <mat-tab label="Información General">
-        <div class="container-fluid mt-5">
-          <app-informacion-general [infoGral]="infoGral()"/>
-          <app-observaciones [observaciones]="observaciones()"/>
-          <app-companias-contactadas [idSolicitud]="idSolicitud"/>
-        </div>
-      </mat-tab>
-      <mat-tab label="Asegurados">
-        <div class="container-fluid">
-          <app-asegurado [idSolicitud]="idSol()" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Beneficiarios">
-        <div class="container-fluid">
-          <app-beneficiario [idSolicitud]="idSol()" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Materia Asegurada">
-        <div class="container-fluid fondoGris"></div>
-        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!" />
-      </mat-tab>
-      <mat-tab label="Documentos Asociados">
-        <div class="container-fluid">
-          <app-cuestionario-documentos [idSolicitud]="idSol()" />
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </mat-card-content>
-</mat-card>
+  <mat-card>
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Información General">
+          <div class="container-fluid mt-5">
+            <app-informacion-general [infoGral]="infoGral()" />
+            <app-observaciones [observaciones]="observaciones()" />
+            <app-companias-contactadas [idSolicitud]="idSolicitud" />
+          </div>
+        </mat-tab>
+        <mat-tab label="Asegurados">
+          <div class="container-fluid">
+            <app-asegurado
+              [idSolicitud]="idSol()"
+            />
+          </div>
+        </mat-tab>
+        <mat-tab label="Beneficiarios">
+          <div class="container-fluid">
+            <app-beneficiario [idSolicitud]="idSol()" />
+          </div>
+        </mat-tab>
+        <mat-tab label="Materia Asegurada">
+          <div class="container-fluid fondoGris"></div>
+          <app-materia-asegurada
+            [idSolicitud]="idSol()"
+            [idRubro]="infoGral()?.id_rubro!"
+            [idSeguro]="infoGral()?.id_tipo_seguro!"
+          />
+        </mat-tab>
+        <mat-tab label="Documentos Asociados">
+          <div class="container-fluid">
+            <app-cuestionario-documentos [idSolicitud]="idSol()" />
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
 </mat-dialog-content>
   <mat-card-actions>
     <div class="container-fluid d-flex p-4">

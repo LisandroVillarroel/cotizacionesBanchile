@@ -83,12 +83,9 @@ export class ModificaSolicitudAseguradoComponent {
     [Validators.required]
   );
   deptoDireccionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.departamentoBlockAsegurado,
-    [Validators.required]
+    this.data.datoAseguradoPar.departamentoBlockAsegurado
   );
-  casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado, [
-    Validators.required,
-  ]);
+  casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado);
 
   modificaAsegurado = signal<FormGroup>(
     new FormGroup({
@@ -225,7 +222,7 @@ export class ModificaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          alert('Modificó Asegurado Bien');
+          //alert('Modificó Asegurado Bien');
           this.dialogRef.close('modificado');
         } else {
           if (dato.codigo != 500) {
