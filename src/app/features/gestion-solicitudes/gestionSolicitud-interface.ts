@@ -13,9 +13,9 @@ export interface ISolicitudG {
   fecha_aprobacion_solicitud: string,
   id_estado_solicitud: number,
   nombre_estado_solicitud: string,
-  Observaciones?: IObservacion[];
-  Companias?: ICompania[]
-  Sla?: ISla;
+  po_cursor?: IObservacion[];
+  pb_cursor?: ICompania[],
+  Sla?: string; //ISla;
 }
 
 export interface IGestionResponse{
@@ -26,6 +26,7 @@ export interface IGestionResponse{
   p_total_sol_cotizadas: number,
   p_total_sol_obs: number,
   ps_cursor: ISolicitudG[],
+  pb_cursor?: ICompania[],
   vcEstado: string,
   vcEstadoCreacion: string
 }

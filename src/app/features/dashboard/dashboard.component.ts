@@ -78,17 +78,8 @@ export default class DashboardComponent   {
           });
           this.listadoSolicitudes.set(dato.p_cursor);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR","Error de sistema");
-          }
         }
-      },
-      error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 }

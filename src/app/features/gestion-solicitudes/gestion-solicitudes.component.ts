@@ -32,37 +32,39 @@ import { GestionSolicitudesService } from './gestion-solicitudes.service';
 export default class GestionSolicitudesComponent {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[] | undefined>(undefined);
+  //solicitudes = computed(()=> this.datosSolicitud());
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   gestionService = inject(GestionSolicitudesService);
 
-  nuevas = computed(() =>
-    this.datosSolicitud()!.filter(r =>
-      r.nombre_estado_solicitud?.toLowerCase()=="edicion" )
+  nuevas = computed(() => { return this.datosSolicitud() }
+   /*  this.datosSolicitud()!.filter( r =>
+      r.nombre_estado_solicitud?.toLowerCase().includes("edicion") */
+      //r.nombre_estado_solicitud?.toLowerCase()=="edicion"
+    //)
   );
 
-  devueltas = computed(() =>
+/*   devueltas = computed(() =>
     this.datosSolicitud()!.filter(r =>
-      r.nombre_estado_solicitud?.toLowerCase()=="devuelta")
-  );
+      r.nombre_estado_solicitud?.toLowerCase().includes("devuelta")
+    )
+  ); */
 
-  cotizadas = computed(() =>
+/*   cotizadas = computed(() =>
     this.datosSolicitud()!.filter(r =>
-      r.nombre_estado_solicitud?.toLowerCase()=="cotizacion")
-  );
+      r.nombre_estado_solicitud?.toLowerCase().includes("cotizacion")
+    )
+  ); */
 
   async ngOnInit(){
     this.cargarSolicitudes();
   }
 
   cargarSolicitudes() {
-    //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const request = {
-      id_usuario:  this._storage()?.usuarioLogin.usuario!,
-      fecha_solicitud: "",
-      estado_solicitud: "",
-      tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)
+      p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)
     };
 
     this.gestionService.postListaGestion(request).subscribe({
@@ -70,17 +72,8 @@ export default class GestionSolicitudesComponent {
         if (dato.codigo === 200) {
           this.datosSolicitud.set(dato.p_cursor)
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
-      },
-      error: (error) => {
-        console.log('ERROR INESPERADO', error);
-      },
+      }
     });
   }
 

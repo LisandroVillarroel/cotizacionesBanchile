@@ -85,13 +85,8 @@ export class AnularSolicitudComponent {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.confirmar();
-          } else {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-        },
+        }
       });
   }
 

@@ -56,8 +56,8 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 })
 
 export class NuevasComponent {
-  inSolicitudes = input.required<ISolicitudG[] | undefined>();
-  solicitudes = computed(() => { return this.inSolicitudes() } );
+  nuevas = input.required<ISolicitudG[] | undefined>();
+  solicitudes = computed(() => { return this.nuevas() } );
 
   panelOpenState = false;
 
@@ -82,7 +82,6 @@ export class NuevasComponent {
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     //this.dataSolicitud()= this.datosSolicitud();
-    //this.dataSourceSolicitud.data = this.datosSolicitud();
     this.cargaRubros();
     this.limpiaFiltros();
   }
@@ -95,10 +94,10 @@ export class NuevasComponent {
 
   datosFiltrados = computed(() =>
     this.solicitudes()!.filter(r =>
-      r['nombre_contratante']?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
-      r['nombre_rubro']?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
-      r['descripcion_tipo_seguro']?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
-      (new Date(r['fecha_creacion']?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
+      r.nombre_contratante?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
+      r.nombre_rubro?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
+      r.descripcion_tipo_seguro?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
+      (new Date(r.fecha_creacion?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
     )
   );
 

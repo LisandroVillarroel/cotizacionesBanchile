@@ -3,17 +3,17 @@
   <mat-tab-group>
     <mat-tab label="Solicitudes Nuevas">
       <div class="container-fluid fondoGris">
-        <app-nuevas [inSolicitudes]="nuevas()"/>
+        <app-nuevas [nuevas]="nuevas()"/>
        </div>
     </mat-tab>
     <mat-tab label="Solicitudes Con Observaciones">
       <div class="container-fluid fondoGris">
-        <!-- <app-con-observaciones/> -->
+        <!-- <app-nuevas [devueltas]="devueltas()"/> -->
       </div>
     </mat-tab>
     <mat-tab label="Solicitudes en Cotización">
       <div class="container-fluid fondoGris"> Content 3</div>
-      <!-- <app-en-cotizacion/> -->
+        <!-- <app-nuevas [cotizadas]="cotizadas()"/> -->
     </mat-tab>
   </mat-tab-group>
 </div>

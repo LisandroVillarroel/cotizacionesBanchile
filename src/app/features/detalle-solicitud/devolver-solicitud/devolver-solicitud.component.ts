@@ -6,7 +6,6 @@ import {
   MatDialogConfig,
   MatDialog,
 } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -26,7 +25,6 @@ export interface DevolverConObservacionesData {
   solicitudId: number;
   fecha: string;
   ejecutivo: string;
-  //motivoDevolucion: string;
 }
 
 @Component({
@@ -94,13 +92,8 @@ export interface DevolverConObservacionesData {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.confirmar();
-          } else {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-        },
+        }
       });
   }
 

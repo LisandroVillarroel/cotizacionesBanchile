@@ -106,7 +106,7 @@ export default class DetalleSolicitudComponent {
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
         this.verCoord = false; break;
-      case "PCSE_COORBCS":
+      case "PCSE_COORDBCS":
         this.verEjec = false; break;
       case "PCSE_SUPBCS":
         this.verEjec = false; this.verCoord = false; break;
@@ -164,17 +164,8 @@ export default class DetalleSolicitudComponent {
           }
         /* Fin BackEnd */
 
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR","Error de sistema");
-          }
         }
-      },
-      error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 
@@ -220,13 +211,8 @@ export default class DetalleSolicitudComponent {
               ' y está disponible para ser enviada a las compañías de seguros. \n' +
               ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
               ' de gestión de solicitudes.');
-          } else {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-        },
+        }
       });
   }
 
