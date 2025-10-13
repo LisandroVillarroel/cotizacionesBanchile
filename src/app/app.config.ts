@@ -4,18 +4,24 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { provideNgxMask } from 'ngx-mask';
+import { authInterceptor } from '@core/auth/interceptores/auth.interceptor';
+import { errorInterceptor } from '@core/auth/interceptores/error.interceptor';
 
 
 registerLocaleData(es);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),),  provideNgxMask(),
+  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),
+  withInterceptors([
+    authInterceptor,
+    errorInterceptor
+  ])),  provideNgxMask(),
 { provide: LOCALE_ID, useValue: 'es-ES' },
 
   {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

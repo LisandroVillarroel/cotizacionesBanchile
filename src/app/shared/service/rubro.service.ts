@@ -20,20 +20,6 @@ export class RubroService {
   postRubro(): Observable<InterfazRubro> {
     return this.http
       .get<InterfazRubro>(`${environment.apiUrl}/listarRubros`,{headers: this.headers})
-      .pipe(retry(1), catchError(this.errorHandl));
   }
 
-      errorHandl(error: HttpErrorResponse) {
-    console.log('paso error rubro: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
-  }
 }

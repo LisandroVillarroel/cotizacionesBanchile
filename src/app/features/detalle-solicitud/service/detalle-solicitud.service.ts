@@ -21,18 +21,6 @@ export class DetalleSolicitudService {
     const parametro = {p_id_solicitud: IdSolicitud};
     return this.http
       .post<DetalleSolicitudInterface>(`${environment.apiUrl}/detalleSolicitud`, parametro,{headers: this.headers})
-      .pipe(retry(1), catchError(this.errorHandl));
   }
 
-  errorHandl(error: HttpErrorResponse) {
-    //console.log('Error en detalle de solicitud: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    //console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
-  }
 }
