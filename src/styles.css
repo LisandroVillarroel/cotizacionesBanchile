@@ -971,10 +971,10 @@ mat-divider[vertical] {
   background-color: inherit;
   border: none !important;
   box-shadow: none !important;
-  color: #149dc9 !important;
+  color: #149dc9 important;
   /*color: #234e85 !important;*/
   /*padding: 0px 0px 0px !important;*/
-  font-size: 10px !important;
+  font-size: 14px !important;
 }
 
 .button-link:hover {

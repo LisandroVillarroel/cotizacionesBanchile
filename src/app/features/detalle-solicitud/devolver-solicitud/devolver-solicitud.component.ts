@@ -53,7 +53,7 @@ export interface DevolverConObservacionesData {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DevolverSolicitudComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
-  ) {}
+  ) { }
 
    storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));

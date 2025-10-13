@@ -9,6 +9,8 @@ export interface ISolicitudG {
   id_tipo_seguro: number;
   descripcion_tipo_seguro: string;
   fecha_creacion: string;
+  fecha_envio_coordinador: string,
+  fecha_aprobacion_solicitud: string,
   id_estado_solicitud: number,
   nombre_estado_solicitud: string,
   Observaciones?: IObservacion[];
@@ -19,7 +21,11 @@ export interface ISolicitudG {
 export interface IGestionResponse{
   codigo: number,
   mensaje: string,
-  p_cursor: ISolicitudG[],
+  p_total_sol_nuevas: number,
+  p_total_sol_compania: number,
+  p_total_sol_cotizadas: number,
+  p_total_sol_obs: number,
+  ps_cursor: ISolicitudG[],
   vcEstado: string,
   vcEstadoCreacion: string
 }

@@ -16,7 +16,7 @@
             <mat-card-content class="d-flex">
               <div style="width: 40%; padding: 0px 10px 0px;">
                 <p class="fontSmall destacado">Nombre compañía</p>
-                <p class="fontLarge">{{item.nombre_compania}}</p>
+                <p class="fontLarge">{{item.p_nombre_compania_seguro}}</p>
               </div>
   <!--             <mat-divider [vertical]="true"></mat-divider>
               <div class ="p-2" style="width: 70%;">
@@ -26,18 +26,20 @@
               <mat-divider [vertical]="true"></mat-divider>
               <div style="width: 20%; padding: 0px 10px 0px;">
                 <p class="fontSmall destacado">Fecha de envío</p>
-                <p class="fontLarge">{{item.fecha_envio}}</p>
+                <p class="fontLarge">{{item.p_id_fecha_envio_cotizacion}}</p>
               </div>
               <mat-divider [vertical]="true"></mat-divider>
-              <div style="width: 30%; padding: 0px 10px 0px;">
+              <!-- <div style="width: 30%; padding: 0px 10px 0px;">
                 <p class="fontSmall destacado">Tiempo transcurrido</p>
-                <p class="fontLarge">{{item.tiempo_transc}}</p>
-              </div>
+                <p class="fontLarge">{{item.p_tiempo_transcurrido}}</p>
+              </div> -->
               <mat-divider [vertical]="true"></mat-divider>
               <div style="width: 30%; padding: 0px 10px 0px;">
                 <p class="fontSmall destacado">Estado cotización</p>
-                <p class="fontLarge" [ngStyle]="getCellStyle(item.color_edoCot,item.fondo_edoCot)">
-                  {{item.estado_cotizacion}}</p>
+                <p class="fontLarge">
+                  {{item.p_id_estado_cotizacion}}</p>
+                <!-- <p class="fontLarge" [ngStyle]="getCellStyle(item.color_edoCot,item.fondo_edoCot)">
+                  {{item.estado_cotizacion}}</p> -->
               </div>
               <div style="width: 5%; align-content: center; padding: 0px 0px 0px;">
                 <!-- <button

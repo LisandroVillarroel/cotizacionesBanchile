@@ -6,12 +6,12 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AprobarSolicitudService {
+export class EnviarCoordinadorService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -21,17 +21,17 @@ export class AprobarSolicitudService {
 
   constructor() {}
 
-  postApruebaSolicitud(apruebaSolicitud: IRequest): Observable<IResponse> {
-    //console.log('Anula Solicitud Service:', apruebaSolicitud);
+  postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
+    //console.log('Anula Solicitud Service:', anulaSolicitud);
     return this.http.post<IResponse>(
-        `${environment.apiUrl}/aprobarSolicitud`,
-        apruebaSolicitud, { headers: this.headers, }
+        `${environment.apiUrl}/enviarSolicitudCoordinador`,
+        enviaSolicitud, { headers: this.headers, }
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   errorHandl(error: HttpErrorResponse) {
-    //console.log('Error Aprobando Solicitud:', error);
+    //console.log('Error Anulando Solicitud:', error);
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
