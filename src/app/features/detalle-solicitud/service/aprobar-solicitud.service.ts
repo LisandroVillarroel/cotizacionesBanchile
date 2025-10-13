@@ -6,12 +6,15 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IDevuelveRequest, IDevuelveResponse } from './devolver-interface';
+import {
+  IApruebaRequest,
+  IApruebaResponse
+} from '@features/detalle-solicitud/modelo/aprobar-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DevolverSolicitudService {
+export class AprobarSolicitudService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -21,11 +24,11 @@ export class DevolverSolicitudService {
 
   constructor() {}
 
-  postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IDevuelveResponse> {
-    //console.log('Devuelve Solicitud Service:', devuelveSolicitud);
-    return this.http.post<IDevuelveResponse>(
-        `${environment.apiUrl}/devolverSolicitud`,
-        devuelveSolicitud, { headers: this.headers, }
+  postApruebaSolicitud(apruebaSolicitud: IApruebaRequest): Observable<IApruebaResponse> {
+    //console.log('Anula Solicitud Service:', apruebaSolicitud);
+    return this.http.post<IApruebaResponse>(
+        `${environment.apiUrl}/aprobarSolicitud`,
+        apruebaSolicitud, { headers: this.headers, }
       )
   }
 

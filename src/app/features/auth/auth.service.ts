@@ -25,21 +25,7 @@ export class AuthService {
          .post<IAuthRespuesta>(`http://192.168.1.36:8080/ms-pseg-cotizaciones-login/cotizaciones/loginUsuario`, parametro, {
            headers: this.headers,
          })
-         .pipe(retry(1), catchError(this.errorHandl));
      }
 
-     errorHandl(error: HttpErrorResponse) {
-       alert('Error:' + error.message);
-       console.log('Paso Error: ', error);
-       let errorMessage = '';
-       if (error.error instanceof ErrorEvent) {
-         // Get client-side error
-         errorMessage = error.error.message;
-       } else {
-         // Get server-side error
-         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-       }
-       console.log('Error: ', errorMessage);
-       return throwError(errorMessage);
-     }
+
 }

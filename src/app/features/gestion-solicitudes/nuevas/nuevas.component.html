@@ -65,44 +65,45 @@
       <mat-card class="alinea-card-gestion">
         <mat-card-content class="d-flex p-0">
           <div class="fondoGris" style="width: 5%; align-content: center; text-indent: 15%;">
-            <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon>
+            <!-- <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon> -->
+            <mat-icon>traffic</mat-icon>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
             <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
-            <p class="fontLarge">{{item.ID}}</p>
+            <p class="fontLarge">{{item.id_solicitud}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
             <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
-            <p class="fontLarge">{{item.Rut}}</p>
+            <p class="fontLarge">{{item.rut_contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 25%;">
             <p class="fontSmall" matColumnDef="Contratante">Nombre o Razón social</p>
-            <p class="fontLarge">{{item.Contratante}}</p>
+            <p class="fontLarge">{{item.nombre_contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 15%;">
             <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
-            <p class="fontLarge">{{item.Rubro}}</p>
+            <p class="fontLarge">{{item.nombre_rubro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 20%;">
             <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
-            <p class="fontLarge">{{item.TipoSeguro}}</p>
+            <p class="fontLarge">{{item.descripcion_tipo_seguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
             <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
-            <p class="fontLarge">{{item.Fecha}}</p>
+            <p class="fontLarge">{{item.fecha_creacion}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class="p-2" style="width: 5%; align-content: center;">
               <button
                 matTooltip="Ver detalles"
                 mat-icon-button
-                (click)="verDetalle(item.ID)"
+                (click)="verDetalle(item.id_solicitud)"
               >
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>

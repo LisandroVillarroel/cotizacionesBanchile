@@ -1,5 +1,4 @@
 import { Component, Inject, inject, signal } from '@angular/core';
-import { MatIcon } from "@angular/material/icon";
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -13,14 +12,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
-//import { SolicitudDevueltaComponent } from './solicitud-devuelta/solicitud-devuelta.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { DevolverSolicitudService } from './devolver-solicitud.service';
 import { IDevuelveRequest } from './devolver-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 export interface DevolverConObservacionesData {
   [x: string]: any;
@@ -43,6 +42,7 @@ export interface DevolverConObservacionesData {
     FormsModule,
     MatDivider,
     MatTooltipModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './devolver-solicitud.component.html',
   styleUrl: './devolver-solicitud.component.css'
@@ -57,9 +57,17 @@ export interface DevolverConObservacionesData {
 
    storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
+
   idUsuario = this._storage()?.usuarioLogin.usuario!;
   devolverService = inject(DevolverSolicitudService);
   devolverRequest!: IDevuelveRequest;
+  motivo = new FormControl('', [Validators.required]);
+  devolverSolicitud= signal<FormGroup>(
+    new FormGroup({
+        motivo: this.motivo
+  }));
+
   cerrar(): void {
     this.dialogRef.close();
   }
@@ -68,12 +76,16 @@ export interface DevolverConObservacionesData {
     this.dialogRef.close('cancelado');
   }
 
-  devolver(motivo: string): void {
+  devolver(): void {
+    if(this.devolverSolicitud().get('motivo')!.value===''){
+      return
+    }
+
     this.devolverRequest = {
       p_id_solicitud: this.data.solicitudId,
       p_id_usuario: this.idUsuario,
       p_tipo_usuario: this.idUsuario.substring(0,1),
-      p_observacion: motivo
+      p_observacion: this.devolverSolicitud().get('motivo')!.value
     };
     this.devolverService
       .postDevuelveSolicitud(this.devolverRequest)
@@ -81,64 +93,27 @@ export interface DevolverConObservacionesData {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Devolvió Bien');
-            Swal.fire({
-              title: 'La solicitud ha sido devuelta exitosamente.',
-              icon: 'success',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.confirmar();
           } else {
-/*             if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('Error de Sistema:');
-            } */
-            Swal.fire({
-              title: dato.mensaje,
-              icon: 'error',
-              confirmButtonColor: "#002464",
-              draggable: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-            });
+            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
         },
         error: (error) => {
-          //console.log('Error Inesperado', error);
-          Swal.fire({
-            title: 'Error inesperado. '+ error,
-            icon: 'error',
-            confirmButtonColor: "#002464",
-            draggable: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                this.dialogRef.close(true);
-              }
-          });
+          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
         },
       });
+  }
 
-/*       const dialogConfig = new MatDialogConfig();
-
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '600px'; // Tamaño fijo y controlado
-      dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-      dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-      dialogConfig.data = this.devolverRequest; */
-
-/*       this.dialog
-        .open(SolicitudDevueltaComponent, dialogConfig)
-        .afterClosed(); */
+  async confirmar(){
+    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido devuelta exitosamente.");
+    if (result) {
+      this.dialogRef.close(true);
     }
+  }
 
+  getErrorMessage() {
+    return this.motivo.hasError('required')
+    ? 'Debe ingresar el motivo de devolución.' : '';
+  }
 }

@@ -20,20 +20,6 @@ export class EstadoService {
   getEstado(): Observable<EstadoInterface> {
     return this.http
       .get<EstadoInterface>(`${environment.apiUrl}/listarEstado`,{headers: this.headers})
-      .pipe(retry(1), catchError(this.errorHandl));
   }
 
-  errorHandl(error: HttpErrorResponse) {
-    console.log('error estado: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
-  }
 }

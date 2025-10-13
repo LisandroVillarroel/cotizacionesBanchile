@@ -1,3 +1,8 @@
+export interface ISla{
+  estado: string,
+  color: string
+}
+
 export interface IObservacion{
   fecha_creacion_observacion: string;
   fecha_correccion_observacion: string;

@@ -2,7 +2,7 @@ import { Component, computed, input, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ICompania } from '../detalle-interface';
+import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 
