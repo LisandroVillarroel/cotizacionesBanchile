@@ -12,6 +12,7 @@ import es from '@angular/common/locales/es';
 import { provideNgxMask } from 'ngx-mask';
 import { authInterceptor } from '@core/auth/interceptores/auth.interceptor';
 import { errorInterceptor } from '@core/auth/interceptores/error.interceptor';
+import { datoInterceptor } from '@core/auth/interceptores/dato.interceptor';
 
 
 registerLocaleData(es);
@@ -20,7 +21,8 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),
   withInterceptors([
     authInterceptor,
-    errorInterceptor
+    errorInterceptor,
+    datoInterceptor
   ])),  provideNgxMask(),
 { provide: LOCALE_ID, useValue: 'es-ES' },
 

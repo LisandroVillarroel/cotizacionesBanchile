@@ -18,6 +18,7 @@ export class RubroService {
   constructor() { }
 
   postRubro(): Observable<InterfazRubro> {
+    console.log('CARGA RUBROS SERVICE')
     return this.http
       .get<InterfazRubro>(`${environment.apiUrl}/listarRubros`,{headers: this.headers})
   }
