@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
+import { privadoGuard } from '@core/auth/guards/guard.service';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login',
+    redirectTo: 'inicio',
   },
     {
       path: 'login',
@@ -14,7 +15,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('@core/layout/principal.component'),
-    // canActivate: [privadoGuard()],
+     canActivate: [privadoGuard()],
     children: [
       {
         path: 'inicio',

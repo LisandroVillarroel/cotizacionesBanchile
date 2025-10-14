@@ -63,6 +63,9 @@ export class MateriaAseguradaComponent {
   materiaForm = signal<FormGroup>(new FormGroup({}));
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
+    if (!idRubro || !idSeguro)
+       return
+
     this.materiaService
       .postListadoMatetria(idRubro, idSeguro)
       .subscribe({
@@ -94,12 +97,6 @@ export class MateriaAseguradaComponent {
             this.datoMateriaTiene.set(dato.p_cursor);
             this.modificaOriginal(); /// Busca y modifica lo encontrado
             this.creaEstructura()
-          } else {
-            if (dato.codigo != 500) {
-              console.log('Error:', dato.mensaje);
-            } else {
-              console.log('Error de Sistema:');
-            }
           }
         },
         error: (error) => {
@@ -265,9 +262,6 @@ export class MateriaAseguradaComponent {
       next: (dato) => {
         if (dato.codigo === 200) {
           alert('Grabó Asegurado Bien');
-        } else {
-          alert('Error:' + dato.mensaje);
-          console.log('Error:', dato.mensaje);
         }
       },
       error: (error) => {

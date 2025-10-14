@@ -202,10 +202,10 @@ export default class IngresoSolicitudComponent {
   }
 
   cargaRubro() {
-    console.log('paso rubro');
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('paso biennn rubro')
           console.log();
           this.datoRubros.set(dato.p_cursor);
         } else {
