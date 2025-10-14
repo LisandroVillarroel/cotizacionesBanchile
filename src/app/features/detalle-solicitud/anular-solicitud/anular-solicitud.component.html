@@ -1,28 +1,20 @@
-<mat-dialog-content [formGroup]="anularSolicitud()" name="anularSolicitud"
-  class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
-  <div class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
-    <h2>&nbsp; Confirmación de Anulación</h2>
-    <button mat-icon-button mat-dialog-close [disabled]="false"
-      style="align-content: center; padding: 0px 0px 0px;">
-      <mat-icon>close</mat-icon>
+<mat-card class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
+  <mat-card-title class="barra-titulo card-con-titulo titulomodal" style="width: 100%;">
+    <h2><mat-icon>warning</mat-icon>&nbsp; Confirmación de Anulación</h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false" style="padding: 0px 0px 0px;"><mat-icon>close</mat-icon>
     </button>
   </div>
   <mat-card>
   <mat-card-content>
     <div class="d-flex" style="margin:auto;">
-        <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
-          &nbsp; La solicitud nro. {{ data.solicitudId }} quedará anulada</h3>
+      <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
+        &nbsp; La solicitud nro. {{ data.solicitudId }} quedará anulada</h3>
     </div>
-    <mat-form-field class="textarea-grande col-md-12 p-2"
-      matTooltip="Indique el motivo de anulación"
+    <mat-form-field class="textarea-grande col-md-12" matTooltip="Indique el motivo de anulación"
       matTooltipPosition="above">
-        <mat-label class="gris-claro">Motivo de anulación</mat-label>
-        <textarea matInput [formControl]="motivo"
-        autofocus maxlength="500" rows="6" required></textarea>
-        <mat-hint align="end">{{motivo.value?.length}} / 500</mat-hint>
-        @if (motivo.invalid) {
-          <mat-error>{{ getErrorMessage() }}</mat-error>
-        }
+      <mat-label class="gris-claro">Motivo de anulación</mat-label>
+      <textarea matInput #motivo maxlength="500" rows="6"></textarea>
+      <mat-hint align="end">{{motivo.value.length}} / 500</mat-hint>
     </mat-form-field>
     <mat-label class="gris">
       Tenga en cuenta que esta acción es irreversible una vez confirmada.<br>
@@ -35,11 +27,8 @@
   <mat-card-actions>
     <div class="container-fluid d-flex p-2">
       <div class="botones-derecha">
-        <button mat-stroked-button class="btn-danger"
-          (click)="cancelar()">Cancelar</button>
-        <button mat-stroked-button class="btn-success"
-          [disabled]="motivo.value === null || motivo.value === ''"
-          (click)="anular()">Confirmar anulación</button>
+        <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cancelar</button>
+        <button mat-stroked-button class="btn-success" (click)="confirmar(motivo.value)">Confirmar anulación</button>
       </div>
     </div>
   </mat-card-actions>

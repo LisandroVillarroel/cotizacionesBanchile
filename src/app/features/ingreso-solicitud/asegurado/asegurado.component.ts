@@ -58,6 +58,7 @@ export class AseguradoComponent {
   datoAsegurados = signal<IAseguradoLista[]>([]);
   mostrarBotonAtras = input<boolean>(true);
   hayAsegurados = input<WritableSignal<boolean>>();
+  mostrarSoloConsulta = input.required<boolean>();
 
   //flagAsegurado = model(false);
 
