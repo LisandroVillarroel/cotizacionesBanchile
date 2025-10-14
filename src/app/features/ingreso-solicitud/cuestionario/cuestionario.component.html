@@ -1,10 +1,10 @@
 <form [formGroup]="documentForm()" novalidate style="margin-top: 32px">
-  <mat-card class="card-borde form-card card-con-titulo-principal mat-elevation-z6" data-titulo="Documentos Asociados">
+  <mat-card class="form-card card-borde card-con-titulo-principal mat-elevation-z6" data-titulo="Documentos Asociados">
     <div class="modifica-container-cuestionario" style="display: flex; flex-direction: row; gap: 2%; align-items: stretch">
 
       <!-- Sección izquierda: documento obligatorio -->
       <div style="width: 32%; display: flex; align-items: flex-start">
-        <mat-card class="card-borde form-card contenido-card card-con-titulo mat-elevation-z6" data-titulo="Cuestionario Obligatorio (*)" style="width: 100%">
+        <mat-card class="form-card-cuestionario card-borde-cuestionario card-con-titulo contenido-card-cuestionario mat-elevation-z6" data-titulo="Cuestionario Obligatorio (*)" style="width: 100%">
           <div>
             @for (doc of documentos(); track doc.p_id_documento_adjunto) {
               @if (doc.p_documento_principal === 'Requerido') {
@@ -42,7 +42,7 @@
 
       <!-- Sección derecha: documentos opcionales -->
       <div style="width: 66%">
-        <mat-card class="card-borde form-card contenido-card card-con-titulo mat-elevation-z6"
+        <mat-card class="form-card-cuestionario card-borde-cuestionario card-con-titulo contenido-card-cuestionario mat-elevation-z6"
           [ngClass]="{ 'card-disabled': bloquearSeccion2() }" data-titulo="Documentos Opcionales" style="width: 100%">
           <div style="display: flex; flex-direction: row; justify-content: space-between">
 

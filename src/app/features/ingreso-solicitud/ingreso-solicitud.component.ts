@@ -189,14 +189,18 @@ export default class IngresoSolicitudComponent {
   getErrorMessage(campo: string) {
     if (campo === 'rutCliente') {
       return this.rutCliente.hasError('required')
-        ? 'Debes ingresar rut Cliente'
+        ? 'Debes ingresar rut de contratante'
         : this.rutCliente.hasError('rutInvalido')
-        ? 'rut Cliente Inválido'
-        : '';
+          ? 'RUT Cliente inválido'
+          : '';
+    }
+
+    if (campo === 'rubro') {
+      return this.rubro.hasError('required') ? 'Debes seleccionar un rubro' : '';
     }
 
     if (campo === 'seguro') {
-      return this.seguro.hasError('required') ? 'Debes Ingresar Seguro' : '';
+      return this.seguro.hasError('required') ? 'Debes ingresar seguro' : '';
     }
 
     return '';
@@ -249,7 +253,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaContratanteAux() {}
+  grabaContratanteAux() { }
 
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
