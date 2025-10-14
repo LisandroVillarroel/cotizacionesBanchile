@@ -5,7 +5,7 @@
       @if (contratanteInfo().id !='0' && stepper.selectedIndex > 0) {
       <div class="info-panel ms-3">
         <mat-card class="panel-borde mat-elevation-z2">
-          <div class="d-flex flex-column flex-md-row gap-3">
+          <div class="d-flex flex-column flex-md-row gap-3 px-2">
             <div><strong>ID:</strong> {{ contratanteInfo().id }}</div>
             <div>
               <strong>RUT:</strong> {{ contratanteInfo().rut_contratante }}
@@ -40,7 +40,7 @@
             <div class="row d-flex flex-wrap justify-around">
               <!-- Sección 1: RUT, Rubro, Tipo de Seguro -->
               <mat-card
-                class="col-md-6 form-card mat-card-form mat-elevation-z6 contenido-card card-con-titulo"
+                class="col-md-6 form-card mat-card-form contenido-card card-con-titulo mat-elevation-z6 "
                 data-titulo="Ingreso de datos"
               >
                 <mat-card-content>
@@ -106,7 +106,7 @@
 
               <!-- Sección 2: Nombre, Correo, Teléfonos -->
               <mat-card
-                class="col-md-6 form-card mat-card-form mat-elevation-z6 contenido-card card-con-titulo"
+                class="col-md-6 form-card mat-card-form contenido-card card-con-titulo mat-elevation-z6"
                 data-titulo="Datos del contratante"
               >
                 <mat-card-content>
@@ -176,7 +176,7 @@
               </button>
 
               <!-- Botón Siguiente alineado a la derecha -->
-              <div class="px-3 mt-3">
+              <div class="px-3 mt-2">
                 <button
                   type="button"
                   mat-raised-button
