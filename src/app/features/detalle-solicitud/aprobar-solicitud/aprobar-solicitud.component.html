@@ -1,0 +1,27 @@
+<mat-card class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
+  <mat-card-title class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
+    <h2>Confirmación de Solicitud</h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false"
+      style="padding: 0px 0px 0px;"><mat-icon>close</mat-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="d-flex justify-content-center align-items-center">
+      <mat-icon class="icono-verde-grande" fontIcon="task_alt"></mat-icon>
+    </div>
+    <div class="contenido-dialogo">
+      <section>
+        <h3 class="titulo">La solicitud ha sido aprobada</h3>
+        <mat-label>
+          La solicitud {{ data.solicitudId }} ya esta disponible para ser enviada a las compañias de seguros.
+          Puedes hacerlo ingresando al detalle de la solicitud desde el menú de gestión de solicitudes.
+        </mat-label>
+      </section>
+    </div>
+    <div class="botones-derecha">
+      <button mat-stroked-button color="primary" class="botonesDetalle" (click)="confirmar()">
+        Ir a gestión de Solicitudes
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

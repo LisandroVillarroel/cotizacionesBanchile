@@ -60,7 +60,7 @@ export class MateriaAseguradaComponent {
       // Llamar al método cada vez que el valor cambie
       this.datoMateriaEstructura_arr = [];
       this.rescataListaMaterias(this.idRubro(), this.idSeguro());
-    });
+    }, { allowSignalWrites: true });
   }
 
   materiaForm = signal<FormGroup>(new FormGroup({}));
@@ -68,11 +68,12 @@ export class MateriaAseguradaComponent {
   rescataListaMaterias(idRubro: number, idSeguro: number) {
     if (!idRubro || !idSeguro)
        return
-
+   console.log('lista materia rubro:',idRubro, 'seguro:',idSeguro)
     this.materiaService
       .postListadoMatetria(idRubro, idSeguro)
       .subscribe({
-        next: (dato: IMateriaResultado) => {
+        next: (dato) => {
+          console.log('lista materia:', dato)
           if (dato.codigo === 200) {
             this.datoMateria.set(dato.p_cursor);
             this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
@@ -81,6 +82,7 @@ export class MateriaAseguradaComponent {
         },
         error: (error) => {
           this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+                   console.log('error materia rescata LISTA :',error)
         },
       });
   }
@@ -98,6 +100,7 @@ export class MateriaAseguradaComponent {
         },
         error: (error) => {
           this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+          console.log('error materia rescata:',error)
         },
       });
   }
@@ -263,6 +266,7 @@ export class MateriaAseguradaComponent {
       },
       error: (error) => {
         this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+        console.log('error materia:',error)
       },
     });
   }

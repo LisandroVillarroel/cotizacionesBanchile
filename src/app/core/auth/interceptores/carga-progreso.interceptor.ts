@@ -7,7 +7,7 @@ export const cargaProgresoInterceptor: HttpInterceptorFn = (req, next) => {
    const progresoCarga = inject(ProgresoCarga);
   const minDelayMs = 500; // 2 segundos
   const startTime = Date.now();
-
+progresoCarga.parar();
   progresoCarga.ejecutar(); // Mostrar barra de progreso al iniciar
 
   return next(req).pipe(
