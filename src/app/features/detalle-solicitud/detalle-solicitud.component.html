@@ -19,12 +19,13 @@
       </mat-tab>
       <mat-tab label="Asegurados">
         <div class="container-fluid">
-          <app-asegurado [idSolicitud]="idSol()" />
+          <app-asegurado [idSolicitud]="idSol()" [mostrarSoloConsulta]="false" />
         </div>
       </mat-tab>
       <mat-tab label="Beneficiarios">
         <div class="container-fluid">
-          <app-beneficiario [idSolicitud]="idSol()" />
+          <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
+          <app-beneficiario [idSolicitud]="idSol()" [mostrarSoloConsulta]="false" />
         </div>
       </mat-tab>
       <mat-tab label="Materia Asegurada">

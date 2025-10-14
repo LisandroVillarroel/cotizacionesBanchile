@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  Input,
   input,
   signal,
   ViewChild,
@@ -33,6 +34,7 @@ import {
   IBeneficiarioListaParametro,
 } from '../modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '../service/beneficiario.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-beneficiario',
@@ -46,6 +48,7 @@ import { BeneficiarioService } from '../service/beneficiario.service';
     MatIconModule,
     MatTooltipModule,
     MatInputModule,
+    CommonModule,
   ],
   templateUrl: './beneficiario.component.html',
   styleUrl: './beneficiario.component.css',
@@ -53,6 +56,8 @@ import { BeneficiarioService } from '../service/beneficiario.service';
 export class BeneficiarioComponent {
   idSolicitud = input.required<string>();
   datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
+
+  mostrarSoloConsulta = input.required<boolean>();
 
   beneficiarioService = inject(BeneficiarioService);
 

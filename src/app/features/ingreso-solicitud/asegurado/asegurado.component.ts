@@ -56,6 +56,7 @@ export class AseguradoComponent {
    idSolicitud = input.required<string>();
   datoAsegurados = signal<IAseguradoLista[]>([]);
 
+  mostrarSoloConsulta = input.required<boolean>();
 
   //flagAsegurado = model(false);
 

@@ -6,7 +6,7 @@ import { SolicitudesGestionadasComponent } from "@features/dashboard/solicitudes
 import DistribucionComponent from "@features/dashboard/distribucion/distribucion.component";
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
 import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/detalle-interface';
-import { MAT_DIALOG_DATA, MatDialogContent } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
@@ -20,15 +20,18 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/detalle-solicitud.service';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "@angular/material/expansion";
-import { MatCard, MatCardContent } from "@angular/material/card";
+import { MatCard, MatCardContent, MatCardHeader } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
 import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegurado.component";
 import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
+import { MatTooltip } from "@angular/material/tooltip";
+import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
+import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
 
 @Component({
   selector: 'app-ingreso-respuesta',
   standalone: true,
-    providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS),],
+  providers: [provideMomentDateAdapter(CUSTOM_DATE_FORMATS),],
   imports: [MatFormField,
     MatLabel,
     MatDatepickerToggle,
@@ -40,7 +43,7 @@ import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/
     MatDialogContent,
     MatIcon,
     MatIconButton,
-    MatDialogClose, InformacionPrincipalComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatCard, MatCardContent, MatDivider, AseguradoComponent, BeneficiarioComponent],
+    MatDialogClose, InformacionPrincipalComponent,  MatCard, MatCardHeader, MatTooltip],
   templateUrl: './ingreso-respuesta.component.html',
   styleUrl: './ingreso-respuesta.component.css'
 })
@@ -53,26 +56,29 @@ export class IngresoRespuestaComponent {
 
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
 
-  idSol = computed(() => this.idSolicitud.toString() );
+  idSol = computed(() => this.idSolicitud.toString());
 
-fechaActual = new FormControl<Date>(new Date());
-storage = inject(StorageService);
-_storage = signal(this.storage.get<ISesionInterface>('sesion'));
-dashboardService = inject(DashboardService)
-resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
-  p_EsperandoRespuesta: 0,
-  p_Aprobadas: 0,
-  p_ConObservaciones: 0});
-  listadoSolicitudes = signal<IListadoSolicitudes[] >([]);
+  fechaActual = new FormControl<Date>(new Date());
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  dashboardService = inject(DashboardService)
+  resumenGeneral = signal<IResumenSolicitudes>({
+    p_EnProceso: 0,
+    p_EsperandoRespuesta: 0,
+    p_Aprobadas: 0,
+    p_ConObservaciones: 0
+  });
+  listadoSolicitudes = signal<IListadoSolicitudes[]>([]);
 
+  private readonly dialog = inject(MatDialog);
 
- cargarSolicitud(idSolicitud: number){
-     this.detalleService.postDetalle(idSolicitud).subscribe({
+  cargarSolicitud(idSolicitud: number) {
+    this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           //console.log('Detalle solicitud:', dato);
           this.infoGral.set({
-            id_solicitud : this.idSolicitud,
+            id_solicitud: this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
             nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
@@ -104,11 +110,54 @@ resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
     });
   }
 
-async ngOnInit(){
+  async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 
 
+  verDetalleAse(IdSolicitud: number) {
+    //console.log('IdSolicitud', IdSolicitud);
 
+    const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(ModalAseguradoComponent, dialogConfig)
+      .afterClosed()
+  }
+
+  verDetalleBen(IdSolicitud: number) {
+    //console.log('IdSolicitud', IdSolicitud);
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(ModalBeneficiarioComponent, dialogConfig)
+      .afterClosed()
+  }
 }
+
+//    dialogConfig.disableClose = true;
+//    dialogConfig.autoFocus = true;
+//
+//   //Ajustes clave para evitar espacio en blanco
+//    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+//    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+//    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+//    dialogConfig.data = dato;
+//
+//    this.dialog
+//      .open(EnviarACompaniaComponent, dialogConfig)
+//      .afterClosed();
+//  }

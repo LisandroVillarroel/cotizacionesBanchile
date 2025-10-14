@@ -339,7 +339,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-  }//IngresoRespuestaComponent
+  }
 
 
 

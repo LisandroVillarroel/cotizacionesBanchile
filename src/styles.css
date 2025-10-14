@@ -237,6 +237,7 @@ h3[mat-dialog-title] {
   padding-top: 10px;
   padding-bottom: 16px;
 }
+
 /* FIN INPUTS */
 
 /* MAT-TABLE */
@@ -590,6 +591,16 @@ th#opcionesI {
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
+.card-borde3 {
+  background-color: white;
+  border: 1px solid #285b9b !important;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 100px !important;
+  /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
+}
+
 
 /* Fondo para cards con título */
 .card-con-titulo-principal {
@@ -725,6 +736,12 @@ th#opcionesI {
 .inputInput-cuestionario {
   font-size: 14px !important;
   padding-top: 10px !important;
+  padding-bottom: 5px !important;
+}
+
+.inputInput-cuestionario2 {
+  font-size: 14px !important;
+  padding-top: 1px !important;
   padding-bottom: 5px !important;
 }
 /* Fin inputs cuestionarios */
@@ -1029,3 +1046,6 @@ mat-divider[vertical] {
 .border-none {
   border-radius: 0px !important;
 }
+
+
+

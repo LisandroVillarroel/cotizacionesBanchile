@@ -5,39 +5,41 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <div class="container-fluid mt-5">
+  <div class="container-fluid mt-3">
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
-
-
-  <div class="container-fluid mt-5">
-    <mat-expansion-panel class="mat-elevation-z6"
-      style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
-      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="destacado"> Información Asegurados
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <app-asegurado [idSolicitud]="idSol()" />
-    </mat-expansion-panel>
+  <div class="container-fluid mt-3">
+    <div class="table-con-titulo mat-elevation-z6" data-titulo="">
+      <div class="container-fluid fondoGris justify-around d-flex p-4">
+        <!-- <div class="d-flex justify-around"> -->
+        <mat-card style="width: 49%;">
+          <mat-card-header>
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+              <label class="destacado">Datos Asegurados</label>
+              <button mat-stroked-button class="btn-info" style="display: flex; align-items: center;"
+               (click)="verDetalleAse(this.idSolicitud)" >
+                Ver Datos
+                <mat-icon style="margin-left: 5px;">visibility</mat-icon>
+              </button>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <mat-card style="width: 49%;">
+          <mat-card-header>
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+              <label class="destacado">Datos Beneficiarios</label>
+              <button mat-stroked-button matTooltip="view" class="btn-info" style="display: flex; align-items: center;"
+                (click)="verDetalleBen(this.idSolicitud)" >
+                Ver Datos
+                <mat-icon style="margin-left: 5px;">visibility</mat-icon>
+              </button>
+            </div>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </div>
   </div>
-
-  <div class="container-fluid mt-5">
-    <mat-expansion-panel class="mat-elevation-z6"
-      style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
-      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="destacado"> Información Beneficiarios
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <app-beneficiario [idSolicitud]="idSol()" />
-    </mat-expansion-panel>
-  </div>
-
-
-
-
-  <div class="container-fluid mt-5">
+  <div class="container-fluid mt-3">
     <app-informacion-principal />
   </div>
 </mat-dialog-content>

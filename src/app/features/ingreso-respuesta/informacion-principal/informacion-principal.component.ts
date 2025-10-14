@@ -8,6 +8,7 @@ import {
   ElementRef,
   QueryList,
   inject,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,6 +35,8 @@ import { BancoService } from '@shared/service/banco.service';
 import { IBanco } from '@shared/modelo/banco-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 
 
 @Component({
@@ -84,6 +87,7 @@ export default class InformacionPrincipalComponent {
   constructor() {
 
   }
+
 
   cargaMoneda() {
     //console.log('Entro cargaRubros');
@@ -199,6 +203,115 @@ soloNumeros(event: KeyboardEvent) {
 
 
 
+  @ViewChild('fileInputPropuesta') fileInputPropuesta!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInputCompania') fileInputCompania!: ElementRef<HTMLInputElement>;
+
+  nombreArchivoPropuesta: string = '';
+  archivoPropuesta: File | null = null;
+
+  nombreArchivoCompania: string = '';
+  archivoCompania: File | null = null;
+
+
+  archivoUrl = signal<string | null>(null);
+  datosArchivo = signal<IDatosArchivo | null>(null);
+
+
+  abrirSelectorPropuesta(): void {
+    this.fileInputPropuesta.nativeElement.click();
+  }
+
+  abrirSelectorCompania(): void {
+    this.fileInputCompania.nativeElement.click();
+  }
+
+  // onFileSelectedPropuesta(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     this.archivoPropuesta = input.files[0];
+  //     this.nombreArchivoPropuesta = this.archivoPropuesta.name;
+
+  //     console.log('Archivo seleccionado:', this.archivoPropuesta);
+  //   } else {
+  //     console.warn('No se seleccionó ningún archivo');
+  //   }
+  // }
+
+
+
+// async onFileSelectedPropuesta(event: any) {
+//     this.fileSeleccionado = event.target.files[0];
+//     const file: File = event.target.files[0];
+//     this.imageUrl = signal(null);
+//     if (file) {
+//       this.datosFoto = signal<IDatosFile>({
+//         nombre: file.name,
+//         tipo: file.type,
+//         size: Math.ceil(file.size / 1024), // tamaño en KB
+//         extension: file.name.split('.').pop() || '',
+//       });
+//       console.log('Archivo seleccionado:', file);
+
+//       const reader = new FileReader();
+//       console.log('paso1');
+//       reader.onload = (e) => {
+//         this.imageUrl.set(e.target?.result as string);
+//       };
+//       console.log('paso3');
+//       reader.readAsDataURL(file);
+//       console.log('paso4');
+//     }
+//     // Aquí puedes agregar la lógica para subir el archivo al servidor o procesarlo según tus necesidades.
+//   }
+
+
+
+async onFileSelectedPropuesta(event: any) {
+  this.archivoPropuesta = event.target.files[0];
+  const file: File = event.target.files[0];
+  this.archivoUrl = signal(null);
+  if (file) {
+    this.nombreArchivoPropuesta = file.name;
+    this.datosArchivo = signal<IDatosArchivo>({
+      nombre: file.name,
+      tipo: file.type,
+      size: Math.ceil(file.size / 1024), // tamaño en KB
+      extension: file.name.split('.').pop() || '',
+    });
+    console.log('Archivo seleccionado:', file);
+    const reader = new FileReader();
+    console.log('paso1');
+    reader.onload = (e) => {
+      this.archivoUrl.set(e.target?.result as string);
+    };
+    console.log('paso3');
+    reader.readAsDataURL(file);
+    console.log('paso4');
+  }
+}
+
+async onFileSelectedCompania(event: any) {
+  this.archivoCompania = event.target.files[0];
+  const file: File = event.target.files[0];
+  this.archivoUrl = signal(null);
+  if (file) {
+    this.nombreArchivoCompania = file.name;
+    this.datosArchivo = signal<IDatosArchivo>({
+      nombre: file.name,
+      tipo: file.type,
+      size: Math.ceil(file.size / 1024), // tamaño en KB
+      extension: file.name.split('.').pop() || '',
+    });
+    console.log('Archivo seleccionado:', file);
+    const reader = new FileReader();
+    console.log('paso1');
+    reader.onload = (e) => {
+      this.archivoUrl.set(e.target?.result as string);
+    };
+    console.log('paso3');
+    reader.readAsDataURL(file);
+    console.log('paso4');
+  }
 }
 
 
@@ -206,3 +319,44 @@ soloNumeros(event: KeyboardEvent) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // onFileSelectedCompania(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     this.archivoCompania = input.files[0];
+  //     this.nombreArchivoCompania = this.archivoCompania.name;
+
+  //     console.log('Archivo seleccionado:', this.archivoCompania);
+  //   } else {
+  //     console.warn('No se seleccionó ningún archivo');
+  //   }
+  // }
+
+  eliminarArchivoPropuesta(): void {
+    this.archivoPropuesta = null;
+    this.nombreArchivoPropuesta = '';
+    this.fileInputPropuesta.nativeElement.value = '';
+  }
+
+  eliminarArchivoCompania(): void {
+    this.archivoCompania = null;
+    this.nombreArchivoCompania = '';
+    this.fileInputCompania.nativeElement.value = '';
+  }
+
+
+}

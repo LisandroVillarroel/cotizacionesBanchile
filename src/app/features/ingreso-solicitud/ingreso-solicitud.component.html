@@ -200,7 +200,7 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado [idSolicitud]="idSolicitud()" />
+        <app-asegurado [idSolicitud]="idSolicitud()" [mostrarSoloConsulta]="false" />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
@@ -239,7 +239,8 @@
     >
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
-        <app-beneficiario [idSolicitud]="idSolicitud()" />
+        <!-- <app-beneficiario [idSolicitud]="idSolicitud()" /> -->
+        <app-beneficiario [idSolicitud]="idSolicitud()" [mostrarSoloConsulta]="false" />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button

@@ -3,24 +3,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatDivider, MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import DetalleSolicitudComponent from '../detalle-solicitud.component';
-import { MatLabel } from "@angular/material/form-field";
+import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatIconButton } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-aprobar-solicitud',
    standalone: true,
     imports: [
-    MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
     MatIconModule,
-    MatTooltipModule,
-    MatDividerModule,
-    CommonModule,
-    MatLabel
+        MatDialogModule,
+        MatButtonModule,
+        MatCardModule,
+        MatFormField,
+        MatInputModule,
+        FormsModule,
+        MatDivider,
+        MatTooltipModule
 ],
   templateUrl: './aprobar-solicitud.component.html',
   styleUrls: ['./aprobar-solicitud.component.css']
