@@ -5,7 +5,6 @@ import { ResumenGeneralComponent } from "@features/dashboard/resumen-general/res
 import { SolicitudesGestionadasComponent } from "@features/dashboard/solicitudes-gestionadas/solicitudes-gestionadas.component";
 import DistribucionComponent from "@features/dashboard/distribucion/distribucion.component";
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
-import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/detalle-interface';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from '@angular/material/button';
@@ -18,15 +17,13 @@ import { DashboardService } from '@features/dashboard/dashboard.service';
 import { IListadoSolicitudes, IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
-import { DetalleSolicitudService } from '@features/detalle-solicitud/detalle-solicitud.service';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "@angular/material/expansion";
-import { MatCard, MatCardContent, MatCardHeader } from "@angular/material/card";
-import { MatDivider } from "@angular/material/divider";
-import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegurado.component";
-import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
+import { MatCard, MatCardHeader } from "@angular/material/card";
+
 import { MatTooltip } from "@angular/material/tooltip";
 import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
 import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
+import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
+import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -95,13 +92,8 @@ export class IngresoRespuestaComponent {
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
           this.observaciones.set(dato.c_observaciones);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
+
       },
       error: (error) => {
         console.log('ERROR INESPERADO', error);

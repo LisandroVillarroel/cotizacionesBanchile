@@ -43,6 +43,7 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
