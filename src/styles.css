@@ -925,13 +925,13 @@ mat-divider[vertical] {
 }
 
 .verde{
-  color: green;
+  color: #008000 !important;
 }
 .amarillo{
-  color: yellow;
+  color: #ffff00 !important;
 }
 .rojo{
-  color: red;
+  color: #ff0000 !important;
 }
 
 

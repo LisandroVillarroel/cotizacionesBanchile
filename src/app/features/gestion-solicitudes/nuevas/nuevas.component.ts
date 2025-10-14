@@ -58,7 +58,6 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 export class NuevasComponent {
   nuevas = input.required<ISolicitudG[] | undefined>();
   solicitudes = computed(() => { return this.nuevas() } );
-
   panelOpenState = false;
 
   rubroService = inject(RubroService);
@@ -115,17 +114,8 @@ export class NuevasComponent {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
-      },
-      error: (error) => {
-        console.log('ERROR INESPERADO', error);
-      },
+      }
     });
   }
 
@@ -136,17 +126,8 @@ export class NuevasComponent {
         next: (dato) => {
           if (dato.codigo === 200) {
             this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          } else {
-            if (dato.codigo != 500) {
-              console.log('Error:',dato.mensaje);
-            } else {
-              console.log('ERROR DE SISTEMA:');
-            }
           }
-        },
-        error: (error) => {
-          console.log('ERROR INESPERADO', error);
-        },
+        }
       });
   }
 seleccionaFecha() {
@@ -164,14 +145,18 @@ seleccionaFecha() {
     this.filtroFecha.set('');
   }
 
-  getCellClass(value: number): string {
-    if(value <= 1){
-      return 'verde' ;
-    }else if (value <= 2) {
-      return 'amarillo';
-    }else{
-        return 'rojo';
+  getCellClass(value: string): string {
+    var salida: string;
+    switch(value.toLowerCase()){
+      case 'v':
+        salida = 'verde' ; break;
+      case 'a':
+        salida = 'amarillo'; break;
+      case 'r':
+        salida = 'rojo'; break;
+      default: salida = 'gris'; break;
     }
+    return salida;
   }
 
   verDetalle(IdSolicitud: number) {

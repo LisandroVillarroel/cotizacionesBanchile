@@ -4,10 +4,11 @@ export interface ISla{
 }
 
 export interface IObservacion{
-  fecha_creacion_observacion: string;
-  fecha_correccion_observacion: string;
-  observacion: string;
-  id_coordinador: string;
+  id_solicitud?: number,
+  fecha_creacion_observacion: string,
+  fecha_correccion_observacion: string,
+  observacion: string,
+  id_coordinador: string,
   nombre_coordinador: string
 }
 

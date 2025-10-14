@@ -213,6 +213,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
+          //console.log("Estados: ", this.datosEstados());
         }
       }
     });
@@ -255,9 +256,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   getCellStyle(idEstado: number) {
     const estado = this.getEstadoFiltrado(idEstado)[0];
     return {
-      'color': estado.color_estado,
-      'background-color': estado.background_estado,
-      'border': '1px solid' + estado.color_estado,
+      'color': estado?.color_estado,
+      'background-color': estado?.background_estado,
+      'border': '1px solid' + estado?.color_estado,
       'width': '140px',//'fit-content',
       'text-align': 'center',
       'padding-left': '1%',
