@@ -258,7 +258,7 @@ export class MateriaAseguradaComponent {
     this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.notificacioAlertnService.success('GRABA MATERIA','Se guardó de forma Exitosa');
+           this.notificacioAlertnService.success('MATERIA','Se guardó de forma Exitosa');
         }
       },
       error: (error) => {
