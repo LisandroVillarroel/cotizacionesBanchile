@@ -1,11 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import MenuComponent from './menu/menu.component';
 import HeaderComponent from './header/header.component';
 import FooterComponent from './footer/footer.component';
+import { ProgresoCarga } from '@core/auth/progesoCarga';
 //import { Progreso } from '@shared/guard/progreso';
 
 @Component({
@@ -13,7 +13,6 @@ import FooterComponent from './footer/footer.component';
   standalone: true,
   imports: [
     HeaderComponent,
-    MatIcon,
     MenuComponent,
     RouterOutlet,
     MatButtonModule,
@@ -22,6 +21,9 @@ import FooterComponent from './footer/footer.component';
   ],
   template: `
     <app-header class="headerFijo" />
+       @if (progresoCarga.isCargando()) {
+    <mat-progress-bar class="absolute! top-[64px] z-10" mode="indeterminate" />
+    }
     <app-menu class="menuFijo" />
     <main>
       <router-outlet />
@@ -68,5 +70,5 @@ main {
   `,
 })
 export default class PrincipalComponent {
-  ///  readonly progreso = inject(Progreso);
+    readonly progresoCarga = inject(ProgresoCarga);
 }
