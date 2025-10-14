@@ -50,8 +50,14 @@ export class AgregaSolicitudAseguradoComponent {
 
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
-  correoAsegurado = new FormControl('', [Validators.required]);
-  telefonoAsegurado = new FormControl('', [Validators.required]);
+  correoAsegurado = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+  ]);
+  telefonoAsegurado = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(9\d{8}|22\d{7})$/),
+  ]);
   regionAsegurado = new FormControl('', [Validators.required]);
   ciudadAsegurado = new FormControl('', [Validators.required]);
   comunaAsegurado = new FormControl('', [Validators.required]);
@@ -79,38 +85,44 @@ export class AgregaSolicitudAseguradoComponent {
   getErrorMessage(campo: string) {
     if (campo === 'rutAsegurado') {
       return this.rutAsegurado.hasError('required')
-        ? 'Debes ingresar Rut Asegurado'
+        ? 'Debes ingresar rut asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreAsegurado') {
       return this.nombreAsegurado.hasError('required')
-        ? 'Debes ingresar Nombre'
+        ? 'Debes ingresar nombre'
         : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
-        ? 'Debes ingresar Correo'
-        : '';
+      if (this.correoAsegurado.hasError('required')) {
+        return 'Debes ingresar correo';
+      }
+      if (this.correoAsegurado.hasError('pattern')) {
+        return 'Debes ingresar un correo válido';
+      }
     }
 
     if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
-        ? 'Debes ingresar Teléfono'
-        : '';
+      if (this.telefonoAsegurado.hasError('required')) {
+        return 'Debes ingresar teléfono';
+      }
+      if (this.telefonoAsegurado.hasError('pattern')) {
+        return 'Formato de teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
+      }
     }
 
     if (campo === 'regionAsegurado') {
       return this.regionAsegurado.hasError('required')
-        ? 'Debes ingresar Región'
+        ? 'Debes ingresar región'
         : '';
     }
 
     if (campo === 'ciudadAsegurado') {
       return this.ciudadAsegurado.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar ciudad'
         : '';
     }
     if (campo === 'comunaAsegurado') {
@@ -121,25 +133,25 @@ export class AgregaSolicitudAseguradoComponent {
 
     if (campo === 'direccionAsegurado') {
       return this.direccionAsegurado.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar dirección'
         : '';
     }
 
     if (campo === 'numeroDireccionAsegurado') {
       return this.numeroDireccionAsegurado.hasError('required')
-        ? 'Debes ingresar Número Dirección'
+        ? 'Debes ingresar número dirección'
         : '';
     }
 
     if (campo === 'deptoDireccionAsegurado') {
       return this.deptoDireccionAsegurado.hasError('required')
-        ? 'Debes ingresar Departamento Dirección'
+        ? 'Debes ingresar departamento dirección'
         : '';
     }
 
     if (campo === 'casaAsegurado') {
       return this.casaAsegurado.hasError('required')
-        ? 'Debes ingresar Número casa Dirección'
+        ? 'Debes ingresar número casa dirección'
         : '';
     }
 

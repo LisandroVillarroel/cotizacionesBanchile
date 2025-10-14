@@ -59,7 +59,6 @@ export class CuestionarioService {
         agregaDocumento,
         { headers: this.headers }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
   /* postModificaDocumento(modificaDocumento: IAgregaAsegurado): Observable<any> {
@@ -95,18 +94,6 @@ export class CuestionarioService {
         filtro,
         { headers: this.headers }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
-  errorHand(error: HttpErrorResponse): Observable<never> {
-    console.log('Paso Error Documento: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(() => new Error(errorMessage));
-  }
 }

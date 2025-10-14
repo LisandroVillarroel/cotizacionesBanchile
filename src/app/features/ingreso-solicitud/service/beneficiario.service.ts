@@ -30,7 +30,6 @@ export class BeneficiarioService {
           headers: this.headers,
         }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
   postModificaBeneficiario(modificaBeneficiario: IAgregaBeneficiario): Observable<any> {
@@ -43,7 +42,6 @@ export class BeneficiarioService {
           headers: this.headers,
         }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
   postEliminaBeneficiario(isolicitud: number,rutBeneficiario:string): Observable<any> {
@@ -57,7 +55,6 @@ export class BeneficiarioService {
           headers: this.headers,
         }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
   postListadoBeneficiario(filtro: any): Observable<DatosBeneficiariosInterface> {
@@ -67,20 +64,6 @@ export class BeneficiarioService {
         filtro,
         { headers: this.headers }
       )
-      .pipe(retry(1), catchError(this.errorHand));
   }
 
-  errorHand(error: HttpErrorResponse) {
-    console.log('Paso Error Beneficiario: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
-  }
 }
