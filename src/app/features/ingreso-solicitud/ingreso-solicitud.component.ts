@@ -57,6 +57,7 @@ import { AseguradoService } from './service/asegurado.service';
 
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { ProgresoCarga } from '@core/auth/progesoCarga';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -102,6 +103,10 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 export default class IngresoSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  progresoCarga = inject(ProgresoCarga);
+
+
 
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
@@ -197,15 +202,17 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-  async ngOnInit() {
+   ngOnInit() {
+    console.log('PASO PROGRESO')
+    this.progresoCarga.ejecutar();
     this.cargaRubro();
   }
 
   cargaRubro() {
-    console.log('paso rubro');
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('paso biennn rubro')
           console.log();
           this.datoRubros.set(dato.p_cursor);
         } else {

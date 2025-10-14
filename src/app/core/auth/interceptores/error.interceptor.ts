@@ -9,11 +9,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     retry({count: 3, delay:1000}),
     tap({
       error:(error:HttpErrorResponse)=>{
-        snackBar.open(error.message,'close')
+        snackBar.open('ERROR DE CONEXIÓN','Cerrar')
       }
-    }),
-    catchError((error:HttpErrorResponse) =>{
-      return throwError(()=>error)
     })
   )
 };

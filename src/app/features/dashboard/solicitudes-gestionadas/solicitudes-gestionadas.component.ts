@@ -171,6 +171,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   }
 
   async ngOnInit() {
+    console.log('PASO INIT')
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();
@@ -199,6 +200,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   }
 
   cargaRubros() {
+    console.log('CARGA RUBROS')
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
