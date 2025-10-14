@@ -645,6 +645,8 @@ th#opcionesI {
 
 .contenido-card {
   background-color: #f0f4fa !important;
+  padding: 0px 0px 0px 10px !important;
+  margin-bottom: 8px !important;
 }
 
 .fondoGris {
