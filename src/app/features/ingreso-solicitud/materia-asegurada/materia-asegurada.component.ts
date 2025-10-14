@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { MatIconModule } from '@angular/material/icon';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-materia-asegurada',
@@ -40,6 +41,8 @@ export class MateriaAseguradaComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
   materiaService = inject(MateriaService);
 
@@ -74,16 +77,10 @@ export class MateriaAseguradaComponent {
             this.datoMateria.set(dato.p_cursor);
             this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
 
-          } else {
-            if (dato.codigo != 500) {
-              console.log('Error:', dato.mensaje);
-            } else {
-              console.log('Error de Sistema:');
-            }
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('MATERIA','Error Inesperado');
         },
       });
   }
@@ -100,7 +97,7 @@ export class MateriaAseguradaComponent {
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('MATERIA','Error Inesperado');
         },
       });
   }
@@ -250,7 +247,7 @@ export class MateriaAseguradaComponent {
         })
       }
     }
-    console.log('paso 2')
+
     const envioMateria: IMateriaEnvia = {
       p_id_solicitud: Number(this.idSolicitud()),
       p_id_rubro: this.idRubro(),
@@ -261,11 +258,11 @@ export class MateriaAseguradaComponent {
     this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          alert('Grabó Asegurado Bien');
+           this.notificacioAlertnService.success('GRABA MATERIA','Se guardó de forma Exitosa');
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+        this.notificacioAlertnService.error('MATERIA','Error Inesperado');
       },
     });
   }
