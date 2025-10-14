@@ -13,6 +13,7 @@ import { provideNgxMask } from 'ngx-mask';
 import { authInterceptor } from '@core/auth/interceptores/auth.interceptor';
 import { errorInterceptor } from '@core/auth/interceptores/error.interceptor';
 import { datoInterceptor } from '@core/auth/interceptores/dato.interceptor';
+import { cargaProgresoInterceptor } from '@core/auth/interceptores/carga-progreso.interceptor';
 
 
 registerLocaleData(es);
@@ -22,7 +23,8 @@ export const appConfig: ApplicationConfig = {
   withInterceptors([
     authInterceptor,
     errorInterceptor,
-    datoInterceptor
+    datoInterceptor,
+    cargaProgresoInterceptor
   ])),  provideNgxMask(),
 { provide: LOCALE_ID, useValue: 'es-ES' },
 

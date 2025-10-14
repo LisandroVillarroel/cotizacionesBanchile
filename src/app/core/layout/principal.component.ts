@@ -21,11 +21,13 @@ import { ProgresoCarga } from '@core/auth/progesoCarga';
   ],
   template: `
     <app-header class="headerFijo" />
-       @if (progresoCarga.isCargando()) {
-    <mat-progress-bar class="absolute! top-[64px] z-10" mode="indeterminate" />
-    }
-    <app-menu class="menuFijo" />
+
+    <app-menu  class="menuFijo"/>
+     @if (progresoCarga.isCargando()) {
+        <mat-progress-bar  class="cargaProgresoFijo" mode="indeterminate"/>
+     }
     <main>
+
       <router-outlet />
     </main>
     <app-footer class="footerFijo" />
@@ -50,6 +52,14 @@ import { ProgresoCarga } from '@core/auth/progesoCarga';
   height: 50px; /* ajusta según el alto del menú */
   background-color: #e0e0e0;
   z-index: 99;
+}
+.cargaProgresoFijo {
+  position: fixed;
+  top: 100px; /* justo debajo del header */
+  left: 0;
+  width: 100vw;
+  height: 10px; /* ajusta según el alto del menú */
+  z-index: 101;
 }
 
 main {
