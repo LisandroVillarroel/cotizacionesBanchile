@@ -64,7 +64,7 @@ export class BeneficiarioComponent {
          if (this.idSolicitud()!='0'){
         this.rescataListaBeneficiarios(this.idSolicitud());
          }
-      });
+      }, { allowSignalWrites: true });
     }
 
   private readonly dialog = inject(MatDialog);

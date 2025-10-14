@@ -57,7 +57,6 @@ import { AseguradoService } from './service/asegurado.service';
 
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-import { ProgresoCarga } from '@core/auth/progesoCarga';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -104,7 +103,6 @@ export default class IngresoSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  progresoCarga = inject(ProgresoCarga);
 
 
 
@@ -208,7 +206,6 @@ export default class IngresoSolicitudComponent {
 
    ngOnInit() {
     console.log('PASO PROGRESO')
-    this.progresoCarga.ejecutar();
     this.cargaRubro();
   }
 

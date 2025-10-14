@@ -105,13 +105,15 @@ export class AseguradoComponent {
     return tabla;
   });
 
+
+
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
        if (this.idSolicitud()!='0'){
       this.rescataListaAsegurados(this.idSolicitud());
        }
-    });
+    }, { allowSignalWrites: true });
   }
 
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
