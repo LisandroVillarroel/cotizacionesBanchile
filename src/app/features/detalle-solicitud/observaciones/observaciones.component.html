@@ -6,8 +6,7 @@
     style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
       (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title class="destacado"> Observaciones
-        </mat-panel-title>
+        <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="container-fluid fondoGris" style="padding: 10px 10px 10px;">
         @for(item of observaciones(); track $index){

@@ -35,7 +35,8 @@
           </div>
           <div style="display: flex; justify-content: space-between; width: 100%;">
             <label class="destacado">SLA</label>
-            <div [ngStyle]="getCellStyleSla(infoSolicitud()?.sla!)">{{ infoSolicitud()?.sla }}</div>
+            <div [ngClass]="getCellClass(infoSolicitud()?.sla!)">{{ infoSolicitud()?.sla }}</div>
+<!--             <div [ngStyle]="getCellStyleSla(infoSolicitud()?.sla!)">{{ infoSolicitud()?.sla }}</div>-->
           </div>
         </mat-card-content>
       </mat-card>

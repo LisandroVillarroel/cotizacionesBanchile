@@ -5,7 +5,8 @@
 
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
     <div class="container-fluid p-0">
-      <div [formGroup]="filtroFormulario()" class="box-form-fields p-2 gap-2" style="align-items: center;">
+      <div [formGroup]="filtroFormulario()" class="box-form-fields p-2 gap-2"
+        style="align-items: center;">
         <div class="gap-1" style="width: 10%;">
           <span class="gris"> Filtrar por: </span>
         </div>
@@ -63,7 +64,6 @@
             <input matInput [matDatepicker]="picker" [formControl]="fecha">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-
           </mat-form-field>
         </div>
         <div class="gap-1" style="width: 10%;">

@@ -20,8 +20,24 @@ export class InformacionGeneralComponent {
   infoSolicitud = computed(()=> this.infoGral());
 
 
-  getCellStyleSla(value: string) {
-    console.log(value?.toLowerCase() === "r");
+  //getCellStyleSla(value: string) {
+  getCellClass(value: string): string {
+    var salida = 'gris';
+    if(value !== null){
+      switch(value.toLowerCase()){
+        case 'v':
+          salida = 'verde' ; break;
+        case 'a':
+          salida = 'amarillo'; break;
+        case 'r':
+          salida = 'rojo'; break;
+        default: salida = 'gris'; break;
+      }
+    }
+    return salida;
+  }
+/*     if(value === null) return { 'color': '#666668 !important;' };
+
     if(value?.toLowerCase() === "v"){
       return { 'color': '#008000 !important;' };
     }else if (value?.toLowerCase() === "a"){
@@ -31,6 +47,6 @@ export class InformacionGeneralComponent {
     }else{
       return { 'color': '#666668 !important;' };
     }
-  }
+  }*/
 
 }

@@ -1,24 +1,23 @@
-import { Component, ViewChild, inject, signal, NgModule, computed, input } from '@angular/core';
+import { Component, ViewChild, inject, signal, input } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatDatepickerInputEvent, MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { ISolicitudG} from '@features/gestion-solicitudes/gestionSolicitud-interface';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
@@ -31,7 +30,6 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
   standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [
-    MatTableModule,
     MatPaginatorModule,
     MatIconModule,
     MatSortModule,
@@ -57,56 +55,87 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 export class NuevasComponent {
   nuevas = input.required<ISolicitudG[] | undefined>();
-  solicitudes = computed(() => { return this.nuevas() } );
-  panelOpenState = false;
 
   rubroService = inject(RubroService);
-  datoRubros = signal<IRubro[]>([]);
-  rubro = new FormControl();
-
   tipoSeguroService = inject(TipoSeguroService);
+  datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
-  seguro = new FormControl();
-
-  hoy = new FormControl<Date>(new Date());
 
   pagina = signal(0);
-  pageSize = 5;
-
+  pageSize = 4;
   filtroContratante = signal('');
   filtroRubro = signal('');
-  filtroProducto = signal('');
-  filtroFecha = signal('');
+  filtroTipoSeguro = signal('');
+  filtroFecha = signal<Date | null>(null);
 
-  async ngOnInit() {
-    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    //this.dataSolicitud()= this.datosSolicitud();
-    this.cargaRubros();
-    this.limpiaFiltros();
+  formularioModificado = signal(false);
+
+  contratante = new FormControl();
+  rubro = new FormControl();
+  seguro = new FormControl();
+  fecha = new FormControl<Date | null>(null);
+
+  filtroFormulario = signal<FormGroup>(new FormGroup({
+    contratante : this.contratante,
+    rubro : this.rubro,
+    seguro : this.seguro,
+    fecha : this.fecha
+    })
+  );
+
+  datosFiltrados() {
+    const contratante = this.filtroFormulario().value.contratante??'';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
+    const tipoSeguro = this.filtroFormulario().value.seguro??'';
+    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+
+    let fechaInicio=new Date();
+    if (fechaInicio_Inicial!=null){
+         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    }
+
+    this.formularioModificado();
+    return this.nuevas()!.filter(item => {
+      const cumpleContratante = item.nombre_contratante.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
+      let cumpleFecha=true;
+      const fechaBase = new Date(item.fecha_creacion);
+
+      if (fechaInicio_Inicial!=null){
+        cumpleFecha = !fechaInicio || (
+        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+        fechaBase.getMonth() === fechaInicio.getMonth() &&
+        fechaBase.getDate() === fechaInicio.getDate()
+      );
+    }
+    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
+    });
+  };
+
+  datosPaginados(){
+      const start = this.pagina() * this.pageSize;
+      return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
-  @ViewChild('inContratante') inputElement: any;
-  @ViewChild(MatPaginator) paginatorSolicitud!: MatPaginator;
+  onPage(event: any) {
+    this.pagina.set(event.pageIndex);
+  }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  datosFiltrados = computed(() =>
-    this.solicitudes()!.filter(r =>
-      r.nombre_contratante?.toLowerCase().includes(this.filtroContratante().toLowerCase()) &&
-      r.nombre_rubro?.toLowerCase().includes(this.filtroRubro().toLowerCase()) &&
-      r.descripcion_tipo_seguro?.toLowerCase().includes(this.filtroProducto().toLowerCase()) &&
-      (new Date(r.fecha_creacion?.toString())).toLocaleDateString('es-BO').toString().includes(this.filtroFecha())
-    )
-  );
-
-  datosPaginados = computed(() => {
-    const start = this.pagina() * this.pageSize;
-    return this.datosFiltrados()!.slice(start, start + this.pageSize);
-  });
-
-  onPage(event: any) {
-    this.pagina.set(event.pageIndex);
+  async ngOnInit() {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.cargaRubros();
+    this.limpiaFiltros();
+    this.formularioModificado.set(true);
+    this.filtroFormulario().valueChanges.subscribe(() => {
+      this.datosFiltrados()
+      this.datosPaginados()
+    });
   }
 
   cargaRubros() {
@@ -130,31 +159,23 @@ export class NuevasComponent {
         }
       });
   }
-seleccionaFecha() {
-    this.filtroFecha.set(this.hoy.value!.toLocaleDateString('es-BO').toString());
-}
 
   limpiaFiltros() {
-    this.rubro.reset();
-    this.seguro.reset();
-    this.hoy.reset();
-    //this.dataSolicitud.set(this.datosSolicitud);
-    this.filtroContratante.set('');
-    this.filtroRubro.set('');
-    this.filtroProducto.set('');
-    this.filtroFecha.set('');
+    this.filtroFormulario().reset();
   }
 
   getCellClass(value: string): string {
-    var salida: string;
-    switch(value.toLowerCase()){
-      case 'v':
-        salida = 'verde' ; break;
-      case 'a':
-        salida = 'amarillo'; break;
-      case 'r':
-        salida = 'rojo'; break;
-      default: salida = 'gris'; break;
+    var salida = 'gris';
+    if(value !== null){
+      switch(value.toLowerCase()){
+        case 'v':
+          salida = 'verde' ; break;
+        case 'a':
+          salida = 'amarillo'; break;
+        case 'r':
+          salida = 'rojo'; break;
+        default: salida = 'gris'; break;
+      }
     }
     return salida;
   }

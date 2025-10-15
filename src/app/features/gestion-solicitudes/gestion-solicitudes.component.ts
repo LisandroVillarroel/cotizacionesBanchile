@@ -2,6 +2,7 @@ import { Component, signal, inject, computed } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,6 +13,7 @@ import { ISolicitudG } from './gestionSolicitud-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { GestionSolicitudesService } from './gestion-solicitudes.service';
+import { EnCotizacionComponent } from './en-cotizacion/en-cotizacion.component';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -23,8 +25,11 @@ import { GestionSolicitudesService } from './gestion-solicitudes.service';
     MatTooltipModule,
     MatDividerModule,
     MatTabsModule,
+    MatCardModule,
     CommonModule,
-    NuevasComponent, //ConObservacionesComponent
+    NuevasComponent,
+    ConObservacionesComponent,
+    EnCotizacionComponent
   ],
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css'
@@ -59,15 +64,10 @@ export default class GestionSolicitudesComponent {
       p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)
     };
-    console.log('request:', request);
-
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: any) => {
-        console.log("Retorno servicio: ",dato);
         if (dato.codigo === 200) {
-          console.log("ps_cursor ",dato.ps_cursor);
           this.datosSolicitud.set(dato.ps_cursor);
-          console.log("ps_cursor ",this.datosSolicitud());
         }
       }
     });

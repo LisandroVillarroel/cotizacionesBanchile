@@ -1063,3 +1063,10 @@ mat-divider[vertical] {
 div:where(.swal2-container) div:where(.swal2-actions) {
     flex-wrap: unset !important;
 }
+
+.tab-content {
+  max-height: 600px; /* Altura máxima del contenido */
+  overflow-y: auto; /* Habilitar scroll vertical */
+ /* padding: 16px;  Espaciado interno opcional */
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
