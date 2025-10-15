@@ -49,8 +49,14 @@ export class AgregaSolicitudBeneficiarioComponent {
 
   rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);
   nombreBeneficiario = new FormControl('', [Validators.required]);
-  correoBeneficiario = new FormControl('', [Validators.required]);
-  telefonoBeneficiario = new FormControl('', [Validators.required]);
+  correoBeneficiario = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+  ]);
+  telefonoBeneficiario = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(9\d{8}|22\d{7})$/),
+  ]);
   regionBeneficiario = new FormControl('', [Validators.required]);
   ciudadBeneficiario = new FormControl('', [Validators.required]);
   comunaBeneficiario = new FormControl('', [Validators.required]);
@@ -78,67 +84,73 @@ export class AgregaSolicitudBeneficiarioComponent {
   getErrorMessage(campo: string) {
     if (campo === 'rutBeneficiario') {
       return this.rutBeneficiario.hasError('required')
-        ? 'Debes ingresar Rut Beneficiario'
+        ? 'Debes ingresar rut beneficiario'
         : this.rutBeneficiario.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreBeneficiario') {
       return this.nombreBeneficiario.hasError('required')
-        ? 'Debes ingresar Nombre'
+        ? 'Debes ingresar nombre'
         : '';
     }
 
     if (campo === 'correoBeneficiario') {
-      return this.correoBeneficiario.hasError('required')
-        ? 'Debes ingresar Correo'
-        : '';
+      if (this.correoBeneficiario.hasError('required')) {
+        return 'Debes ingresar correo';
+      }
+      if (this.correoBeneficiario.hasError('pattern')) {
+        return 'Debes ingresar un correo válido';
+      }
     }
 
     if (campo === 'telefonoBeneficiario') {
-      return this.telefonoBeneficiario.hasError('required')
-        ? 'Debes ingresar Teléfono'
-        : '';
+      if (this.telefonoBeneficiario.hasError('required')) {
+        return 'Debes ingresar teléfono';
+      }
+      if (this.telefonoBeneficiario.hasError('pattern')) {
+        return 'Formato de teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
+      }
     }
 
     if (campo === 'regionBeneficiario') {
       return this.regionBeneficiario.hasError('required')
-        ? 'Debes ingresar Región'
+        ? 'Debes ingresar región'
         : '';
     }
 
     if (campo === 'ciudadBeneficiario') {
       return this.ciudadBeneficiario.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar ciudad'
         : '';
     }
     if (campo === 'comunaBeneficiario') {
       return this.comunaBeneficiario.hasError('required')
-        ? 'Debes ingresar Comuna'
+        ? 'Debes ingresar comuna'
         : '';
     }
 
     if (campo === 'direccionBeneficiario') {
       return this.direccionBeneficiario.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar dirección'
         : '';
     }
 
     if (campo === 'numeroDireccionBeneficiario') {
       return this.numeroDireccionBeneficiario.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar número dirección'
         : '';
     }
 
     if (campo === 'deptoDireccionBeneficiario') {
       return this.deptoDireccionBeneficiario.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar departamento dirección'
         : '';
     }
 
     if (campo === 'casaBeneficiario') {
       return this.casaBeneficiario.hasError('required')
-        ? 'Debes ingresar Dirección'
+        ? 'Debes ingresar casa dirección'
         : '';
     }
 

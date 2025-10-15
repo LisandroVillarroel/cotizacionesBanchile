@@ -41,6 +41,7 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 
 @Component({
@@ -297,7 +298,15 @@ export default class DetalleSolicitudComponent {
     this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
 
-  /*   ingresarRespuesta(idSolicitud: number): void {
+
+
+
+
+
+
+
+
+  ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
@@ -312,11 +321,15 @@ export default class DetalleSolicitudComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = idSolicitud;
+    dialogConfig.data = this.idSolicitud;
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-  }//IngresoRespuestaComponent
- */
+  }
+
+
+
+
+
 
 }

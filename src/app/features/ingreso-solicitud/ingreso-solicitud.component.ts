@@ -57,7 +57,6 @@ import { AseguradoService } from './service/asegurado.service';
 
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-import { ProgresoCarga } from '@core/auth/progesoCarga';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -104,7 +103,6 @@ export default class IngresoSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  progresoCarga = inject(ProgresoCarga);
 
 
 
@@ -189,14 +187,18 @@ export default class IngresoSolicitudComponent {
   getErrorMessage(campo: string) {
     if (campo === 'rutCliente') {
       return this.rutCliente.hasError('required')
-        ? 'Debes ingresar rut Cliente'
+        ? 'Debes ingresar rut de contratante'
         : this.rutCliente.hasError('rutInvalido')
-        ? 'rut Cliente Inválido'
-        : '';
+          ? 'RUT Cliente inválido'
+          : '';
+    }
+
+    if (campo === 'rubro') {
+      return this.rubro.hasError('required') ? 'Debes seleccionar un rubro' : '';
     }
 
     if (campo === 'seguro') {
-      return this.seguro.hasError('required') ? 'Debes Ingresar Seguro' : '';
+      return this.seguro.hasError('required') ? 'Debes ingresar seguro' : '';
     }
 
     return '';
@@ -204,7 +206,6 @@ export default class IngresoSolicitudComponent {
 
    ngOnInit() {
     console.log('PASO PROGRESO')
-    this.progresoCarga.ejecutar();
     this.cargaRubro();
   }
 
@@ -249,7 +250,7 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaContratanteAux() {}
+  grabaContratanteAux() { }
 
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);

@@ -2,13 +2,10 @@ import { HttpEventType, HttpInterceptorFn, HttpResponse } from '@angular/common/
 import { inject } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { tap } from 'rxjs';
-import { ProgresoCarga } from '../progesoCarga';
 
 export const datoInterceptor: HttpInterceptorFn = (req, next) => {
   const notificacioAlertnService = inject(NotificacioAlertnService);
-const progresoCarga = inject(ProgresoCarga);
 
-progresoCarga.ejecutar();
  return next(req).pipe(
     // Utiliza 'tap' para examinar el flujo de la respuesta
     tap(event => {
