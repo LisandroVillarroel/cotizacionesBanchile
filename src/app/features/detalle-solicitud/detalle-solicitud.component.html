@@ -28,7 +28,8 @@
         </div>
       </mat-tab>
       <mat-tab label="Materia Asegurada">
-        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!" [muestraConsulta]="'NO'" />
+        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!"
+        [muestraConsulta]="false" />
       </mat-tab>
       <mat-tab label="Documentos Asociados">
         <div class="container-fluid">

@@ -52,7 +52,11 @@
 
   <div class="example-button-row">
 
-    <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()" [disabled]="materiaForm().invalid">
+    <!-- <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()"
+    [disabled]="materiaForm().invalid"> -->
+
+    <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()"
+  [hidden]="muestraConsulta()">
       Grabar
     </button>
   </div>

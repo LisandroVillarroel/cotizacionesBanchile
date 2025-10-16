@@ -7,18 +7,19 @@
           <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
             style="flex-grow: 1; min-width: 0">
             <mat-label class="labelI-cuestionario"></mat-label>
-            <input matInput [value]="nombreArchivoCompania" disabled placeholder="Carga el documento oficial del banco" />
+            <input matInput [value]="nombreArchivoCompania" disabled
+              placeholder="Carga el documento oficial del banco" />
           </mat-form-field>
           <!-- Botón para abrir el selector de archivos -->
-          <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorCompania()" type="button"
-            class="boton-cargar-cuestionario">
+          <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorCompania()"
+            type="button" class="boton-cargar-cuestionario">
             <mat-icon>upload</mat-icon>
           </button>
           <!-- Input file oculto -->
           <input type="file" #fileInputCompania hidden (change)="onFileSelectedCompania($event)" />
           <!-- Botón para eliminar archivo -->
-          <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoCompania()" type="button"
-            class="boton-eliminar-cuestionario">
+          <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoCompania()"
+            type="button" class="boton-eliminar-cuestionario">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -31,29 +32,25 @@
           <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
             style="flex-grow: 1; min-width: 0">
             <mat-label class="labelI-cuestionario"></mat-label>
-            <input matInput [value]="nombreArchivoPropuesta" disabled placeholder="Carga el documento oficial del banco" />
+            <input matInput [value]="nombreArchivoPropuesta" disabled
+              placeholder="Carga el documento oficial del banco" />
           </mat-form-field>
           <!-- Botón para abrir el selector de archivos -->
-          <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorPropuesta()" type="button"
-            class="boton-cargar-cuestionario">
+          <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorPropuesta()"
+            type="button" class="boton-cargar-cuestionario">
             <mat-icon>upload</mat-icon>
           </button>
           <!-- Input file oculto -->
           <input type="file" #fileInputPropuesta hidden (change)="onFileSelectedPropuesta($event)" />
           <!-- Botón para eliminar archivo -->
-          <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoPropuesta()" type="button"
-            class="boton-eliminar-cuestionario">
+          <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoPropuesta()"
+            type="button" class="boton-eliminar-cuestionario">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </mat-card>
     </div>
   </div>
-
-
-
-
-
   <div class="fondoGris container-fluid mt-0">
     <div class="container-fluid mt-0">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
@@ -67,26 +64,19 @@
           <input matInput />
         </mat-select>
       </mat-form-field>
-
-
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima neta</mat-label>
         <input matInput type="number" step="0.01" min="0" class="no-spinner" />
       </mat-form-field>
-
-
-
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima afecta</mat-label>
         <input matInput type="number" step="0.01" min="0" class="no-spinner" />
       </mat-form-field>
-
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima bruta</mat-label>
         <input matInput type="number" min="0" class="no-spinner" />
       </mat-form-field>
     </div>
-
     <div class="container-fluid mt-0">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Medio de Pago</mat-label>
@@ -99,7 +89,6 @@
           <input matInput />
         </mat-select>
       </mat-form-field>
-
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Banco</mat-label>
         <mat-select [formControl]="banco">
@@ -111,7 +100,6 @@
           <input matInput />
         </mat-select>
       </mat-form-field>
-
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Tipo de Cuenta</mat-label>
         <mat-select [formControl]="banco">
@@ -123,13 +111,11 @@
           <input matInput />
         </mat-select>
       </mat-form-field>
-
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">N° de cuenta</mat-label>
         <input matInput type="number" class="no-spinner" (keypress)="soloNumeros($event)" />
       </mat-form-field>
     </div>
-
     <div class="container-fluid mt-0">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Cuotas</mat-label>
@@ -148,14 +134,12 @@
           <mat-option value="12">12</mat-option>
         </mat-select>
       </mat-form-field>
-
       <mat-form-field class="inputFecha col-md-3">
         <mat-label class="cursiva gris">Fecha Inicio:</mat-label>
         <input matInput [matDatepicker]="pInicio" [(ngModel)]="fechaInicio" name="fechaInicio" readonly>
         <mat-datepicker-toggle matIconSuffix [for]="pInicio"></mat-datepicker-toggle>
         <mat-datepicker #pInicio></mat-datepicker>
       </mat-form-field>
-
       <mat-form-field class="inputFecha col-md-3">
         <mat-label class="cursiva gris">Fecha Término:</mat-label>
         <input matInput [matDatepicker]="pTermino" [(ngModel)]="fechaTermino" name="fechaTermino"
@@ -163,9 +147,6 @@
         <mat-datepicker-toggle matIconSuffix [for]="pTermino"></mat-datepicker-toggle>
         <mat-datepicker #pTermino></mat-datepicker>
       </mat-form-field>
-
-
-
       <mat-form-field class="inputFecha col-md-3">
         <mat-label class="cursiva gris">Fecha primer vencimiento:</mat-label>
         <input matInput [matDatepicker]="pVencimiento" [(ngModel)]="fechaVencimiento" name="fechaVencimiento"
@@ -174,9 +155,14 @@
         <mat-datepicker #pVencimiento></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="botones-derecha">
-      <button mat-stroked-button class="btn-info">Registrar Respuesta</button>
-    </div>
   </div>
-
+  <!-- <mat-card-actions>
+    <div class="container-fluid d-flex p-4">
+      <div class="botones-derecha">
+        <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
+          [disabled]="false">Cerrar</button>
+        <button mat-stroked-button class="btn-info">Registrar Respuesta</button>
+      </div>
+    </div>
+  </mat-card-actions> -->
 </div>
