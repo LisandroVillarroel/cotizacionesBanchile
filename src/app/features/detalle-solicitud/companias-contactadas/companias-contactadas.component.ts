@@ -1,9 +1,9 @@
-import { CompaniasContactadasService } from './companias-contactadas.service';
-import { Component, computed, input, OnInit, signal, inject } from '@angular/core';
+import { CompaniasContactadasService } from '../service/companias-contactadas.service';
+import { Component, input, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ICompaniaResponse, ICompania } from '../modelo/detalle-interface';
+import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -21,40 +21,28 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     CommonModule
   ]
 })
-export class CompaniasContactadasComponent implements OnInit {
+export class CompaniasContactadasComponent {
   panelOpenState = false;
-  idSolicitud = input.required<number>();
+  companias = input.required<ICompania[] | undefined>();
+
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
-  companias = signal<ICompania[]>([]);
-  //contizaciones = signal<ICotizacion[]>([]);
-  //compFiltradas = computed(()=> this.companias());
-
 
   constructor() { }
 
-  async ngOnInit(){
+/*   async ngOnInit(){
     this.cargarCompanias(this.idSolicitud);
   }
-
-  cargarCompanias(idSolicitud: any){
+ */
+/*   cargarCompanias(idSolicitud: any){
       this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR","Error de sistema");
-          }
         }
-      },
-      error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
-  }
+  } */
     /*this.companias.set([
       {
             id_solicitud : parseInt(this.idSolicitud.toString()),
@@ -97,12 +85,26 @@ export class CompaniasContactadasComponent implements OnInit {
       }
     ]);*/
 
-  getCellStyle(color: string, fondo: string) {
+  getCellStyle(estado: number) {
+    var color: string;
+    var fondo: string;
+    if(estado === 1){
+      color = '#FFC725'; fondo = '#FFF7DF';
+    }else if(estado === 2){
+      color = '#149DC9'; fondo = '#DCF0F7';
+    }else if(estado === 3){
+      color = '#285B9B'; fondo = '#DCF0F7';
+    }else if(estado === 4){
+      color = '#6baa1f'; fondo = '#E9F2ED';
+    }else{
+      color = '#F45516'; fondo = '#FDF6DC';
+    }
+
     return {
       'color': color,
       'background-color': fondo,
       'border': '1px solid' + color,
-      'width': '170px',//'fit-content',
+      'width': '170px',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'

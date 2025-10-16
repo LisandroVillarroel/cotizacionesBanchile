@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import {
   DetalleSolicitudInterface,
   ICompania,
+  ICompaniaResponse,
   IObservacion,
   ISolicitud } from './modelo/detalle-interface';
 import { IRequest } from '@shared/modelo/servicios-interface';
@@ -43,6 +44,8 @@ import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CompaniasContactadasService } from './service/companias-contactadas.service';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -64,6 +67,7 @@ import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordina
     MatTooltipModule,
     MatDividerModule,
     MatTabsModule,
+    MatExpansionModule,
     CommonModule,
   ],
   templateUrl: './detalle-solicitud.component.html',
@@ -74,12 +78,16 @@ export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+  panelOpenState = false;
+  panelOpenState2 = false;
 
   idSol = computed(() => this.idSolicitud.toString());
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
+  companiasService = inject(CompaniasContactadasService);
+
 
   verEjec = true;
   verCoord = true;
@@ -104,6 +112,7 @@ export default class DetalleSolicitudComponent {
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
+    this.cargarCompanias(this.idSolicitud);
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
         this.verCoord = false; break;
@@ -164,7 +173,16 @@ export default class DetalleSolicitudComponent {
             }
           }
         /* Fin BackEnd */
+        }
+      }
+    });
+  }
 
+  cargarCompanias(idSolicitud: any){
+    this.companiasService.postCompanias(idSolicitud).subscribe({
+      next: (dato: ICompaniaResponse) => {
+        if (dato.codigo === 200) {
+          this.companias.set(dato.p_cursor);
         }
       }
     });
@@ -236,6 +254,7 @@ export default class DetalleSolicitudComponent {
       });
   }
 
+  /*   OJO   */
  corregirSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -256,7 +275,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = dato;
     this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
   }
-
+/*   OJO    */
 
   enviarCoordinador(): void {
     const dato = {
@@ -298,14 +317,6 @@ export default class DetalleSolicitudComponent {
     this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
 
-
-
-
-
-
-
-
-
   ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -326,10 +337,4 @@ export default class DetalleSolicitudComponent {
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
   }
-
-
-
-
-
-
 }

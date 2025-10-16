@@ -12,8 +12,35 @@
       <mat-tab label="Información General">
         <div class="container-fluid mt-5">
           <app-informacion-general [infoGral]="infoGral()"/>
-          <app-observaciones [observaciones]="observaciones()"/>
-          <app-companias-contactadas [idSolicitud]="idSolicitud"/>
+
+          <!-- Lista observaciones -->
+          <div class="container-fluid" style=" padding: 0px 0px 12px;">
+            @if(observaciones()?.length!==0 && observaciones()!==undefined){
+            <mat-expansion-panel class="mat-elevation-z6"
+              style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
+                (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-observaciones [observaciones]="observaciones()"/>
+              </mat-expansion-panel>
+            }
+          </div>
+
+          <!-- Lista compañías contactadas -->
+          <div class="container-fluid" style=" padding: 0px 0px 12px;">
+            @if(companias()?.length!==0 && companias()!==undefined){
+              <mat-expansion-panel class="mat-elevation-z6"
+                style="border-radius: 10px; border: 1px solid; border-color: #234E85;"
+                  (opened)="panelOpenState2 = true" (closed)="panelOpenState2 = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="destacado"> Compañías Contactadas
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <app-companias-contactadas [companias]="companias()"/>
+              </mat-expansion-panel>
+            }
+          </div>
         </div>
       </mat-tab>
       <mat-tab label="Asegurados">
