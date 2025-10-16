@@ -25,26 +25,30 @@ export interface EnviarACompaniaData {
   motivoDevolucion: string;
 }
 
-
 @Component({
   selector: 'app-enviar-a-compania',
   standalone: true,
-  imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule,
-    MatFormField, MatInputModule, FormsModule, MatDivider, MatRadioGroup, MatRadioButton,
-    MatCheckbox,],
+  imports: [
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormField,
+    MatInputModule,
+    FormsModule,
+    MatDivider,
+    MatRadioGroup,
+    MatRadioButton,
+    MatCheckbox,
+  ],
   templateUrl: './enviar-a-compania.component.html',
   styleUrl: './enviar-a-compania.component.css'
 })
 
-
-
-
-
-
-  export class EnviarACompaniaComponent {
-     idSolicitud = input.required<string>();
-    idSolicitudParametro=signal<string>('175')
-    @ViewChildren('checkboxRef') checkboxes!: QueryList<MatCheckbox>;
+export class EnviarACompaniaComponent {
+  idSolicitud = input.required<string>();
+  idSolicitudParametro=signal<string>('175')
+  @ViewChildren('checkboxRef') checkboxes!: QueryList<MatCheckbox>;
   companiaSeleccionada: string | null = null;
     constructor(
     private dialog: MatDialog,
@@ -53,30 +57,11 @@ export interface EnviarACompaniaData {
     @Inject(MAT_DIALOG_DATA) public data: EnviarACompaniaData
   ) {}
 
-
-
-
-
     registros: any[] = [];
-
-
 
     ngOnInit(): void {
       //this.registros = this.documentosService.obtenerRegistrosConDocumentos();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   cerrar(): void {
     this.dialogRef.close();
@@ -86,10 +71,7 @@ export interface EnviarACompaniaData {
     this.dialogRef.close('confirmado');
   }
 
-
-
-
-enviadoCia(): void {
+  enviadoCia(): void {
     const mailMarcado = this.checkboxes.some(cb => cb.checked);
     if (!this.companiaSeleccionada) {
       alert('Debes seleccionar una compañía antes de continuar.');
@@ -117,4 +99,3 @@ enviadoCia(): void {
   }
   observaciones: string = '';
 }
-

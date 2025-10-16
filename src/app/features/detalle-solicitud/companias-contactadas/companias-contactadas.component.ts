@@ -1,5 +1,5 @@
 import { CompaniasContactadasService } from '../service/companias-contactadas.service';
-import { Component, input, inject } from '@angular/core';
+import { Component, input, inject, computed } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -7,6 +7,9 @@ import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { MatTooltip } from "@angular/material/tooltip";
+import { EnviarACompaniaComponent } from '../companias/enviar-a-compania/enviar-a-compania.component';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -18,72 +21,19 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDividerModule,
     MatExpansionModule,
     MatIcon,
-    CommonModule
+    CommonModule,
+    MatTooltip
   ]
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
   companias = input.required<ICompania[] | undefined>();
+  companies = computed(() => {return this.companias()});
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
   constructor() { }
-
-/*   async ngOnInit(){
-    this.cargarCompanias(this.idSolicitud);
-  }
- */
-/*   cargarCompanias(idSolicitud: any){
-      this.companiasService.postCompanias(idSolicitud).subscribe({
-      next: (dato: ICompaniaResponse) => {
-        if (dato.codigo === 200) {
-          this.companias.set(dato.p_cursor);
-        }
-      }
-    });
-  } */
-    /*this.companias.set([
-      {
-            id_solicitud : parseInt(this.idSolicitud.toString()),
-            id_compania: 1,
-            nombre_compania: "CHUBB",
-            correo_destino: "correo@chubb.cl",
-            fecha_envio: "00-00/0000",
-            tiempo_transc: "2 día(s)",
-            id_estado_cot: 3,
-            estado_cotizacion: "Respuesta registrada",
-            color_edoCot: "#149DC9",
-            fondo_edoCot: "#DCF0F7",
-            id_cotizacion: 1
-      },
-      {
-            id_solicitud : 1,
-            id_compania: 2,
-            nombre_compania: "MAPFRE",
-            correo_destino: "correo@mapfre.cl",
-            fecha_envio: "00-00-0000",
-            tiempo_transc: "0 día(s)",
-            id_estado_cot: 1,
-            estado_cotizacion: "Envío pendiente",
-            color_edoCot: "#FFC725",
-            fondo_edoCot: "#FFF7DF",
-            id_cotizacion: 2
-      },
-      {
-            id_solicitud : 1,
-            id_compania: 3,
-            nombre_compania: "SOUTHBRIDGE",
-            correo_destino: "correo@mapfre.cl",
-            fecha_envio: "00-00-0000",
-            tiempo_transc: " día(s)",
-            id_estado_cot: 1,
-            estado_cotizacion: "Esperando respuesta",
-            color_edoCot: "#F45516",
-            fondo_edoCot: "#FDF6DC",
-            id_cotizacion: 2
-      }
-    ]);*/
 
   getCellStyle(estado: number) {
     var color: string;
@@ -110,4 +60,24 @@ export class CompaniasContactadasComponent {
       'padding-right': '1%'
     };
   }
+    enviarCia(): void {
+      const dato = {
+        solicitudId: this.companies()?.id_solicitud, //'ID123456789',
+        fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
+        ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
+      };
+
+      const dialogConfig = new MatDialogConfig();
+
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+
+      //Ajustes clave para evitar espacio en blanco
+      dialogConfig.width = '600px'; // Tamaño fijo y controlado
+      dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+      dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+      dialogConfig.data = dato;
+
+      this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
+    }
 }

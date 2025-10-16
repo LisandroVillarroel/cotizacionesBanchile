@@ -66,7 +66,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   estadoService = inject(EstadoService);
 
   tipoUsuario = "E"; //OJO!!! buscar en storage
-  //estadoService = inject(EstadoService);
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
@@ -171,7 +170,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('PASO INIT')
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();
@@ -200,7 +198,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   }
 
   cargaRubros() {
-    console.log('CARGA RUBROS')
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -215,7 +212,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
-          //console.log("Estados: ", this.datosEstados());
         }
       }
     });
@@ -228,7 +224,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          //console.log("Cargó productos", this.rescatadoSeguro());
         }
       }
     });

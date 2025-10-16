@@ -85,6 +85,8 @@ export default class DetalleSolicitudComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
+  tipo_ejec = this._storage()?.usuarioLogin.usuario!.substring(0,1);
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -298,9 +300,9 @@ export default class DetalleSolicitudComponent {
 
   enviarCia(): void {
     const dato = {
-      solicitudId: this.idSolicitud, //'ID123456789',
-      fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
+      p_id_solicitud: this.idSolicitud, //'ID123456789',
+      p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
+      p_tipo_usuario: this.tipo_ejec
     };
 
     const dialogConfig = new MatDialogConfig();
