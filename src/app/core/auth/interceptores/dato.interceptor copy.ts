@@ -2,29 +2,48 @@ import { HttpEventType, HttpInterceptorFn, HttpResponse } from '@angular/common/
 import { inject } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { tap } from 'rxjs';
+import { ProgresoCarga } from '../progesoCarga';
 
 export const datoInterceptor: HttpInterceptorFn = (req, next) => {
   const notificacioAlertnService = inject(NotificacioAlertnService);
+  const progresoCarga = inject(ProgresoCarga);
 
- return next(req).pipe(
+  const tiempoMinimoMs = 2000;
+  progresoCarga.ejecutar();
+  return next(req).pipe(
     // Utiliza 'tap' para examinar el flujo de la respuesta
     tap(event => {
       // El flujo de eventos contiene varios tipos de eventos HTTP
       // Nos interesa específicamente el evento de respuesta final
       if (event.type === HttpEventType.Response) {
-        // Captura el cuerpo de la respuesta
+        const inicio = Date.now();
+        const tiempoRealDeCarga = Math.random() * 2000; // Carga de 0 a 2 segundos
 
-        const responseBody = event.body as  ApiResponse ;
+        setTimeout(() => {
+          const tiempoTranscurrido = Date.now() - inicio;
+
+          // Calcular el tiempo restante para cumplir con el mínimo
+          const tiempoRestante = Math.max(0, tiempoMinimoMs - tiempoTranscurrido);
+
+          setTimeout(() => {
+            progresoCarga.parar(); // Ocultar la barra de progreso
+          }, tiempoRestante);
+
+        }, tiempoRealDeCarga);
+
+
+
+        const responseBody = event.body as ApiResponse;
+
 
         if (isResponseWithCodigo(responseBody)) {
 
-           console.log('responseBody',isResponseWithCodigo(responseBody))
+          console.log('responseBody', isResponseWithCodigo(responseBody))
 
           if (responseBody && responseBody.codigo) {
 
             if (responseBody.codigo != 200) {
-              console.log('errorrrrr:',event);
-              notificacioAlertnService.error('ERROR',responseBody.mensaje);
+              notificacioAlertnService.error('ERROR', responseBody.mensaje);
             }
           }
         }

@@ -43,6 +43,7 @@ import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solici
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
+import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
@@ -94,8 +95,6 @@ export default class DetalleSolicitudComponent {
   verEjec = true;
   verCoord = true;
 
-  idSolicitudParametro = signal<string>('175')  //???
-
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
@@ -111,6 +110,7 @@ export default class DetalleSolicitudComponent {
   flagAprobar = true;
   flagCompania = true;
   flagCoordinador = true;
+  flagPropuesta = true;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
@@ -133,6 +133,7 @@ export default class DetalleSolicitudComponent {
     this.flagAprobar = true;
     this.flagCompania = true;
     this.flagCoordinador = true;
+    this.flagPropuesta = true;
 
     this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
@@ -163,6 +164,7 @@ export default class DetalleSolicitudComponent {
              this.edoSolicitud()! !== "Propuesta emitida")
           {
             this.flagAnular = false;
+            this.flagPropuesta = false;
             if(this.edoSolicitud()! === "Aprobada"){
               this.flagCompania = false;
             }
@@ -318,7 +320,6 @@ export default class DetalleSolicitudComponent {
 
     this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
-
   ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -339,4 +340,30 @@ export default class DetalleSolicitudComponent {
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
   }
+
+
+
+  crearPropuesta(): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
+      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
+      rubro: this.infoGral()?.nombre_rubro,
+      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = this.idSolicitud;
+    this.dialog
+      .open(CreacionPropuestaComponent, dialogConfig)
+      .afterClosed()
+  }
+
+
+
 }

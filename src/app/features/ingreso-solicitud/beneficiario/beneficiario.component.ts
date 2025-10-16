@@ -36,6 +36,7 @@ import {
 } from '../modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '../service/beneficiario.service';
 import { CommonModule } from '@angular/common';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-beneficiario',
@@ -56,12 +57,12 @@ import { CommonModule } from '@angular/common';
 })
 export class BeneficiarioComponent {
   idSolicitud = input.required<string>();
-  datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
-
   mostrarSoloConsulta = input.required<boolean>();
 
-  beneficiarioService = inject(BeneficiarioService);
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
+  beneficiarioService = inject(BeneficiarioService);
+  datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
 
   constructor() {
       effect(() => {
@@ -135,16 +136,10 @@ export class BeneficiarioComponent {
         next: (dato: DatosBeneficiariosInterface) => {
           if (dato.codigo === 200) {
             this.datoBeneficiarios.set(dato.p_cursor);
-          } else {
-            if (dato.codigo != 500) {
-              console.log('Error:', dato.mensaje);
-            } else {
-              console.log('Error de Sistema:');
-            }
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
   }

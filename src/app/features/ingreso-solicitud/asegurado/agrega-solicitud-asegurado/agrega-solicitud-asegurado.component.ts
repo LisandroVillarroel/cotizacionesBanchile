@@ -19,6 +19,7 @@ import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.
 import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-agrega-solicitud-asegurado',
@@ -35,15 +36,18 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   styleUrl: './agrega-solicitud-asegurado.component.css',
 })
 export class AgregaSolicitudAseguradoComponent {
-  asegurado!: IAsegurado;
+
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);
 
   aseguradoService = inject(AseguradoService);
 
+  asegurado!: IAsegurado;
   private readonly dialogRef = inject(
     MatDialogRef<AgregaSolicitudAseguradoComponent>
   );
@@ -207,13 +211,10 @@ export class AgregaSolicitudAseguradoComponent {
         if (dato.codigo === 200) {
           //alert('Grabó Asegurado Bien');
           this.dialogRef.close('agregado');
-        } else {
-          alert('Error:' + dato.mensaje);
-          console.log('Error:', dato.mensaje);
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+       this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
   }

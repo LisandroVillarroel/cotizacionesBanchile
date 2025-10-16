@@ -20,6 +20,7 @@ import {
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 
 @Component({
@@ -39,6 +40,9 @@ export class ModificaSolicitudAseguradoComponent {
   asegurado!: IAgregaAsegurado;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  notificacioAlertnService= inject(NotificacioAlertnService);
+
   aseguradoService = inject(AseguradoService);
 
   private readonly dialogRef = inject(
@@ -222,20 +226,11 @@ export class ModificaSolicitudAseguradoComponent {
       next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          //alert('Modificó Asegurado Bien');
           this.dialogRef.close('modificado');
-        } else {
-          if (dato.codigo != 500) {
-            alert('Error:' + dato.mensaje);
-            console.log('Error:', dato.mensaje);
-          } else {
-            alert('Error:' + dato.mensaje);
-            console.log('Error de Sistema:');
-          }
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+       this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
   }
