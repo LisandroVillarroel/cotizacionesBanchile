@@ -203,11 +203,7 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado
-          [idSolicitud]="idSolicitud()"
-          [mostrarSoloConsulta]="false"
-          [hayAsegurados]="hayAsegurados"
-        />
+        <app-asegurado [idSolicitud]="idSolicitud()" [mostrarSoloConsulta]='false' (datoEmitidoAsegurado)="valorAsegurado($event)" />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
@@ -215,26 +211,18 @@
               mat-raised-button
               matStepperPrevious
               class="colorFondoBotonAtras"
-              [style.visibility]="mostrarBotonAtras() ? 'visible' : 'hidden'"
+              [style.visibility]="false ? 'visible' : 'hidden'"
             >
               Atrás
             </button>
           </div>
           <div class="botones-derecha">
-            <!-- <button
-            mat-raised-button
-            class="colorFondoBotonGuardar"
-            (click)="grabarBorrador()"
-          >
-            Grabar
-          </button> -->
             <button
               type="button"
               mat-raised-button
               matStepperNext
               class="colorFondoBotonSiguiente"
-              [disabled]="!hayAsegurados()"
-            >
+              [disabled]="agregaSolicitudAsegurado().invalid" >
               Siguiente
             </button>
           </div>
@@ -291,6 +279,7 @@
         [idSolicitud]="contratanteInfo().id"
         [idRubro]="contratanteInfo().idRubro"
         [idSeguro]="contratanteInfo().idSeguro"
+        [muestraConsulta]="'NO'"
       />
       <div class="alinear-botones">
         <div class="botones-izquierda">

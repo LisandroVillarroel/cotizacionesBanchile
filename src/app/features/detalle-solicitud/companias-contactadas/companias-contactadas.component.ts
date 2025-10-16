@@ -37,7 +37,10 @@ export class CompaniasContactadasComponent implements OnInit {
     this.cargarCompanias(this.idSolicitud);
   }
 
-  cargarCompanias(idSolicitud: any){
+  cargarCompanias(idSolicitud:any){
+    if (typeof idSolicitud != 'number')
+       return
+
       this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {

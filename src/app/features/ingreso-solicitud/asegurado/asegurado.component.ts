@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -23,7 +24,6 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { WritableSignal } from '@angular/core';
 
 import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
 import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
@@ -36,6 +36,7 @@ import {
   IAseguradoListaParametro,
 } from '../modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '../service/asegurado.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-asegurado',
@@ -55,13 +56,14 @@ import { AseguradoService } from '../service/asegurado.service';
 })
 export class AseguradoComponent {
   idSolicitud = input.required<string>();
-  datoAsegurados = signal<IAseguradoLista[]>([]);
-  mostrarBotonAtras = input<boolean>(true);
-  hayAsegurados = input<WritableSignal<boolean>>();
-  mostrarSoloConsulta = input.required<boolean>();
+  mostrarSoloConsulta = input.required<boolean>();  //Es llamado de varios componentes ve si es consulta o ingreso
+  datoEmitidoAsegurado = output<boolean>();
+  notificacioAlertnService= inject(NotificacioAlertnService);
+
+  hayAsegurados = signal<boolean>(false);
 
   //flagAsegurado = model(false);
-
+  datoAsegurados = signal<IAseguradoLista[]>([]);
   aseguradoService = inject(AseguradoService);
 
   private readonly dialog = inject(MatDialog);
@@ -97,6 +99,10 @@ export class AseguradoComponent {
     }
   }
 
+  valor=computed(()=>{
+    this.datoEmitidoAsegurado.emit(this.hayAsegurados())
+  })
+
   dataSourceAsegurado = computed(() => {
     const tabla = new MatTableDataSource<IAseguradoLista>(
       this.datoAsegurados()
@@ -107,15 +113,14 @@ export class AseguradoComponent {
   });
 
   constructor() {
-    effect(
-      () => {
-        // Llamar al método cada vez que el valor cambie
-        if (this.idSolicitud() != '0') {
-          this.rescataListaAsegurados(this.idSolicitud());
-        }
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      // Llamar al método cada vez que el valor cambie
+       if (this.idSolicitud()!='0'){
+      this.rescataListaAsegurados(this.idSolicitud());
+       }
+
+       this.datoEmitidoAsegurado.emit(this.hayAsegurados())
+    }, { allowSignalWrites: true });
   }
 
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
@@ -143,19 +148,11 @@ export class AseguradoComponent {
         next: (dato: DatosAseguradosInterface) => {
           if (dato.codigo === 200) {
             this.datoAsegurados.set(dato.p_cursor);
-            const hay = dato.p_cursor.length > 0;
-            this.hayAsegurados()?.set(hay);
-            console.log('¿Hay asegurados?', hay);
-          } else {
-            if (dato.codigo !== 500) {
-              console.log('Error:', dato.mensaje);
-            } else {
-              console.log('Error de Sistema');
-            }
+            this.hayAsegurados.set(dato.p_cursor.length > 0);
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
   }

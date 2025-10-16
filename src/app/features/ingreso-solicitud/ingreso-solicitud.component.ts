@@ -57,6 +57,7 @@ import { AseguradoService } from './service/asegurado.service';
 
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -102,9 +103,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 export default class IngresoSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-
-
-
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
@@ -129,7 +128,7 @@ export default class IngresoSolicitudComponent {
 
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
 
-  mostrarBotonAtras = signal(true);
+
   hayAsegurados = signal(false);
 
   //mostrarAnular: boolean = true;
@@ -140,7 +139,7 @@ export default class IngresoSolicitudComponent {
   seguro = new FormControl('', [Validators.required]);
   aseguradeCheck = new FormControl(false, [Validators.required]);
 
-  flagAsegurado = new FormControl(true, [
+  flagAsegurado = new FormControl(false, [
     Validators.required,
     this.validaQueSeaVerdadero,
   ]);
@@ -286,8 +285,6 @@ export default class IngresoSolicitudComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Grabó Bien');
-
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
               id: dato.p_id_solicitud,
@@ -304,23 +301,17 @@ export default class IngresoSolicitudComponent {
               this.agregarAsegurado();
             } else {
               this.idSolicitud.set(dato.p_id_solicitud);
-              this.mostrarBotonAtras.set(false);
-              console.log('Botón atrás ocultado');
-            }
-          } else {
-            if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('Error de Sistema:');
             }
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
+  }
+
+  valorAsegurado(dato: boolean) {
+       this.agregaSolicitudAsegurado().get('flagAsegurado')?.setValue(dato)
   }
 
   async agregarAsegurado() {
@@ -345,21 +336,15 @@ export default class IngresoSolicitudComponent {
       p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
-    console.log('Asegurado Grabado:', this.asegurado);
 
     await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
-        console.log('dato:', dato);
         if (dato.codigo === 200) {
-          //alert('Grabó En Asegurado');
           this.idSolicitud.set(this.contratanteInfo().id);
-        } else {
-          alert('Error:' + dato.mensaje);
-          console.log('Error:', dato.mensaje);
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
   }
@@ -403,16 +388,17 @@ export default class IngresoSolicitudComponent {
 
     // Si estoy en paso (asegurado) y quiero ir al paso (contratante)
     if (pasoActual >= 1 && pasoDestino === 0) {
-      if (!this.mostrarBotonAtras()) {
-        alert('No puede volver al paso de contratante desde este paso.');
+
+        this.notificacioAlertnService.info('INGRESO SOLICITUD','Acceso denegado')
         setTimeout(() => {
           stepper.selectedIndex = pasoActual;
         });
         return;
-      }
+
     }
 
     // Si estoy en paso (asegurado) y quiero ir a pasos siguientes (3, 4, 5)
+    /*
     if (pasoActual === 1 && pasoDestino > 1) {
       if (!this.hayAsegurados()) {
         alert('Debe ingresar al menos un asegurado antes de continuar.');
@@ -422,6 +408,7 @@ export default class IngresoSolicitudComponent {
         return;
       }
     }
+    */
   }
 
   abrirDialogoYAvanzar(): void {

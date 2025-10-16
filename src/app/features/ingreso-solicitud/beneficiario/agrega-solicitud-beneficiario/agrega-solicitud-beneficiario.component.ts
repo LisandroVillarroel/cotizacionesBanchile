@@ -19,6 +19,7 @@ import { BeneficiarioService } from '@features/ingreso-solicitud/service/benefic
 import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-agrega-solicitud-beneficiario',
@@ -38,6 +39,7 @@ export class AgregaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);
 
@@ -214,15 +216,11 @@ export class AgregaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Grabó Beneficiario Bien');
             this.dialogRef.close('agregado');
-          } else {
-            alert('Error:' + dato.mensaje);
-            console.log('Error:', dato.mensaje);
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
   }

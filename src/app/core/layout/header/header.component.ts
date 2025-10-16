@@ -26,14 +26,14 @@ import { Router } from '@angular/router';
       <div style="display: flex">
         <a>
           <img
-            src="assets/logo/bancochile.png"
+            src="assets/logo/bancochile.jpg"
             alt="Logo"
             class="logo-img me-2"
           />
         </a>
         <mat-divider [vertical]="true"></mat-divider>
         <span class="titulo mb-0" style="color: white;">
-          Plataforma Cotizaciones Seguros Empresa v.4
+          Plataforma Cotizaciones Seguros Empresa v.5
         </span>
       </div>
       <div class="usuario-container">
