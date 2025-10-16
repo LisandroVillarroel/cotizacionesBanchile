@@ -23,6 +23,7 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
           if (responseBody && responseBody.codigo) {
 
             if (responseBody.codigo != 200) {
+              console.log('errorrrrr:',event);
               notificacioAlertnService.error('ERROR',responseBody.mensaje);
             }
           }

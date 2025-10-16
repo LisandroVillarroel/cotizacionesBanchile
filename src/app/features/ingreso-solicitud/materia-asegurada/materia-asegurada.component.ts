@@ -2,7 +2,7 @@ import { Component, input, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
 import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaResultado, IMateriaTiene } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -66,8 +66,11 @@ export class MateriaAseguradaComponent {
   materiaForm = signal<FormGroup>(new FormGroup({}));
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
-    if (!idRubro || !idSeguro)
+    if (!idRubro || !idSeguro){
+      console.log('paso por aca')
+      this.materiaForm().addControl('flagSinInfo', new FormControl('',Validators.required));
        return
+    }
    console.log('lista materia rubro:',idRubro, 'seguro:',idSeguro)
     this.materiaService
       .postListadoMatetria(idRubro, idSeguro)
@@ -88,6 +91,7 @@ export class MateriaAseguradaComponent {
   }
 
   rescataTieneMateria(idSolicitud: number, idRubro: number, idSeguro: number) {
+    console.log('rescataTieneMateria: sol:',idSolicitud,' idRubro:',idRubro,' idSeguro:',idSeguro)
     this.materiaService
       .postConsultaMatetria(idSolicitud, idRubro, idSeguro)
       .subscribe({
@@ -217,6 +221,7 @@ export class MateriaAseguradaComponent {
   }
 
   grabarMateria() {
+    console.log('paso grabar')
     let nombreCampo = '';
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
