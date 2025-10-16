@@ -17,13 +17,14 @@ import { DashboardService } from '@features/dashboard/dashboard.service';
 import { IListadoSolicitudes, IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
-import { MatCard, MatCardHeader } from "@angular/material/card";
+import { MatCard, MatCardHeader, MatCardActions } from "@angular/material/card";
 
 import { MatTooltip } from "@angular/material/tooltip";
 import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
 import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
 import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -40,7 +41,14 @@ import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/d
     MatDialogContent,
     MatIcon,
     MatIconButton,
-    MatDialogClose, InformacionPrincipalComponent,  MatCard, MatCardHeader, MatTooltip],
+    MatDialogClose,
+    InformacionPrincipalComponent,
+    MatCard,
+    MatCardHeader,
+    MatTooltip,
+    MatCardActions,
+    MatButton
+  ],
   templateUrl: './ingreso-respuesta.component.html',
   styleUrl: './ingreso-respuesta.component.css'
 })
