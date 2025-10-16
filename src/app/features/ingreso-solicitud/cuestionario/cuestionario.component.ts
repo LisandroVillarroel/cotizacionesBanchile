@@ -27,6 +27,7 @@ import {
   IDocumentoLista,
   DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-cuestionario-documentos',
@@ -49,15 +50,15 @@ import {
 })
 export class CuestionarioComponent {
   idSolicitud = input.required<string>();
+
+
+   notificacioAlertnService= inject(NotificacioAlertnService);
+
   documentForm = signal(inject(FormBuilder).group({}));
   documentos = signal<IIngresarDocumento[]>([]);
 
-  @ViewChildren('fileInputs') fileInputs!: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
+  @ViewChildren('fileInputs') fileInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
-  private fb = inject(FormBuilder);
-  private dialog = inject(MatDialog);
   private cuestionarioService = inject(CuestionarioService);
   private storage = inject(StorageService);
 
@@ -115,7 +116,7 @@ export class CuestionarioComponent {
           }
         },
         error: (err) => {
-          console.error('Error al ingresar documento:', err);
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
 
@@ -166,12 +167,10 @@ export class CuestionarioComponent {
             `Documentos para solicitud ${idSolicitud}:`,
             documentosFiltrados
           );
-        } else {
-          console.warn('Consulta con estado:', res.vcEstado);
         }
       },
       error: (err: HttpErrorResponse) => {
-        console.error('Error al consultar documentos:', err.message);
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
   }
@@ -180,9 +179,7 @@ export class CuestionarioComponent {
     const idSolicitud = Number(this.idSolicitud());
 
     if (doc.p_corr_documento == null) {
-      alert(
-        'No se puede eliminar el documento porque no tiene correlativo asignado.'
-      );
+      this.notificacioAlertnService.warning('CUESTIONARIO', 'No se puede eliminar el documento porque no tiene correlativo asignado.');
       return;
     }
 
@@ -199,9 +196,7 @@ export class CuestionarioComponent {
       );
 
       if (documentosOpcionales.length > 0) {
-        alert(
-          'Primero debe eliminar los documentos opcionales antes de eliminar el documento obligatorio.'
-        );
+        this.notificacioAlertnService.warning('CUESTIONARIO','Primero debe eliminar los documentos opcionales antes de eliminar el documento obligatorio.');
         return;
       }
     }
@@ -223,14 +218,9 @@ export class CuestionarioComponent {
           if (esObligatorio) {
             this.bloquearSeccion2.set(true);
           }
-
-          console.log('Documento eliminado correctamente');
         },
         error: (err) => {
-          console.error('Error al eliminar documento:', err);
-          alert(
-            'No se pudo eliminar el documento. Verifica que esté correctamente cargado o contacta al administrador.'
-          );
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
   }

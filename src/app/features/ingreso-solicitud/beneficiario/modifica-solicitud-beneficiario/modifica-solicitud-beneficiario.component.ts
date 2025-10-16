@@ -20,6 +20,7 @@ import {
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 
 @Component({
@@ -39,6 +40,7 @@ export class ModificaSolicitudBeneficiarioComponent {
   beneficiario!: IAgregaBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+   notificacioAlertnService= inject(NotificacioAlertnService);
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -232,20 +234,11 @@ export class ModificaSolicitudBeneficiarioComponent {
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Modificó Beneficiario Bien');
             this.dialogRef.close('modificado');
-          } else {
-            if (dato.codigo != 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-              alert('Error:' + dato.mensaje);
-              console.log('Error de Sistema:');
-            }
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService= inject(NotificacioAlertnService);
         },
       });
   }

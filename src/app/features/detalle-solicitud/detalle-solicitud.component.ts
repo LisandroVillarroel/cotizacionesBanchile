@@ -84,8 +84,6 @@ export default class DetalleSolicitudComponent {
   verEjec = true;
   verCoord = true;
 
-  idSolicitudParametro = signal<string>('175')  //???
-
   detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
@@ -297,13 +295,6 @@ export default class DetalleSolicitudComponent {
 
     this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
   }
-
-
-
-
-
-
-
 
 
   ingresarRespuesta(): void {

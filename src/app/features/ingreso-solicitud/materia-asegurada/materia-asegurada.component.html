@@ -1,5 +1,5 @@
 <mat-dialog-content [formGroup]="materiaForm()" name="materiaForm" class="agrega-container">
-
+<h1>prueba {{materiaForm().invalid}}</h1>
   @for (fila of datoMateriaEstructura(); track $index){
   <div class="row">
     @for (columna of fila.datos; track $index){

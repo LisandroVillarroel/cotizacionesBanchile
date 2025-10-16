@@ -38,6 +38,7 @@ export class MateriaAseguradaComponent {
   idSolicitud = input.required<string>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
+  muestraConsulta = input<string>('');
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -56,27 +57,37 @@ export class MateriaAseguradaComponent {
   materiaIngresa: IMateriaIngresa[] = [];
 
   constructor() {
+
     effect(() => {
       // Llamar al método cada vez que el valor cambie
       this.datoMateriaEstructura_arr = [];
+      this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta())
+      console.log('rubro:',this.idRubro(),'seguro:',this.idSeguro())
+      if (this.idRubro()!=null && this.idSeguro()!=null && this.idRubro()!=0 && this.idSeguro()!=0){
+        console.log('pasooo rubro:',this.idRubro(),'seguro:',this.idSeguro())
       this.rescataListaMaterias(this.idRubro(), this.idSeguro());
+      }
     }, { allowSignalWrites: true });
   }
 
-  materiaForm = signal<FormGroup>(new FormGroup({}));
+  materiaForm = signal<FormGroup>(new FormGroup({
+    flagSinInfo:  new FormControl(this.muestraConsulta(), [Validators.required])
+  }));
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
-    if (!idRubro || !idSeguro){
-      console.log('paso por aca')
+    /*
+if (!idRubro || !idSeguro){
       this.materiaForm().addControl('flagSinInfo', new FormControl('',Validators.required));
        return
     }
-   console.log('lista materia rubro:',idRubro, 'seguro:',idSeguro)
+    //Esto es solo para que bloquee el boton
+    console.log('paso por aca',this.materiaForm().get('flagSinInfo')?.value)
+    this.materiaForm().get('flagSinInfo')?.setValue('ok')
+    */
     this.materiaService
       .postListadoMatetria(idRubro, idSeguro)
       .subscribe({
         next: (dato) => {
-          console.log('lista materia:', dato)
           if (dato.codigo === 200) {
             this.datoMateria.set(dato.p_cursor);
             this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
@@ -84,14 +95,13 @@ export class MateriaAseguradaComponent {
           }
         },
         error: (error) => {
-          this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
                    console.log('error materia rescata LISTA :',error)
         },
       });
   }
 
   rescataTieneMateria(idSolicitud: number, idRubro: number, idSeguro: number) {
-    console.log('rescataTieneMateria: sol:',idSolicitud,' idRubro:',idRubro,' idSeguro:',idSeguro)
     this.materiaService
       .postConsultaMatetria(idSolicitud, idRubro, idSeguro)
       .subscribe({
@@ -103,7 +113,7 @@ export class MateriaAseguradaComponent {
           }
         },
         error: (error) => {
-          this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
           console.log('error materia rescata:',error)
         },
       });
@@ -162,8 +172,6 @@ export class MateriaAseguradaComponent {
 
       for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //Recorre file
         valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
-        //console.log('valoresFila:',valoresFila)
-        //valorResto=12 % (Number(cuantaColumnasArreglo[a][1]))  //toma valor resto
         valorEntero = Math.trunc(12 / Number(cuantaColumnasArreglo[a][1])); // Toma valor entero sin redondear
         valorInicial = 12 - valorEntero * Number(cuantaColumnasArreglo[a][1]); // resta el total(valor entero de la division*cantidad de columnas)
         for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
@@ -221,7 +229,6 @@ export class MateriaAseguradaComponent {
   }
 
   grabarMateria() {
-    console.log('paso grabar')
     let nombreCampo = '';
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
@@ -270,7 +277,7 @@ export class MateriaAseguradaComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('MATERIA','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
         console.log('error materia:',error)
       },
     });

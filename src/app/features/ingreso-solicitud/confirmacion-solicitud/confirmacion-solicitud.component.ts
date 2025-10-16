@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -26,10 +26,12 @@ export interface ConfirmacionSolicitudData {
   imports: [MatIconModule, MatDialogModule, MatButtonModule, MatCardModule],
 })
 export class ConfirmacionSolicitudDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmacionSolicitudDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmacionSolicitudData
-  ) {}
+
+  public readonly data = inject<ConfirmacionSolicitudData>(MAT_DIALOG_DATA);
+   private readonly dialogRef = inject(
+    MatDialogRef<ConfirmacionSolicitudDialogComponent>
+  );
+
 
   cerrar(): void {
     this.dialogRef.close();
