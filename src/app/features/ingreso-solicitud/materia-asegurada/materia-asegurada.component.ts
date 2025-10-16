@@ -38,6 +38,7 @@ export class MateriaAseguradaComponent {
   idSolicitud = input.required<string>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
+  muestraConsulta = input.required<string>();
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
