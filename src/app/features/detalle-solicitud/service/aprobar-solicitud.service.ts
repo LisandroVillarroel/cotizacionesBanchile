@@ -6,10 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import {
-  IApruebaRequest,
-  IApruebaResponse
-} from '@features/detalle-solicitud/modelo/aprobar-interface';
+import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +21,9 @@ export class AprobarSolicitudService {
 
   constructor() {}
 
-  postApruebaSolicitud(apruebaSolicitud: IApruebaRequest): Observable<IApruebaResponse> {
+  postApruebaSolicitud(apruebaSolicitud: IRequest): Observable<IResponse> {
     //console.log('Anula Solicitud Service:', apruebaSolicitud);
-    return this.http.post<IApruebaResponse>(
+    return this.http.post<IResponse>(
         `${environment.apiUrl}/aprobarSolicitud`,
         apruebaSolicitud, { headers: this.headers, }
       )

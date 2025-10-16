@@ -4,25 +4,57 @@ export interface ISla{
 }
 
 export interface IObservacion{
-  fecha_creacion_observacion: string;
-  fecha_correccion_observacion: string;
-  observacion: string;
-  id_coordinador: string;
+  id_solicitud?: number,
+  fecha_creacion_observacion: string,
+  fecha_correccion_observacion: string,
+  observacion: string,
+  id_coordinador: string,
   nombre_coordinador: string
 }
 
 export interface ICompania{
-  id_compania: number;
-  nombre_compania: string;
-  correo_destino: string;
-  fecha_envio: string;
-  tiempo_transc: string; //horas o días???
-  id_estado_cot: number;
-  estado_cotizacion: string;
-  color_edoCot: string;
-  fondo_edoCot: string;
-  id_solicitud: number;
-  id_cotizacion: number;
+  p_id_compania_seguro: number;
+  p_nombre_compania_seguro: string;
+
+  p_id_estado_cotizacion: number;
+  p_id_nombre_estado_cotizacion: string;
+  p_fecha_creacion_cotizacion: string; //horas o días???
+  p_id_fecha_envio_cotizacion: string;
+  p_id_fecha_recepcion_cotizacion: string;
+  p_id_fecha_aprob_recha_cotizacion: string;
+  p_id_detalle_solicitud_cotizacion: string;
+  p_id_moneda: number;
+  p_nombre_moneda: string;
+  p_valor_prima_neta: number,
+  p_valor_prima_afecta: number,
+  p_valor_prima_bruta: number,
+  p_id_medio_de_pago: number,
+  p_nombre_medio_de_pago: string,
+  p_id_banco: number,
+  p_nombre_banco: string,
+  p_id_tipo_cuenta: number,
+  p_nombre_tipo_cuenta: string,
+  p_nro_cuenta: string,
+  p_cantidad_cuotas: number,
+  p_fecha_inicio_vigencia: string,
+  p_fecha_termino_vigencia: string,
+  p_dia_vencimiento_primera_cuota: string,
+  p_id_cotizacion_compania: string,
+  p_ruta_cotizacion_compania: string,
+  p_id_cotizacion_propuesta: string,
+  p_ruta_cotizacion_propuesta: string,
+  p_fecha_creacion: string,
+  p_usuario_creacion: string,
+  p_fecha_modificacion: string,
+  p_usuario_modificacion: string,
+}
+
+export interface ICompaniaResponse{
+  codigo: number;
+  mensaje: string;
+  p_cursor: ICompania[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
 
 export interface ISolicitud {

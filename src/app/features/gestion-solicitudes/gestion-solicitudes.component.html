@@ -1,19 +1,28 @@
-<div class="container-fluid">
-  <h1 mat-dialog-title class="mt-3 titulo">Gestión de solicitudes</h1>
-  <mat-tab-group>
-    <mat-tab label="Solicitudes Nuevas">
-      <div class="container-fluid fondoGris">
-        <app-nuevas [inSolicitudes]="nuevas()"/>
-       </div>
-    </mat-tab>
-    <mat-tab label="Solicitudes Con Observaciones">
-      <div class="container-fluid fondoGris">
-        <!-- <app-con-observaciones/> -->
-      </div>
-    </mat-tab>
-    <mat-tab label="Solicitudes en Cotización">
-      <div class="container-fluid fondoGris"> Content 3</div>
-      <!-- <app-en-cotizacion/> -->
-    </mat-tab>
-  </mat-tab-group>
+<div class="container-fluid d-flex justify-around">
+  <h1 mat-dialog-title class=" p-1 titulo">Gestión de solicitudes</h1>
+</div>
+<!-- <mat-card class="container-fluid alinea-card-gestion mt-0 p-0 border-none shadow-none"
+  style="width: 100%; height: 100%; padding: 0px 0px 0px 0px;">
+  <mat-card-content> -->
+<div  class="container-fluid fondoGris">
+    <mat-tab-group>
+      <mat-tab label="Solicitudes Nuevas">
+        <div class="container-fluid">
+          <app-nuevas [nuevas]="nuevas()"/>
+        </div>
+      </mat-tab>
+      <mat-tab label="Solicitudes Con Observaciones">
+        <div class="container-fluid ">
+          <app-con-observaciones [devueltas]="devueltas()"/>
+        </div>
+      </mat-tab>
+      <mat-tab label="Solicitudes en Cotización">
+        <div class="container-fluid ">
+          <app-en-cotizacion [cotizadas]="cotizadas()"/>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+<!--   </mat-card-content>
+</mat-card>
+ -->
 </div>

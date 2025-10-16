@@ -1,25 +1,29 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { InterfazRubro } from '@shared/modelo/rubro-interface';
 import { Observable } from 'rxjs';
+import { ICompaniaResponse } from '../modelo/detalle-interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RubroService {
-
+export class CompaniasContactadasService {
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   });
+
   constructor() { }
 
-  postRubro(): Observable<InterfazRubro> {
+  postCompanias(IdSolicitud: number): Observable<ICompaniaResponse> {
+    const parametro = {p_id_solicitud: IdSolicitud};
     return this.http
-      .get<InterfazRubro>(`${environment.apiUrl}/listarRubros`,{headers: this.headers})
+      .post<ICompaniaResponse>(
+        `${environment.apiUrl}/listarCompaniasContactadas`,
+        parametro,
+        { headers: this.headers
+      })
   }
-
 }

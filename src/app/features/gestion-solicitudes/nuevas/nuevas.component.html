@@ -1,5 +1,5 @@
-<div class="container-fluid p-2">
-  <div class="box-form-fields gap-2 p-2" style="align-items: center;">
+<div class="container-fluid p-0">
+  <div [formGroup]="filtroFormulario()" class="box-form-fields gap-2 p-2" style="align-items: center;">
     <div class="gap-1" style="width: 10%;">
       <span class="gris"> Filtrar por: </span>
     </div>
@@ -8,22 +8,25 @@
       <mat-form-field class="inputBuscar">
         <mat-label class="cursiva gris-claro">Contratante</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
-          <input matInput #inContratante
+          <input matInput  [formControl]="contratante"
+            (keyup)="pagina.set(0)">
+         <!--  #inContratante
             (keyup)="filtroContratante.set(inContratante.value); pagina.set(0)"
-            (change)="filtroContratante.set(inContratante.value); pagina.set(0)"/>
+            (change)="filtroContratante.set(inContratante.value); pagina.set(0)"/> -->
       </mat-form-field>
     </div>
 
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
           <mat-label class="cursiva gris-claro">Rubro</mat-label>
-           <mat-select [formControl]="rubro"
-            (selectionChange)="seleccionaRubro($event.value); filtroRubro.set($event.value.nombre_rubro); pagina.set(0)">
-            @for(_rubros of datoRubros(); track _rubros){
-              <mat-option [value]="_rubros" >
-                {{ _rubros.nombre_rubro }}
-              </mat-option>
-            }
+            <mat-select [formControl]="rubro"
+              (selectionChange)="seleccionaRubro($event.value); pagina.set(0)">
+              <!-- (selectionChange)="seleccionaRubro($event.value); filtroRubro.set($event.value.nombre_rubro); pagina.set(0)"> -->
+              @for(_rubros of datoRubros(); track _rubros){
+                <mat-option [value]="_rubros" >
+                  {{ _rubros.nombre_rubro }}
+                </mat-option>
+              }
           </mat-select>
         </mat-form-field>
       </div>
@@ -31,7 +34,8 @@
       <div style="width: 20%;">
         <mat-form-field class="inputSelect">
           <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
-          <mat-select [formControl]="seguro" (selectionChange)="filtroProducto.set($event.value); pagina.set(0)">
+          <mat-select [formControl]="seguro" (selectionChange)="pagina.set(0)">
+             <!-- (selectionChange)="filtroProducto.set($event.value); pagina.set(0)"> -->
             @for(_seguros of rescatadoSeguro(); track _seguros){
               <mat-option [value]="_seguros.nombre_tipo_seguro">
                 {{ _seguros.nombre_tipo_seguro }}
@@ -45,36 +49,35 @@
     <div style="width: 20%;">
       <mat-form-field class="inputFechaForm">
         <mat-label class="cursiva gris-claro">Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="hoy" (dateChange)="seleccionaFecha()">
+          <input matInput [matDatepicker]="picker"  [formControl]="fecha">
+           <!-- (dateChange)="seleccionaFecha()"> -->
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
 
     <div>
-      <button mat-raised-button (click)="limpiaFiltros();
-        inContratante.value = ''" class="button-link"> Limpiar filtros
+      <button mat-stroked-button color="primary" class="button-link"
+        (click)="limpiaFiltros()"> Limpiar filtros
       </button>
     </div>
   </div>
 </div>
 
-<div class="container-fluid p-2">
-  <!-- <table style="border: none; width: 100%;"> -->
+<div class="mat-elevation-z8 mt-1">
     @for(item of datosPaginados(); track $index){
-      <mat-card class="alinea-card-gestion">
+      <mat-card class="alinea-card-gestion justify-around">
         <mat-card-content class="d-flex p-0">
-          <div class="fondoGris" style="width: 5%; align-content: center; text-indent: 15%;">
-            <!-- <mat-icon [ngClass]="getCellClass(item.Sla)">traffic</mat-icon> -->
-            <mat-icon>traffic</mat-icon>
+          <div style="width: 5%; align-content: center; text-indent: 15%;">
+            <mat-icon [ngClass]="getCellClass(item.sla!)">traffic</mat-icon>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 10%;">
+          <div class ="p-2" style="width: 8%;">
             <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
             <p class="fontLarge">{{item.id_solicitud}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 10%;">
+          <div class ="p-2" style="width: 9%;">
             <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
             <p class="fontLarge">{{item.rut_contratante}}</p>
           </div>
@@ -84,19 +87,19 @@
             <p class="fontLarge">{{item.nombre_contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 15%;">
+          <div class ="p-2" style="width: 12%;">
             <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
             <p class="fontLarge">{{item.nombre_rubro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 20%;">
+          <div class ="p-2" style="width: 23%;">
             <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
             <p class="fontLarge">{{item.descripcion_tipo_seguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
             <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
-            <p class="fontLarge">{{item.fecha_creacion}}</p>
+            <p class="fontLarge">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class="p-2" style="width: 5%; align-content: center;">
@@ -112,131 +115,10 @@
       </mat-card>
     }
   <!-- </table> -->
-  <mat-paginator [length]="datosFiltrados()!.length"
-                 [pageSize]="pageSize"
-                 [pageIndex]="pagina()"
-                 (page)="onPage($event)">
+  <mat-paginator #mypaginator
+                  [length]="datosFiltrados()!.length"
+                  [pageSize]="pageSize"
+                  [pageIndex]="pagina()"
+                  (page)="onPage($event)">
   </mat-paginator>
 </div>
-<!-- <div class="mat-elevation-z8">
-  <table mat-table
-      [dataSource]="dataSourceSolicitud"
-      multiTemplateDataRows
-      matSort>
-
-      <ng-container matColumnDef="Sla">
-        <th
-          id="slaI"
-          mat-header-cell
-          *matHeaderCellDef
-          style="width: 4%"
-        >
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="gris"
-          style="width: 4%; background-color: #E8E8EA; text-justify: center;"
-        >
-            <mat-icon [ngClass]="getCellClass(element.Sla)">traffic</mat-icon>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="ID">
-        <th id="_id"
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            style="width: 5%"
-          > ID solicitud</th>
-        <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="Rut">
-        <th id="_rut"
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            style="width: 5%"
-          > Rut contratante </th>
-        <td mat-cell *matCellDef="let element"> {{element.Rut}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="Contratante">
-        <th
-          id="_contratante"
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          style="width: 15%"
-        >
-          Nombre o Razón social
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.Contratante }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Rubro">
-        <th
-          id="_rubro"
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          style="width: 10%"
-        >
-          Rubro
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.Rubro }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="TipoSeguro">
-        <th
-          id="_tipoSeguro"
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          style="width: 8%"
-        >
-          Tipo Seguro
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.TipoSeguro }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Fecha">
-        <th
-          id="_fecha|"
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          style="width: 8%"
-        >
-          Fecha de solicitud
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.Fecha }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="accion">
-        <th
-          id="accionI"
-          mat-header-cell
-          *matHeaderCellDef
-          style="width: 8%; text-align: center"
-        >
-          Acción
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let row; let i = index"
-          style="width: 8%; text-align: center"
-        >
-          <mat-icon class="destacado" matTooltip="Ver detalles">visibility</mat-icon>
-        </td></ng-container
-      >
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-
-    <mat-paginator
-      #myPaginator
-      [pageSizeOptions]="[10, 20, 30, 100]"
-    ></mat-paginator>
-  </div> -->

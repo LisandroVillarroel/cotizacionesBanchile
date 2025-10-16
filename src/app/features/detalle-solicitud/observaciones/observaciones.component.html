@@ -6,8 +6,7 @@
     style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
       (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title class="destacado"> Observaciones
-        </mat-panel-title>
+        <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="container-fluid fondoGris" style="padding: 10px 10px 10px;">
         @for(item of observaciones(); track $index){
@@ -23,6 +22,7 @@
                   <p class="fontSmall">Fecha corrección</p>
                   <p class="fontLarge">{{item.fecha_correccion_observacion}}</p>
                 </div>
+                <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 25%;">
                   <p class="fontSmall">Observación</p>
                   <p class="fontLarge">{{item.observacion}}</p>

@@ -6,7 +6,8 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IDevuelveRequest, IDevuelveResponse } from './devolver-interface';
+import { IDevuelveRequest } from './devolver-interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class DevolverSolicitudService {
 
   constructor() {}
 
-  postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IDevuelveResponse> {
+  postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IResponse> {
     //console.log('Devuelve Solicitud Service:', devuelveSolicitud);
-    return this.http.post<IDevuelveResponse>(
+    return this.http.post<IResponse>(
         `${environment.apiUrl}/devolverSolicitud`,
         devuelveSolicitud, { headers: this.headers, }
       )

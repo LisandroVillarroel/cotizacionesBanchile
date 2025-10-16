@@ -179,14 +179,14 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
     this.formularioModificado.set(true);
     this.filtroFormulario().valueChanges.subscribe(() => {
-    this.datosFiltrados()
-    this.updateTableData();
-  });
+      this.datosFiltrados()
+      this.updateTableData();
+    });
 
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
         this.verCoord = false; break;
-      case "PCSE_COORBCS":
+      case "PCSE_COORDBCS":
         this.verEjec = false; break;
       case "PCSE_SUPBCS":
         this.verEjec = false; this.verCoord = false; break;
@@ -205,17 +205,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
-          }
         }
-      },
-      error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 
@@ -224,17 +215,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
-          }
+          //console.log("Estados: ", this.datosEstados());
         }
-      },
-      error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 
@@ -246,17 +229,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
           //console.log("Cargó productos", this.rescatadoSeguro());
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-          this.notificacioAlertnService.error("ERROR",'Error de sistema.');
-          }
         }
-      },
-      error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 
@@ -284,9 +258,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   getCellStyle(idEstado: number) {
     const estado = this.getEstadoFiltrado(idEstado)[0];
     return {
-      'color': estado.color_estado,
-      'background-color': estado.background_estado,
-      'border': '1px solid' + estado.color_estado,
+      'color': estado?.color_estado,
+      'background-color': estado?.background_estado,
+      'border': '1px solid' + estado?.color_estado,
       'width': '140px',//'fit-content',
       'text-align': 'center',
       'padding-left': '1%',

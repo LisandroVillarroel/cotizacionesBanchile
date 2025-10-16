@@ -4,10 +4,3 @@ export interface IDevuelveRequest {
     p_tipo_usuario: string,
     p_observacion: string
 }
-
-export interface IDevuelveResponse{
-  codigo: number,
-  mensaje: string,
-  vcEstado: string,
-  vcEstadoCreacion: string
-}

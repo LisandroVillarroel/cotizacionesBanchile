@@ -977,14 +977,14 @@ mat-divider[vertical] {
   color: #6baa1f;
 }
 
-.verde {
-  color: green;
+.verde{
+  color: #008000 !important;
 }
-.amarillo {
-  color: yellow;
+.amarillo{
+  color: #ffff00 !important;
 }
-.rojo {
-  color: red;
+.rojo{
+  color: #ff0000 !important;
 }
 
 .gris {
@@ -1023,10 +1023,10 @@ mat-divider[vertical] {
   background-color: inherit;
   border: none !important;
   box-shadow: none !important;
-  color: #149dc9 !important;
+  color: #149dc9 important;
   /*color: #234e85 !important;*/
   /*padding: 0px 0px 0px !important;*/
-  font-size: 10px !important;
+  font-size: 14px !important;
 }
 
 .button-link:hover {
@@ -1113,4 +1113,11 @@ mat-divider[vertical] {
 
 div:where(.swal2-container) div:where(.swal2-actions) {
   flex-wrap: unset !important;
+}
+
+.tab-content {
+  max-height: 600px; /* Altura máxima del contenido */
+  overflow-y: auto; /* Habilitar scroll vertical */
+ /* padding: 16px;  Espaciado interno opcional */
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
 }

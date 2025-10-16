@@ -2,7 +2,6 @@ import {
   Component,
   computed,
   inject,
-  input,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -11,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,7 +22,7 @@ import {
   ICompania,
   IObservacion,
   ISolicitud } from './modelo/detalle-interface';
-import { IApruebaRequest } from './modelo/aprobar-interface';
+import { IRequest } from '@shared/modelo/servicios-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 import { AprobarSolicitudService } from './service/aprobar-solicitud.service';
@@ -44,6 +42,7 @@ import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solici
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
+import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -94,7 +93,7 @@ export default class DetalleSolicitudComponent {
   edoSolicitud = signal<string | undefined>(undefined);
 
   aprobarService = inject(AprobarSolicitudService);
-  apruebaRequest!: IApruebaRequest;
+  apruebaRequest!: IRequest;
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -108,7 +107,7 @@ export default class DetalleSolicitudComponent {
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
         this.verCoord = false; break;
-      case "PCSE_COORBCS":
+      case "PCSE_COORDBCS":
         this.verEjec = false; break;
       case "PCSE_SUPBCS":
         this.verEjec = false; this.verCoord = false; break;
@@ -166,17 +165,8 @@ export default class DetalleSolicitudComponent {
           }
         /* Fin BackEnd */
 
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR","Error de sistema");
-          }
         }
-      },
-      error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
+      }
     });
   }
 
@@ -222,13 +212,8 @@ export default class DetalleSolicitudComponent {
               ' y está disponible para ser enviada a las compañías de seguros. \n' +
               ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
               ' de gestión de solicitudes.');
-          } else {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
           }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-        },
+        }
       });
   }
 
@@ -261,7 +246,25 @@ export default class DetalleSolicitudComponent {
     };
 
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
 
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+    this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
+  }
+
+
+  enviarCoordinador(): void {
+    const dato = {
+      solicitudId: this.idSolicitud,
+      fecha: this.infoGral()?.fecha_creacion_solicitud,
+    };
+
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
@@ -271,7 +274,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
+    this.dialog.open(EnviarCoordinadorComponent, dialogConfig).afterClosed();
   }
 
   enviarCia(): void {
