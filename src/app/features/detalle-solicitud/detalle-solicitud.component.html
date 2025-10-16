@@ -67,6 +67,10 @@
           (click)="corregirSolicitud()">Enviar Solicitud</button>
           <button mat-stroked-button class="btn-danger"
           (click)="ingresarRespuesta()">Ingresar Respuesta</button>
+
+          <button mat-stroked-button class="btn-primary"
+          [disabled]="this.flagPropuesta"
+          (click)="crearPropuesta()">Generar Propuesta</button>
       </div>
     </div>
   </mat-card-actions>
