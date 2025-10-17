@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIcon, MatIconModule } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
@@ -44,6 +44,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -59,13 +60,13 @@ import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordina
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
-    MatIcon,
     MatToolbarModule,
     MatIconModule,
     MatTooltipModule,
     MatDividerModule,
     MatTabsModule,
     CommonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',

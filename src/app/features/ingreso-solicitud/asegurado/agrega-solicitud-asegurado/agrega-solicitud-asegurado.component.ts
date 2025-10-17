@@ -20,6 +20,7 @@ import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-agrega-solicitud-asegurado',
@@ -31,6 +32,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './agrega-solicitud-asegurado.component.html',
   styleUrl: './agrega-solicitud-asegurado.component.css',
