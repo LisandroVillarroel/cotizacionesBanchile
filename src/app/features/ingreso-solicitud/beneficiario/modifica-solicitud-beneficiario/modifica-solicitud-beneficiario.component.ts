@@ -22,6 +22,7 @@ import { BeneficiarioService } from '@features/ingreso-solicitud/service/benefic
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-modifica-solicitud-beneficiario',
@@ -32,6 +33,7 @@ import { StorageService } from '@shared/service/storage.service';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './modifica-solicitud-beneficiario.component.html',
   styleUrl: './modifica-solicitud-beneficiario.component.css',

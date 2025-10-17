@@ -10,19 +10,20 @@ import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegur
 import { MateriaAseguradaComponent } from "@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component";
 import { MatCardActions } from "@angular/material/card";
 import { MatButton } from '@angular/material/button';
+import { DocAsociadosComponent } from "./doc-asociados/doc-asociados.component";
 
 @Component({
   selector: 'app-creacion-propuesta',
   standalone: true,
-  imports: [MatDialogContent
-            , MatIcon
-            , InformacionGeneralComponent
-            , MatDialogClose
-            , MatIconButton
-            , AseguradoComponent
-            , MateriaAseguradaComponent
-            , MatCardActions
-            ,MatButton],
+  imports: [MatDialogContent,
+    MatIcon,
+    InformacionGeneralComponent,
+    MatDialogClose,
+    MatIconButton,
+    AseguradoComponent,
+    MateriaAseguradaComponent,
+    MatCardActions,
+    MatButton, DocAsociadosComponent],
   templateUrl: './creacion-propuesta.component.html',
   styleUrl: './creacion-propuesta.component.css'
 })

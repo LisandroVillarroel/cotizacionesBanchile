@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-consulta-solicitud-asegurado',
@@ -11,7 +12,8 @@ import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/
   imports: [MatInputModule,
   MatIconModule,
   MatDialogModule,
-  MatButtonModule,],
+  MatButtonModule,
+CabeceraPopupComponente],
   templateUrl: './consulta-solicitud-asegurado.component.html',
   styleUrl: './consulta-solicitud-asegurado.component.css'
 })

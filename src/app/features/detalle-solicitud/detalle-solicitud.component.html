@@ -1,11 +1,5 @@
 <mat-dialog-content class="container-fluid p-0">
-  <div class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
-    <h2>&nbsp; Detalle de solicitud - {{ idSolicitud }} </h2>
-    <button mat-icon-button mat-dialog-close [disabled]="false"
-      style="align-content: center; padding: 0px 0px 0px;">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+<app-cabecera-popup [titulo]="'Detalle de solicitud'"  />
 <mat-card>
   <mat-card-content>
     <mat-tab-group>
@@ -55,7 +49,8 @@
         </div>
       </mat-tab>
       <mat-tab label="Materia Asegurada">
-        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!" [muestraConsulta]="'NO'" />
+        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!"
+        [muestraConsulta]="false" />
       </mat-tab>
       <mat-tab label="Documentos Asociados">
         <div class="container-fluid">

@@ -20,6 +20,7 @@ import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicit
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-agrega-solicitud-beneficiario',
@@ -31,6 +32,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './agrega-solicitud-beneficiario.component.html',
   styleUrl: './agrega-solicitud-beneficiario.component.css',

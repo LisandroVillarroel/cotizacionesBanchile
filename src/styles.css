@@ -453,7 +453,6 @@ th#opcionesI {
     color: white;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 0px 0px 10px !important;
   }
 
   .barra-titulo-form * {
@@ -1121,4 +1120,13 @@ div:where(.swal2-container) div:where(.swal2-actions) {
   overflow-y: auto; /* Habilitar scroll vertical */
  /* padding: 16px;  Espaciado interno opcional */
   box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
+
+
+.mat-mdc-card-content:first-child {
+    padding-top: 0px !important;
+}
+
+.mat-mdc-card-content:first-child {
+    padding-top: 0px !important;
 }

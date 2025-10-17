@@ -24,6 +24,7 @@ import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-elimina-solicitud-asegurado',
@@ -35,6 +36,7 @@ import { StorageService } from '@shared/service/storage.service';
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './elimina-solicitud-asegurado.component.html',
   styleUrl: './elimina-solicitud-asegurado.component.css',

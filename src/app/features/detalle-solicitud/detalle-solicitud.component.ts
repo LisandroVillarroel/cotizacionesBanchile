@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIcon, MatIconModule } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
@@ -45,6 +45,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
 
@@ -62,7 +63,6 @@ import { CompaniasContactadasService } from './service/companias-contactadas.ser
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
-    MatIcon,
     MatToolbarModule,
     MatIconModule,
     MatTooltipModule,
@@ -70,6 +70,7 @@ import { CompaniasContactadasService } from './service/companias-contactadas.ser
     MatTabsModule,
     MatExpansionModule,
     CommonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
