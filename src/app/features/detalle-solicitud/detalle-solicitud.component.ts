@@ -39,7 +39,7 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
-import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
+import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
