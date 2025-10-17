@@ -1,27 +1,32 @@
-<mat-card class="container-fluid" style="padding: 0px 0px 0px; border-radius: 0px;">
-  <mat-card-title class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
-    <h2>Confirmación de Solicitud</h2>
-    <button mat-icon-button mat-dialog-close [disabled]="false"
-      style="padding: 0px 0px 0px;"><mat-icon>close</mat-icon>
-    </button>
-  </mat-card-title>
-  <mat-card-content>
-    <div class="d-flex justify-content-center align-items-center">
-      <mat-icon class="icono-verde-grande" fontIcon="task_alt"></mat-icon>
+<mat-dialog-content name="aprobarSolicitud" class="container-fluid p-0">
+  <app-cabecera-popup [titulo]="'Confirmación Aprobación Solicitud'"  />
+
+  <mat-card>
+    <mat-card-content>
+      <div class="d-flex" style="margin:auto;">
+          <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
+            &nbsp; La solicitud nro. {{ data.p_id_solicitud }}  será aprobada.</h3>
+      </div>
+      <mat-label>
+
+      </mat-label>
+      <mat-label class="gris">
+        Una vez aprobada estará disponible para ser enviada a las compañías de seguros.
+        Puedes hacerlo ingresando al detalle de la solicitud desde el menú de gestión
+        de solicitudes.<br><br>
+        ¿Desea continuar?
+      </mat-label>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+  <mat-card-actions>
+    <div class="container-fluid d-flex p-2">
+      <div class="botones-derecha">
+        <button mat-stroked-button class="btn-danger"
+          (click)="cancelar()">Cancelar</button>
+        <button mat-stroked-button class="btn-success"
+          (click)="aprobar()">Aprobar solicitud</button>
+      </div>
     </div>
-    <div class="contenido-dialogo">
-      <section>
-        <h3 class="titulo">La solicitud ha sido aprobada</h3>
-        <mat-label>
-          La solicitud {{ data.solicitudId }} ya esta disponible para ser enviada a las compañias de seguros.
-          Puedes hacerlo ingresando al detalle de la solicitud desde el menú de gestión de solicitudes.
-        </mat-label>
-      </section>
-    </div>
-    <div class="botones-derecha">
-      <button mat-stroked-button color="primary" class="botonesDetalle" (click)="confirmar()">
-        Ir a gestión de Solicitudes
-      </button>
-    </div>
-  </mat-card-content>
-</mat-card>
+  </mat-card-actions>

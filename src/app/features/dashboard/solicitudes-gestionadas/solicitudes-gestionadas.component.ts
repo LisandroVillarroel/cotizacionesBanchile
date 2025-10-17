@@ -203,7 +203,10 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
         }
-      }
+      },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
     });
   }
 
@@ -213,7 +216,10 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         if (dato.codigo === 200) {
           this.datosEstados.set(dato.p_cursor);
         }
-      }
+      },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
     });
   }
 
@@ -225,7 +231,10 @@ export class SolicitudesGestionadasComponent  implements OnInit {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
-      }
+      },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
     });
   }
 

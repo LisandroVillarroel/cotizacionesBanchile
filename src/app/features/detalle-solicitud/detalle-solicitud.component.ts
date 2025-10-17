@@ -26,7 +26,6 @@ import {
 import { IRequest } from '@shared/modelo/servicios-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
-import { AprobarSolicitudService } from './service/aprobar-solicitud.service';
 //Componentes reutilizados
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
@@ -48,6 +47,7 @@ import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordina
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
+import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -92,7 +92,6 @@ export default class DetalleSolicitudComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
-
   verEjec = true;
   verCoord = true;
 
@@ -101,9 +100,6 @@ export default class DetalleSolicitudComponent {
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
-
-  aprobarService = inject(AprobarSolicitudService);
-  apruebaRequest!: IRequest;
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -219,24 +215,24 @@ export default class DetalleSolicitudComponent {
   }
 
   aprobarSolicitud(): void {
-    this.apruebaRequest = {
+    const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
     };
+    const dialogConfig = new MatDialogConfig();
 
-    this.aprobarService
-      .postApruebaSolicitud(this.apruebaRequest)
-      .subscribe({
-        next: (dato) => {
-          console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
-              ' y está disponible para ser enviada a las compañías de seguros. \n' +
-              ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
-              ' de gestión de solicitudes.');
-          }
-        }
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AprobarSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
       });
   }
 
@@ -259,33 +255,10 @@ export default class DetalleSolicitudComponent {
       });
   }
 
-  /*   OJO   */
- corregirSolicitud(): void {
-    const dato = {
-      solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante,
-      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
-      rubro: this.infoGral()?.nombre_rubro,
-      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-    this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
-  }
-/*   OJO    */
-
   enviarCoordinador(): void {
     const dato = {
-      solicitudId: this.idSolicitud,
-      fecha: this.infoGral()?.fecha_creacion_solicitud,
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_ejecutivo,
     };
 
     const dialogConfig = new MatDialogConfig();

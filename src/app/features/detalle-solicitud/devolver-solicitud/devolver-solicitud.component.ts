@@ -19,6 +19,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { DevolverSolicitudService } from './devolver-solicitud.service';
 import { IDevuelveRequest } from './devolver-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 export interface DevolverConObservacionesData {
   [x: string]: any;
@@ -41,6 +42,7 @@ export interface DevolverConObservacionesData {
     MatDivider,
     MatTooltipModule,
     ReactiveFormsModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './devolver-solicitud.component.html',
   styleUrl: './devolver-solicitud.component.css'
@@ -93,7 +95,10 @@ export interface DevolverConObservacionesData {
           if (dato.codigo === 200) {
             this.confirmar();
           }
-        }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
       });
   }
 
