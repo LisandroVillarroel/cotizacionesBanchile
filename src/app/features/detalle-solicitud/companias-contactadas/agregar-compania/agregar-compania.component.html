@@ -1,0 +1,150 @@
+<div class="dialog-container">
+  <div class="barra-titulo titulomodal">
+    <h2>Enviar solicitud a Compañía</h2>
+    <button
+      type="button"
+      mat-icon-button
+      (click)="cerrar()"
+      aria-label="Cerrar"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="contenido-horizontal fondoGris">
+    <section>
+      <h3>Nueva solicitud</h3>
+      <div>{{ data.solicitudId }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Fecha</h3>
+      <div>{{ data.fecha }}</div>
+    </section>
+    <mat-divider vertical></mat-divider>
+    <section>
+      <h3>Ejecutivo</h3>
+      <div>{{ data.ejecutivo }}</div>
+    </section>
+  </div>
+  <div class="contenido-dialogo">
+    <section>
+      <h3 class="titulo">Información de Compañia a enviar</h3>
+      <mat-label class="margenLabel">1. Selecciona una compañía</mat-label>
+    </section>
+    <section>
+      <mat-radio-group
+        [(ngModel)]="companiaSeleccionada"
+        aria-label="Select an option"
+        class="radio-grid margenLabel"
+      >
+        <mat-radio-button value="1">CHUBB</mat-radio-button>
+        <mat-radio-button value="2">BSV</mat-radio-button>
+        <mat-radio-button value="3">ZURICH</mat-radio-button>
+        <mat-radio-button value="4">LIBERTY</mat-radio-button>
+        <mat-radio-button value="5">SURA</mat-radio-button>
+        <mat-radio-button value="6">SOUTHBRIDGE</mat-radio-button>
+        <mat-radio-button value="7">ORION</mat-radio-button>
+        <mat-radio-button value="8">MAPFRE</mat-radio-button>
+        <mat-radio-button value="9">HDI</mat-radio-button>
+      </mat-radio-group>
+    </section>
+    <section>
+      <mat-label class="margenLabel"
+        >2. Selecciona la o las casillas de destino</mat-label
+      >
+    </section>
+    <section class="example-section">
+      <div class="checkbox-input-pair">
+        <mat-checkbox #checkboxRef class="checkboxModal"
+          >Correo Electronico Ejecutivo 1</mat-checkbox
+        >
+        <input
+          class="card-borde2 col-md-6"
+          aria-label="Correo Electronico Ejecutivo 1"
+          matInput
+        />
+      </div>
+      <div class="checkbox-input-pair">
+        <mat-checkbox #checkboxRef class="checkboxModal"
+          >Correo Electronico Ejecutivo 2</mat-checkbox
+        >
+        <input
+          class="card-borde2 col-md-6"
+          aria-label="Correo Electronico Ejecutivo 2"
+          matInput
+        />
+      </div>
+      <div class="checkbox-input-pair">
+        <mat-checkbox #checkboxRef class="checkboxModal"
+          >Correo Electronico Ejecutivo 3</mat-checkbox
+        >
+        <input
+          class="card-borde2 col-md-6"
+          aria-label="Correo Electronico Ejecutivo 3"
+          matInput
+        />
+      </div>
+    </section>
+    <section>
+      <mat-label class="margenLabel">3. Detalle de la solicitud</mat-label>
+      <mat-form-field appearance="fill" class="textarea-grande col-md-12">
+        <mat-label>Ingrese detalles</mat-label>
+        <textarea
+          matInput
+          #message
+          maxlength="500"
+          rows="6"
+          aria-label="Ingrese detalles"
+        ></textarea>
+        <mat-hint align="end">{{ message.value.length }} / 500</mat-hint>
+      </mat-form-field>
+    </section>
+
+    <section>
+      <h3 class="titulo">Documentos a Enviar</h3>
+      <!-- <app-documentos-asociados [idSolicitud]="idSolicitudParametro()"/> -->
+      <div class="container mt-4">
+        <div class="row">
+          @for(registro of registros; track $index){
+          <div class="col-md-6 mb-4 altocard">
+            <div class="card anchoCard">
+              <h5 class="fw-bold">{{ registro.nombre }}</h5>
+              @if(registro.documentosAsociados!= '' &&
+              registro.documentosAsociados != null){
+              <div
+                class="d-flex justify-content-between align-items-center text-muted"
+              >
+                <div>{{ registro.documentosAsociados }}</div>
+              </div>
+              }@else{
+              <div class="text-muted">No hay documentos asociados.</div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="botones-derecha">
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      class="colorFondoBotonGuardar"
+      (click)="confirmar()"
+    >
+      Cerrar
+    </button>
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      class="botonesDetalle"
+      (click)="enviadoCia()"
+    >
+      Agregar
+    </button>
+  </div>
+</div>
+<p>agregar-compania works!</p>
