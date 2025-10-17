@@ -90,6 +90,7 @@ if (!idRubro || !idSeguro){
       .subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
+            console.log('rescata materia:',dato.p_cursor)
             this.datoMateria.set(dato.p_cursor);
             this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
 
@@ -204,7 +205,7 @@ if (!idRubro || !idSeguro){
               valoresFila[b].p_id_posicion;
             this.agregaFormControl(
               nombreCampo,
-              valoresFila[b].p_valor_dato,
+              valoresFila[b].p_valor_dato !==null ? valoresFila[b].p_valor_dato: '',
               false
             );
           }
@@ -226,6 +227,7 @@ if (!idRubro || !idSeguro){
 
 
   agregaFormControl(nombreCampo: string, ValorInicial: any, requerido: boolean): void {
+    console.log('nombreCampo:',nombreCampo,' ValorInicial:',ValorInicial)
     this.materiaForm().addControl(nombreCampo, new FormControl(ValorInicial.trim()));
   }
 
@@ -249,6 +251,8 @@ if (!idRubro || !idSeguro){
 
         if (nombreCampo == null)
           nombreCampo = ''
+        if (columna.p_tipo_dato === 'TITULO')
+          nombreCampo=columna.p_valor_dato;
 
         this.materiaIngresa.push({
           p_id_seccion: columna.p_id_seccion,
@@ -271,7 +275,9 @@ if (!idRubro || !idSeguro){
       items: this.materiaIngresa
     }
 
+    console.log('valor graba:',envioMateria);
     this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
+
       next: (dato) => {
         if (dato.codigo === 200) {
            this.notificacioAlertnService.success('MATERIA','Se guardó de forma Exitosa');
