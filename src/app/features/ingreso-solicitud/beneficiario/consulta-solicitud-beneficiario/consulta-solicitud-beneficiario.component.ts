@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { IBeneficiarioLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { IBeneficiarioLista } from '@features/ingreso-solicitud/modelo/ingresoSo
   imports: [MatInputModule,
   MatIconModule,
   MatDialogModule,
-  MatButtonModule,],
+  MatButtonModule,
+CabeceraPopupComponente],
   templateUrl: './consulta-solicitud-beneficiario.component.html',
   styleUrl: './consulta-solicitud-beneficiario.component.css'
 })

@@ -1120,3 +1120,12 @@ div:where(.swal2-container) div:where(.swal2-actions) {
  /* padding: 16px;  Espaciado interno opcional */
   box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
 }
+
+
+.mat-mdc-card-content:first-child {
+    padding-top: 0px !important;
+}
+
+.mat-mdc-card-content:first-child {
+    padding-top: 0px !important;
+}

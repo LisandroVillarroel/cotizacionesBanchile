@@ -18,6 +18,7 @@ import { BeneficiarioService } from '@features/ingreso-solicitud/service/benefic
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-elimina-solicitud-beneficiario',
@@ -29,6 +30,7 @@ import { StorageService } from '@shared/service/storage.service';
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './elimina-solicitud-beneficiario.component.html',
   styleUrl: './elimina-solicitud-beneficiario.component.css',
