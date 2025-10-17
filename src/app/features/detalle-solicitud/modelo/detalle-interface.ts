@@ -18,7 +18,7 @@ export interface ICompania{
 
   p_id_estado_cotizacion: number;
   p_id_nombre_estado_cotizacion: string;
-  p_fecha_creacion_cotizacion: string; //horas o días???
+  p_fecha_creacion_cotizacion: string;
   p_id_fecha_envio_cotizacion: string;
   p_id_fecha_recepcion_cotizacion: string;
   p_id_fecha_aprob_recha_cotizacion: string;
