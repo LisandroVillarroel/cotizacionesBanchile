@@ -39,7 +39,7 @@ import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.co
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 
 import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
-import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
+import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
@@ -280,11 +280,13 @@ export default class DetalleSolicitudComponent {
     this.dialog.open(EnviarCoordinadorComponent, dialogConfig).afterClosed();
   }
 
-  enviarCia(): void {
+  agregarCompania(): void {
     const dato = {
       solicitudId: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
+      id_rubro: this.infoGral()?.id_rubro,
+      id_tipo_seguro: this.infoGral()?.id_tipo_seguro
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -298,8 +300,9 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
+    this.dialog.open(AgregarCompaniaComponent, dialogConfig).afterClosed();
   }
+
   ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -321,8 +324,6 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
   }
 
-
-
   crearPropuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -343,7 +344,4 @@ export default class DetalleSolicitudComponent {
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
   }
-
-
-
 }
