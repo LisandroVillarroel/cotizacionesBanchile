@@ -112,6 +112,16 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   dataSourceSolicitud = computed(() => {
     const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
+    /* if(this.verEjec){
+      var tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
+    }else{
+      var datos = computed( () =>
+          this.datosSolicitud()?.filter(item =>{
+            item.descripcion_estado?.toLowerCase() === "edicion"})
+      )
+      var tabla = new MatTableDataSource<IListadoSolicitudes>(datos());
+    }
+ */
     this.setSortingAndPagination(tabla);
     return tabla
   });
@@ -251,6 +261,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
+      .subscribe((dato)=>{
+        history.go();
+      });
   }
 
   getEstadoFiltrado(idEstado: number){

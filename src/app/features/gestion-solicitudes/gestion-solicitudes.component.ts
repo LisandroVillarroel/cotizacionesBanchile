@@ -43,16 +43,16 @@ export default class GestionSolicitudesComponent {
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   gestionService = inject(GestionSolicitudesService);
 
-  nuevas = computed(() => { return this.datosSolicitud().filter( (r) =>
-    r.nombre_estado_solicitud.toLowerCase().includes("revision"))
+  nuevas = computed(() => { return this.datosSolicitud().filter( r =>
+    r.nombre_estado_solicitud?.toLowerCase()?.includes("revision"))
   });
 
   devueltas = computed(() => { return this.datosSolicitud()!.filter(r =>
-    r.nombre_estado_solicitud?.toLowerCase().includes("devuelta"))
+    r.nombre_estado_solicitud?.toLowerCase()?.includes("devuelta"))
   });
 
   cotizadas = computed(() => { return this.datosSolicitud()!.filter(r =>
-    r.nombre_estado_solicitud?.toLowerCase().includes("cotizacion"))
+    r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
   });
 
   async ngOnInit(){
@@ -67,7 +67,15 @@ export default class GestionSolicitudesComponent {
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: any) => {
         if (dato.codigo === 200) {
-          this.datosSolicitud.set(dato.ps_cursor);
+          let res = dato.ps_cursor;
+          res.map((valor: ISolicitudG)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.nombre_contratante === null ||
+                valor.nombre_contratante ==="") ? "-" : valor.nombre_contratante
+            }
+          })
+          this.datosSolicitud.set(res);
         }
       }
     });

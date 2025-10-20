@@ -108,6 +108,7 @@ export default class DetalleSolicitudComponent {
   flagCompania = true;
   flagCoordinador = true;
   flagPropuesta = true;
+  flagCotizacion = true;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
@@ -131,6 +132,7 @@ export default class DetalleSolicitudComponent {
     this.flagCompania = true;
     this.flagCoordinador = true;
     this.flagPropuesta = true;
+    this.flagCotizacion = true;
 
     this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
@@ -158,20 +160,23 @@ export default class DetalleSolicitudComponent {
           if(this.edoSolicitud()! !== "Anulada" &&
              this.edoSolicitud()! !== "Terminada" &&
              this.edoSolicitud()! !== "Propuesta Pendiente" &&
-             this.edoSolicitud()! !== "Propuesta emitida")
+             this.edoSolicitud()! !== "Propuesta Emitida")
           {
             this.flagAnular = false;
-            this.flagPropuesta = false;
+            //this.flagPropuesta = false;
             if(this.edoSolicitud()! === "Aprobada"){
               this.flagCompania = false;
             }
             if(this.edoSolicitud()! === "Edicion" || this.edoSolicitud()! === "Devuelta"){
               this.flagCoordinador = false;
             }
-            if( this.edoSolicitud()! === "Revision"){
+            if( this.edoSolicitud()!.toUpperCase() === "REVISION"){
               this.flagDevolver = false;
               this.flagAprobar = false;
             }
+          }
+          if(this.edoSolicitud()! === "Propuesta Pendiente"){
+            this.flagPropuesta = false;
           }
         /* Fin BackEnd */
         }
@@ -271,7 +276,12 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarCoordinadorComponent, dialogConfig).afterClosed();
+    this.dialog
+      .open(EnviarCoordinadorComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
 
   enviarCia(): void {
@@ -292,8 +302,14 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
+    this.dialog
+      .open(EnviarACompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
+
   ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -313,9 +329,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-  }
-
-
+    }
 
   crearPropuesta(): void {
     const dato = {

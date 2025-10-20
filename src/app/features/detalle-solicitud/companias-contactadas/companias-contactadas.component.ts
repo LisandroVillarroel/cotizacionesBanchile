@@ -58,10 +58,21 @@ export class CompaniasContactadasComponent {
       'color': color,
       'background-color': fondo,
       'border': '1px solid' + color,
-      'width': '170px',
+      'width': '130px',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'
     };
   }
+
+
+    EnviarCia(idCotizacion: string){
+
+    }
+
+    verCotiPropuesta(idCotizacion: string){
+
+    }
+
+    registrarRespuesta(idCotizacion: string){}
 }

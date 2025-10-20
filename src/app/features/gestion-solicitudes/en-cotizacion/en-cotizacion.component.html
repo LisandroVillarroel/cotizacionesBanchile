@@ -100,7 +100,7 @@
                   <p class="fontLarge">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
-                <div class="p-2" style="width: 5%; align-content: center;">
+                <div class="p-2 d-flex fontSmall" style="width: 15%; align-content: center;">
                     <button
                       matTooltip="Ver detalles"
                       mat-icon-button
@@ -136,13 +136,7 @@
                     <p class="fontSmall">Estado cotización</p>
                     <p class="fontLarge">{{obj.nombre_estado_cotizacion}}</p>
                   </div>
-                  @if(obj.nombre_estado_cotizacion === "recibida"){
-                    <mat-divider [vertical]="true"></mat-divider>
-                    <div class ="p-2" style="width: 15%;">
-                      <p class="fontSmall">Ver cotipropuesta</p>
-                      <mat-icon>visibility</mat-icon>
-                    </div>
-                  }
+
                 </mat-card-content>
               </mat-card>
             </div>

@@ -194,6 +194,8 @@ export class ConObservacionesComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
+      .subscribe((dato)=>{
+        history.go();
+      });
   }
-
 }

@@ -96,7 +96,7 @@ export class NuevasComponent {
 
     this.formularioModificado();
     return this.nuevas()!.filter(item => {
-      const cumpleContratante = item.nombre_contratante.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
       let cumpleFecha=true;
