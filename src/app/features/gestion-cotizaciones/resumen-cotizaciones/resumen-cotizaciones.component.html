@@ -1,0 +1,44 @@
+  <mat-card class="alinea-card-gestion" >
+    <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px;">
+      <h2 mat-dialog-title class="destacado">Resumen general de cotizaciones</h2>
+    </mat-card-title>
+
+    <mat-card-content class="d-flex p-2 mt-0 justify-around" style="width: 100%;">
+      <mat-card class="d-flex" style="width: 24%;">
+        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
+          <div class="container-fluid alinea-cards">
+            <p>Recibidas:</p></div>
+          <div class="container-fluid alinea-cards-2">
+          <h2 class="destacado">{{resumenGeneral()?.p_EnProceso}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="d-flex" style="width: 24%;">
+        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
+          <div class="container-fluid alinea-cards">
+            <p>Pendientes</p></div>
+          <div class="container-fluid alinea-cards-2">
+          <h2 class="destacado">{{resumenGeneral()?.p_EsperandoRespuesta}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="d-flex" style="width: 24%;">
+        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
+          <div class="container-fluid alinea-cards">
+            <p>Cotizadas</p></div>
+          <div class="container-fluid  alinea-cards-2">
+          <h2 class="destacado">{{resumenGeneral()?.p_Aprobadas}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="d-flex" style="width: 24%;">
+        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
+          <div class="container-fluid alinea-cards">
+            <p>Firmadas</p></div>
+          <div class="container-fluid alinea-cards-2">
+          <h2 class="destacado">{{resumenGeneral()?.p_Firmadas}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>

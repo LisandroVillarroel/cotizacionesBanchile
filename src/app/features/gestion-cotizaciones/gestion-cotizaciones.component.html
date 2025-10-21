@@ -1,0 +1,27 @@
+  <div class="container-fluid d-flex justify-around p-0 mb-4">
+    <h1 mat-dialog-title class="titulo">Gestión de solicitudes</h1>
+  </div>
+  <app-resumen-general [datoResumenGeneral]="resumenGeneral()"/>
+
+<div  class="container-fluid fondoGris p-0 ">
+    <mat-tab-group>
+      <mat-tab label="Solicitudes Nuevas">
+        <div class="container-fluid">
+          <app-nuevas [nuevas]="nuevas()"/>
+        </div>
+      </mat-tab>
+      <mat-tab label="Solicitudes Con Observaciones">
+        <div class="container-fluid ">
+          <app-con-observaciones [devueltas]="devueltas()"/>
+        </div>
+      </mat-tab>
+      <mat-tab label="Solicitudes en Cotización">
+        <div class="container-fluid ">
+          <app-en-cotizacion [cotizadas]="cotizadas()"/>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+<!--   </mat-card-content>
+</mat-card>
+ -->
+</div>

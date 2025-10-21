@@ -72,6 +72,10 @@
           [hidden]="this.flagAnular"
           (click)="anularSolicitud()">Anular Solicitud</button>
 
+        <button mat-stroked-button class="btn-primary"
+          [disabled]="this.flagCoordinador" [hidden]="this.verCoord"
+          (click)="enviarCoordinador()">Enviar a Coordinador</button>
+
         <button mat-stroked-button class="btn-warning"
           [hidden]="this.flagDevolver || this.verEjec"
           (click)="devolverSolicitud()">Devolver solicitud</button>
@@ -82,11 +86,11 @@
 
         <button mat-stroked-button class="btn-info"
           [hidden]="this.flagCompania || this.verEjec"
-          (click)="enviarCia()">Agregar Compañía</button>
+          (click)="agregarCia()">Agregar Compañía</button>
 
-        <button mat-stroked-button class="btn-primary"
-          [disabled]="this.flagCoordinador" [hidden]="this.verCoord"
-          (click)="enviarCoordinador()">Enviar a Coordinador</button>
+        <button mat-stroked-button class="btn-info"
+          [hidden]="this.flagCotizacion || this.verEjec"
+          (click)="enviarCia()">Enviar a Compañía(s)</button>
 
         <button mat-stroked-button class="btn-danger"
           [hidden]="this.flagCompania || this.verEjec"

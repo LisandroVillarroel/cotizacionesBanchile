@@ -65,14 +65,11 @@ export class CompaniasContactadasComponent {
     };
   }
 
+  verCotizacion(idCotizacion: string){
+  }
 
-    EnviarCia(idCotizacion: string){
+  verCotiPropuesta(idCotizacion: string){
+  }
 
-    }
-
-    verCotiPropuesta(idCotizacion: string){
-
-    }
-
-    registrarRespuesta(idCotizacion: string){}
+  registrarRespuesta(idCotizacion: string){}
 }

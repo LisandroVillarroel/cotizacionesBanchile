@@ -23,7 +23,6 @@ import {
   ICompaniaResponse,
   IObservacion,
   ISolicitud } from './modelo/detalle-interface';
-import { IRequest } from '@shared/modelo/servicios-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 //Componentes reutilizados
@@ -38,7 +37,6 @@ import { CompaniasContactadasComponent } from './companias-contactadas/companias
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 
-import { CorregirSolicitudComponent } from './corregir-solicitud/corregir-solicitud.component';
 import { EnviarACompaniaComponent } from './companias/enviar-a-compania/enviar-a-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
@@ -88,7 +86,7 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
-  tipo_ejec = this._storage()?.usuarioLogin.usuario!.substring(0,1);
+  tipo_ejec = (this._storage()?.usuarioLogin.usuario!.substring(0,1))?.toUpperCase();
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -113,14 +111,14 @@ export default class DetalleSolicitudComponent {
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
-    switch(this._storage()?.usuarioLogin.perfilUsuario!){
-      case "PCSE_EJCBCO":
+    switch(this.tipo_ejec){
+      case "E":
         this.verCoord = false; break;
-      case "PCSE_COORDBCS":
+      case "C":
         this.verEjec = false; break;
-      case "PCSE_SUPBCS":
+      case "S":
         this.verEjec = false; this.verCoord = false; break;
-      case "PCSE_ADMIN":
+      case "A":
         this.verEjec = false; this.verCoord = false; break;
     }
   }
@@ -174,6 +172,9 @@ export default class DetalleSolicitudComponent {
               this.flagDevolver = false;
               this.flagAprobar = false;
             }
+            if(this.edoSolicitud()! === "Cotizacion"){
+              this.flagCotizacion = false;
+            }
           }
           if(this.edoSolicitud()! === "Propuesta Pendiente"){
             this.flagPropuesta = false;
@@ -222,7 +223,7 @@ export default class DetalleSolicitudComponent {
   aprobarSolicitud(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_id_usuario: this.id_ejecutivo,
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -284,6 +285,10 @@ export default class DetalleSolicitudComponent {
       });
   }
 
+  agregarCia(): void{
+
+  }
+
   enviarCia(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
@@ -292,7 +297,6 @@ export default class DetalleSolicitudComponent {
     };
 
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 

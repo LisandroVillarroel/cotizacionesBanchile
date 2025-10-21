@@ -65,7 +65,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
 
-  tipoUsuario = "E"; //OJO!!! buscar en storage
+  tipoUsuario = (this._storage()?.usuarioLogin.usuario!.substring(0,1))?.toUpperCase();
+  //"E"; //OJO!!! buscar en storage
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
@@ -110,20 +111,23 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     "accion"
   ];
 
+  solicitudesCoord(){
+    return this.datosSolicitud()?.filter(item =>{
+      return !item.descripcion_estado?.toLowerCase().includes("edicion")})
+  }
+
   dataSourceSolicitud = computed(() => {
-    const tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
-    /* if(this.verEjec){
-      var tabla = new MatTableDataSource<IListadoSolicitudes>(this.datosSolicitud());
+    var tabla =new MatTableDataSource<IListadoSolicitudes>();
+      console.log("Solicitudes coord: ",this.solicitudesCoord());
+      console.log("Solicitudes: ",this.datosSolicitud());
+
+    if(this.tipoUsuario === "C"){
+      tabla.data = this.solicitudesCoord()!;
     }else{
-      var datos = computed( () =>
-          this.datosSolicitud()?.filter(item =>{
-            item.descripcion_estado?.toLowerCase() === "edicion"})
-      )
-      var tabla = new MatTableDataSource<IListadoSolicitudes>(datos());
+      tabla.data = this.datosSolicitud()!;
     }
- */
     this.setSortingAndPagination(tabla);
-    return tabla
+    return tabla;
   });
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -191,14 +195,14 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       this.updateTableData();
     });
 
-    switch(this._storage()?.usuarioLogin.perfilUsuario!){
-      case "PCSE_EJCBCO":
+    switch(this.tipoUsuario){
+      case "E":
         this.verCoord = false; break;
-      case "PCSE_COORDBCS":
+      case "C":
         this.verEjec = false; break;
-      case "PCSE_SUPBCS":
+      case "S":
         this.verEjec = false; this.verCoord = false; break;
-      case "PCSE_ADMIN":
+      case "A":
         this.verEjec = false; this.verCoord = false; break;
     }
   }

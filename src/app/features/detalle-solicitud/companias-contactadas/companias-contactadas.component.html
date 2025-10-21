@@ -29,20 +29,13 @@
             <div class="gap-2 d-flex"
                 style="align-content: center; border-radius: 0px; text-align: end;">
               <button class="button-link"
-                matTooltip="Ver compañía"
+                matTooltip="Ver cotización"
                  mat-icon-button
-                (click)="EnviarCia(obj.p_id_cotizacion_compania)"
+                (click)="verCotizacion(obj.p_id_cotizacion_compania)"
               >
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>
             <!-- @if(obj.nombre_estado_cotizacion === "Pendiente"){ -->
-              <button class="button-link"
-                matTooltip="Enviar a compañía"
-                mat-icon-button
-                (click)="EnviarCia(obj.p_id_cotizacion_compania)"
-              >
-                <mat-icon class="destacado">email</mat-icon>
-              </button>
               <button class="button-link"
                 matTooltip="Registrar respuesta"
                 mat-icon-button
@@ -51,7 +44,7 @@
                 <mat-icon class="destacado">edit_square</mat-icon>
               </button>
             <!-- } -->
-            @if(obj.p_id_nombre_estado_cotizacion === "Recibida"){
+            <!-- @if(obj.p_id_nombre_estado_cotizacion === "Recibida"){ -->
               <button class="button-link"
                 matTooltip="Ver cotipropuesta"
                 mat-icon-button
@@ -59,7 +52,7 @@
               >
                 <mat-icon class="destacado">preview</mat-icon>
               </button>
-            }
+            <!-- } -->
             </div>
           </div>
         </mat-card-content>
