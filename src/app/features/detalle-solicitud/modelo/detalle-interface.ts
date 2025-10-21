@@ -47,6 +47,7 @@ export interface ICompania {
   p_usuario_creacion: string;
   p_fecha_modificacion: string;
   p_usuario_modificacion: string;
+  p_dias_transcurridos: number
 }
 
 export interface ICompanias {

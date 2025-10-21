@@ -1,29 +1,28 @@
 import {
   Component,
   Inject,
-  input,
-  QueryList,
+  inject,
   signal,
-  ViewChildren,
 } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialogConfig,
   MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormField } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
-import { SolicitudEnviadaCiaComponent } from './solicitud-enviada-cia/solicitud-enviada-cia.component';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { IRequestG } from '@shared/modelo/servicios-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { EnviarCoordinadorService } from '@features/detalle-solicitud/enviar-coordinador/enviar-coordinador.service';
+import { MatInputModule } from '@angular/material/input';
 
 export interface EnviarACompaniaData {
   solicitudId: string;
@@ -40,69 +39,61 @@ export interface EnviarACompaniaData {
     MatDialogModule,
     MatButtonModule,
     MatCardModule,
-    MatFormField,
     MatInputModule,
     FormsModule,
     MatDivider,
-    MatRadioGroup,
-    MatRadioButton,
-    MatCheckbox,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './enviar-a-compania.component.html',
   styleUrl: './enviar-a-compania.component.css',
 })
 
 export class EnviarACompaniaComponent {
-  idSolicitud = input.required<string>();
-  idSolicitudParametro=signal<string>('175')
-  @ViewChildren('checkboxRef') checkboxes!: QueryList<MatCheckbox>;
-  companiaSeleccionada: string | null = null;
+
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<EnviarACompaniaComponent>,
-    //private documentosService: DocumentosAsociadosService,
-    @Inject(MAT_DIALOG_DATA) public data: EnviarACompaniaData
+    @Inject(MAT_DIALOG_DATA) public data: IRequestG
   ) {}
 
-    registros: any[] = [];
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  idUsuario = this._storage()?.usuarioLogin.usuario!;
 
-    ngOnInit(): void {
-      //this.registros = this.documentosService.obtenerRegistrosConDocumentos();
-    }
+  notificacioAlertnService = inject(NotificacioAlertnService);
+  enviarCoordinadorService = inject(EnviarCoordinadorService);
+  enviarRequest!: IRequestG;
 
   cerrar(): void {
     this.dialogRef.close();
   }
 
-  confirmar(): void {
-    this.dialogRef.close('confirmado');
+  cancelar(): void {
+    this.dialogRef.close('cancelado');
   }
 
-  enviadoCia(): void {
-    const mailMarcado = this.checkboxes.some(cb => cb.checked);
-    if (!this.companiaSeleccionada) {
-      alert('Debes seleccionar una compañía antes de continuar.');
-      return;
-    }
-    if (!mailMarcado) {
-      alert('Debes marcar al menos una casilla de correo electrónico.');
-      return;
-    }
-
-    const dato = {
-      solicitudId: this.data.solicitudId,
-      fecha: this.data.fecha,
-      ejecutivo: this.data.ejecutivo,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '600px';
-    dialogConfig.maxHeight = '90vh';
-    dialogConfig.panelClass = 'custom-dialog-container';
-    dialogConfig.data = dato;
-    this.dialog.open(SolicitudEnviadaCiaComponent, dialogConfig).afterClosed();
+  enviar(): void {
+    this.enviarCoordinadorService
+      .postEnviaSolicitud(this.data)
+      .subscribe({
+        next: (dato) => {
+          if (dato.codigo === 200) {
+            this.confirmar();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
+      });
   }
-  observaciones: string = '';
+
+  async confirmar(){
+    const result = await this.notificacioAlertnService
+        .confirmacion("La solicitud ha sido enviada exitosamente","");
+    if (result) {
+      this.dialogRef.close(true);
+    }
+  }
 }

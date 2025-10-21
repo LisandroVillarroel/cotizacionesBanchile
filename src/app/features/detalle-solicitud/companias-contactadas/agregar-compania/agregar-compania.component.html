@@ -1,123 +1,113 @@
-<div class="dialog-container">
+<mat-dialog-content name="enviarSolicitud" class="container-fluid p-0"
+  [formGroup]="agregaCompania()">
+
   <app-cabecera-popup [titulo]="'Agregar Compañía'" />
-  <div class="contenido-horizontal fondoGris">
-    <section>
-      <h3>Nueva solicitud</h3>
-      <div>{{ data.solicitudId }}</div>
-    </section>
-    <mat-divider vertical></mat-divider>
-    <section>
-      <h3>Fecha</h3>
-      <div>{{ data.fecha }}</div>
-    </section>
-    <mat-divider vertical></mat-divider>
-    <section>
-      <h3>Ejecutivo</h3>
-      <div>{{ data.ejecutivo }}</div>
-    </section>
-  </div>
-  <div class="contenido-dialogo">
-    <section>
-      <h3 class="titulo">Información de compañia a incoporar</h3>
-      <mat-label class="margenLabel">1. Selecciona una compañía</mat-label>
-    </section>
-    <section>
-      <mat-form-field class="col-md-12">
-        <mat-label>Compañía</mat-label>
-        <mat-select
-          [formControl]="compania"
-          (selectionChange)="actualizarCorreo($event.value)"
-        >
-          @for (_compania of datoCompanias(); track _compania) {
-          <mat-option [value]="_compania">
-            {{ _compania.nombre_compania_seguro }}
-          </mat-option>
-          }
-        </mat-select>
-
-        @if(compania.invalid) {
-        <mat-error>{{ getErrorMessage(compania) }}</mat-error>
-        }
-      </mat-form-field>
-    </section>
-    <section class="example-section">
-      <div class="checkbox-input-pair">
-        Correos de compañía seleccionada:
-        <div class="col-md-12">
-          <mat-form-field class="inputInput">
-            <input
-              matInput
-              disabled
-              aria-label="Correo de compañía"
-              [value]="correoCompania()"
-            />
-          </mat-form-field>
-        </div>
+  <mat-card>
+    <mat-card-header class="fondoGris d-flex justify-around">
+      <div style="width: 20%;">
+        <p class="destacado">ID solicitud</p>
+        <p >{{ data.p_id_solicitud }}</p>
       </div>
-    </section>
-    <section>
-      <mat-label class="margenLabel"
-        >3. Detalle del ingreso de compañía</mat-label
-      >
-      <mat-form-field appearance="fill" class="textarea-grande col-md-12">
-        <mat-label>Ingrese detalles</mat-label>
-        <textarea
-          matInput
-          [formControl]="detalleControl"
-          maxlength="500"
-          rows="6"
-          aria-label="Ingrese detalles"
-        ></textarea>
-        <mat-hint align="end"
-          >{{ detalleControl.value?.length || 0 }} / 500</mat-hint
-        >
-      </mat-form-field>
-    </section>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Fecha</p>
+        <p>{{ data.fecha }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Ejecutivo</p>
+        <p>{{ data.ejecutivo }}</p>
+      </div>
+    </mat-card-header>
 
-    <!-- <section>
-      <h3 class="titulo">Documentos a Enviar</h3>
-      <app-documentos-asociados [idSolicitud]="idSolicitudParametro()"/>
-      <div class="container mt-4">
-        <div class="row">
-          @for(registro of registros; track $index){
-          <div class="col-md-6 mb-4 altocard">
-            <div class="card anchoCard">
-              <h5 class="fw-bold">{{ registro.nombre }}</h5>
-              @if(registro.documentosAsociados!= '' &&
-              registro.documentosAsociados != null){
-              <div
-                class="d-flex justify-content-between align-items-center text-muted"
-              >
-                <div>{{ registro.documentosAsociados }}</div>
-              </div>
-              }@else{
-              <div class="text-muted">No hay documentos asociados.</div>
-              }
-            </div>
+    <mat-card-content>
+      <section>
+        <h3 class="titulo">Información de compañía a incoporar</h3>
+        <mat-label class="margenLabel">1. Selecciona una compañía</mat-label>
+      </section>
+      <section>
+        <mat-form-field class="col-md-12">
+          <mat-label>Compañía</mat-label>
+          <mat-select
+            [formControl]="compania"
+            (selectionChange)="actualizarCorreo($event.value)">
+            @for (_compania of datoCompanias(); track _compania) {
+              <mat-option [value]="_compania.id_compania_seguro">
+                {{ _compania.nombre_compania_seguro }}
+              </mat-option>
+            }
+          </mat-select>
+
+          @if(compania.invalid) {
+            <mat-error>{{ getErrorMessage(compania) }}</mat-error>
+          }
+        </mat-form-field>
+      </section>
+      <section class="example-section">
+        <div class="checkbox-input-pair">
+          Correos de compañía seleccionada:
+          <div class="col-md-12">
+            <mat-form-field class="inputInput">
+              <input
+                matInput
+                disabled
+                aria-label="Correo de compañía"
+                [value]="correoCompania()" />
+            </mat-form-field>
           </div>
-          }
         </div>
+      </section>
+      <section>
+        <mat-label class="margenLabel">
+          3. Detalle del ingreso de compañía
+        </mat-label>
+        <mat-form-field class="textarea-grande col-md-12">
+          <mat-label>Ingrese detalles</mat-label>
+          <textarea
+            matInput
+            [formControl]="detalleControl"
+            maxlength="500"
+            rows="6"
+            aria-label="Ingrese detalles">
+          </textarea>
+          <mat-hint align="end">
+            {{ detalleControl.value?.length || 0 }} / 500
+          </mat-hint>
+        </mat-form-field>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+
+  <mat-card-actions>
+      <!-- <div class="container-fluid d-flex p-2">
+        <div class="botones-derecha">
+          <button mat-stroked-button class="btn-danger"
+            (click)="cancelar()">Cancelar</button>
+          <button mat-stroked-button class="btn-success"
+            [disabled]="motivo.value === null || motivo.value === ''"
+            (click)="devolver()">Confirmar devolución</button>
+        </div>
+      </div> -->
+    <div class="container-fluid d-flex p-2 mt-5">
+      <div class="botones-derecha">
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          class="colorFondoBotonGuardar"
+          (click)="cerrar()"
+        > Cerrar
+        </button>
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          class="botonesDetalle"
+          [disabled]="detalleControl.value === null || detalleControl.value === ''"
+          (click)="guardarCompania()">
+          Agregar
+        </button>
       </div>
-    </section> -->
-  </div>
-  <div class="botones-derecha">
-    <button
-      type="button"
-      mat-stroked-button
-      color="primary"
-      class="colorFondoBotonGuardar"
-      (click)="cerrar()"
-    >
-      Cerrar
-    </button>
-    <button
-      type="button"
-      mat-stroked-button
-      color="primary"
-      class="botonesDetalle"
-      (click)="guardarCompania()"
-    >
-      Agregar
-    </button>
-  </div>
-</div>
+    </div>
+  </mat-card-actions>

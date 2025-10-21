@@ -32,6 +32,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
   templateUrl: './enviar-coordinador.component.html',
   styleUrls: ['./enviar-coordinador.component.css']
 })
+
 export class EnviarCoordinadorComponent {
 
   constructor(

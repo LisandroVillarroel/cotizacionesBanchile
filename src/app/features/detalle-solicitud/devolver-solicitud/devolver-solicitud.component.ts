@@ -62,7 +62,7 @@ export interface DevolverConObservacionesData {
   idUsuario = this._storage()?.usuarioLogin.usuario!;
   devolverService = inject(DevolverSolicitudService);
   devolverRequest!: IDevuelveRequest;
-  motivo = new FormControl('', [Validators.required]);
+  motivo = new FormControl('', [Validators.required, Validators.maxLength(500)]);
   devolverSolicitud= signal<FormGroup>(
     new FormGroup({
         motivo: this.motivo
@@ -91,7 +91,6 @@ export interface DevolverConObservacionesData {
       .postDevuelveSolicitud(this.devolverRequest)
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.confirmar();
           }

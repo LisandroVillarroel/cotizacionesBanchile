@@ -8,8 +8,6 @@ import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatTooltip } from "@angular/material/tooltip";
-import { EnviarACompaniaComponent } from '../companias/enviar-a-compania/enviar-a-compania.component';
-import { MatDialogConfig } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
