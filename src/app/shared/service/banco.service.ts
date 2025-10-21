@@ -19,7 +19,7 @@ export class BancoService {
 
      postBanco(): Observable<InterfazBanco> {
        return this.http
-         .get<InterfazBanco>(`${environment.apiUrl}/listarBanco`,{headers: this.headers})
+         .get<InterfazBanco>(`${environment.apiUrlConsumer}/listarBanco`,{headers: this.headers})
          .pipe(retry(1), catchError(this.errorHandl));
      }
 

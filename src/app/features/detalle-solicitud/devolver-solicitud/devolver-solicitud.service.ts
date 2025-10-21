@@ -25,7 +25,7 @@ export class DevolverSolicitudService {
   postDevuelveSolicitud(devuelveSolicitud: IDevuelveRequest): Observable<IResponse> {
     //console.log('Devuelve Solicitud Service:', devuelveSolicitud);
     return this.http.post<IResponse>(
-        `${environment.apiUrl}/devolverSolicitud`,
+        `${environment.apiUrlConsumer}/devolverSolicitud`,
         devuelveSolicitud, { headers: this.headers, }
       )
   }

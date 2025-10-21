@@ -55,7 +55,7 @@ export class CuestionarioService {
     console.log('Agrega Documento Service:', agregaDocumento);
     return this.http
       .post<IEstadoIngresarDocumento>(
-        `${environment.apiUrl}/ingresarDocumento`,
+        `${environment.apiUrlConsumer}/ingresarDocumento`,
         agregaDocumento,
         { headers: this.headers }
       )
@@ -65,7 +65,7 @@ export class CuestionarioService {
     console.log('Modifica Documento Service:', modificaDocumento);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/modificarDocumentos`,
+        `${environment.apiUrlConsumer}/modificarDocumentos`,
         modificaDocumento,
         {
           headers: this.headers,
@@ -79,7 +79,7 @@ export class CuestionarioService {
     corr: number,
     usuario: string
   ): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/eliminarDocumentos`, {
+    return this.http.post<any>(`${environment.apiUrlConsumer}/eliminarDocumentos`, {
       p_id_solicitud: idSolicitud,
       p_corr_documento: corr,
       p_fecha_modificacion: new Date().toISOString(),
@@ -90,7 +90,7 @@ export class CuestionarioService {
   postListadoDocumento(filtro: any): Observable<DatosDocumentoInterface> {
     return this.http
       .post<DatosDocumentoInterface>(
-        `${environment.apiUrl}/consultarDocumentos`,
+        `${environment.apiUrlConsumer}/consultarDocumentos`,
         filtro,
         { headers: this.headers }
       )

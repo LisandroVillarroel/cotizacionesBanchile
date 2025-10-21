@@ -20,7 +20,7 @@ export class DetalleSolicitudService {
   postDetalle(IdSolicitud: number): Observable<DetalleSolicitudInterface> {
     const parametro = {p_id_solicitud: IdSolicitud};
     return this.http
-      .post<DetalleSolicitudInterface>(`${environment.apiUrl}/detalleSolicitud`, parametro,{headers: this.headers})
+      .post<DetalleSolicitudInterface>(`${environment.apiUrlConsumer}/detalleSolicitud`, parametro,{headers: this.headers})
   }
 
 }

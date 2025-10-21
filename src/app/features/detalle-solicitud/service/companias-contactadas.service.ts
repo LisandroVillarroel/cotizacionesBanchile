@@ -24,7 +24,7 @@ export class CompaniasContactadasService {
   postCompanias(IdSolicitud: number): Observable<ICompaniaResponse> {
     const parametro = { p_id_solicitud: IdSolicitud };
     return this.http.post<ICompaniaResponse>(
-      `${environment.apiUrl}/listarCompaniasContactadas`,
+      `${environment.apiUrlConsumer}/listarCompaniasContactadas`,
       parametro,
       { headers: this.headers }
     );
@@ -33,7 +33,7 @@ export class CompaniasContactadasService {
   postCompaniasTipoSeguro(filtro: any): Observable<ICompaniasResponse> {
     return this.http
       .post<ICompaniasResponse>(
-        `${environment.apiUrl}/listarCompaniasTipoSeguro`,
+        `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
         filtro,
         { headers: this.headers }
       )
@@ -44,7 +44,7 @@ export class CompaniasContactadasService {
   ): Observable<any> {
     console.log('Agrega Compañía Service:', agregarCompaniasSolicitud);
     return this.http.post<any>(
-      `${environment.apiUrl}/agregarCompaniasSolicitud`,
+      `${environment.apiUrlConsumer}/agregarCompaniasSolicitud`,
       agregarCompaniasSolicitud,
       {
         headers: this.headers,

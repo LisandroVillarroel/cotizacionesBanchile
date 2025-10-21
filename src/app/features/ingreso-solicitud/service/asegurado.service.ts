@@ -26,7 +26,7 @@ export class AseguradoService {
   postAgregaAsegurado(agregaAsegurado: IAgregaAsegurado): Observable<any> {
     console.log('Agrega Asegurado Service:', agregaAsegurado);
     return this.http
-      .post<any>(`${environment.apiUrl}/ingresarAsegurado`, agregaAsegurado, {
+      .post<any>(`${environment.apiUrlConsumer}/ingresarAsegurado`, agregaAsegurado, {
         headers: this.headers,
       })
   }
@@ -35,7 +35,7 @@ export class AseguradoService {
     console.log('Modifica Asegurado Service:', modificaAsegurado);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/modificarAsegurado`,
+        `${environment.apiUrlConsumer}/modificarAsegurado`,
         modificaAsegurado,
         {
           headers: this.headers,
@@ -53,7 +53,7 @@ export class AseguradoService {
     };
     console.log('Parametro Elimina Asegurado:', parametro);
     return this.http
-      .post<any>(`${environment.apiUrl}/eliminarAsegurado`, parametro, {
+      .post<any>(`${environment.apiUrlConsumer}/eliminarAsegurado`, parametro, {
         headers: this.headers,
       })
   }
@@ -61,7 +61,7 @@ export class AseguradoService {
   postListadoAsegurado(filtro: any): Observable<DatosAseguradosInterface> {
     return this.http
       .post<DatosAseguradosInterface>(
-        `${environment.apiUrl}/listarAsegurados`,
+        `${environment.apiUrlConsumer}/listarAsegurados`,
         filtro,
         { headers: this.headers }
       )

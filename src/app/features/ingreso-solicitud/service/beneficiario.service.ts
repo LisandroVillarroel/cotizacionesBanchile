@@ -24,7 +24,7 @@ export class BeneficiarioService {
     console.log('Agrega Beneficiario Service:', agregaBeneficiario);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/ingresarBeneficiario`,
+        `${environment.apiUrlConsumer}/ingresarBeneficiario`,
         agregaBeneficiario,
         {
           headers: this.headers,
@@ -36,7 +36,7 @@ export class BeneficiarioService {
     console.log('Modifica Beneficiario Service:', modificaBeneficiario);
     return this.http
       .post<any>(
-        `${environment.apiUrl}/modificarBeneficiario`,
+        `${environment.apiUrlConsumer}/modificarBeneficiario`,
         modificaBeneficiario,
         {
           headers: this.headers,
@@ -49,7 +49,7 @@ export class BeneficiarioService {
 
     return this.http
       .post<any>(
-        `${environment.apiUrl}/eliminarBeneficiario`,
+        `${environment.apiUrlConsumer}/eliminarBeneficiario`,
         parametro,
         {
           headers: this.headers,
@@ -60,7 +60,7 @@ export class BeneficiarioService {
   postListadoBeneficiario(filtro: any): Observable<DatosBeneficiariosInterface> {
     return this.http
       .post<DatosBeneficiariosInterface>(
-        `${environment.apiUrl}/listarBeneficiarios`,
+        `${environment.apiUrlConsumer}/listarBeneficiarios`,
         filtro,
         { headers: this.headers }
       )
