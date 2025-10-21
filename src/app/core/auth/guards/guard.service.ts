@@ -4,7 +4,7 @@ import { EstadoService } from './estado.service';
 import { UsuarioRoles } from '@features/auth/auth-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-
+import { Location } from '@angular/common';
 
 export const privadoGuardMatch: CanMatchFn =(
   route,
@@ -24,10 +24,14 @@ export const privadoGuardMatch: CanMatchFn =(
 
 
 export const guardRoles  =(roles:UsuarioRoles[]) : CanActivateFn=>{
-
   return () => {
     const rolUsduasrio=inject(StorageService).get<ISesionInterface>('sesion')?.usuarioLogin.perfilUsuario;
-   return roles.some(rol=> rol.includes(rolUsduasrio!))
+    if (roles.some(rol=> rol.includes(rolUsduasrio!)))
+        return true;
+    else{
+     inject(Location).back();
+      return false
+    }
 
   }
 }

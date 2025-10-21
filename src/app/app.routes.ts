@@ -34,6 +34,7 @@ export const routes: Routes = [
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
       {
+        canActivate: [guardRoles(['ejec_bco','coord_corr'])],
         path: 'detalle',
         loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
       },
