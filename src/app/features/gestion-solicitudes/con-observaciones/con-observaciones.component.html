@@ -64,47 +64,46 @@
   </div>
 </div>
 
-<div class="mat-elevation-z8 mt-1">
-  <!-- <table style="border: none; width: 100%;"> -->
+<div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;">
     @for(item of datosPaginados(); track $index){
-      <mat-expansion-panel class="mat-elevation-z6"
-        style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
+      <mat-expansion-panel class="mt-2" style="padding: 0px 0px 30px;"
         (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="destacado">
-            <mat-card class="alinea-card-gestion justify-around">
-              <mat-card-content class="d-flex p-0">
+        <mat-expansion-panel-header class="fondoGestion gris"
+          style="padding: 0px 14px 0px; font-size: 14px; font-weight: normal;">
+            <mat-card class="alinea-card-gestion justify-around fontSmall mt-4"
+              style="width: 100%;">
+              <mat-card-content class="d-flex">
                 <div style="width: 5%; align-content: center; text-indent: 15%;">
                   <mat-icon [ngClass]="getCellClass(item.sla!)">traffic</mat-icon>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 8%;">
-                  <p class="fontSmall" matColumnDef="ID">ID solicitud</p>
+                  <p class="fontSmall destacado" matColumnDef="ID">ID solicitud</p>
                   <p class="fontLarge">{{item.id_solicitud}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 9%;">
-                  <p class="fontSmall" matColumnDef="Rut">RUT contratante</p>
+                  <p class="fontSmall destacado" matColumnDef="Rut">RUT contratante</p>
                   <p class="fontLarge">{{item.rut_contratante}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 25%;">
-                  <p class="fontSmall" matColumnDef="Contratante">Nombre o Razón social</p>
+                  <p class="fontSmall destacado" matColumnDef="Contratante">Nombre o Razón social</p>
                   <p class="fontLarge">{{item.nombre_contratante}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 12%;">
-                  <p class="fontSmall" matColumnDef="Rubro">Rubro</p>
+                  <p class="fontSmall destacado" matColumnDef="Rubro">Rubro</p>
                   <p class="fontLarge">{{item.nombre_rubro}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 23%;">
-                  <p class="fontSmall" matColumnDef="TipoSeguro">Tipo de Seguro</p>
+                  <p class="fontSmall destacado" matColumnDef="TipoSeguro">Tipo de Seguro</p>
                   <p class="fontLarge">{{item.descripcion_tipo_seguro}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
                 <div class ="p-2" style="width: 10%;">
-                  <p class="fontSmall" matColumnDef="Fecha">Fecha de solicitud</p>
+                  <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de solicitud</p>
                   <p class="fontLarge">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</p>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
@@ -119,44 +118,46 @@
                 </div>
               </mat-card-content>
             </mat-card>
-          </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="container-fluid fondoGris" style="padding: 10px 10px 10px;">
+
+        <app-observaciones [observaciones]="item.po_cursor"/>
+
+ <!--        <div class="container-fluid fondoGris p-2 mt-4" style="padding: 10px 10px 10px;">
           @for(obs of item.po_cursor; track $index){
-            <div class="container-fluid p-2">
+            <div class="container-fluid mt-2">
               <mat-card class="alinea-card-gestion">
-                <mat-card-content class="d-flex p-0">
-                  <div class ="p-2" style="width: 25%;">
-                    <p class="fontSmall">Fecha creación</p>
+                <mat-card-content class="d-flex p-0 justify-around">
+                  <div class ="p-2" style="width: 20%;">
+                    <p class="fontSmall">Fecha de creación</p>
                     <p class="fontLarge">{{obs.fecha_creacion_observacion}}</p>
                   </div>
                   <mat-divider [vertical]="true"></mat-divider>
-                  <div class ="p-2" style="width: 25%;">
-                    <p class="fontSmall">Fecha corrección</p>
-                    <p class="fontLarge">{{obs.fecha_correccion_observacion}}</p>
-                  </div>
-                  <mat-divider [vertical]="true"></mat-divider>
-                  <div class ="p-2" style="width: 25%;">
+                  <div class ="p-2" style="width: 15%;">
                     <p class="fontSmall">Observación</p>
                     <p class="fontLarge">{{obs.observacion}}</p>
                   </div>
                   <mat-divider [vertical]="true"></mat-divider>
-                  <div class ="p-2" style="width: 25%;">
-                    <p class="fontSmall">Coordinador</p>
+                  <div class ="p-2" style="width: 10%;">
+                    <p class="fontSmall">Fecha de corrección</p>
+                    <p class="fontLarge">{{obs.fecha_correccion_observacion}}</p>
+                  </div>
+                  <mat-divider [vertical]="true"></mat-divider>
+                  <div class ="p-2" style="width: 15%;">
+                    <p class="fontSmall">Estado cotización</p>
                     <p class="fontLarge">{{obs.nombre_coordinador}}</p>
                   </div>
                 </mat-card-content>
               </mat-card>
             </div>
           }
-        </div>
+        </div> -->
       </mat-expansion-panel>
     }
-  <!-- </table> -->
   <mat-paginator #mypaginator
                   [length]="datosFiltrados()!.length"
                   [pageSize]="pageSize"
                   [pageIndex]="pagina()"
-                  (page)="onPage($event)">
+                  (page)="onPage($event)"
+                  class="mb-2">
   </mat-paginator>
 </div>

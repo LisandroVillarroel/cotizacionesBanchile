@@ -79,7 +79,10 @@ export default class DashboardComponent   {
           this.listadoSolicitudes.set(dato.p_cursor);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         }
-      }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
     });
   }
 }

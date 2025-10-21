@@ -20,12 +20,12 @@ import { CommonModule } from '@angular/common';
 import {
   DetalleSolicitudInterface,
   ICompania,
+  ICompaniaResponse,
   IObservacion,
   ISolicitud } from './modelo/detalle-interface';
 import { IRequest } from '@shared/modelo/servicios-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
-import { AprobarSolicitudService } from './service/aprobar-solicitud.service';
 //Componentes reutilizados
 import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
 import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
@@ -45,6 +45,9 @@ import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-r
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CompaniasContactadasService } from './service/companias-contactadas.service';
+import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -65,6 +68,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatTooltipModule,
     MatDividerModule,
     MatTabsModule,
+    MatExpansionModule,
     CommonModule,
     CabeceraPopupComponente
   ],
@@ -76,12 +80,17 @@ export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+  panelOpenState = false;
+  panelOpenState2 = false;
 
   idSol = computed(() => this.idSolicitud.toString());
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
+  tipo_ejec = this._storage()?.usuarioLogin.usuario!.substring(0,1);
   notificacioAlertnService = inject(NotificacioAlertnService);
+  companiasService = inject(CompaniasContactadasService);
 
   verEjec = true;
   verCoord = true;
@@ -92,9 +101,6 @@ export default class DetalleSolicitudComponent {
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
 
-  aprobarService = inject(AprobarSolicitudService);
-  apruebaRequest!: IRequest;
-
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
   flagDevolver = true;
@@ -102,9 +108,11 @@ export default class DetalleSolicitudComponent {
   flagCompania = true;
   flagCoordinador = true;
   flagPropuesta = true;
+  flagCotizacion = true;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
+    this.cargarCompanias(this.idSolicitud);
     switch(this._storage()?.usuarioLogin.perfilUsuario!){
       case "PCSE_EJCBCO":
         this.verCoord = false; break;
@@ -124,6 +132,7 @@ export default class DetalleSolicitudComponent {
     this.flagCompania = true;
     this.flagCoordinador = true;
     this.flagPropuesta = true;
+    this.flagCotizacion = true;
 
     this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
@@ -151,23 +160,35 @@ export default class DetalleSolicitudComponent {
           if(this.edoSolicitud()! !== "Anulada" &&
              this.edoSolicitud()! !== "Terminada" &&
              this.edoSolicitud()! !== "Propuesta Pendiente" &&
-             this.edoSolicitud()! !== "Propuesta emitida")
+             this.edoSolicitud()! !== "Propuesta Emitida")
           {
             this.flagAnular = false;
-            this.flagPropuesta = false;
+            //this.flagPropuesta = false;
             if(this.edoSolicitud()! === "Aprobada"){
               this.flagCompania = false;
             }
             if(this.edoSolicitud()! === "Edicion" || this.edoSolicitud()! === "Devuelta"){
               this.flagCoordinador = false;
             }
-            if( this.edoSolicitud()! === "Revision"){
+            if( this.edoSolicitud()!.toUpperCase() === "REVISION"){
               this.flagDevolver = false;
               this.flagAprobar = false;
             }
           }
+          if(this.edoSolicitud()! === "Propuesta Pendiente"){
+            this.flagPropuesta = false;
+          }
         /* Fin BackEnd */
+        }
+      }
+    });
+  }
 
+  cargarCompanias(idSolicitud: any){
+    this.companiasService.postCompanias(idSolicitud).subscribe({
+      next: (dato: ICompaniaResponse) => {
+        if (dato.codigo === 200) {
+          this.companias.set(dato.p_cursor);
         }
       }
     });
@@ -199,24 +220,24 @@ export default class DetalleSolicitudComponent {
   }
 
   aprobarSolicitud(): void {
-    this.apruebaRequest = {
+    const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
     };
+    const dialogConfig = new MatDialogConfig();
 
-    this.aprobarService
-      .postApruebaSolicitud(this.apruebaRequest)
-      .subscribe({
-        next: (dato) => {
-          console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
-              ' y está disponible para ser enviada a las compañías de seguros. \n' +
-              ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
-              ' de gestión de solicitudes.');
-          }
-        }
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AprobarSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
       });
   }
 
@@ -239,32 +260,10 @@ export default class DetalleSolicitudComponent {
       });
   }
 
- corregirSolicitud(): void {
-    const dato = {
-      solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante,
-      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
-      rubro: this.infoGral()?.nombre_rubro,
-      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-    this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
-  }
-
-
   enviarCoordinador(): void {
     const dato = {
-      solicitudId: this.idSolicitud,
-      fecha: this.infoGral()?.fecha_creacion_solicitud,
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_ejecutivo,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -277,14 +276,19 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarCoordinadorComponent, dialogConfig).afterClosed();
+    this.dialog
+      .open(EnviarCoordinadorComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
 
   enviarCia(): void {
     const dato = {
-      solicitudId: this.idSolicitud, //'ID123456789',
-      fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
+      p_id_solicitud: this.idSolicitud, //'ID123456789',
+      p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
+      p_tipo_usuario: this.tipo_ejec
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -298,8 +302,14 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarACompaniaComponent, dialogConfig).afterClosed();
+    this.dialog
+      .open(EnviarACompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
+
   ingresarRespuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
@@ -319,9 +329,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-  }
-
-
+    }
 
   crearPropuesta(): void {
     const dato = {

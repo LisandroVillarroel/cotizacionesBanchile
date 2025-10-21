@@ -1,3 +1,4 @@
+import { ObservacionesComponent } from './../../detalle-solicitud/observaciones/observaciones.component';
 import { Component, ViewChild, inject, signal, input } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule} from '@angular/material/datepicker';
@@ -47,7 +48,8 @@ import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solic
     MatCardModule,
     MatGridListModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    ObservacionesComponent
   ],
   templateUrl: './con-observaciones.component.html',
   styleUrl: './con-observaciones.component.css'
@@ -192,6 +194,8 @@ export class ConObservacionesComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
+      .subscribe((dato)=>{
+        history.go();
+      });
   }
-
 }

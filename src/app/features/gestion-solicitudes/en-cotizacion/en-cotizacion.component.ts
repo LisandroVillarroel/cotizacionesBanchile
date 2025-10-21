@@ -190,6 +190,18 @@ export class EnCotizacionComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-  }
+      .subscribe((dato)=>{
+        history.go();
+      });
+    }
 
+    EnviarCia(idCotizacion: number){
+
+    }
+
+    verCotiPropuesta(idCotizacion: number){
+
+    }
+
+    registrarRespuesta(idCotizacion: number){}
 }

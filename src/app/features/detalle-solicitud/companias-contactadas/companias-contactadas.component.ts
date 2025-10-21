@@ -1,12 +1,17 @@
-import { CompaniasContactadasService } from './companias-contactadas.service';
-import { Component, computed, input, OnInit, signal, inject } from '@angular/core';
+import { CompaniasContactadasService } from '../service/companias-contactadas.service';
+import { Component, input, inject, computed, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ICompaniaResponse, ICompania } from '../modelo/detalle-interface';
+import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { MatTooltip } from "@angular/material/tooltip";
+import { EnviarACompaniaComponent } from '../companias/enviar-a-compania/enviar-a-compania.component';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -18,97 +23,56 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDividerModule,
     MatExpansionModule,
     MatIcon,
-    CommonModule
+    CommonModule,
+    MatTooltip
   ]
 })
-export class CompaniasContactadasComponent implements OnInit {
+export class CompaniasContactadasComponent {
   panelOpenState = false;
-  idSolicitud = input.required<number>();
+  companias = input.required<ICompania[] | undefined>();
+  companies = computed(() => {return this.companias()});
+
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
-  companias = signal<ICompania[]>([]);
-  //contizaciones = signal<ICotizacion[]>([]);
-  //compFiltradas = computed(()=> this.companias());
-
 
   constructor() { }
 
-  async ngOnInit(){
-    this.cargarCompanias(this.idSolicitud);
-  }
+  getCellStyle(estado: number) {
+    var color: string;
+    var fondo: string;
+    if(estado === 1){
+      color = '#FFC725'; fondo = '#FFF7DF';
+    }else if(estado === 2){
+      color = '#149DC9'; fondo = '#DCF0F7';
+    }else if(estado === 3){
+      color = '#285B9B'; fondo = '#DCF0F7';
+    }else if(estado === 4){
+      color = '#6baa1f'; fondo = '#E9F2ED';
+    }else{
+      color = '#F45516'; fondo = '#FDF6DC';
+    }
 
-  cargarCompanias(idSolicitud:any){
-    if (typeof idSolicitud != 'number')
-       return
-
-      this.companiasService.postCompanias(idSolicitud).subscribe({
-      next: (dato: ICompaniaResponse) => {
-        if (dato.codigo === 200) {
-          this.companias.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR","Error de sistema");
-          }
-        }
-      },
-      error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
-      },
-    });
-  }
-    /*this.companias.set([
-      {
-            id_solicitud : parseInt(this.idSolicitud.toString()),
-            id_compania: 1,
-            nombre_compania: "CHUBB",
-            correo_destino: "correo@chubb.cl",
-            fecha_envio: "00-00/0000",
-            tiempo_transc: "2 día(s)",
-            id_estado_cot: 3,
-            estado_cotizacion: "Respuesta registrada",
-            color_edoCot: "#149DC9",
-            fondo_edoCot: "#DCF0F7",
-            id_cotizacion: 1
-      },
-      {
-            id_solicitud : 1,
-            id_compania: 2,
-            nombre_compania: "MAPFRE",
-            correo_destino: "correo@mapfre.cl",
-            fecha_envio: "00-00-0000",
-            tiempo_transc: "0 día(s)",
-            id_estado_cot: 1,
-            estado_cotizacion: "Envío pendiente",
-            color_edoCot: "#FFC725",
-            fondo_edoCot: "#FFF7DF",
-            id_cotizacion: 2
-      },
-      {
-            id_solicitud : 1,
-            id_compania: 3,
-            nombre_compania: "SOUTHBRIDGE",
-            correo_destino: "correo@mapfre.cl",
-            fecha_envio: "00-00-0000",
-            tiempo_transc: " día(s)",
-            id_estado_cot: 1,
-            estado_cotizacion: "Esperando respuesta",
-            color_edoCot: "#F45516",
-            fondo_edoCot: "#FDF6DC",
-            id_cotizacion: 2
-      }
-    ]);*/
-
-  getCellStyle(color: string, fondo: string) {
     return {
       'color': color,
       'background-color': fondo,
       'border': '1px solid' + color,
-      'width': '170px',//'fit-content',
+      'width': '130px',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'
     };
   }
+
+
+    EnviarCia(idCotizacion: string){
+
+    }
+
+    verCotiPropuesta(idCotizacion: string){
+
+    }
+
+    registrarRespuesta(idCotizacion: string){}
 }

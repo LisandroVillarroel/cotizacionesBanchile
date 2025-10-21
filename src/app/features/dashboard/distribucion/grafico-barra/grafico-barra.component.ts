@@ -72,19 +72,10 @@ export class GraficoBarraComponent implements OnInit {
         if (dato.codigo === 200) {
           this.colores.set(dato.p_cursor.map(x=>x.color_estado))
           this.datoEstadoNombre.set(dato.p_cursor.map(x => x.nombre_estado))
-        } else {
-          if (dato.codigo != 500) {
-            //console.log('Error:', dato.mensaje);
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            //console.log('ERROR DE SISTEMA:');
-            this.notificacioAlertnService.error("ERROR",'Error del sistema.');
-          }
         }
       },
       error: (error) => {
-        //console.log('ERROR INESPERADO', error);
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
   }

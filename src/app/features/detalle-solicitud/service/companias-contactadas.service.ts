@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { ICompaniaResponse } from '../modelo/detalle-interface';
+import { ICompaniaResponse } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 @Injectable({
   providedIn: 'root'

@@ -203,9 +203,10 @@ h3[mat-dialog-title] {
 
 .inputFecha {
   font-size: 14px !important;
-  padding-top: 10px !important;
+  /*padding-top: 10px !important;*/
+  margin-top: 10px !important;
   padding-bottom: 5px !important;
-  height: 65px !important;
+  height: 35px !important;
   margin-bottom: 15px !important;
 }
 
@@ -1022,7 +1023,7 @@ mat-divider[vertical] {
   background-color: inherit;
   border: none !important;
   box-shadow: none !important;
-  color: #149dc9 important;
+  color: #234e85 !important;
   /*color: #234e85 !important;*/
   /*padding: 0px 0px 0px !important;*/
   font-size: 14px !important;

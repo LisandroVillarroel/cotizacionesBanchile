@@ -1,16 +1,6 @@
- <!-- <div class="table-con-titulo mat-elevation-z6"
-  data-titulo="Observaciones" style="margin-top: 32px"> -->
-<div class="container-fluid" style=" padding: 0px 0px 12px;">
-  @if(observaciones()?.length!==0 && observaciones()!==undefined){
-  <mat-expansion-panel class="mat-elevation-z6"
-    style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
-      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="container-fluid fondoGris" style="padding: 10px 10px 10px;">
-        @for(item of observaciones(); track $index){
-          <div class="container-fluid p-2">
+<div class="container-fluid fondoGris p-2 mt-4" style="padding: 10px 10px 10px;">
+  @for(item of observaciones(); track $index){
+    <div class="container-fluid mt-2">
             <mat-card class="alinea-card-gestion">
               <mat-card-content class="d-flex p-0">
                 <div class ="p-2" style="width: 25%;">
@@ -37,6 +27,3 @@
           </div>
         }
       </div>
-    </mat-expansion-panel>
-  }
-</div>

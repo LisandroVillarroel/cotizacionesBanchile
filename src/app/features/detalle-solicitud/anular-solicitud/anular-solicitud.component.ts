@@ -20,6 +20,11 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { AnularSolicitudService } from './anular-solicitud.service';
 import { IAnulaRequest } from './anular-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+
+export interface DataAnular{
+  solicitudId: number
+}
 
 @Component({
   selector: 'app-anular-solicitud',
@@ -35,6 +40,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDivider,
     MatTooltipModule,
     ReactiveFormsModule,
+    CabeceraPopupComponente
   ],
   templateUrl: './anular-solicitud.component.html',
   styleUrl: './anular-solicitud.component.css'
@@ -42,7 +48,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 export class AnularSolicitudComponent {
   constructor(
     public dialogRef: MatDialogRef<AnularSolicitudComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DetalleSolicitudComponent,
+    @Inject(MAT_DIALOG_DATA) public data: DataAnular,
     private dialog: MatDialog
   ) { }
 
@@ -86,7 +92,10 @@ export class AnularSolicitudComponent {
           if (dato.codigo === 200) {
             this.confirmar();
           }
-        }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
       });
   }
 
