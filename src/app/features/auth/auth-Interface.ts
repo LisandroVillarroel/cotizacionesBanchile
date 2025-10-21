@@ -15,3 +15,5 @@ export interface IAuthRespuesta {
   p_cursor?: IAuth[];
   vcEstadoCreacion?: string;
 }
+
+export type UsuarioRoles = 'ejec_bco' | 'coord_corr' | 'sup_corr' | 'adm_corr';

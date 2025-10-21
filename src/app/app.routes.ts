@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { privadoGuard } from '@core/auth/guards/guard.service';
+import { guardRoles, privadoGuardMatch } from '@core/auth/guards/guard.service';
 
 export const routes: Routes = [
   {
@@ -15,18 +15,22 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('@core/layout/principal.component'),
-     canActivate: [privadoGuard()],
+     canMatch: [privadoGuardMatch],
     children: [
       {
         path: 'inicio',
+        canActivate: [guardRoles(['ejec_bco', 'coord_corr', 'sup_corr'])],
+
         loadComponent: () => import('@features/dashboard/dashboard.component'),
       },
       {
         path: 'ingreso',
+        canActivate: [guardRoles(['ejec_bco'])],
         loadComponent: () => import('@features/ingreso-solicitud/ingreso-solicitud.component'),
       },
       {
         path: 'gestion',
+        canActivate: [guardRoles(['coord_corr', 'sup_corr'])],
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
       {
