@@ -40,12 +40,12 @@ export class CompaniasContactadasService {
   }
 
   postAgregaCompania(
-    agregaCompaniaSolicitud: IAgregaCompania
+    agregarCompaniasSolicitud: IAgregaCompania
   ): Observable<any> {
-    console.log('Agrega Compañía Service:', agregaCompaniaSolicitud);
+    console.log('Agrega Compañía Service:', agregarCompaniasSolicitud);
     return this.http.post<any>(
       `${environment.apiUrl}/agregarCompaniasSolicitud`,
-      agregaCompaniaSolicitud,
+      agregarCompaniasSolicitud,
       {
         headers: this.headers,
       }

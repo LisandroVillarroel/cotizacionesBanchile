@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  Inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, inject, Inject, input, signal } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -23,11 +17,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SolicitudAgregadaCiaComponent } from './solicitud-agregada-cia/solicitud-agregada-cia.component';
 import { CompaniasContactadasService } from '../companias-contactadas.service';
-import {
-  ICompanias,
-} from '@features/detalle-solicitud/modelo/detalle-interface';
+import { ICompanias } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { IAgregaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 export interface AgregarCompaniaData {
@@ -36,6 +30,10 @@ export interface AgregarCompaniaData {
   ejecutivo: string;
   id_rubro: number;
   id_tipo_seguro: number;
+  id_compania_seguro: number;
+  p_id_solicitud: number;
+  p_detalle_solicitud_cotizacion: string;
+  estadoSolicitud: string;
 }
 
 @Component({
@@ -62,15 +60,18 @@ export class AgregarCompaniaComponent {
   idSolicitud = input.required<string>();
   idSolicitudParametro = signal<string>('175');
   datoCompanias = signal<ICompanias[]>([]);
+  correoCompania = signal<string>('');
 
   compania = new FormControl<number | null>(null, Validators.required);
+  detalleControl = new FormControl('', [Validators.maxLength(500)]);
 
   CompaniasContactadasService = inject(CompaniasContactadasService);
 
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<AgregarCompaniaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData
+    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData,
+    private snackBar: MatSnackBar
   ) {}
 
   registros: any[] = [];
@@ -104,12 +105,61 @@ export class AgregarCompaniaComponent {
     return 'Campo inválido';
   }
 
-  cerrar(): void {
-    this.dialogRef.close();
+  actualizarCorreo(companiaSeleccionada: any): void {
+    const correoLimpio =
+      companiaSeleccionada?.correo_compania_seguro
+        ?.replace(/&nbsp;/g, '')
+        .trim() || '';
+    this.correoCompania.set(correoLimpio);
+    this.data.id_compania_seguro = companiaSeleccionada.id_compania_seguro; // si necesitas guardar el ID
   }
 
-  confirmar(): void {
-    this.dialogRef.close('confirmado');
+  guardarCompania(): void {
+    const payload: IAgregaCompania = {
+      p_id_solicitud: Number(this.data.solicitudId),
+      p_id_compania_seguro: this.data.id_compania_seguro,
+      p_detalle_solicitud_cotizacion: this.detalleControl.value ?? '',
+      p_id_usuario: 'EJ002',
+      p_tipo_usuario: 'E',
+    };
+
+    console.log('Payload enviado:', payload);
+
+    this.CompaniasContactadasService.postAgregaCompania(payload).subscribe({
+      next: (res) => {
+        if (res.codigo === 200) {
+          this.snackBar.open('Compañía agregada exitosamente.', 'Cerrar', {
+            duration: 3000,
+          });
+          this.dialogRef.close(true);
+        } else {
+          this.snackBar.open('Error al agregar la compañía.', 'Cerrar', {
+            duration: 3000,
+          });
+        }
+      },
+      error: () => {
+        if (
+          !payload.p_id_solicitud ||
+          !payload.p_id_compania_seguro ||
+          !payload.p_id_usuario ||
+          !payload.p_tipo_usuario
+        ) {
+          this.snackBar.open(
+            'Faltan datos obligatorios en la solicitud.',
+            'Cerrar',
+            {
+              duration: 3000,
+            }
+          );
+          return;
+        }
+      },
+    });
+  }
+
+  cerrar(): void {
+    this.dialogRef.close();
   }
 
   enviadoCia(): void {

@@ -7,9 +7,15 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from "@angular/material/icon";
-import { MatCardModule } from "@angular/material/card";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -20,14 +26,16 @@ import { CommonModule } from '@angular/common';
 import {
   DetalleSolicitudInterface,
   ICompania,
+  ICompanias,
   IObservacion,
-  ISolicitud } from './modelo/detalle-interface';
+  ISolicitud,
+} from './modelo/detalle-interface';
 import { IRequest } from '@shared/modelo/servicios-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 import { AprobarSolicitudService } from './service/aprobar-solicitud.service';
 //Componentes reutilizados
-import { InformacionGeneralComponent } from "./informacion-general/informacion-general.component";
+import { InformacionGeneralComponent } from './informacion-general/informacion-general.component';
 import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
 import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
 import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
@@ -66,7 +74,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatDividerModule,
     MatTabsModule,
     CommonModule,
-    CabeceraPopupComponente
+    CabeceraPopupComponente,
   ],
   templateUrl: './detalle-solicitud.component.html',
   styleUrl: './detalle-solicitud.component.css',
@@ -105,19 +113,25 @@ export default class DetalleSolicitudComponent {
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
-    switch(this._storage()?.usuarioLogin.perfilUsuario!){
-      case "PCSE_EJCBCO":
-        this.verCoord = false; break;
-      case "PCSE_COORDBCS":
-        this.verEjec = false; break;
-      case "PCSE_SUPBCS":
-        this.verEjec = false; this.verCoord = false; break;
-      case "PCSE_ADMIN":
-        this.verEjec = false; this.verCoord = false; break;
+    switch (this._storage()?.usuarioLogin.perfilUsuario!) {
+      case 'PCSE_EJCBCO':
+        this.verCoord = false;
+        break;
+      case 'PCSE_COORDBCS':
+        this.verEjec = false;
+        break;
+      case 'PCSE_SUPBCS':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
+      case 'PCSE_ADMIN':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
     }
   }
 
-  cargarSolicitud(idSolicitud: number){
+  cargarSolicitud(idSolicitud: number) {
     this.flagAnular = true;
     this.flagDevolver = true;
     this.flagAprobar = true;
@@ -147,29 +161,32 @@ export default class DetalleSolicitudComponent {
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
 
-        /* Inicio BackEnd */
-          if(this.edoSolicitud()! !== "Anulada" &&
-             this.edoSolicitud()! !== "Terminada" &&
-             this.edoSolicitud()! !== "Propuesta Pendiente" &&
-             this.edoSolicitud()! !== "Propuesta emitida")
-          {
+          /* Inicio BackEnd */
+          if (
+            this.edoSolicitud()! !== 'Anulada' &&
+            this.edoSolicitud()! !== 'Terminada' &&
+            this.edoSolicitud()! !== 'Propuesta Pendiente' &&
+            this.edoSolicitud()! !== 'Propuesta emitida'
+          ) {
             this.flagAnular = false;
             this.flagPropuesta = false;
-            if(this.edoSolicitud()! === "Aprobada"){
+            if (this.edoSolicitud()! === 'Aprobada') {
               this.flagCompania = false;
             }
-            if(this.edoSolicitud()! === "Edicion" || this.edoSolicitud()! === "Devuelta"){
+            if (
+              this.edoSolicitud()! === 'Edicion' ||
+              this.edoSolicitud()! === 'Devuelta'
+            ) {
               this.flagCoordinador = false;
             }
-            if( this.edoSolicitud()! === "Revision"){
+            if (this.edoSolicitud()! === 'Revision') {
               this.flagDevolver = false;
               this.flagAprobar = false;
             }
           }
-        /* Fin BackEnd */
-
+          /* Fin BackEnd */
         }
-      }
+      },
     });
   }
 
@@ -193,7 +210,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato)=>{
+      .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
       });
   }
@@ -204,20 +221,22 @@ export default class DetalleSolicitudComponent {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
     };
 
-    this.aprobarService
-      .postApruebaSolicitud(this.apruebaRequest)
-      .subscribe({
-        next: (dato) => {
-          console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              'La solicitud ' + this.idSolicitud + ' ha sido aprobada exitosamente \n' +
+    this.aprobarService.postApruebaSolicitud(this.apruebaRequest).subscribe({
+      next: (dato) => {
+        console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          this.notificacioAlertnService.confirmacion(
+            'CONFIRMACIÓN',
+            'La solicitud ' +
+              this.idSolicitud +
+              ' ha sido aprobada exitosamente \n' +
               ' y está disponible para ser enviada a las compañías de seguros. \n' +
               ' Puedes hacerlo ingresando al detalle de la solicitud desde el menú \n' +
-              ' de gestión de solicitudes.');
-          }
+              ' de gestión de solicitudes.'
+          );
         }
-      });
+      },
+    });
   }
 
   anularSolicitud(): void {
@@ -239,7 +258,7 @@ export default class DetalleSolicitudComponent {
       });
   }
 
- corregirSolicitud(): void {
+  corregirSolicitud(): void {
     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante,
@@ -259,7 +278,6 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = dato;
     this.dialog.open(CorregirSolicitudComponent, dialogConfig).afterClosed();
   }
-
 
   enviarCoordinador(): void {
     const dato = {
@@ -286,7 +304,7 @@ export default class DetalleSolicitudComponent {
       fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
-      id_tipo_seguro: this.infoGral()?.id_tipo_seguro
+      id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -296,7 +314,7 @@ export default class DetalleSolicitudComponent {
 
     //Ajustes clave para evitar espacio en blanco
     dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.maxHeight = '100vh'; // Altura máxima visible
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
@@ -319,9 +337,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = this.idSolicitud;
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
+    this.dialog.open(IngresoRespuestaComponent, dialogConfig).afterClosed();
   }
 
   crearPropuesta(): void {
@@ -340,8 +356,6 @@ export default class DetalleSolicitudComponent {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = this.idSolicitud;
-    this.dialog
-      .open(CreacionPropuestaComponent, dialogConfig)
-      .afterClosed()
+    this.dialog.open(CreacionPropuestaComponent, dialogConfig).afterClosed();
   }
 }
