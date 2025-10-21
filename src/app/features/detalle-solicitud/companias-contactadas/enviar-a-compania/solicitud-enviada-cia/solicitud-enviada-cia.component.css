@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   padding: 8px;
-  overflow: visible;      /* Evita que se corte el contenido */
+  overflow: visible; /* Evita que se corte el contenido */
 }
 
 /* Bloques con separación visual */
@@ -84,7 +84,6 @@
   min-width: 150px;
 }
 
-
 .contador-caracteres {
   text-align: right;
   font-size: 0.85em;
@@ -105,7 +104,7 @@
 
 .textarea-grande.mat-form-field {
   --mat-form-field-outline-color: #000000; /* color del borde */
-  --mat-form-field-outline-width: 2px;     /* grosor del borde */
+  --mat-form-field-outline-width: 2px; /* grosor del borde */
 }
 
 .textarea-grande.mat-form-field.mat-focused {
@@ -113,9 +112,8 @@
 }
 
 .icono-verde-grande {
-  color: #4CAF50;         /* Verde Material Design */
-  font-size: 26px;        /* Tamaño grande */
+  color: #4caf50; /* Verde Material Design */
+  font-size: 26px; /* Tamaño grande */
   vertical-align: middle; /* Centrado vertical */
   line-height: 1;
 }
-

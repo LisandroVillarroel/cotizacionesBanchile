@@ -85,8 +85,8 @@
           (click)="aprobarSolicitud()">Aprobar Solicitud</button>
 
         <button mat-stroked-button class="btn-info"
-          [hidden]="this.flagCompania || this.verEjec"
-          (click)="agregarCia()">Agregar Compañía</button>
+          [disabled]="this.flagCompania" [hidden]="this.verEjec"
+          (click)="agregarCompania()">Agregar Compañía</button>
 
         <button mat-stroked-button class="btn-info"
           [hidden]="this.flagCotizacion || this.verEjec"

@@ -112,8 +112,6 @@ export class AseguradoComponent {
     return tabla;
   });
 
-
-
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
@@ -139,10 +137,11 @@ export class AseguradoComponent {
   }
 
   rescataListaAsegurados(p_id_solicitud: string) {
-    console.log('rescataListaAsegurados',p_id_solicitud);
+    console.log('rescataListaAsegurados', p_id_solicitud);
     const estructura_listaAsegurados = {
       p_id_solicitud: Number(p_id_solicitud),
     };
+
     this.aseguradoService
       .postListadoAsegurado(estructura_listaAsegurados)
       .subscribe({
@@ -159,11 +158,8 @@ export class AseguradoComponent {
   }
 
   agregaNuevoAsegurado() {
-    //  agregaNuevo(empresaInterface_: EmpresaI) {
-    // Nuevo
     console.log('this.idSolicitud():', this.idSolicitud());
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
@@ -182,19 +178,20 @@ export class AseguradoComponent {
   }
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
-    console.log('Dato Modificar;', datoAseguradoPar);
+    console.log('Dato Modificar:', datoAseguradoPar);
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),
     };
-    const dialogConfig = new MatDialogConfig();
 
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = parametro;
+
     this.dialog
       .open(ModificaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
@@ -208,33 +205,32 @@ export class AseguradoComponent {
 
   consultaAsegurado(datoAseguradoPar: IAsegurado) {
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-
     dialogConfig.data = datoAseguradoPar;
+
     this.dialog
       .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed();
   }
 
   eliminaAsegurado(datoAseguradoPar: any) {
-    const dialogConfig = new MatDialogConfig();
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),
     };
 
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-
     dialogConfig.data = parametro;
+
     this.dialog
       .open(EliminaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()

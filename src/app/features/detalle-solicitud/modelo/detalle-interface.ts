@@ -1,18 +1,18 @@
-export interface ISla{
-  estado: string,
-  color: string
+export interface ISla {
+  estado: string;
+  color: string;
 }
 
-export interface IObservacion{
-  id_solicitud?: number,
-  fecha_creacion_observacion: string,
-  fecha_correccion_observacion: string,
-  observacion: string,
-  id_coordinador: string,
-  nombre_coordinador: string
+export interface IObservacion {
+  id_solicitud?: number;
+  fecha_creacion_observacion: string;
+  fecha_correccion_observacion: string;
+  observacion: string;
+  id_coordinador: string;
+  nombre_coordinador: string;
 }
 
-export interface ICompania{
+export interface ICompania {
   p_id_compania_seguro: number;
   p_nombre_compania_seguro: string;
 
@@ -25,35 +25,59 @@ export interface ICompania{
   p_id_detalle_solicitud_cotizacion: string;
   p_id_moneda: number;
   p_nombre_moneda: string;
-  p_valor_prima_neta: number,
-  p_valor_prima_afecta: number,
-  p_valor_prima_bruta: number,
-  p_id_medio_de_pago: number,
-  p_nombre_medio_de_pago: string,
-  p_id_banco: number,
-  p_nombre_banco: string,
-  p_id_tipo_cuenta: number,
-  p_nombre_tipo_cuenta: string,
-  p_nro_cuenta: string,
-  p_cantidad_cuotas: number,
-  p_fecha_inicio_vigencia: string,
-  p_fecha_termino_vigencia: string,
-  p_dia_vencimiento_primera_cuota: string,
-  p_id_cotizacion_compania: string,
-  p_ruta_cotizacion_compania: string,
-  p_id_cotizacion_propuesta: string,
-  p_ruta_cotizacion_propuesta: string,
-  p_fecha_creacion: string,
-  p_usuario_creacion: string,
-  p_fecha_modificacion: string,
-  p_usuario_modificacion: string,
+  p_valor_prima_neta: number;
+  p_valor_prima_afecta: number;
+  p_valor_prima_bruta: number;
+  p_id_medio_de_pago: number;
+  p_nombre_medio_de_pago: string;
+  p_id_banco: number;
+  p_nombre_banco: string;
+  p_id_tipo_cuenta: number;
+  p_nombre_tipo_cuenta: string;
+  p_nro_cuenta: string;
+  p_cantidad_cuotas: number;
+  p_fecha_inicio_vigencia: string;
+  p_fecha_termino_vigencia: string;
+  p_dia_vencimiento_primera_cuota: string;
+  p_id_cotizacion_compania: string;
+  p_ruta_cotizacion_compania: string;
+  p_id_cotizacion_propuesta: string;
+  p_ruta_cotizacion_propuesta: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_fecha_modificacion: string;
+  p_usuario_modificacion: string;
+}
+
+export interface ICompanias {
+  id_compania_seguro: number;
+  rut_compania_seguro: string;
+  nombre_compania_seguro: string;
+  direccion_compania_seguro: string;
+  telefono_compania_seguro: string;
+  correo_compania_seguro: string;
+  id_ejecutivo_cia: number;
+  nombre_ejecutivo_cia: string;
+  correo_ejecutivo_cia: string;
+  fecha_creacion: string;
+  usuario_creacion: string;
+  fecha_modificacion: string;
+  usuario_modificacion: string;
   p_dias_transcurridos: number
 }
 
-export interface ICompaniaResponse{
+export interface ICompaniaResponse {
   codigo: number;
   mensaje: string;
   p_cursor: ICompania[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}
+
+export interface ICompaniasResponse {
+  codigo: number;
+  mensaje: string;
+  p_cursor: ICompanias[];
   vcEstado: string;
   vcEstadoCreacion: string;
 }

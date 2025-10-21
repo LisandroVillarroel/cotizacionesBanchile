@@ -1,5 +1,12 @@
-import { Component, Inject, input, QueryList, signal, ViewChildren } from '@angular/core';
-import { MatIcon } from "@angular/material/icon";
+import {
+  Component,
+  Inject,
+  input,
+  QueryList,
+  signal,
+  ViewChildren,
+} from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -10,13 +17,13 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormField } from "@angular/material/form-field";
+import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { MatDivider } from "@angular/material/divider";
+import { MatDivider } from '@angular/material/divider';
 import { SolicitudEnviadaCiaComponent } from './solicitud-enviada-cia/solicitud-enviada-cia.component';
-import { MatRadioGroup, MatRadioButton } from "@angular/material/radio";
-import { MatCheckbox } from "@angular/material/checkbox";
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 export interface EnviarACompaniaData {
   solicitudId: string;
@@ -42,7 +49,7 @@ export interface EnviarACompaniaData {
     MatCheckbox,
   ],
   templateUrl: './enviar-a-compania.component.html',
-  styleUrl: './enviar-a-compania.component.css'
+  styleUrl: './enviar-a-compania.component.css',
 })
 
 export class EnviarACompaniaComponent {
@@ -50,7 +57,7 @@ export class EnviarACompaniaComponent {
   idSolicitudParametro=signal<string>('175')
   @ViewChildren('checkboxRef') checkboxes!: QueryList<MatCheckbox>;
   companiaSeleccionada: string | null = null;
-    constructor(
+  constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<EnviarACompaniaComponent>,
     //private documentosService: DocumentosAsociadosService,
@@ -84,8 +91,8 @@ export class EnviarACompaniaComponent {
 
     const dato = {
       solicitudId: this.data.solicitudId,
-        fecha: this.data.fecha,
-        ejecutivo: this.data.ejecutivo,
+      fecha: this.data.fecha,
+      ejecutivo: this.data.ejecutivo,
     };
 
     const dialogConfig = new MatDialogConfig();

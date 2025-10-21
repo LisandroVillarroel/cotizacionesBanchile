@@ -237,7 +237,10 @@
       <form [formGroup]="agregaSolicitudBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
         <!-- <app-beneficiario [idSolicitud]="idSolicitud()" /> -->
-        <app-beneficiario [idSolicitud]="idSolicitud()" [mostrarSoloConsulta]="false" />
+        <app-beneficiario
+          [idSolicitud]="idSolicitud()"
+          [mostrarSoloConsulta]="false"
+        />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
