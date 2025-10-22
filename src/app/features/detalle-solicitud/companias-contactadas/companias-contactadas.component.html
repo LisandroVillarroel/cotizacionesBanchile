@@ -1,62 +1,54 @@
-<div class="container-fluid fondoGris p-2 mt-4" style="padding: 10px 10px 10px;">
-  @for(obj of companias(); track $index){
-    <div class="container-fluid mt-2">
-      <mat-card class="alinea-card-gestion">
-        <mat-card-content class="d-flex p-0">
-          <div class ="p-2" style="width: 20%;">
-            <p class="fontSmall">Compañía</p>
-            <p class="fontLarge">{{obj.p_nombre_compania_seguro}}</p>
-          </div>
-          <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 20%;">
-            <p class="fontSmall">Fecha envío</p>
-            <p class="fontLarge">{{obj.p_id_fecha_envio_cotizacion}}</p>
-          </div>
+<div class="container-fluid fondoGris p-2 mt-4" style="padding: 10px 10px 10px">
+  @for(obj of companias(); track $index) {
+  <div class="container-fluid mt-2">
+    <mat-card class="alinea-card-gestion">
+      <mat-card-content class="d-flex p-0">
+        <div class="p-2" style="width: 20%">
+          <p class="fontSmall">Compañía</p>
+          <p class="fontLarge">{{ obj.p_nombre_compania_seguro }}</p>
+        </div>
         <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 15%;">
-            <p class="fontSmall">Tiempo transcurrido</p>
-            <p class="fontLarge">{{obj.p_dias_transcurridos}}</p>
+        <div class="p-2" style="width: 20%">
+          <p class="fontSmall">Fecha envío</p>
+          <p class="fontLarge">{{ obj.p_id_fecha_envio_cotizacion }}</p>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="p-2" style="width: 15%">
+          <p class="fontSmall">Tiempo transcurrido</p>
+          <p class="fontLarge">{{ obj.p_dias_transcurridos }}</p>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="p-2" style="width: 15%">
+          <p class="fontSmall">Estado cotización</p>
+          <p
+            class="fontLarge"
+            [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)"
+          >
+            {{ obj.p_id_nombre_estado_cotizacion }}
+          </p>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="p-2" style="width: 30%">
+          <p class="fontSmall">Acciones</p>
+          <div
+            class="gap-2 d-flex"
+            style="align-content: center; border-radius: 0px; text-align: end"
+          >
+            @for(btn of acciones()(obj.p_id_nombre_estado_cotizacion); track
+            $index) {
+            <button
+              class="button-link"
+              [matTooltip]="btn.tooltip"
+              mat-icon-button
+              (click)="btn.accion(obj.p_id_cotizacion_compania)"
+            >
+              <mat-icon class="destacado">{{ btn.icon }}</mat-icon>
+            </button>
+            }
           </div>
-          <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 15%;">
-            <p class="fontSmall">Estado cotización</p>
-            <p class="fontLarge" [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)">
-                {{obj.p_id_nombre_estado_cotizacion}}</p>
-          </div>
-          <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 30%;">
-            <p class="fontSmall">Acciones</p>
-            <div class="gap-2 d-flex"
-                style="align-content: center; border-radius: 0px; text-align: end;">
-              <button class="button-link"
-                matTooltip="Ver cotización"
-                 mat-icon-button
-                (click)="verCotizacion(obj.p_id_cotizacion_compania)"
-              >
-                <mat-icon class="destacado">visibility</mat-icon>
-              </button>
-            <!-- @if(obj.nombre_estado_cotizacion === "Pendiente"){ -->
-              <button class="button-link"
-                matTooltip="Registrar respuesta"
-                mat-icon-button
-                (click)="registrarRespuesta(obj.p_id_cotizacion_compania)"
-              >
-                <mat-icon class="destacado">edit_square</mat-icon>
-              </button>
-            <!-- } -->
-            <!-- @if(obj.p_id_nombre_estado_cotizacion === "Recibida"){ -->
-              <button class="button-link"
-                matTooltip="Ver cotipropuesta"
-                mat-icon-button
-                (click)="verCotiPropuesta(obj.p_id_cotizacion_compania)"
-              >
-                <mat-icon class="destacado">preview</mat-icon>
-              </button>
-            <!-- } -->
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
   }
 </div>
