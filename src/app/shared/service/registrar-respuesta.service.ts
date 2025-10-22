@@ -63,7 +63,7 @@ export class RegistrarRespuestaService {
 
   registrarRespuesta(datos: IRegistrarRespuesta): Observable<InterfazRegistrarRespuesta> {
     return this.http
-      .post<InterfazRegistrarRespuesta>(`${environment.apiUrl}/registrarRespuestaCompania`, datos, {
+      .post<InterfazRegistrarRespuesta>(`${environment.apiUrlConsumer}/registrarRespuestaCompania`, datos, {
         headers: this.headers
       })
       .pipe(
