@@ -11,13 +11,12 @@
   <div class="container-fluid mt-3">
     <div class="table-con-titulo mat-elevation-z6" data-titulo="">
       <div class="container-fluid fondoGris justify-around d-flex p-4">
-        <!-- <div class="d-flex justify-around"> -->
         <mat-card style="width: 49%;">
           <mat-card-header>
             <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
               <label class="destacado">Datos Asegurados</label>
               <button mat-stroked-button class="btn-info" style="display: flex; align-items: center;"
-               (click)="verDetalleAse(this.idSolicitud)" >
+                (click)="verDetalleAse(this.idSolicitud)">
                 Ver Datos
                 <mat-icon style="margin-left: 5px;">visibility</mat-icon>
               </button>
@@ -29,7 +28,7 @@
             <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
               <label class="destacado">Datos Beneficiarios</label>
               <button mat-stroked-button matTooltip="view" class="btn-info" style="display: flex; align-items: center;"
-                (click)="verDetalleBen(this.idSolicitud)" >
+                (click)="verDetalleBen(this.idSolicitud)">
                 Ver Datos
                 <mat-icon style="margin-left: 5px;">visibility</mat-icon>
               </button>
@@ -44,12 +43,11 @@
   </div>
 </mat-dialog-content>
 <mat-card-actions>
-    <div class="container-fluid d-flex p-4">
-      <div class="botones-derecha">
-        <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
-          [disabled]="false">Cerrar</button>
-        <button mat-stroked-button class="btn-info">Registrar Respuesta</button>
-      </div>
+  <div class="container-fluid d-flex p-4">
+    <div class="botones-derecha">
+      <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
+        [disabled]="false">Cerrar</button>
+      <button mat-stroked-button class="btn-info" (click)="registraRespuesta()">Registrar Respuesta</button>
     </div>
-  </mat-card-actions>
-
+  </div>
+</mat-card-actions>
