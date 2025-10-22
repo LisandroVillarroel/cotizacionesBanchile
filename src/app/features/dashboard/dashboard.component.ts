@@ -64,11 +64,12 @@ export default class DashboardComponent   {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
       //"p_tipo_usuario": "E"
-      "p_tipo_usuario": (this._storage()?.usuarioLogin.usuario!.substring(0,1))?.toUpperCase()
+      "p_tipo_usuario": (this._storage()?.usuarioLogin.perfilUsuario)
     }
-    //console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
+    console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
       next: (dato: any) => {
+        console.log('resultado soli:',dato)
         if (dato.codigo === 200) {
           this.resumenGeneral.set({
             p_EnProceso: dato.p_EnProceso,
