@@ -194,6 +194,20 @@ h3[mat-dialog-title] {
 mat-option{
   font-size: 10px !important;
 }
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+    --mdc-icon-button-state-layer-size: 40px;
+}
+
+ .mat-mdc-floating-label.mdc-floating-label {
+    padding-bottom: 20px;
+    font-size: 10px;
+}
+
+.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+    cursor: inherit;
+    font-size: 12px;
+}
 /*Fin Esto es general*/
 
 .inputSelectBuscar {

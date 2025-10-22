@@ -176,7 +176,7 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
     //archivoPropuesta: this.infoPrincipalComponent.selectedPropuestaFile,
 
     p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-    p_tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)!
+    p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario!)
   };
 console.log(datos);
   this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
