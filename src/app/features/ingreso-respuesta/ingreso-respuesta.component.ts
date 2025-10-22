@@ -154,7 +154,7 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
  registraRespuesta() {
   const datos: IRegistrarRespuesta = {
     p_id_solicitud: this.infoPrincipalComponent.idSolicitud,
-    p_id_compania_seguro:15,////
+    p_id_compania_seguro:15,//
     p_id_moneda: this.infoPrincipalComponent.moneda.value,
     p_valor_prima_neta: this.infoPrincipalComponent.primaNeta.value,
     p_valor_prima_afecta: this.infoPrincipalComponent.primaAfecta.value,
@@ -168,9 +168,9 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
     p_fecha_termino_vigencia: this.formatFecha(this.infoPrincipalComponent.fechaTermino),
     p_dia_vencimiento_primera_cuota: this.formatFecha(this.infoPrincipalComponent.fechaVencimiento),
     p_id_cotizacion_compania: this.infoPrincipalComponent.nombreArchivoCompania,
-    p_ruta_cotizacion_compania: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS",
+    p_ruta_cotizacion_compania: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS",//
     p_id_cotizacion_propuesta: this.infoPrincipalComponent.nombreArchivoPropuesta,
-    p_ruta_cotizacion_propuesta: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS",
+    p_ruta_cotizacion_propuesta: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS",//
 
     //archivoCompania: this.infoPrincipalComponent.selectedCompaniaFile,
     //archivoPropuesta: this.infoPrincipalComponent.selectedPropuestaFile,
@@ -182,11 +182,9 @@ console.log(datos);
   this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
     next: (res) => {
       console.log('Respuesta registrada exitosamente:', res);
-      // Aquí podrías mostrar un mensaje de éxito o redirigir
     },
     error: (err) => {
       console.error('Error al registrar respuesta:', err);
-      // Aquí podrías mostrar un mensaje de error
     }
   });
 }
