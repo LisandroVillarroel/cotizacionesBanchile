@@ -204,7 +204,7 @@ mat-option{
     font-size: 10px;
 }
 
-.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+.mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label {
     cursor: inherit;
     font-size: 12px;
 }
