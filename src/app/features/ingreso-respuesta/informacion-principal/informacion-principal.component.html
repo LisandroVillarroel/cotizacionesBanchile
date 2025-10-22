@@ -16,7 +16,8 @@
             <mat-icon>upload</mat-icon>
           </button>
           <!-- Input file oculto -->
-          <input type="file" #fileInputCompania hidden (change)="onFileSelectedCompania($event)" />
+          <input type="file" #fileInputCompania hidden  (change)="onFileSelectedCompania($event)"/>
+          <!-- (change)="onFileSelectedCompania($event)"-->
           <!-- Botón para eliminar archivo -->
           <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoCompania()"
             type="button" class="boton-eliminar-cuestionario">
@@ -41,7 +42,8 @@
             <mat-icon>upload</mat-icon>
           </button>
           <!-- Input file oculto -->
-          <input type="file" #fileInputPropuesta hidden (change)="onFileSelectedPropuesta($event)" />
+          <input type="file" #fileInputPropuesta hidden (change)="onFileSelectedPropuesta($event)"/>
+          <!-- (change)="onFileSelectedPropuesta($event)"  -->
           <!-- Botón para eliminar archivo -->
           <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoPropuesta()"
             type="button" class="boton-eliminar-cuestionario">
@@ -66,15 +68,15 @@
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima neta</mat-label>
-        <input matInput type="number" step="0.01" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaNeta" type="number" step="0.01" min="0" class="no-spinner" />
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima afecta</mat-label>
-        <input matInput type="number" step="0.01" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaAfecta" type="number" step="0.01" min="0" class="no-spinner" />
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima bruta</mat-label>
-        <input matInput type="number" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaBruta" type="number" min="0" class="no-spinner" />
       </mat-form-field>
     </div>
     <div class="container-fluid mt-0">
@@ -102,7 +104,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Tipo de Cuenta</mat-label>
-        <mat-select [formControl]="banco">
+        <mat-select [formControl]="tipoCuenta">
           @for(_tipoCuenta of datosTipoCuenta(); track _tipoCuenta){
           <mat-option [value]="_tipoCuenta.id_tipo_cuenta">
             {{ _tipoCuenta.nombre_tipo_cuenta }}
@@ -113,13 +115,13 @@
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">N° de cuenta</mat-label>
-        <input matInput type="number" class="no-spinner" (keypress)="soloNumeros($event)" />
+        <input matInput [formControl]="nroCuenta" type="number" class="no-spinner" (keypress)="soloNumeros($event)" />
       </mat-form-field>
     </div>
     <div class="container-fluid mt-0">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Cuotas</mat-label>
-        <mat-select>
+        <mat-select [formControl]="nroCuotas">
           <mat-option value="1">1</mat-option>
           <mat-option value="2">2</mat-option>
           <mat-option value="3">3</mat-option>
