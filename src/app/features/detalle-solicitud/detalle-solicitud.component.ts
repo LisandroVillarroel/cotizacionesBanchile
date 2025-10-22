@@ -94,7 +94,6 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
-  tipo_ejec = (this._storage()?.usuarioLogin.usuario!.substring(0,1))?.toUpperCase();
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -119,16 +118,7 @@ export default class DetalleSolicitudComponent {
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
-    switch(this.tipo_ejec){
-      case "E":
-        this.verCoord = false; break;
-      case "C":
-        this.verEjec = false; break;
-      case "S":
-        this.verEjec = false; this.verCoord = false; break;
-      case "A":
-        this.verEjec = false; this.verCoord = false; break;
-    }
+
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -305,7 +295,7 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: this.tipo_ejec,
+      p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario),
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -331,7 +321,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
       p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
-      p_tipo_usuario: this.tipo_ejec
+      p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario)
     };
 
     const dialogConfig = new MatDialogConfig();
