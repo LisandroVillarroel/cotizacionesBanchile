@@ -194,6 +194,10 @@ h3[mat-dialog-title] {
 mat-option{
   font-size: 10px !important;
 }
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+    --mdc-icon-button-state-layer-size: 40px;
+}
 /*Fin Esto es general*/
 
 .inputSelectBuscar {
