@@ -19,7 +19,7 @@ export class EnviarCompaniasService {
 
   postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
     return this.http.post<IResponse>(
-        `${environment.apiUrl}/enviarSolicitudCompanias`,
+        `${environment.apiUrlConsumer}/enviarSolicitudCompanias`,
         enviaSolicitud, { headers: this.headers, }
       )
   }
