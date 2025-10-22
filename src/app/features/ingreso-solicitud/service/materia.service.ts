@@ -24,7 +24,7 @@ export class MateriaService {
     };
     return this.http
       .post<IMateriaResultado>(
-        `${environment.apiUrl}/consultarPlantillaMateriaAsegurada`,
+        `${environment.apiUrlConsumer}/consultarPlantillaMateriaAsegurada`,
         filtro,
         { headers: this.headers }
       )
@@ -38,7 +38,7 @@ export class MateriaService {
 }
     return this.http
       .post<IMateriaTiene>(
-        `${environment.apiUrl}/consultarMateriaAsegurada`,
+        `${environment.apiUrlConsumer}/consultarMateriaAsegurada`,
         filtro,
         { headers: this.headers }
       )
@@ -47,7 +47,7 @@ export class MateriaService {
     postAgregaAsegurado(agregaMateria: IMateriaEnvia): Observable<any> {
       console.log('datos de envio materia',agregaMateria)
       return this.http
-        .post<any>(`${environment.apiUrl}/ingresarMateriaAsegurada`, agregaMateria, {
+        .post<any>(`${environment.apiUrlConsumer}/ingresarMateriaAsegurada`, agregaMateria, {
           headers: this.headers,
         })
     }

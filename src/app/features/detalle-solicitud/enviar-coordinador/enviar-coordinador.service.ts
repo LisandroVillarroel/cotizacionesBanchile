@@ -19,7 +19,7 @@ export class EnviarCoordinadorService {
 
   postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
     return this.http.post<IResponse>(
-        `${environment.apiUrl}/enviarSolicitudCoordinador`,
+        `${environment.apiUrlConsumer}/enviarSolicitudCoordinador`,
         enviaSolicitud, { headers: this.headers, }
       )
   }

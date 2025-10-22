@@ -33,7 +33,7 @@ import { Router } from '@angular/router';
         </a>
         <mat-divider [vertical]="true"></mat-divider>
         <span class="titulo mb-0" style="color: white;">
-          Plataforma Cotizaciones Seguros Empresa v.9
+          Plataforma Cotizaciones Seguros Empresa v.11
         </span>
       </div>
       <div class="usuario-container">

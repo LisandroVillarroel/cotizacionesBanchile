@@ -24,7 +24,7 @@ export class AnularSolicitudService {
   postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IAnulaResponse> {
     //console.log('Anula Solicitud Service:', anulaSolicitud);
     return this.http.post<IAnulaResponse>(
-        `${environment.apiUrl}/anularSolicitud`,
+        `${environment.apiUrlConsumer}/anularSolicitud`,
         anulaSolicitud, { headers: this.headers, }
       )
   }

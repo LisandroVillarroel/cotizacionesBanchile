@@ -18,7 +18,7 @@ private http = inject(HttpClient);
 
     postMedioPago(): Observable<InterfazMedioPago> {
       return this.http
-        .get<InterfazMedioPago>(`${environment.apiUrl}/listarMedioPago`,{headers: this.headers})
+        .get<InterfazMedioPago>(`${environment.apiUrlConsumer}/listarMedioPago`,{headers: this.headers})
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

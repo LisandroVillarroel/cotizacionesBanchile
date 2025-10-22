@@ -19,7 +19,7 @@ export class EstadoService {
 
   getEstado(): Observable<EstadoInterface> {
     return this.http
-      .get<EstadoInterface>(`${environment.apiUrl}/listarEstado`,{headers: this.headers})
+      .get<EstadoInterface>(`${environment.apiUrlConsumer}/listarEstado`,{headers: this.headers})
   }
 
 }

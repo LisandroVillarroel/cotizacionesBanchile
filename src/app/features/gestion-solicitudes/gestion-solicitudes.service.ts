@@ -18,7 +18,7 @@ export class GestionSolicitudesService {
 
   postListaGestion(filtro: any): Observable<IGestionResponse> {
     return this.http
-      .post<IGestionResponse>(`${environment.apiUrl}/listarGestionSolicitudes`, filtro,{headers: this.headers})
+      .post<IGestionResponse>(`${environment.apiUrlConsumer}/listarGestionSolicitudes`, filtro,{headers: this.headers})
     }
 
 }

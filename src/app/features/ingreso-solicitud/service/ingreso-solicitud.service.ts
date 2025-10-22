@@ -30,7 +30,7 @@ export class IngresoSolicitudService {
     console.log('Ingreso Solicitud Service:', ingresoSolicitud);
     return this.http
       .post<IIngresoSolicitud_Recibe>(
-        `${environment.apiUrl}/ingresoSolicitud`,
+        `${environment.apiUrlConsumer}/ingresoSolicitud`,
         ingresoSolicitud,
         {
           headers: this.headers,

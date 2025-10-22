@@ -19,7 +19,7 @@ export class DashboardService {
 
    postListadoSolicitudes(filtro: any): Observable<DatosSolicitudesInterface> {
       return this.http
-        .post<DatosSolicitudesInterface>(`${environment.apiUrl}/listarSolicitudes`, filtro,{headers: this.headers})
+        .post<DatosSolicitudesInterface>(`${environment.apiUrlConsumer}/listarSolicitudes`, filtro,{headers: this.headers})
 
     }
 

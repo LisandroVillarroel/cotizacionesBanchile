@@ -19,7 +19,7 @@ export class TipoCuentaService {
 
       postTipoCuenta(): Observable<InterfazTipoCuenta> {
         return this.http
-          .get<InterfazTipoCuenta>(`${environment.apiUrl}/listarTipoCuenta`,{headers: this.headers})
+          .get<InterfazTipoCuenta>(`${environment.apiUrlConsumer}/listarTipoCuenta`,{headers: this.headers})
           .pipe(retry(1), catchError(this.errorHandl));
       }
 

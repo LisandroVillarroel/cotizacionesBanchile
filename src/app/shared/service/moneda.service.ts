@@ -19,7 +19,7 @@ export class MonedaService {
 
     postMoneda(): Observable<InterfazMoneda> {
       return this.http
-        .get<InterfazMoneda>(`${environment.apiUrl}/listarMoneda`,{headers: this.headers})
+        .get<InterfazMoneda>(`${environment.apiUrlConsumer}/listarMoneda`,{headers: this.headers})
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
