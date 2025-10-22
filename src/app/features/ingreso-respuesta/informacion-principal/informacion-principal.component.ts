@@ -9,6 +9,7 @@ import {
   QueryList,
   inject,
   ViewChild,
+  computed,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
@@ -37,6 +38,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
+import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
 
 
 @Component({
@@ -66,7 +68,36 @@ import { IDatosArchivo } from '@shared/modelo/archivos-interface';
   styleUrl: './informacion-principal.component.css'
 })
 export default class InformacionPrincipalComponent {
+  moneda = new FormControl();
+  primaNeta = new FormControl();
+  primaAfecta = new FormControl();
+  primaBruta = new FormControl();
+  mPago = new FormControl();
+  banco = new FormControl();
+  tipoCuenta = new FormControl();
+  nroCuenta = new FormControl();
+  nroCuotas = new FormControl();
   fechaActual = new FormControl<Date>(new Date());
+  pInicio = new FormControl<Date>(new Date());
+  pTermino = new FormControl<Date>(new Date());
+  pVencimiento = new FormControl<Date>(new Date());
+
+
+
+  monedaRes: string = '';
+  primaNetaRes: string = '';
+  primaAfectaRes: string = '';
+  primaBrutaRes: string = '';
+  mPagoRes: string = '';
+  bancoRes: string = '';
+  tipoCuentaRes: string = '';
+  nroCuentaRes: string = '';
+  nroCuotasRes: string = '';
+  fchInicioRes: Date | null = null;
+  fchTerminoRes: Date | null = null;
+  fchVencimientoRes: Date | null = null;
+
+
 
   monedaService = inject(MonedaService);
   medioPagoService = inject(MedioPagoService);
@@ -77,14 +108,34 @@ export default class InformacionPrincipalComponent {
   datosMedioPago = signal<IMedioPago[]>([]);
   datosBanco = signal<IBanco[]>([]);
   datosTipoCuenta = signal<ITipoCuenta[]>([]);
+  archivoUrl = signal<string | null>(null);
+  datosArchivo = signal<IDatosArchivo | null>(null);
 
   panelOpenState = false;
-  moneda = new FormControl();
-  mPago = new FormControl();
-  banco = new FormControl();
-  tipoCuenta = new FormControl();
 
-  constructor() {
+  fechaInicio: Date | null = null;
+  fechaTermino: Date | null = null;
+  fechaVencimiento: Date | null = null;
+
+  @ViewChild('fileInputPropuesta') fileInputPropuesta!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInputCompania') fileInputCompania!: ElementRef<HTMLInputElement>;
+
+  selectedPropuestaFile: File | null = null;
+  selectedCompaniaFile: File | null = null;
+  archivoCompania: File | null = null;
+  archivoPropuesta: File | null = null;
+
+  nombreArchivoPropuesta: string = '';
+  nombreArchivoCompania: string = '';
+
+
+    public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
+
+    idSol = computed(() => this.idSolicitud.toString());
+
+
+
+  constructor(private http: HttpClient) {
 
   }
 
@@ -111,7 +162,6 @@ export default class InformacionPrincipalComponent {
   }
 
   cargaMedioPago() {
-    //console.log('Entro cargaRubros');
 
     this.medioPagoService.postMedioPago().subscribe({
       next: (dato) => {
@@ -132,7 +182,6 @@ export default class InformacionPrincipalComponent {
   }
 
   cargaBanco() {
-    //console.log('Entro cargaRubros');
 
     this.bancoService.postBanco().subscribe({
       next: (dato) => {
@@ -153,7 +202,6 @@ export default class InformacionPrincipalComponent {
   }
 
   cargaTipoCuenta() {
-    //console.log('Entro cargaRubros');
 
     this.tipoCuentaService.postTipoCuenta().subscribe({
       next: (dato) => {
@@ -182,39 +230,23 @@ export default class InformacionPrincipalComponent {
   }
 
 
-fechaInicio: Date | null = null;
-fechaTermino: Date | null = null;
-fechaVencimiento: Date | null = null;
 
-filtrarFechasTermino = (fecha: Date | null): boolean => {
-  if (!fecha || !this.fechaInicio) {
-    return false; // Bloquea todo si no hay fechaInicio
+
+  filtrarFechasTermino = (fecha: Date | null): boolean => {
+    if (!fecha || !this.fechaInicio) {
+      return false;
+    }
+    return fecha >= this.fechaInicio;
+  };
+
+  soloNumeros(event: KeyboardEvent) {
+    const charCode = event.key;
+    if (!/^\d$/.test(charCode)) {
+      event.preventDefault();
+    }
   }
-  return fecha >= this.fechaInicio;
-};
-
-soloNumeros(event: KeyboardEvent) {
-  const charCode = event.key;
-  if (!/^\d$/.test(charCode)) {
-    event.preventDefault();
-  }
-}
 
 
-
-
-  @ViewChild('fileInputPropuesta') fileInputPropuesta!: ElementRef<HTMLInputElement>;
-  @ViewChild('fileInputCompania') fileInputCompania!: ElementRef<HTMLInputElement>;
-
-  nombreArchivoPropuesta: string = '';
-  archivoPropuesta: File | null = null;
-
-  nombreArchivoCompania: string = '';
-  archivoCompania: File | null = null;
-
-
-  archivoUrl = signal<string | null>(null);
-  datosArchivo = signal<IDatosArchivo | null>(null);
 
 
   abrirSelectorPropuesta(): void {
@@ -225,126 +257,26 @@ soloNumeros(event: KeyboardEvent) {
     this.fileInputCompania.nativeElement.click();
   }
 
-  // onFileSelectedPropuesta(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.archivoPropuesta = input.files[0];
-  //     this.nombreArchivoPropuesta = this.archivoPropuesta.name;
-
-  //     console.log('Archivo seleccionado:', this.archivoPropuesta);
-  //   } else {
-  //     console.warn('No se seleccionó ningún archivo');
-  //   }
-  // }
 
 
-
-// async onFileSelectedPropuesta(event: any) {
-//     this.fileSeleccionado = event.target.files[0];
-//     const file: File = event.target.files[0];
-//     this.imageUrl = signal(null);
-//     if (file) {
-//       this.datosFoto = signal<IDatosFile>({
-//         nombre: file.name,
-//         tipo: file.type,
-//         size: Math.ceil(file.size / 1024), // tamaño en KB
-//         extension: file.name.split('.').pop() || '',
-//       });
-//       console.log('Archivo seleccionado:', file);
-
-//       const reader = new FileReader();
-//       console.log('paso1');
-//       reader.onload = (e) => {
-//         this.imageUrl.set(e.target?.result as string);
-//       };
-//       console.log('paso3');
-//       reader.readAsDataURL(file);
-//       console.log('paso4');
-//     }
-//     // Aquí puedes agregar la lógica para subir el archivo al servidor o procesarlo según tus necesidades.
-//   }
-
-
-
-async onFileSelectedPropuesta(event: any) {
-  this.archivoPropuesta = event.target.files[0];
-  const file: File = event.target.files[0];
-  this.archivoUrl = signal(null);
-  if (file) {
-    this.nombreArchivoPropuesta = file.name;
-    this.datosArchivo = signal<IDatosArchivo>({
-      nombre: file.name,
-      tipo: file.type,
-      size: Math.ceil(file.size / 1024), // tamaño en KB
-      extension: file.name.split('.').pop() || '',
-    });
-    console.log('Archivo seleccionado:', file);
-    const reader = new FileReader();
-    console.log('paso1');
-    reader.onload = (e) => {
-      this.archivoUrl.set(e.target?.result as string);
-    };
-    console.log('paso3');
-    reader.readAsDataURL(file);
-    console.log('paso4');
+  onFileSelectedPropuesta(event: any) {
+    const filePpta: File = event.target.files[0];
+    if (filePpta) {
+      this.selectedPropuestaFile = filePpta;
+      this.nombreArchivoPropuesta = filePpta.name;
+      console.log('Archivo de propuesta guardado en variable:', filePpta);
+    }
   }
-}
 
-async onFileSelectedCompania(event: any) {
-  this.archivoCompania = event.target.files[0];
-  const file: File = event.target.files[0];
-  this.archivoUrl = signal(null);
-  if (file) {
-    this.nombreArchivoCompania = file.name;
-    this.datosArchivo = signal<IDatosArchivo>({
-      nombre: file.name,
-      tipo: file.type,
-      size: Math.ceil(file.size / 1024), // tamaño en KB
-      extension: file.name.split('.').pop() || '',
-    });
-    console.log('Archivo seleccionado:', file);
-    const reader = new FileReader();
-    console.log('paso1');
-    reader.onload = (e) => {
-      this.archivoUrl.set(e.target?.result as string);
-    };
-    console.log('paso3');
-    reader.readAsDataURL(file);
-    console.log('paso4');
+  onFileSelectedCompania(event: any) {
+    const fileCia: File = event.target.files[0];
+    if (fileCia) {
+      this.selectedCompaniaFile = fileCia;
+      this.nombreArchivoCompania = fileCia.name;
+      console.log('Archivo de compañía guardado en variable:', fileCia);
+    }
   }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // onFileSelectedCompania(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.archivoCompania = input.files[0];
-  //     this.nombreArchivoCompania = this.archivoCompania.name;
-
-  //     console.log('Archivo seleccionado:', this.archivoCompania);
-  //   } else {
-  //     console.warn('No se seleccionó ningún archivo');
-  //   }
-  // }
 
   eliminarArchivoPropuesta(): void {
     this.archivoPropuesta = null;
@@ -357,6 +289,9 @@ async onFileSelectedCompania(event: any) {
     this.nombreArchivoCompania = '';
     this.fileInputCompania.nativeElement.value = '';
   }
+
+
+
 
 
 }

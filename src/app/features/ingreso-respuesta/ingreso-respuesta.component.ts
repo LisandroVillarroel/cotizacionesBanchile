@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { MatDatepickerToggle, MatDatepicker } from "@angular/material/datepicker";
 import { ResumenGeneralComponent } from "@features/dashboard/resumen-general/resumen-general.component";
@@ -25,6 +25,9 @@ import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficia
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
 import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { MatButton } from '@angular/material/button';
+import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
+import { HttpEventType } from '@angular/common/http';
+import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -53,6 +56,18 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './ingreso-respuesta.component.css'
 })
 export class IngresoRespuestaComponent {
+
+constructor(
+    private registrarRespuestaService: RegistrarRespuestaService // ✅ Agrega esta línea
+  ) {
+    // Otros inyectables si los tienes
+  }
+
+
+@ViewChild(InformacionPrincipalComponent)
+infoPrincipalComponent!: InformacionPrincipalComponent;
+
+
   panelOpenState = false;
   infoGral = signal<ISolicitud | undefined>(undefined);
   detalleService = inject(DetalleSolicitudService);
@@ -60,7 +75,6 @@ export class IngresoRespuestaComponent {
 
 
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-
   idSol = computed(() => this.idSolicitud.toString());
 
   fechaActual = new FormControl<Date>(new Date());
@@ -81,7 +95,6 @@ export class IngresoRespuestaComponent {
     this.detalleService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
-          //console.log('Detalle solicitud:', dato);
           this.infoGral.set({
             id_solicitud: this.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
@@ -97,11 +110,8 @@ export class IngresoRespuestaComponent {
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
             id_ejecutivo_banco: dato.p_id_ejecutivo_banco
           });
-          //this.asegurados.set(dato.c_asegurados);
-          //this.beneficiarios.set(dato.c_beneficiarios);
           this.observaciones.set(dato.c_observaciones);
         }
-
       },
       error: (error) => {
         console.log('ERROR INESPERADO', error);
@@ -116,10 +126,7 @@ export class IngresoRespuestaComponent {
 
 
   verDetalleAse(IdSolicitud: number) {
-    //console.log('IdSolicitud', IdSolicitud);
-
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
@@ -132,10 +139,7 @@ export class IngresoRespuestaComponent {
   }
 
   verDetalleBen(IdSolicitud: number) {
-    //console.log('IdSolicitud', IdSolicitud);
-
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
@@ -146,18 +150,53 @@ export class IngresoRespuestaComponent {
       .open(ModalBeneficiarioComponent, dialogConfig)
       .afterClosed()
   }
+
+ registraRespuesta() {
+  const datos: IRegistrarRespuesta = {
+    p_id_solicitud: this.infoPrincipalComponent.idSolicitud,
+    p_id_compania_seguro:15,////
+    p_id_moneda: this.infoPrincipalComponent.moneda.value,
+    p_valor_prima_neta: this.infoPrincipalComponent.primaNeta.value,
+    p_valor_prima_afecta: this.infoPrincipalComponent.primaAfecta.value,
+    p_valor_prima_bruta: this.infoPrincipalComponent.primaBruta.value,
+    p_id_medio_de_pago: this.infoPrincipalComponent.mPago.value,
+    p_id_banco: this.infoPrincipalComponent.banco.value,
+    p_id_tipo_cuenta: this.infoPrincipalComponent.tipoCuenta.value,
+    p_nro_cuenta: this.infoPrincipalComponent.nroCuenta.value,
+    p_cantidad_cuotas: this.infoPrincipalComponent.nroCuotas.value,
+    p_fecha_inicio_vigencia: this.formatFecha(this.infoPrincipalComponent.fechaInicio),
+    p_fecha_termino_vigencia: this.formatFecha(this.infoPrincipalComponent.fechaTermino),
+    p_dia_vencimiento_primera_cuota: this.formatFecha(this.infoPrincipalComponent.fechaVencimiento),
+    p_id_cotizacion_compania: this.infoPrincipalComponent.nombreArchivoCompania,
+    p_ruta_cotizacion_compania: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS",
+    p_id_cotizacion_propuesta: this.infoPrincipalComponent.nombreArchivoPropuesta,
+    p_ruta_cotizacion_propuesta: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS",
+
+    //archivoCompania: this.infoPrincipalComponent.selectedCompaniaFile,
+    //archivoPropuesta: this.infoPrincipalComponent.selectedPropuestaFile,
+
+    p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+    p_tipo_usuario: this._storage()?.usuarioLogin.usuario!.substring(0,1)!
+  };
+console.log(datos);
+  this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
+    next: (res) => {
+      console.log('Respuesta registrada exitosamente:', res);
+      // Aquí podrías mostrar un mensaje de éxito o redirigir
+    },
+    error: (err) => {
+      console.error('Error al registrar respuesta:', err);
+      // Aquí podrías mostrar un mensaje de error
+    }
+  });
 }
 
-//    dialogConfig.disableClose = true;
-//    dialogConfig.autoFocus = true;
-//
-//   //Ajustes clave para evitar espacio en blanco
-//    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-//    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-//    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-//    dialogConfig.data = dato;
-//
-//    this.dialog
-//      .open(EnviarACompaniaComponent, dialogConfig)
-//      .afterClosed();
-//  }
+
+formatFecha(fecha: Date | null): string {
+  if (!fecha) return '';
+  const iso = new Date(fecha).toISOString();
+  return iso.split('T')[0]; // Devuelve formato YYYY-MM-DD
+}
+
+}
+
