@@ -164,20 +164,40 @@ h3[mat-dialog-title] {
 /* Espacio del input */
 .mdc-text-field--outlined .mat-mdc-form-field-infix,
 .mdc-text-field--no-label .mat-mdc-form-field-infix {
-  padding-top: 12px !important;
-  padding-bottom: 6px !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
 }
 /* Fin espacio del input */
 
 .inputInput {
-  font-size: 14px !important;
-  padding-top: 10px !important;
+  font-size: 12px !important;
+  padding-top: 6px !important;
   padding-bottom: 5px !important;
   width: 100%;
+
+
+
+}
+/*Esto es general*/
+ .mat-mdc-form-field-infix {
+  min-height: 1px !important;
+    padding-top: var(--mat-form-field-filled-with-label-container-padding-top, 1px);
+    padding-bottom: var(--mat-form-field-filled-with-label-container-padding-bottom, 1px);
+      padding: 0 !important;
+ align-items: center !important;
 }
 
+.mat-mdc-select-value-text {
+  font-size: 12px !important;
+}
+
+mat-option{
+  font-size: 10px !important;
+}
+/*Fin Esto es general*/
+
 .inputSelectBuscar {
-  font-size: 14px !important;
+  font-size: 12px !important;
   padding-top: 10px !important;
   padding-bottom: 5px !important;
   height: 84%;
@@ -185,7 +205,7 @@ h3[mat-dialog-title] {
 }
 
 .inputSelect {
-  font-size: var(--mdc-typography-body1-font-size, 12px) !important;
+  font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
   width: 100%;
@@ -193,7 +213,7 @@ h3[mat-dialog-title] {
 }
 
 .inputBuscar {
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 10px 0px 0px !important;
   height: 80%;
@@ -202,7 +222,7 @@ h3[mat-dialog-title] {
 }
 
 .inputFecha {
-  font-size: 14px !important;
+  font-size: 12px !important;
   /*padding-top: 10px !important;*/
   margin-top: 10px !important;
   padding-bottom: 5px !important;
@@ -211,7 +231,7 @@ h3[mat-dialog-title] {
 }
 
 .inputFechaForm {
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
@@ -220,24 +240,15 @@ h3[mat-dialog-title] {
   color: #666668;
 }
 
-.mat-mdc-select-value-text {
-  font-size: 14px !important;
-}
 
 .labelI {
-  font-size: 14px !important;
+  font-size: 10px !important;
   font-style: italic;
   text-align: left;
   color: #666668;
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-    .mdc-text-field--textarea
-  )
-  .mat-mdc-form-field-infix {
-  padding-top: 10px;
-  padding-bottom: 16px;
-}
+
 
 /* FIN INPUTS */
 

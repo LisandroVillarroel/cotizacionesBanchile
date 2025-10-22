@@ -49,12 +49,12 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     }
 
      ingresar() {
-       this.authService.postLogin(this.ingresoLogin().value?.usuario.toUpperCase()).subscribe({
+       this.authService.postLogin(this.ingresoLogin().value?.usuario).subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
             this.sesion = {
               usuarioLogin: {
-                usuario: this.ingresoLogin().value?.usuario.toUpperCase(),
+                usuario: this.ingresoLogin().value?.usuario,
                 perfilUsuario: dato.p_cursor![0].perfil_usuario,
                 runUsuario: dato.p_cursor![0].rut_usuario,
                 nombreUsuario: dato.p_cursor![0].nombre_usuario + ' ' + dato.p_cursor![0].apellido_paterno_usuario + ' ' + dato.p_cursor![0].apellido_materno_usuario,
