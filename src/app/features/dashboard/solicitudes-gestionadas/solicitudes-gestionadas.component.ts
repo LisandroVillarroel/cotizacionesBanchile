@@ -118,9 +118,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   dataSourceSolicitud = computed(() => {
     var tabla =new MatTableDataSource<IListadoSolicitudes>();
-      console.log("Solicitudes coord: ",this.solicitudesCoord());
-      console.log("Solicitudes: ",this.datosSolicitud());
-
     if(this.tipoUsuario === "C"){
       tabla.data = this.solicitudesCoord()!;
     }else{
