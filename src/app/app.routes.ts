@@ -38,7 +38,11 @@ export const routes: Routes = [
         path: 'detalle',
         loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
       },
-
+      {
+        path: 'cotizaciones',
+        canActivate: [guardRoles(['ejec_bco'])],
+        loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
+      },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },

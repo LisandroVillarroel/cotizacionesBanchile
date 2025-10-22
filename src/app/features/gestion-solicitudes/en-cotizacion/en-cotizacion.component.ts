@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, input } from '@angular/core';
+import { Component, ViewChild, inject, signal, input, output } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -163,7 +163,7 @@ export class EnCotizacionComponent {
   }
 
   getCellClass(value: string): string {
-    var salida = 'gris';
+    var salida = 'black';
     if(value !== null){
       switch(value.toLowerCase()){
         case 'v':
@@ -172,12 +172,13 @@ export class EnCotizacionComponent {
           salida = 'amarillo'; break;
         case 'r':
           salida = 'rojo'; break;
-        default: salida = 'gris'; break;
+        default: salida = 'black'; break;
       }
     }
     return salida;
   }
 
+  retorno = output<boolean>();
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -190,9 +191,7 @@ export class EnCotizacionComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato)=>{
-        history.go();
-      });
+      .subscribe(() => { this.retorno.emit(true); })
     }
 
     EnviarCia(idCotizacion: number){

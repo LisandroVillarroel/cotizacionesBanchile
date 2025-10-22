@@ -1,4 +1,5 @@
-import { Component, ViewChild, inject, signal, input } from '@angular/core';
+import { Component, ViewChild, inject, signal,
+  input, output } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -174,12 +175,13 @@ export class NuevasComponent {
           salida = 'amarillo'; break;
         case 'r':
           salida = 'rojo'; break;
-        default: salida = 'gris'; break;
+        default: salida = 'black'; break;
       }
     }
     return salida;
   }
 
+  retorno = output<boolean>();
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -192,6 +194,6 @@ export class NuevasComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })
   }
-
 }

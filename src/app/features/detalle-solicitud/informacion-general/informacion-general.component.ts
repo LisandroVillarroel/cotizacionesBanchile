@@ -31,22 +31,25 @@ export class InformacionGeneralComponent {
           salida = 'amarillo'; break;
         case 'r':
           salida = 'rojo'; break;
-        default: salida = 'gris'; break;
+        default: salida = 'black'; break;
       }
     }
     return salida;
   }
-/*     if(value === null) return { 'color': '#666668 !important;' };
 
-    if(value?.toLowerCase() === "v"){
-      return { 'color': '#008000 !important;' };
-    }else if (value?.toLowerCase() === "a"){
-      return { 'color': '#ffff00 !important;' };
-    }else if(value?.toLowerCase() === "r"){
-      return { 'color': '#ff0000 !important;' };
-    }else{
-      return { 'color': '#666668 !important;' };
+  getText(value: string): string {
+    var salida = 'Desconocido';
+    if(value !== null){
+      switch(value.toLowerCase()){
+        case 'v':
+          salida = 'A tiempo' ; break;
+        case 'a':
+          salida = 'Con demora'; break;
+        case 'r':
+          salida = 'Demora crítica'; break;
+        default: salida = 'Desconocido'; break;
+      }
     }
-  }*/
-
+    return salida;
+  }
 }

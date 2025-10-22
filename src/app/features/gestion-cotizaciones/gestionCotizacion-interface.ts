@@ -1,11 +1,16 @@
-export interface GestionCotizacionInterface {
+import { IObservacion } from "@features/detalle-solicitud/modelo/detalle-interface";
+import { ICompaniaG } from '@features/gestion-solicitudes/gestionSolicitud-interface';
+
+export interface IRequestGestion{
+  p_id_usuario: string,
+  p_tipo_usuario: string
 }
 
 export interface IResumenCotizaciones{
   recibidas: number,
   pendientes: number,
   cotizadas: number,
-  devueltas: number,
+  firmadas: number,
 }
 
 export interface ICotizacion{
@@ -14,8 +19,6 @@ export interface ICotizacion{
 
 export interface IGestionCotizacion{
   id_solicitud: number;
-  po_cursor?: IObservacion[];
-  pb_cursor?: ICompaniaG[],
   rut_contratante: string;
   nombre_contratante: string;
   rubro: number;
@@ -37,7 +40,7 @@ export interface IGestionResponse{
   p_cotizaciones_recibidas: number,
   p_cotizaciones_pendientes: number,
   p_solicitudes_cotizadas: number,
-  p_solicitudes_con_observaciones: number,
+  p_solicitudes_firmadas: number,
   vcEstado: string,
   vcEstadoCreacion: string
 }

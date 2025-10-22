@@ -978,10 +978,12 @@ mat-divider[vertical] {
 }
 
 .verde{
-  color: #008000 !important;
+  /* color: #008000 !important; */
+  color: #6baa1f;
 }
 .amarillo{
-  color: #ffff00 !important;
+  /* color: #ffff00 !important; */
+  color: #FFDE21;
 }
 .rojo{
   color: #ff0000 !important;
@@ -995,6 +997,9 @@ mat-divider[vertical] {
   color: #cfcfd2;
 }
 
+.black{
+  color: black;
+}
 .info {
   color: #149dc9;
 }
