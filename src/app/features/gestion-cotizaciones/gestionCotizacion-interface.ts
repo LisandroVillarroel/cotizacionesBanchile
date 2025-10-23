@@ -9,7 +9,7 @@ export interface IRequestGestion{
 export interface IResumenCotizaciones{
   recibidas: number,
   pendientes: number,
-  cotizadas: number,
+  enviadas: number,
   firmadas: number,
 }
 
@@ -36,7 +36,10 @@ export interface IGestionCotizacion{
 export interface IGestionResponse{
   codigo: number,
   mensaje: string,
-  p_cursor: IGestionCotizacion[],
+  pr_cursor: IGestionCotizacion[],
+  pp_cursor: IGestionCotizacion[],
+  pf_cursor: IGestionCotizacion[],
+  pc_cursor: IGestionCotizacion[],
   p_cotizaciones_recibidas: number,
   p_cotizaciones_pendientes: number,
   p_solicitudes_cotizadas: number,

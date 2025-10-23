@@ -13,6 +13,10 @@ import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 import { IGestionCotizacion, IGestionResponse, IRequestGestion, IResumenCotizaciones } from './gestionCotizacion-interface';
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
+import { CotizacionesPendientesComponent } from './cotizaciones-pendientes/cotizaciones-pendientes.component';
+import { CotizacionesEnviadasComponent } from './cotizaciones-enviadas/cotizaciones-enviadas.component';
+import { CotizacionesRecibidasComponent } from './cotizaciones-recibidas/cotizaciones-recibidas.component';
+import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-firmadas.component';
 
 @Component({
   selector: 'app-gestion-cotizaciones',
@@ -27,7 +31,11 @@ import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cot
     MatTabsModule,
     MatCardModule,
     CommonModule,
-    ResumenCotizacionesComponent
+    ResumenCotizacionesComponent,
+    CotizacionesPendientesComponent,
+    CotizacionesEnviadasComponent,
+    CotizacionesRecibidasComponent,
+    PropuestasFirmadasComponent
   ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })
@@ -42,10 +50,13 @@ export default class GestionCotizacionesComponent{
   resumenGestion = signal<IResumenCotizaciones>({
     recibidas: 0,
     pendientes: 0,
-    cotizadas: 0,
+    enviadas: 0,
     firmadas: 0
   });
-  listadoSolicitudes = signal<IGestionCotizacion[] >([]);
+  recibidas = signal<IGestionCotizacion[] >([]);
+  pendientes = signal<IGestionCotizacion[] >([]);
+  enviadas = signal<IGestionCotizacion[] >([]);
+  firmadas = signal<IGestionCotizacion[] >([]);
 
   async ngOnInit(){
     this.cargarSolicitudes();
@@ -64,10 +75,13 @@ export default class GestionCotizacionesComponent{
           this.resumenGestion.set({
             recibidas: dato.p_cotizaciones_recibidas,
             pendientes: dato.p_cotizaciones_pendientes,
-            cotizadas: dato.p_solicitudes_cotizadas,
+            enviadas: dato.p_solicitudes_cotizadas,
             firmadas: dato.p_solicitudes_firmadas
           });
-          this.listadoSolicitudes.set(dato.p_cursor);
+          this.pendientes.set(dato.pp_cursor);
+          this.enviadas.set(dato.pc_cursor);
+          this.recibidas.set(dato.pr_cursor);
+          this.firmadas.set(dato.pf_cursor);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         }
       },
