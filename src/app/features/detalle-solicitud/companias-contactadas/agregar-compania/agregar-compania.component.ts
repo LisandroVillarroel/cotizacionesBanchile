@@ -9,7 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
@@ -32,12 +37,12 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   estadoSolicitud: string;
 } */
 
- export interface AgregarCompaniaData {
-  p_id_solicitud: number,
-  p_id_usuario: string,
-  p_tipo_usuario: string,
-  id_rubro: number,
-  id_tipo_seguro: number,
+export interface AgregarCompaniaData {
+  p_id_solicitud: number;
+  p_id_usuario: string;
+  p_tipo_usuario: string;
+  id_rubro: number;
+  id_tipo_seguro: number;
   fecha: string;
   ejecutivo: string;
 }
@@ -69,12 +74,15 @@ export class AgregarCompaniaComponent {
   correoCompania = signal<string>('');
 
   compania = new FormControl<number | null>(null, Validators.required);
-  detalleControl = new FormControl('', [Validators.maxLength(500), Validators.required],);
+  detalleControl = new FormControl('', [
+    Validators.maxLength(500),
+    Validators.required,
+  ]);
 
   agregaCompania = signal<FormGroup>(
     new FormGroup({
-        compania: this.compania,
-        detalleControl: this.detalleControl
+      compania: this.compania,
+      detalleControl: this.detalleControl,
     })
   );
 
@@ -82,7 +90,7 @@ export class AgregarCompaniaComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AgregarCompaniaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData,
+    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData
   ) {}
 
   registros: any[] = [];
@@ -116,24 +124,29 @@ export class AgregarCompaniaComponent {
     return 'Campo inválido';
   }
 
-  actualizarCorreo(companiaSeleccionada: any): void {
+  actualizarCorreo(companiaSeleccionada: number): void {
+    var cia = this.datoCompanias()?.filter((item) => {
+      return item.id_compania_seguro
+        ?.toString()
+        .includes(companiaSeleccionada.toString());
+    });
     const correoLimpio =
-      companiaSeleccionada?.correo_compania_seguro
-        ?.replace(/&nbsp;/g, '')
-        .trim() || '';
+      cia[0].correo_compania_seguro?.replace(/&nbsp;/g, '').trim() || '';
+
     this.correoCompania.set(correoLimpio);
     //this.data.id_compania_seguro = companiaSeleccionada.id_compania_seguro; // si necesitas guardar el ID
   }
 
   guardarCompania(): void {
-    if(this.agregaCompania().get('detalleControl')!.value===''){
-      return
+    if (this.agregaCompania().get('detalleControl')!.value === '') {
+      return;
     }
     const payload: IAgregaCompania = {
       p_id_solicitud: Number(this.data.p_id_solicitud),
       p_id_compania_seguro: this.agregaCompania().get('compania')!.value,
-      p_detalle_solicitud_cotizacion: this.agregaCompania().get('detalleControl')!.value,
-      p_id_usuario: this.data.p_id_usuario,//'EJ002',
+      p_detalle_solicitud_cotizacion:
+        this.agregaCompania().get('detalleControl')!.value,
+      p_id_usuario: this.data.p_id_usuario, //'EJ002',
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
 
@@ -145,9 +158,9 @@ export class AgregarCompaniaComponent {
           this.confirmar();
         }
       },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
     });
   }
 
@@ -155,12 +168,13 @@ export class AgregarCompaniaComponent {
     this.dialogRef.close();
   }
 
-  async confirmar(){
-    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              "La compañía ha sido agregada exitosamente.");
+  async confirmar() {
+    const result = await this.notificacioAlertnService.confirmacion(
+      'CONFIRMACIÓN',
+      'La compañía ha sido agregada exitosamente.'
+    );
     if (result) {
       this.dialogRef.close(true);
     }
   }
-
 }

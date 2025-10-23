@@ -1,104 +1,185 @@
-<mat-dialog-content class="container-fluid p-0 mb-5" style="height: 100%;">
-<app-cabecera-popup [titulo]="'Detalle de solicitud'"  />
-<mat-card>
-  <mat-card-content>
-    <mat-tab-group>
-      <mat-tab label="Información General">
-        <div class="container-fluid mt-5">
-          <app-informacion-general [infoGral]="infoGral()"/>
+<mat-dialog-content class="container-fluid p-0 mb-5" style="height: 100%">
+  <app-cabecera-popup [titulo]="'Detalle de solicitud'" />
+  <mat-card>
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Información General">
+          <div class="container-fluid mt-5">
+            <app-informacion-general [infoGral]="infoGral()" />
 
-          <!-- Lista observaciones -->
-          <div class="container-fluid" style=" padding: 0px 0px 12px;">
-            @if(observaciones()?.length!==0 && observaciones()!==undefined){
-            <mat-expansion-panel class="mat-elevation-z6"
-              style="border-radius: 10px; border: 1px solid; border-color: #234E85; padding: 4px;"
-                (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <!-- Lista observaciones -->
+            <div class="container-fluid" style="padding: 0px 0px 12px">
+              @if(observaciones()?.length!==0 && observaciones()!==undefined){
+              <mat-expansion-panel
+                class="mat-elevation-z6"
+                style="
+                  border-radius: 10px;
+                  border: 1px solid;
+                  border-color: #234e85;
+                  padding: 4px;
+                "
+                (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false"
+              >
                 <mat-expansion-panel-header>
-                  <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
+                  <mat-panel-title class="destacado">
+                    Observaciones
+                  </mat-panel-title>
                 </mat-expansion-panel-header>
-                <app-observaciones [observaciones]="observaciones()"/>
+                <app-observaciones [observaciones]="observaciones()" />
               </mat-expansion-panel>
-            }
-          </div>
+              }
+            </div>
 
-          <!-- Lista compañías contactadas -->
-          <div class="container-fluid" style=" padding: 0px 0px 12px;">
-            @if(companias()?.length!==0 && companias()!==undefined){
-              <mat-expansion-panel class="mat-elevation-z6"
-                style="border-radius: 10px; border: 1px solid; border-color: #234E85;"
-                  (opened)="panelOpenState2 = true" (closed)="panelOpenState2 = false">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title class="destacado"> Compañías Contactadas
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <app-companias-contactadas [companias]="companias()"/>
+            <!-- Lista compañías contactadas -->
+            <div class="container-fluid" style="padding: 0px 0px 12px">
+              @if(companias()?.length!==0 && companias()!==undefined){
+              <mat-expansion-panel
+                class="mat-elevation-z6"
+                style="
+                  border-radius: 10px;
+                  border: 1px solid;
+                  border-color: #234e85;
+                "
+                (opened)="panelOpenState2 = true"
+                (closed)="panelOpenState2 = false"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="destacado">
+                    Compañías Contactadas
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-companias-contactadas
+                  [companias]="companias()"
+                  [verEjec]="verEjec"
+                  [verCoord]="verCoord"
+                />
               </mat-expansion-panel>
-            }
+              }
+            </div>
           </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Asegurados">
-        <div class="container-fluid">
-          <app-asegurado [idSolicitud]="idSol()" [mostrarSoloConsulta]="false" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Beneficiarios">
-        <div class="container-fluid">
-          <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
-          <app-beneficiario [idSolicitud]="idSol()" [mostrarSoloConsulta]="false" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Materia Asegurada">
-        <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!" [idSeguro]="infoGral()?.id_tipo_seguro!"
-        [muestraConsulta]="false" />
-      </mat-tab>
-      <mat-tab label="Documentos Asociados">
-        <div class="container-fluid">
-          <app-cuestionario-documentos [idSolicitud]="idSol()" />
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </mat-card-content>
-</mat-card>
+        </mat-tab>
+        <mat-tab label="Asegurados">
+          <div class="container-fluid">
+            <app-asegurado
+              [idSolicitud]="idSol()"
+              [mostrarSoloConsulta]="false"
+            />
+          </div>
+        </mat-tab>
+        <mat-tab label="Beneficiarios">
+          <div class="container-fluid">
+            <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
+            <app-beneficiario
+              [idSolicitud]="idSol()"
+              [mostrarSoloConsulta]="false"
+            />
+          </div>
+        </mat-tab>
+        <mat-tab label="Materia Asegurada">
+          <app-materia-asegurada
+            [idSolicitud]="idSol()"
+            [idRubro]="infoGral()?.id_rubro!"
+            [idSeguro]="infoGral()?.id_tipo_seguro!"
+            [muestraConsulta]="false"
+          />
+        </mat-tab>
+        <mat-tab label="Documentos Asociados">
+          <div class="container-fluid">
+            <app-cuestionario-documentos [idSolicitud]="idSol()" />
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
 </mat-dialog-content>
-  <mat-card-actions style="align-content: end;">
-    <div class="container-fluid d-flex p-4 mb-0">
-      <div style="justify-content: flex-start;">
-        <button mat-stroked-button color="primary" class="colorFondoBotonSalir"
-            mat-dialog-close [disabled]="false">Cerrar</button>
-      </div>
-      <div class="botones-derecha">
-        <button mat-stroked-button class="btn-danger"
-          [hidden]="this.flagAnular"
-          (click)="anularSolicitud()">Anular Solicitud</button>
-
-        <button mat-stroked-button class="btn-primary"
-          [disabled]="this.flagCoordinador" [hidden]="this.verCoord"
-          (click)="enviarCoordinador()">Enviar a Coordinador</button>
-
-        <button mat-stroked-button class="btn-warning"
-          [hidden]="this.flagDevolver || this.verEjec"
-          (click)="devolverSolicitud()">Devolver solicitud</button>
-
-        <button mat-stroked-button class="btn-success"
-          [hidden]="this.flagAprobar || this.verEjec"
-          (click)="aprobarSolicitud()">Aprobar Solicitud</button>
-
-        <button mat-stroked-button class="btn-info"
-          [disabled]="this.flagCompania" [hidden]="this.verEjec"
-          (click)="agregarCompania()">Agregar Compañía</button>
-
-        <button mat-stroked-button class="btn-info"
-          [hidden]="this.flagCotizacion || this.verEjec"
-          (click)="enviarCia()">Enviar a Compañía(s)</button>
-
-        <button mat-stroked-button class="btn-danger"
-          [hidden]="this.flagCompania || this.verEjec"
-          (click)="ingresarRespuesta()">Ingresar Respuesta</button>
-
-        <button mat-stroked-button class="btn-primary"
-          [hidden]="this.flagPropuesta || this.verEjec"
-          (click)="crearPropuesta()">Generar Propuesta</button>
-      </div>
+<mat-card-actions style="align-content: end">
+  <div class="container-fluid d-flex p-4 mb-0">
+    <div style="justify-content: flex-start">
+      <button
+        mat-stroked-button
+        color="primary"
+        class="colorFondoBotonSalir"
+        mat-dialog-close
+        [disabled]="false"
+      >
+        Cerrar
+      </button>
     </div>
-  </mat-card-actions>
+    <div class="botones-derecha">
+      <button
+        mat-stroked-button
+        class="btn-danger"
+        [hidden]="this.flagAnular"
+        (click)="anularSolicitud()"
+      >
+        Anular Solicitud
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-primary"
+        [disabled]="this.flagCoordinador"
+        [hidden]="this.verCoord"
+        (click)="enviarCoordinador()"
+      >
+        Enviar a Coordinador
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-warning"
+        [hidden]="this.flagDevolver || this.verEjec"
+        (click)="devolverSolicitud()"
+      >
+        Devolver solicitud
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-success"
+        [hidden]="this.flagAprobar || this.verEjec"
+        (click)="aprobarSolicitud()"
+      >
+        Aprobar Solicitud
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-info"
+        [disabled]="this.flagCompania"
+        [hidden]="this.verEjec"
+        (click)="agregarCompania()"
+      >
+        Agregar Compañía
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-info"
+        [hidden]="this.flagCotizacion || this.verEjec"
+        (click)="enviarCia()"
+      >
+        Enviar a Compañía(s)
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-danger"
+        [hidden]="this.flagCompania || this.verEjec"
+        (click)="ingresarRespuesta()"
+      >
+        Ingresar Respuesta
+      </button>
+
+      <button
+        mat-stroked-button
+        class="btn-primary"
+        [hidden]="this.flagPropuesta || this.verEjec"
+        (click)="crearPropuesta()"
+      >
+        Generar Propuesta
+      </button>
+    </div>
+  </div>
+</mat-card-actions>
