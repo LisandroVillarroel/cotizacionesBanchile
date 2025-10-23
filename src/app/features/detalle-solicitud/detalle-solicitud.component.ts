@@ -100,7 +100,7 @@ export default class DetalleSolicitudComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
-  //tipo_ejec = this._storage()?.usuarioLogin.perfilUsuario;
+  tipo_ejec = this._storage()?.usuarioLogin.tipoUsuario!;
 
   verEjec = true;
   verCoord = true;
@@ -332,7 +332,7 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario),
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -359,7 +359,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
       p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
-      p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario)
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
     };
 
     const dialogConfig = new MatDialogConfig();

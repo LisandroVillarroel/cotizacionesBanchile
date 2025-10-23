@@ -62,7 +62,7 @@ export default class GestionSolicitudesComponent {
   cargarSolicitudes() {
     const request = {
       p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: (this._storage()?.usuarioLogin.perfilUsuario)
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
     };
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: any) => {
