@@ -5,3 +5,11 @@ export interface IAgregaCompania {
   p_id_usuario: string;
   p_tipo_usuario: string;
 }
+
+export interface IMinimoResponse{
+  codigo: number,
+  mensaje: string,
+  p_minimo_cotizaciones: number,
+  vcEstado: string,
+  vcEstadoCreacion: string
+}

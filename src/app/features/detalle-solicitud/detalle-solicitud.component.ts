@@ -54,6 +54,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
+import { IMinimoResponse } from './modelo/compania';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -90,12 +91,16 @@ export default class DetalleSolicitudComponent {
   panelOpenState2 = false;
 
   idSol = computed(() => this.idSolicitud.toString());
+  minimo = 0;
+  puedeEnviar = false;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
+
+  //tipo_ejec = this._storage()?.usuarioLogin.perfilUsuario;
 
   verEjec = true;
   verCoord = true;
@@ -118,7 +123,7 @@ export default class DetalleSolicitudComponent {
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
-
+    this.obtenerMinimo(this.idSolicitud);
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -182,7 +187,10 @@ export default class DetalleSolicitudComponent {
           }
         /* Fin BackEnd */
         }
-      }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
     });
   }
 
@@ -193,7 +201,28 @@ export default class DetalleSolicitudComponent {
           this.companias.set(dato.p_cursor);
         }
       },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
     });
+  }
+
+  obtenerMinimo(idSolicitud: number){
+    this.companiasService.postMinimo(idSolicitud). subscribe({
+      next: (dato: IMinimoResponse) => {
+        if (dato.codigo === 200){
+          this.minimo = dato.p_minimo_cotizaciones;
+          if(this.companias()?.length! < this.minimo){
+            this.puedeEnviar = false;
+          }else{
+            this.puedeEnviar = true;
+          }
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    })
   }
 
   solicitudId: any;
@@ -218,6 +247,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
       });
   }
 
@@ -240,6 +271,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
       });
   }
 
@@ -259,6 +292,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
       });
   }
 
@@ -283,6 +318,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
       });
   }
 
@@ -314,6 +351,7 @@ export default class DetalleSolicitudComponent {
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
       });
   }
 
@@ -338,6 +376,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe((dato) => {
         this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
     });
   }
 
@@ -360,12 +400,17 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-    }
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
+    });
+  }
 
   crearPropuesta(): void {
     const dato = {
       solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
+      rutContratante: this.infoGral()?.rut_contratante,
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
@@ -378,6 +423,12 @@ export default class DetalleSolicitudComponent {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = this.idSolicitud;
-    this.dialog.open(CreacionPropuestaComponent, dialogConfig).afterClosed();
+    this.dialog.open(CreacionPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
+    });
   }
 }
