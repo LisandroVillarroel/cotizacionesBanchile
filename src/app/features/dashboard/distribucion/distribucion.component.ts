@@ -69,29 +69,21 @@ export default class DistribucionComponent {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            this.notificacioAlertnService.error("ERROR",dato.mensaje);
-          } else {
-            this.notificacioAlertnService.error("ERROR",'Error de sistema');
-          }
         }
       },
       error: (error) => {
-          this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
+        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
       },
     });
   }
 
   seleccionaRubro(_codigoRubro: number) {
     this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
-    //console.log('resumenGeneral()1111',this.resumenGeneral_Rubro())
   }
 
   async ngOnInit() {
     this.resumenGeneral_Rubro.set(this.resumenGeneral());
     this.cargaRubros();
-    //console.log('resumenGeneral()',this.resumenGeneral());
   }
 
 }

@@ -65,8 +65,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
 
-  tipoUsuario = (this._storage()?.usuarioLogin.usuario!.substring(0,1))?.toUpperCase();
-  //"E"; //OJO!!! buscar en storage
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);

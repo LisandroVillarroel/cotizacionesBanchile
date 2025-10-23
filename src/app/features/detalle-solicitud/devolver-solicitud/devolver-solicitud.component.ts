@@ -84,7 +84,7 @@ export interface DevolverConObservacionesData {
     this.devolverRequest = {
       p_id_solicitud: this.data.solicitudId,
       p_id_usuario: this.idUsuario,
-      p_tipo_usuario: (this._storage()?.usuarioLogin.tipoUsuario!),
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       p_observacion: this.devolverSolicitud().get('motivo')!.value
     };
     this.devolverService

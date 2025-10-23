@@ -57,14 +57,11 @@ export default class DashboardComponent   {
   }
 
   seleccionaFecha() {
-    //console.log('fecha 2', this.fechaActual.value?.toLocaleDateString('es-BO')); // dd/mm/yyyy
     const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
     const estructura_listaSolicitudes = {
-      //"p_id_usuario": "CO002", "p_id_usuario": "EJ001","p_id_usuario": "EJ002",
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
-      //"p_tipo_usuario": "E"
-      "p_tipo_usuario": (this._storage()?.usuarioLogin.tipoUsuario)
+      "p_tipo_usuario": this._storage()?.usuarioLogin.tipoUsuario!
     }
     console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
@@ -78,7 +75,6 @@ export default class DashboardComponent   {
             p_ConObservaciones: dato.p_ConObservaciones
           });
           this.listadoSolicitudes.set(dato.p_cursor);
-          //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         }
       },
       error: (error) => {

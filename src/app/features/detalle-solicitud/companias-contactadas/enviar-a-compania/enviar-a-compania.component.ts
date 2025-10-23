@@ -51,10 +51,6 @@ export class EnviarACompaniaComponent {
     @Inject(MAT_DIALOG_DATA) public data: IRequestG
   ) {}
 
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  idUsuario = this._storage()?.usuarioLogin.usuario!;
-
   notificacioAlertnService = inject(NotificacioAlertnService);
   enviarCoordinadorService = inject(EnviarCompaniasService);
   enviarRequest!: IRequestG;
