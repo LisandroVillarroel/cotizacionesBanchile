@@ -9,6 +9,7 @@
   import { StorageService } from '@shared/service/storage.service';
   import { AuthService } from './auth.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { IAuth } from './auth-Interface';
 
   @Component({
     selector: 'app-auth',
@@ -52,41 +53,40 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
        this.authService.postLogin(this.ingresoLogin().value?.usuario).subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
-            this.sesion = {
+            console.log('dato.p_cursor![0]:',dato.p_cursor![0])
+             this.rescataTipoUsuario(dato.p_cursor![0])
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR',error.mensaje);
+        },
+      });
+
+    }
+
+    rescataTipoUsuario(datoUsuario:IAuth){
+      this.authService.postTipoUsuario(datoUsuario.perfil_usuario).subscribe({
+        next: (dato) => {
+          if (dato.codigo === 200) {
+              this.sesion = {
               usuarioLogin: {
                 usuario: this.ingresoLogin().value?.usuario,
-                perfilUsuario: dato.p_cursor![0].perfil_usuario,
-                runUsuario: dato.p_cursor![0].rut_usuario,
-                nombreUsuario: dato.p_cursor![0].nombre_usuario + ' ' + dato.p_cursor![0].apellido_paterno_usuario + ' ' + dato.p_cursor![0].apellido_materno_usuario,
-                mailUsuario: dato.p_cursor![0].mail_usuario,
+                perfilUsuario: datoUsuario.perfil_usuario,
+                tipoUsuario:dato.p_tipo_usuario!,
+                runUsuario: datoUsuario.rut_usuario,
+                nombreUsuario: datoUsuario.nombre_usuario + ' ' + datoUsuario.apellido_paterno_usuario + ' ' + datoUsuario.apellido_materno_usuario,
+                mailUsuario: datoUsuario.mail_usuario,
                 accessToken: '=)((//&%$#"!$&/((',
               }
             }
             this.storage.set('sesion', this.sesion);
             this.router.navigate(['inicio']);
-
-          } else {
-            if (dato.codigo === 500) {
-              alert('Error:' + dato.mensaje);
-              console.log('Error:', dato.mensaje);
-            } else {
-                 this.notificacioAlertnService.error('ERROR',dato.mensaje)
-
-
-              console.log('Error:', dato.mensaje);
-            }
           }
         },
         error: (error) => {
-          console.log('Error Inesperado', error);
+          this.notificacioAlertnService.error('ERROR',error.mensaje);
         },
       });
 
     }
-/*
-    async muestraResultado(mensaje:string){
-      const resultado = await this.notificacioAlertnService.confirmacionSelectiva('ERROR LOGIN',mensaje)
-                 console.log('resultado:', resultado)
-    }
-    */
   }

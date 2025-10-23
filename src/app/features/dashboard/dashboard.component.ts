@@ -64,7 +64,7 @@ export default class DashboardComponent   {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
       //"p_tipo_usuario": "E"
-      "p_tipo_usuario": (this._storage()?.usuarioLogin.perfilUsuario)
+      "p_tipo_usuario": (this._storage()?.usuarioLogin.tipoUsuario)
     }
     console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
