@@ -16,4 +16,12 @@ export interface IAuthRespuesta {
   vcEstadoCreacion?: string;
 }
 
+export interface ITipoUsuarioRespuesta {
+  codigo: number;
+  mensaje: string;
+  p_tipo_usuario?: string;
+  vcEstado?: string;
+  vcEstadoCreacion?: string;
+}
+
 export type UsuarioRoles = 'ejec_bco' | 'coord_corr' | 'sup_corr' | 'adm_corr';

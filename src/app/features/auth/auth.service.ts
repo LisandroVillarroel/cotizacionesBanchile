@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IAuthRespuesta } from './auth-Interface';
+import { IAuthRespuesta, ITipoUsuarioRespuesta } from './auth-Interface';
 import { catchError, Observable, retry, throwError } from 'rxjs';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,7 @@ export class AuthService {
 
 
      postLogin(usuario: string): Observable<IAuthRespuesta> {
-      const parametro={
-    p_id_usuario: usuario
-}
+      const parametro={p_id_usuario: usuario}
        console.log('Ingreso Solicitud Service:', usuario);
        return this.http
          .post<IAuthRespuesta>(`http://192.168.1.36:8080/ms-pseg-cotizaciones-login/cotizaciones/loginUsuario`, parametro, {
@@ -27,5 +26,12 @@ export class AuthService {
          })
      }
 
+      postTipoUsuario(id_perfil: string): Observable<ITipoUsuarioRespuesta> {
+      const parametro={p_id_perfil: id_perfil}
+       return this.http
+         .post<ITipoUsuarioRespuesta>(`${environment.apiUrlConsumer}/obtieneTipoUsuario`, parametro, {
+           headers: this.headers,
+         })
+     }
 
 }
