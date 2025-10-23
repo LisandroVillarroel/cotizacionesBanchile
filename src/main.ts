@@ -5,8 +5,8 @@ import { AppComponent } from './app/app.component';
 
 //import { LOCALE_ID } from '@angular/core';
 
-//import 'moment/locale/es';
-import es from '@angular/common/locales/es';
+import 'moment/locale/es';
+//import es from '@angular/common/locales/es';
 //import { registerLocaleData } from '@angular/common';
 //registerLocaleData(es);
 bootstrapApplication(AppComponent,  {

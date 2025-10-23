@@ -5,6 +5,10 @@
   background-color: #E8E8EA !important;
 }
 
+/*elimina el espacio que está debajo*/
+.mat-mdc-form-field {
+  flex-direction:initial;
+}
 /* .edicion{
   color:#666668;
   background-color: #E8E8EA;
