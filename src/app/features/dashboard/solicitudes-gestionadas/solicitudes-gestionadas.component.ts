@@ -278,7 +278,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       'color': estado?.color_estado,
       'background-color': estado?.background_estado,
       'border': '1px solid' + estado?.color_estado,
-      'width': '140px',//'fit-content',
+      'width': '141px',//'fit-content',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'
