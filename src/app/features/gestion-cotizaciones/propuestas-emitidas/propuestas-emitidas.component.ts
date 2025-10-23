@@ -24,7 +24,7 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
-  selector: 'app-propuestas-firmadas',
+  selector: 'app-propuestas-emitidas',
   standalone: true,
   imports: [
     MatPaginatorModule,
@@ -45,13 +45,13 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     MatGridListModule,
     FormsModule,
     CommonModule
-  ],
-  templateUrl: './propuestas-firmadas.component.html',
-  styleUrl: './propuestas-firmadas.component.css'
+],
+  templateUrl: './propuestas-emitidas.component.html',
+  styleUrl: './propuestas-emitidas.component.css'
 })
-export class PropuestasFirmadasComponent {
-  firmadas = input.required<IGestionCotizacion[] | undefined>();
-  cotFirmadas = computed(()=> this.firmadas());
+export class PropuestasEmitidasComponent {
+  emitidas = input.required<IGestionCotizacion[] | undefined>();
+  cotRecibidas = computed(()=> this.emitidas());
 
 
   rubroService = inject(RubroService);
@@ -93,7 +93,7 @@ export class PropuestasFirmadasComponent {
     }
 
     this.formularioModificado();
-    return this.firmadas()!.filter(item => {
+    return this.emitidas()!.filter(item => {
       const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
