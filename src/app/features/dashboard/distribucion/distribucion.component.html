@@ -4,7 +4,7 @@
 
 
       <mat-form-field class="inputSelect cambiaTamano">
-        <mat-label class="cursiva gris-claro">Selecciona un rubro</mat-label
+        <mat-label class="cursiva gris-claro">Rubro</mat-label
                       >
       <mat-select  [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
         @for(_rubros of datoRubros(); track _rubros){
