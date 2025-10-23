@@ -162,7 +162,8 @@
       <button
         mat-stroked-button
         class="btn-info"
-        [hidden]="(this.flagCotizacion || this.verEjec) || this.puedeEnviar"
+        [hidden]="this.flagCotizacion || this.verEjec"
+        [disabled]="this.puedeEnviar"
         (click)="enviarCia()"
       >
         Enviar a Compañía(s)

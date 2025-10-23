@@ -213,9 +213,9 @@ export default class DetalleSolicitudComponent {
         if (dato.codigo === 200){
           this.minimo = dato.p_minimo_cotizaciones;
           if(this.companias()?.length! < this.minimo){
-            this.puedeEnviar = false;
-          }else{
             this.puedeEnviar = true;
+          }else{
+            this.puedeEnviar = false;
           }
         }
       },
