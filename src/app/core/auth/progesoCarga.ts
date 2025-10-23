@@ -5,7 +5,7 @@ import { Injectable, signal } from '@angular/core';
 })
 export class ProgresoCarga {
   hide() {
-    throw new Error('Method not implemented.');
+    throw new Error('Error Metodo no Progreso Carga');
   }
   isCargando = signal<boolean>(false);
   public ejecutar() {
