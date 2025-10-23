@@ -122,7 +122,12 @@
         <app-observaciones [observaciones]="item.po_cursor"/>
       </mat-expansion-panel>
     }
-  <mat-paginator #mypaginator
+    @if(this.devueltas()?.length === 0 ){
+      <div class="info" style="text-align: center; background-color: #ffffff;">
+        No hay solicitudes para mostrar</div>
+    }
+
+    <mat-paginator #mypaginator
                   [length]="datosFiltrados()!.length"
                   [pageSize]="pageSize"
                   [pageIndex]="pagina()"

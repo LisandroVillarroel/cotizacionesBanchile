@@ -5,24 +5,25 @@
 
 <div  class="container-fluid fondoGris p-0 ">
     <mat-tab-group>
-      <mat-tab label="Cotizaciones Pendientes">
-        <div class="container-fluid ">
-          <app-cotizaciones-pendientes [pendientes]="pendientes()"
-            (retorno)="recibido($event)" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Cotizaciones Enviadas">
-        <div class="container-fluid ">
-          <app-cotizaciones-enviadas [enviadas]="enviadas()"
-            (retorno)="recibido($event)" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Cotizaciones Recibidas">
+      <mat-tab label="Cotizaciones Registradas">
         <div class="container-fluid">
-          <app-cotizaciones-recibidas [recibidas]="recibidas()"
+          <app-cotizaciones-registradas [recibidas]="recibidas()"
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>
+      <mat-tab label="Propuestas Pendientes">
+        <div class="container-fluid ">
+          <app-propuestas-pendientes [pendientes]="pendientes()"
+            (retorno)="recibido($event)" />
+        </div>
+      </mat-tab>
+      <mat-tab label="Propuestas Emitidas">
+        <div class="container-fluid ">
+          <app-propuestas-emitidas [emitidas]="emitidas()"
+            (retorno)="recibido($event)" />
+        </div>
+      </mat-tab>
+
       <mat-tab label="Propuestas Firmadas">
         <div class="container-fluid ">
           <app-propuestas-firmadas [firmadas]="firmadas()"

@@ -367,8 +367,8 @@ export default class DetalleSolicitudComponent {
 
   enviarCia(): void {
     const dato = {
-      p_id_solicitud: this.idSolicitud, //'ID123456789',
-      p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_ejecutivo,
       p_tipo_usuario: this.tipoUsuario
     };
 

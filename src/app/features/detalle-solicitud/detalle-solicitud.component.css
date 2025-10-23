@@ -4,11 +4,3 @@
   max-width: 100%;
   max-height: 100%;
 }
-
-.msj-warning {
-  border-radius: 1px;
-  box-shadow: #ffc725;
-  color: #ffc725 !important;
-  background-color: #FFF7DF !important;
-  margin-right: 10px;
-}

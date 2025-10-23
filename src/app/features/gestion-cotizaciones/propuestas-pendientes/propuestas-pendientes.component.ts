@@ -24,35 +24,34 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Component({
-  selector: 'app-propuestas-firmadas',
+  selector: 'app-propuestas-pendientes',
   standalone: true,
   imports: [
-    MatPaginatorModule,
-    MatIconModule,
-    MatSortModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatDividerModule,
-    MatTabsModule,
-    MatCardModule,
-    MatGridListModule,
-    FormsModule,
-    CommonModule
+        MatPaginatorModule,
+        MatIconModule,
+        MatSortModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatGridListModule,
+        FormsModule,
+        CommonModule
   ],
-  templateUrl: './propuestas-firmadas.component.html',
-  styleUrl: './propuestas-firmadas.component.css'
+  templateUrl: './propuestas-pendientes.component.html',
+  styleUrl: './propuestas-pendientes.component.css'
 })
-export class PropuestasFirmadasComponent {
-  firmadas = input.required<IGestionCotizacion[] | undefined>();
-  cotFirmadas = computed(()=> this.firmadas());
-
+export class PropuestasPendientesComponent {
+  pendientes = input.required<IGestionCotizacion[] | undefined>();
+  cotPenditentes = computed(()=> this.pendientes());
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -93,7 +92,7 @@ export class PropuestasFirmadasComponent {
     }
 
     this.formularioModificado();
-    return this.firmadas()!.filter(item => {
+    return this.pendientes()!.filter(item => {
       const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
@@ -178,18 +177,18 @@ export class PropuestasFirmadasComponent {
 
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
-    verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
+  verDetalle(IdSolicitud: number) {
+    const dialogConfig = new MatDialogConfig();
 
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = IdSolicitud;
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(DetalleSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })
+  }
 }
