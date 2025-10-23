@@ -1,0 +1,23 @@
+.alinea-cards{
+  margin-top: 14px;
+  align-content: center;
+  justify-content: start;
+  width: 60%;
+  font-size: 16px;
+}
+
+.alinea-cards-2{
+  margin-top: 9px;
+  align-content: center;
+  justify-content: start;
+  width: 15%;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.alinea-card-gestion{
+  margin-bottom: 0.5rem;
+  /* padding-bottom: 0px; */
+  padding: 10px 10px 0px;
+  background-color: #E8E8EA !important;
+}

@@ -8,7 +8,8 @@
     </mat-form-field>
   </div>
   <app-resumen-general [datoResumenGeneral]="resumenGeneral()"/>
-  <app-solicitudes-gestionadas [datosSolicitud]="listadoSolicitudes()"/>
+  <app-solicitudes-gestionadas [datosSolicitud]="listadoSolicitudes()"
+   (retorno)="recibido($event)" />
 
   <div class="container-fluid fondoGris flex">
     <app-distribucion [listadoSolicitudesGrafiico]="listadoSolicitudes()"/>

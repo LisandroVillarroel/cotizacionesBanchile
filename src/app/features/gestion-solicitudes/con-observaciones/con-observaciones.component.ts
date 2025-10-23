@@ -1,5 +1,5 @@
 import { ObservacionesComponent } from './../../detalle-solicitud/observaciones/observaciones.component';
-import { Component, ViewChild, inject, signal, input } from '@angular/core';
+import { Component, ViewChild, inject, signal, input, output } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -182,6 +182,7 @@ export class ConObservacionesComponent {
     return salida;
   }
 
+  retorno = output<boolean>();
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -194,8 +195,6 @@ export class ConObservacionesComponent {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato)=>{
-        history.go();
-      });
+      .subscribe(() => { this.retorno.emit(true); })
   }
 }

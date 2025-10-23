@@ -9,7 +9,7 @@
           <div class="container-fluid alinea-cards">
             <p>Recibidas:</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_EnProceso}}</h2>
+          <h2 class="destacado">{{resumenGestion()?.recibidas}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -18,7 +18,7 @@
           <div class="container-fluid alinea-cards">
             <p>Pendientes</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_EsperandoRespuesta}}</h2>
+          <h2 class="destacado">{{resumenGestion()?.pendientes}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -27,7 +27,7 @@
           <div class="container-fluid alinea-cards">
             <p>Cotizadas</p></div>
           <div class="container-fluid  alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_Aprobadas}}</h2>
+          <h2 class="destacado">{{resumenGestion()?.enviadas}}</h2>
           </div>
         </mat-card-content>
       </mat-card>
@@ -36,7 +36,7 @@
           <div class="container-fluid alinea-cards">
             <p>Firmadas</p></div>
           <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_Firmadas}}</h2>
+          <h2 class="destacado">{{resumenGestion()?.firmadas}}</h2>
           </div>
         </mat-card-content>
       </mat-card>

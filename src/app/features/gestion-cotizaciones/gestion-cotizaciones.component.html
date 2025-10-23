@@ -1,27 +1,33 @@
   <div class="container-fluid d-flex justify-around p-0 mb-4">
     <h1 mat-dialog-title class="titulo">Gestión de solicitudes</h1>
   </div>
-  <app-resumen-general [datoResumenGeneral]="resumenGeneral()"/>
+  <app-resumen-cotizaciones [inResumen]="resumenGestion()"/>
 
 <div  class="container-fluid fondoGris p-0 ">
     <mat-tab-group>
-      <mat-tab label="Solicitudes Nuevas">
+      <mat-tab label="Cotizaciones Pendientes">
+        <div class="container-fluid ">
+          <app-cotizaciones-pendientes [pendientes]="pendientes()"
+            (retorno)="recibido($event)" />
+        </div>
+      </mat-tab>
+      <mat-tab label="Cotizaciones Enviadas">
+        <div class="container-fluid ">
+          <app-cotizaciones-enviadas [enviadas]="enviadas()"
+            (retorno)="recibido($event)" />
+        </div>
+      </mat-tab>
+      <mat-tab label="Cotizaciones Recibidas">
         <div class="container-fluid">
-          <app-nuevas [nuevas]="nuevas()"/>
+          <app-cotizaciones-recibidas [recibidas]="recibidas()"
+            (retorno)="recibido($event)" />
         </div>
       </mat-tab>
-      <mat-tab label="Solicitudes Con Observaciones">
+      <mat-tab label="Propuestas Firmadas">
         <div class="container-fluid ">
-          <app-con-observaciones [devueltas]="devueltas()"/>
-        </div>
-      </mat-tab>
-      <mat-tab label="Solicitudes en Cotización">
-        <div class="container-fluid ">
-          <app-en-cotizacion [cotizadas]="cotizadas()"/>
+          <app-propuestas-firmadas [firmadas]="firmadas()"
+            (retorno)="recibido($event)" />
         </div>
       </mat-tab>
     </mat-tab-group>
-<!--   </mat-card-content>
-</mat-card>
- -->
 </div>

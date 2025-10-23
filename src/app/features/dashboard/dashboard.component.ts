@@ -9,13 +9,13 @@ import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solic
 import DistribucionComponent from './distribucion/distribucion.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DashboardService } from './dashboard.service';
-import { IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -85,5 +85,12 @@ export default class DashboardComponent   {
         this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
+  }
+
+  msj = false;
+  recibido(msj: boolean){
+    if(msj){
+      this.seleccionaFecha();
+    }
   }
 }

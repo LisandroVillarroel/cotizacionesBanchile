@@ -80,4 +80,12 @@ export default class GestionSolicitudesComponent {
       }
     });
   }
+
+  msj = false;
+  recibido(msj: boolean){
+    if(msj){
+      this.cargarSolicitudes();
+    }
+  }
+
 }
