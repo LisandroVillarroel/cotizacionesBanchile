@@ -153,7 +153,7 @@
         mat-stroked-button
         class="btn-info"
         [disabled]="this.flagCompania"
-        [hidden]="this.verEjec"
+        [hidden]="this.verEjec || this.flagCompania"
         (click)="agregarCompania()"
       >
         Agregar Compañía

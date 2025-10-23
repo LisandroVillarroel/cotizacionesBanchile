@@ -60,7 +60,6 @@ export class AprobarSolicitudComponent {
       .postApruebaSolicitud(this.data)
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.confirmar();
           }

@@ -100,7 +100,7 @@ export default class DetalleSolicitudComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
-  tipo_ejec = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
   verEjec = true;
   verCoord = true;
@@ -124,6 +124,17 @@ export default class DetalleSolicitudComponent {
     this.cargarSolicitud(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
+
+    switch(this.tipoUsuario){
+      case "E":
+        this.verCoord = false; break;
+      case "C":
+        this.verEjec = false; break;
+      case "S":
+        this.verEjec = false; this.verCoord = false; break;
+      case "A":
+        this.verEjec = false; this.verCoord = false; break;
+    }
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -324,7 +335,6 @@ export default class DetalleSolicitudComponent {
   }
 
   agregarCompania(): void {
-    console.log("Entró");
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
@@ -332,7 +342,7 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -359,7 +369,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
       p_id_usuario: this.id_ejecutivo, //'Enviar a Compañia',
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
