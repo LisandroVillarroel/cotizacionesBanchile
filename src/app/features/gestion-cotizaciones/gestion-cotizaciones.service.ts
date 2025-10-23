@@ -2,12 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { DatosSolicitudesInterface } from './datosSolicitud-Interface';
+import { IGestionResponse, IRequestGestion } from './gestionCotizacion-interface';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
+export class GestionCotizacionesService {
 
    private http = inject(HttpClient);
 
@@ -17,9 +18,9 @@ export class DashboardService {
       });
   constructor() { }
 
-   postListadoSolicitudes(filtro: any): Observable<DatosSolicitudesInterface> {
+   postListadoSolicitudes(filtro: IRequestGestion): Observable<IGestionResponse> {
       return this.http
-        .post<DatosSolicitudesInterface>(`${environment.apiUrlConsumer}/listarSolicitudes`,
+        .post<IGestionResponse>(`${environment.apiUrlConsumer}/listarGestionCotizaciones`,
           filtro,
           {headers: this.headers}
         )

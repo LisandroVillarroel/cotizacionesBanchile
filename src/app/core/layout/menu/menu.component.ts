@@ -38,6 +38,11 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>
               }
+              @if(hasRole(['ejec_bco'])){
+            <li class="nav-item border-end" [routerLinkActive]="['active']">
+              <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
+            </li>
+              }
              @if(hasRole(['ejec_bco', 'coord_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="crt">Generación de Informes</a>

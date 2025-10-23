@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal, input, computed, OnInit } from '@angular/core';
+import { Component, ViewChild, inject, signal, input, computed, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -118,9 +118,6 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   dataSourceSolicitud = computed(() => {
     var tabla =new MatTableDataSource<IListadoSolicitudes>();
-      console.log("Solicitudes coord: ",this.solicitudesCoord());
-      console.log("Solicitudes: ",this.datosSolicitud());
-
     if(this.tipoUsuario === "C"){
       tabla.data = this.solicitudesCoord()!;
     }else{
@@ -252,7 +249,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     });
   }
 
-  /* Fin llamadas a servicios */
+  retorno = output<boolean>();
+
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -265,9 +263,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato)=>{
-        history.go();
-      });
+      .subscribe(() => { this.retorno.emit(true); })
   }
 
   getEstadoFiltrado(idEstado: number){

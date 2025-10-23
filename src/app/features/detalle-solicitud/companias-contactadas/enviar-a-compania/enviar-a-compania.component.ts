@@ -21,15 +21,8 @@ import { IRequestG } from '@shared/modelo/servicios-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { EnviarCoordinadorService } from '@features/detalle-solicitud/enviar-coordinador/enviar-coordinador.service';
 import { MatInputModule } from '@angular/material/input';
-
-export interface EnviarACompaniaData {
-  solicitudId: string;
-  fecha: string;
-  ejecutivo: string;
-  motivoDevolucion: string;
-}
+import { EnviarCompaniasService } from './enviar-companias.service';
 
 @Component({
   selector: 'app-enviar-a-compania',
@@ -63,7 +56,7 @@ export class EnviarACompaniaComponent {
   idUsuario = this._storage()?.usuarioLogin.usuario!;
 
   notificacioAlertnService = inject(NotificacioAlertnService);
-  enviarCoordinadorService = inject(EnviarCoordinadorService);
+  enviarCoordinadorService = inject(EnviarCompaniasService);
   enviarRequest!: IRequestG;
 
   cerrar(): void {

@@ -6,17 +6,17 @@
     <mat-tab-group>
       <mat-tab label="Solicitudes Nuevas">
         <div class="container-fluid">
-          <app-nuevas [nuevas]="nuevas()"/>
+          <app-nuevas [nuevas]="nuevas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes Con Observaciones">
         <div class="container-fluid ">
-          <app-con-observaciones [devueltas]="devueltas()"/>
+          <app-con-observaciones [devueltas]="devueltas()" (retorno)="recibido($event)"/>
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes en Cotización">
         <div class="container-fluid ">
-          <app-en-cotizacion [cotizadas]="cotizadas()"/>
+          <app-en-cotizacion [cotizadas]="cotizadas()" (retorno)="recibido($event)"/>
         </div>
       </mat-tab>
     </mat-tab-group>
