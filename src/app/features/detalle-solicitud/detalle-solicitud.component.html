@@ -48,6 +48,11 @@
                   <mat-panel-title class="destacado">
                     Compañías Contactadas
                   </mat-panel-title>
+                  <div class="msj-warning">
+                    <h3><mat-icon>info</mat-icon>
+                      Se requiere contactar un mínimo de {{minimo}} compañías para esta solicitud.
+                    </h3>
+                  </div>
                 </mat-expansion-panel-header>
                 <app-companias-contactadas
                   [companias]="companias()"
@@ -148,7 +153,7 @@
         mat-stroked-button
         class="btn-info"
         [disabled]="this.flagCompania"
-        [hidden]="this.verEjec"
+        [hidden]="this.verEjec || this.flagCompania"
         (click)="agregarCompania()"
       >
         Agregar Compañía
@@ -158,6 +163,7 @@
         mat-stroked-button
         class="btn-info"
         [hidden]="this.flagCotizacion || this.verEjec"
+        [disabled]="this.puedeEnviar"
         (click)="enviarCia()"
       >
         Enviar a Compañía(s)
