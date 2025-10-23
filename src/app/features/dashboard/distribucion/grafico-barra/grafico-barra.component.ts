@@ -35,9 +35,7 @@ export class GraficoBarraComponent implements OnInit {
       const resumen = this.resumenGeneral();
       if (!resumen) return;
       let arrTotales = [];
-      //console.log('paso 1')
       for (let i = 0; i < this.datoEstadoNombre().length; i++) {
-        //console.log('this.datoEstadoNombre()[i]', this.datoEstadoNombre()[i])
         arrTotales[i] = this.resumenGeneral()!.filter(item => item.descripcion_estado.toString() === this.datoEstadoNombre()[i])
           .reduce((contador) => contador = contador + 1, 0);
       }

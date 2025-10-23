@@ -41,10 +41,6 @@ export class EnviarCoordinadorComponent {
     private dialog: MatDialog
   ) { }
 
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  idUsuario = this._storage()?.usuarioLogin.usuario!;
-
   notificacioAlertnService = inject(NotificacioAlertnService);
   enviarCoordinadorService = inject(EnviarCoordinadorService);
   enviarRequest!: IRequest;
