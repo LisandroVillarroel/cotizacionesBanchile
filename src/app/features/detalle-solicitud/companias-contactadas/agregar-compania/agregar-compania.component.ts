@@ -19,6 +19,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
 import { ICompanias } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IAgregaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
@@ -51,6 +52,7 @@ export interface AgregarCompaniaData {
   selector: 'app-agregar-compania',
   standalone: true,
   imports: [
+    CommonModule,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
