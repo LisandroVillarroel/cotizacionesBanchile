@@ -144,11 +144,15 @@
         </div>
       </mat-expansion-panel>
     }
+    @if(this.cotizadas()?.length === 0 ){
+      <div class="info" style="text-align: center; background-color: #ffffff;">
+        No hay solicitudes para mostrar</div>
+    }
   <mat-paginator #mypaginator
-                  [length]="datosFiltrados()!.length"
-                  [pageSize]="pageSize"
-                  [pageIndex]="pagina()"
-                  (page)="onPage($event)"
-                  class="mb-2">
+                [length]="datosFiltrados()!.length"
+                [pageSize]="pageSize"
+                [pageIndex]="pagina()"
+                (page)="onPage($event)"
+                class="mb-2">
   </mat-paginator>
 </div>
