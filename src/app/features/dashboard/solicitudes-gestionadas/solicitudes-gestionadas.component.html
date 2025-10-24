@@ -6,7 +6,7 @@
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
     <div class="container-fluid p-0">
       <div [formGroup]="filtroFormulario()" class="box-form-fields p-2 mt-0 gap-2" style="align-items: center;">
-        <div class="gap-1" style="width: 7%;">
+        <div class="gap-1" style="width: 7%; font-size: 14px !important;">
           <span class="gris"> Filtrar por: </span>
         </div>
         <div style="width: 18%;">
@@ -63,8 +63,8 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div  style="width: 10%;">
-          <button (click)="limpiaFiltros()" mat-button class="button-link" style="width: 100%;">
+        <div  style="width: 10%; align-items: center;">
+          <button (click)="limpiaFiltros()" mat-button class="button-link" style="width: 100%; font-size: 14px !important; align-items: center !important;">
             Limpiar filtros
           </button>
         </div>
