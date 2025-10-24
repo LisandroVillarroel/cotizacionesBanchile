@@ -461,6 +461,9 @@ th#opcionesI {
   color: white !important;
 }
 
+.SinInfoTabla{
+  text-align: center; background-color: #ffffff;
+}
 /* Fin Columna +AGREGAR */
 /* Fin MAT-TABLE */
 

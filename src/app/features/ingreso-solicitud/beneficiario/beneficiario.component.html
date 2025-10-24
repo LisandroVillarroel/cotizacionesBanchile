@@ -260,6 +260,10 @@
       class="example-element-row"
     ></tr>
   </table>
+   @if(this.datoBeneficiarios().length === 0 ){
+          <div class="info SinInfoTabla">
+            No hay beneficiarios para mostrar</div>
+        }
 </div>
 
 <mat-paginator

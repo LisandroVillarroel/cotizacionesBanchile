@@ -153,7 +153,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
         @if(this.dataSourceSolicitud().data.length === 0 ){
-          <div class="info" style="text-align: center; background-color: #ffffff;">
+          <div class="info SinInfoTabla">
             No hay solicitudes para mostrar</div>
         }
         <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
