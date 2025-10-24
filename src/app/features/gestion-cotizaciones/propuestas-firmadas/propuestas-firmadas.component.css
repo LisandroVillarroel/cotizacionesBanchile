@@ -1,0 +1,4 @@
+/*elimina el espacio que está debajo*/
+.mat-mdc-form-field {
+  flex-direction:initial;
+}
