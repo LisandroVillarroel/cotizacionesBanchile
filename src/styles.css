@@ -461,6 +461,9 @@ th#opcionesI {
   color: white !important;
 }
 
+.SinInfoTabla{
+  text-align: center; background-color: #ffffff;
+}
 /* Fin Columna +AGREGAR */
 /* Fin MAT-TABLE */
 
@@ -1131,6 +1134,15 @@ mat-divider[vertical] {
 
 .border-none {
   border-radius: 0px !important;
+}
+
+
+.msj-warning {
+  border-radius: 1px;
+  box-shadow: #ffc725;
+  color: #ffc725 !important;
+  background-color: #FFF7DF !important;
+  margin-right: 10px;
 }
 
 .swal2-toast div:where(.swal2-actions) {

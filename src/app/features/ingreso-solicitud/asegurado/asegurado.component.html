@@ -261,6 +261,10 @@
       class="example-element-row"
     ></tr>
   </table>
+  @if(this.datoAsegurados().length === 0 ){
+          <div class="info SinInfoTabla">
+            No hay asegurados para mostrar</div>
+        }
 </div>
 
 <mat-paginator
