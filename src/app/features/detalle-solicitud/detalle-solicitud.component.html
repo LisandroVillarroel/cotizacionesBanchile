@@ -1,5 +1,6 @@
-<mat-dialog-content class="container-fluid p-0 mb-5" style="height: 100%">
-  <app-cabecera-popup [titulo]="'Detalle de solicitud'" />
+ <app-cabecera-popup [titulo]="'Detalle de solicitud - '+this.idSolicitud" />
+<mat-dialog-content class="p-0 " >
+
   <mat-card>
     <mat-card-content>
       <mat-tab-group>
@@ -98,7 +99,7 @@
     </mat-card-content>
   </mat-card>
 </mat-dialog-content>
-<mat-card-actions style="align-content: end">
+<mat-dialog-actions style="align-content: end">
   <div class="container-fluid d-flex p-4 mb-0">
     <div style="justify-content: flex-start">
       <button
@@ -188,4 +189,4 @@
       </button>
     </div>
   </div>
-</mat-card-actions>
+</mat-dialog-actions>
