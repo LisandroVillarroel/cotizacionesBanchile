@@ -15,12 +15,13 @@ export interface ISolicitudContratante {
 
 export interface IIngresoSolicitud {
   id_ejecutivo_banco: string;
+  p_tipo_usuario: string,
   id_rubro: number;
   id_tipo_seguro: number;
   contratante: ISolicitudContratante;
   // asegurados: ISolicitudAsegurado[];
   // beneficiarios: ISolicitudBeneficiario[];
-}
+}{}
 
 export interface IIngresoSolicitud_Recibe {
   codigo: number;

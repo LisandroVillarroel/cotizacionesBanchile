@@ -259,6 +259,7 @@ export default class IngresoSolicitudComponent {
     );
     this.ingresoSolicitud = {
       id_ejecutivo_banco: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,
