@@ -154,7 +154,7 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
  registraRespuesta() {
   const datos: IRegistrarRespuesta = {
     p_id_solicitud: this.infoPrincipalComponent.idSolicitud,
-    p_id_compania_seguro:1,//
+    p_id_compania_seguro:15,//
     p_id_moneda: this.infoPrincipalComponent.moneda.value,
     p_valor_prima_neta: this.infoPrincipalComponent.primaNeta.value,
     p_valor_prima_afecta: this.infoPrincipalComponent.primaAfecta.value,
