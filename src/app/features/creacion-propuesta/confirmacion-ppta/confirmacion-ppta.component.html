@@ -1,1 +1,33 @@
-<p>confirmacion-ppta works!</p>
+<app-cabecera-popup [titulo]="'Propuesta Generada'" />
+<div class="dialog-container">
+  <!-- <div class="barra-titulo titulomodal d-flex">
+    <h2 class="container-fluid">Confirmación de Solicitud</h2>
+    <button mat-icon-button mat-dialog-close [disabled]="false" style="align-content: center; padding: 0px 0px 0px;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div> -->
+  <div class="d-flex justify-content-center align-items-center">
+    <mat-icon class="icono-verde-grande" fontIcon="task_alt"></mat-icon>
+  </div>
+  <div class="container-fluid">
+  <div class="contenido-dialogo">
+    <section>
+      <h3 class="titulo">La propuesta ha sido generada con éxito</h3>
+      <mat-label>
+        Descarga el documento para que el cliente lo firme. Una vez firmado, súbelo desde el menú
+        "Gestión de Cotizaciones", en la pestaña "Propuesta Generada".
+      </mat-label>
+    </section>
+  </div>
+</div>
+  <mat-card-actions>
+  <div class="container-fluid d-flex p-4">
+    <div class="botones-izquierda">
+      <button mat-stroked-button class="colorFondoBotonSalir">Ir a Gestión de Cotizaciones</button>
+      <button mat-stroked-button class="btn-info" >Descargar Propuesta</button>
+    </div>
+  </div>
+</mat-card-actions>
+
+
+
