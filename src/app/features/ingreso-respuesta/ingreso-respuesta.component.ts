@@ -28,6 +28,7 @@ import { MatButton } from '@angular/material/button';
 import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
 import { HttpEventType } from '@angular/common/http';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
+import CabeceraPopupComponente from "../../shared/ui/cabeceraPopup.component";
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -50,8 +51,7 @@ import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interfac
     MatCardHeader,
     MatTooltip,
     MatCardActions,
-    MatButton
-  ],
+    MatButton, CabeceraPopupComponente],
   templateUrl: './ingreso-respuesta.component.html',
   styleUrl: './ingreso-respuesta.component.css'
 })

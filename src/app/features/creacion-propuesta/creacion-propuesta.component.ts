@@ -12,6 +12,7 @@ import { MatCardActions } from "@angular/material/card";
 import { MatButton } from '@angular/material/button';
 import { DocAsociadosComponent } from "./doc-asociados/doc-asociados.component";
 import { ConfirmacionPptaComponent } from './confirmacion-ppta/confirmacion-ppta.component';
+import CabeceraPopupComponente from "../../shared/ui/cabeceraPopup.component";
 
 @Component({
   selector: 'app-creacion-propuesta',
@@ -24,7 +25,7 @@ import { ConfirmacionPptaComponent } from './confirmacion-ppta/confirmacion-ppta
     AseguradoComponent,
     MateriaAseguradaComponent,
     MatCardActions,
-    MatButton, DocAsociadosComponent],
+    MatButton, DocAsociadosComponent,CabeceraPopupComponente],
   templateUrl: './creacion-propuesta.component.html',
   styleUrl: './creacion-propuesta.component.css'
 })
