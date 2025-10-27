@@ -40,6 +40,7 @@ export class CompaniasContactadasComponent {
 
   @Input() verEjec: boolean = true;
   @Input() verCoord: boolean = true;
+  @Input() minimo: number = 0;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
