@@ -64,7 +64,6 @@ export interface ICompanias {
   usuario_creacion: string;
   fecha_modificacion: string;
   usuario_modificacion: string;
-  p_dias_transcurridos: number
 }
 
 export interface ICompaniaResponse {

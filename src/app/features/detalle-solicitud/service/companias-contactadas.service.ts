@@ -36,7 +36,7 @@ export class CompaniasContactadasService {
         `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
         filtro,
         { headers: this.headers }
-      )
+      );
   }
 
   postAgregaCompania(
