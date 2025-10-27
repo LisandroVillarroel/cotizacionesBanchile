@@ -154,7 +154,7 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
  registraRespuesta() {
   const datos: IRegistrarRespuesta = {
     p_id_solicitud: this.infoPrincipalComponent.idSolicitud,
-    p_id_compania_seguro:15,//
+    p_id_compania_seguro:27,//
     p_id_moneda: this.infoPrincipalComponent.moneda.value,
     p_valor_prima_neta: this.infoPrincipalComponent.primaNeta.value,
     p_valor_prima_afecta: this.infoPrincipalComponent.primaAfecta.value,
@@ -176,7 +176,7 @@ infoPrincipalComponent!: InformacionPrincipalComponent;
     //archivoPropuesta: this.infoPrincipalComponent.selectedPropuestaFile,
 
     p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-    p_tipo_usuario: (this._storage()?.usuarioLogin.tipoUsuario!)
+    p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
   };
 console.log(datos);
   this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
