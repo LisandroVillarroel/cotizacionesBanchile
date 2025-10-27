@@ -98,7 +98,7 @@ export class CompaniasContactadasComponent {
     // lógica para registrar respuesta
   }
 
-  borrarCotizacion(idCotizacion: string) {
+  borrarCompania(idCotizacion: string) {
     // lógica para eliminar cotización
   }
 
@@ -144,7 +144,7 @@ export class CompaniasContactadasComponent {
           icon: 'delete',
           tooltip: 'Eliminar cotización',
           mostrar: estadoLower === 'pendiente' && this.verCoord,
-          accion: (id: string) => this.borrarCotizacion(id),
+          accion: (id: string) => this.borrarCompania(id),
         });
       }
 
