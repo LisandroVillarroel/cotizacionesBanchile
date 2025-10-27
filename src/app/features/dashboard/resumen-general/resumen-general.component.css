@@ -1,23 +1,49 @@
-.alinea-cards{
-  margin-top: 14px;
-  align-content: center;
-  justify-content: start;
-  width: 60%;
-  font-size: 16px;
-}
 
-.alinea-cards-2{
-  margin-top: 9px;
-  align-content: center;
-  justify-content: start;
-  width: 15%;
-  font-size: 16px;
-  font-weight: bold;
-}
 
 .alinea-card-gestion{
   margin-bottom: 0.5rem;
   /* padding-bottom: 0px; */
-  padding: 10px 10px 0px;
   background-color: #E8E8EA !important;
+}
+
+ h2 {
+    margin: 0px;
+}
+
+
+
+
+.mat-card-container {
+  display: flex; /* Activa el modo flexbox para centrar las tarjetas */
+  justify-content: center; /* Centra horizontalmente las tarjetas en el contenedor */
+  align-items: center; /* Centra verticalmente las tarjetas en el contenedor */
+
+}
+
+.mat-card {
+  margin: 1px 10px 10px 10px; /* Espacio entre las tarjetas */
+  width: 300px; /* Ancho de la tarjeta */
+   box-shadow: 0px 2px 4px -1px rgb(121, 120, 120),
+              0px 4px 5px 0px rgb(124, 124, 124),
+              0px 1px 10px 0px rgb(77, 76, 76);
+}
+
+.mat-card-content {
+  display: flex; /* Usa flexbox para las dos columnas dentro de la tarjeta */
+  justify-content: space-around; /* Centra y distribuye el espacio entre las columnas */
+  align-items: center; /* Centra verticalmente las columnas */
+  height: 50px; /* Altura para el ejemplo */
+}
+
+.mat-card-column_1 {
+  /* Estilos para las columnas, como texto centrado */
+  text-align: center;
+  font-size: 16px;
+}
+
+.mat-card-column_2 {
+  /* Estilos para las columnas, como texto centrado */
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
 }

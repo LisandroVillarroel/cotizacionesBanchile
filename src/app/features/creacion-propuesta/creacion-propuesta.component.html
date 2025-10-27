@@ -1,10 +1,6 @@
+<app-cabecera-popup [titulo]="'Creación Propuesta - '+this.idSolicitud" />
 <mat-dialog-content class="container-fluid mat-card-detalle p-0">
-  <div class="barra-titulo card-con-titulo titulomodal d-flex" style="width: 100%;">
-    <h2>Creación Propuesta - {{ idSolicitud }} </h2>
-    <button mat-icon-button mat-dialog-close [disabled]="false" style="align-content: center; padding: 0px 0px 0px;">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+
   <div class="container-fluid mt-3">
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
@@ -31,7 +27,7 @@
     </div> -->
     <div class="botones-izquierda">
       <button mat-stroked-button class="btn-success">Volver</button>
-      <button mat-stroked-button class="btn-info">Generar Propuesta</button>
+      <button mat-stroked-button class="btn-info" (click)="crearPpta()">Generar Propuesta</button>
     </div>
   </div>
 </mat-card-actions>

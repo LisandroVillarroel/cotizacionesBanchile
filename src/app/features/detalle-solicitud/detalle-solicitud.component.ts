@@ -88,7 +88,7 @@ import { EliminarCompaniaComponent } from './companias-contactadas/eliminar-comp
 export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
-  private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
+  //private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
   panelOpenState = false;
   panelOpenState2 = false;
 

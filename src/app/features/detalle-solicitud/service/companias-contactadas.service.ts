@@ -35,11 +35,12 @@ export class CompaniasContactadasService {
   }
 
   postCompaniasTipoSeguro(filtro: any): Observable<ICompaniasResponse> {
-    return this.http.post<ICompaniasResponse>(
-      `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
-      filtro,
-      { headers: this.headers }
-    );
+    return this.http
+      .post<ICompaniasResponse>(
+        `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
+        filtro,
+        { headers: this.headers }
+      );
   }
 
   postAgregaCompania(

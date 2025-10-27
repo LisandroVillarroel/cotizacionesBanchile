@@ -1,20 +1,18 @@
 <div  class="table-con-titulo mat-elevation-z6"
   data-titulo="Información General">
-  <div class="container-fluid fondoGris justify-around d-flex p-4">
+  <div class="container-fluid fondoGris justify-around d-flex p-3">
     <!-- <div class="d-flex justify-around"> -->
       <mat-card style="width: 49%;">
-        <mat-card-header>
-          <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+        <mat-card-content>
+          <div class="info-gral">
             <label class="destacado">ID Solicitud</label>
             <label>{{ infoSolicitud()?.id_solicitud }}</label>
           </div>
-        </mat-card-header>
-        <mat-card-content>
-          <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <div class="info-gral">
             <label class="destacado">RUT Contratante</label>
             <label>{{ infoSolicitud()?.rut_contratante }}</label>
           </div>
-          <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <div class="info-gral">
             <label class="destacado">Nombre / Razón Social</label>
             <label>{{ infoSolicitud()?.nombre_razon_social_contratante }}</label>
           </div>
@@ -24,14 +22,17 @@
           </div>
         </mat-card-content>
       </mat-card>
-
       <mat-card style="width: 49%;">
-        <mat-card-content class="mt-5">
-          <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
-            <label class="destacado">Rubro / Tipo de Seguro</label>
-            <label>{{ infoSolicitud()?.nombre_rubro }} / {{ infoSolicitud()?.nombre_tipo_seguro }}</label>
+        <mat-card-content>
+          <div class="info-gral">
+            <label class="destacado">Rubro </label>
+            <label>{{ infoSolicitud()?.nombre_rubro }}</label>
           </div>
-          <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px;">
+          <div class="info-gral">
+            <label class="destacado">Tipo de Seguro</label>
+            <label>{{ infoSolicitud()?.nombre_tipo_seguro }}</label>
+          </div>
+          <div class="info-gral">
             <label class="destacado">Fecha Creación Solicitud</label>
             <label>{{ infoSolicitud()?.fecha_creacion_solicitud }}</label>
           </div>

@@ -64,7 +64,7 @@ import { ProgresoCarga } from '@core/auth/progesoCarga';
 
 main {
   margin-top: 110px; /* suma la altura del header y del menú */
-  padding: 24px;
+  padding: 5px 24px 80px 24px;
   box-sizing: border-box;
 }
 

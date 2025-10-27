@@ -66,10 +66,11 @@
 
 <div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;">
     @for(item of datosPaginados(); track $index){
-      <mat-expansion-panel class="mt-2" style="padding: 0px 0px 30px;"
+      <mat-expansion-panel class="mt-2"
+        style="padding: 0px 0px 30px;"
         (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header class="fondoGestion gris"
-          style="padding: 0px 14px 0px; font-size: 14px; font-weight: normal;">
+          style="padding: 0px 10px 0px; font-size: 14px; font-weight: normal;">
             <mat-card class="alinea-card-gestion justify-around fontSmall mt-4"
               style="width: 100%;">
               <mat-card-content class="d-flex">

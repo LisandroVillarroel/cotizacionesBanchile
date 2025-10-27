@@ -1,4 +1,9 @@
-<div class="container-fluid fondoGris p-2 mt-4" style="padding: 10px 10px 10px">
+<div class="msj-warning">
+  <h3><mat-icon>info</mat-icon>
+    Se requiere contactar un mínimo de {{minimo}} compañías para esta solicitud.
+  </h3>
+</div>
+<div class="container-fluid fondoGris p-2 mt-3" style="padding: 10px 10px 10px">
   @for(obj of companias(); track $index) {
   <div class="container-fluid mt-2">
     <mat-card class="alinea-card-gestion">
@@ -12,11 +17,11 @@
           <p class="fontSmall">Fecha envío</p>
           <p class="fontLarge">{{ obj.p_id_fecha_envio_cotizacion }}</p>
         </div>
-        <mat-divider [vertical]="true"></mat-divider>
+<!--         <mat-divider [vertical]="true"></mat-divider>
         <div class="p-2" style="width: 15%">
           <p class="fontSmall">Tiempo transcurrido</p>
           <p class="fontLarge">{{ obj.p_dias_transcurridos }}</p>
-        </div>
+        </div> -->
         <mat-divider [vertical]="true"></mat-divider>
         <div class="p-2" style="width: 15%">
           <p class="fontSmall">Estado cotización</p>

@@ -14,8 +14,8 @@ export interface ISolicitudContratante {
 }
 
 export interface IIngresoSolicitud {
-  id_ejecutivo_banco: string;
-  p_tipo_usuario: string,
+  p_id_usuario: string;
+  p_tipo_usuario: string;
   id_rubro: number;
   id_tipo_seguro: number;
   contratante: ISolicitudContratante;

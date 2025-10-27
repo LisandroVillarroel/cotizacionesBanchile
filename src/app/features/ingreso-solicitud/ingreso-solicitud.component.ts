@@ -58,6 +58,7 @@ import { AseguradoService } from './service/asegurado.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { EnviarCoordinadorComponent } from '@features/detalle-solicitud/enviar-coordinador/enviar-coordinador.component';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -258,7 +259,7 @@ export default class IngresoSolicitudComponent {
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
     );
     this.ingresoSolicitud = {
-      id_ejecutivo_banco: this._storage()?.usuarioLogin.usuario!,
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       contratante: {
         rut_contratante:
@@ -279,12 +280,12 @@ export default class IngresoSolicitudComponent {
       // asegurados: [],
       // beneficiarios: [],
     };
-    console.log('Ingreso Solicitud:', this.ingresoSolicitud);
+    //console.log('Ingreso Solicitud:', this.ingresoSolicitud);
     await this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
+          //console.log('dato:', dato);
           if (dato.codigo === 200) {
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
@@ -412,7 +413,7 @@ export default class IngresoSolicitudComponent {
     */
   }
 
-  abrirDialogoYAvanzar(): void {
+/*   abrirDialogoYAvanzar(): void {
     const dato = {
       solicitudId: 'ID123456789',
       fecha: '00 - 00 - 0000',
@@ -437,6 +438,28 @@ export default class IngresoSolicitudComponent {
     this.dialog
       .open(ConfirmacionSolicitudDialogComponent, dialogConfig)
       .afterClosed();
+  }
+ */
+
+  enviarCoordinador(): void {
+    const dato = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //Ajustes clave para evitar espacio en blanco
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(EnviarCoordinadorComponent, dialogConfig)
+      .afterClosed()
   }
 
   salir() {

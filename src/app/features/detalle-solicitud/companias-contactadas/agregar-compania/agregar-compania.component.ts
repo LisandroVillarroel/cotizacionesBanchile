@@ -107,14 +107,21 @@ export class AgregarCompaniaComponent {
       p_rubro: this.data.id_rubro,
       p_tipo_seguro: this.data.id_tipo_seguro,
     };
+    console.log("Entradas", entradas);
 
     this.CompaniasContactadasService.postCompaniasTipoSeguro(
       entradas
     ).subscribe({
       next: (dato: any) => {
         if (dato.codigo === 200) {
+          console.log("Dato: ",dato);
+
           this.datoCompanias.set(dato.p_cursor);
+          console.log("Compañías",this.datoCompanias());
         }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }

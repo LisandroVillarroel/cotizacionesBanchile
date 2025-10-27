@@ -1040,6 +1040,10 @@ mat-divider[vertical] {
   font-size: 16px;
 }
 
+.negrilla {
+  font-weight: bold;
+}
+
 .cursiva {
   font-style: italic;
 }
@@ -1136,13 +1140,27 @@ mat-divider[vertical] {
   border-radius: 0px !important;
 }
 
-
 .msj-warning {
   border-radius: 1px;
   box-shadow: #ffc725;
   color: #ffc725 !important;
-  background-color: #FFF7DF !important;
+  /* background-color: #FFF7DF !important; */
   margin-right: 10px;
+}
+
+.alinea-cards{
+  margin-top: 14px;
+  align-content: center;
+  width: 60%;
+  font-size: 16px;
+}
+
+.alinea-cards-2{
+  margin-top: 14px;
+  align-content: center;
+  width: 15%;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .swal2-toast div:where(.swal2-actions) {

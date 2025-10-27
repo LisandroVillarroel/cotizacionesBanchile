@@ -9,6 +9,11 @@
 .mat-mdc-form-field {
   flex-direction:initial;
 }
+
+ h2 {
+    margin: 0px;
+}
+
 /* .edicion{
   color:#666668;
   background-color: #E8E8EA;
