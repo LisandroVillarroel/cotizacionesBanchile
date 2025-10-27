@@ -58,9 +58,9 @@ import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interfac
 export class IngresoRespuestaComponent {
 
 constructor(
-    private registrarRespuestaService: RegistrarRespuestaService // ✅ Agrega esta línea
+    private registrarRespuestaService: RegistrarRespuestaService
   ) {
-    // Otros inyectables si los tienes
+
   }
 
 
