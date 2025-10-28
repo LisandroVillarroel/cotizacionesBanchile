@@ -323,6 +323,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_ejecutivo,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
     };
 
     const dialogConfig = new MatDialogConfig();

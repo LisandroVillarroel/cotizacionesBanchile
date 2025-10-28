@@ -7,11 +7,9 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatDivider } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { StorageService } from '@shared/service/storage.service';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatIconModule } from '@angular/material/icon';
-import { IRequest } from '@shared/modelo/servicios-interface';
+import { IRequest, IRequestG } from '@shared/modelo/servicios-interface';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
@@ -37,13 +35,13 @@ export class EnviarCoordinadorComponent {
 
   constructor(
     public dialogRef: MatDialogRef<EnviarCoordinadorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IRequest,
+    @Inject(MAT_DIALOG_DATA) public data: IRequestG,
     private dialog: MatDialog
   ) { }
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   enviarCoordinadorService = inject(EnviarCoordinadorService);
-  enviarRequest!: IRequest;
+  enviarRequest!: IRequestG;
 
   cerrar(): void {
     this.dialogRef.close();
