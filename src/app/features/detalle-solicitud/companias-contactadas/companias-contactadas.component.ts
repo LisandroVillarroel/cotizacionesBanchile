@@ -17,6 +17,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatTooltip } from '@angular/material/tooltip';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { MatRadioButton } from "@angular/material/radio";
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -30,7 +31,8 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatIcon,
     CommonModule,
     MatTooltip,
-  ],
+    MatRadioButton
+],
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
@@ -102,6 +104,15 @@ export class CompaniasContactadasComponent {
   borrarCotizacion(idCotizacion: string) {
     // lógica para eliminar cotización
   }
+
+
+cotizacionSeleccionada: string | null = null;
+
+seleccionarCotizacion(id: string) {
+  this.cotizacionSeleccionada = id;
+  console.log('Cotización seleccionada:', id);
+}
+
 
   acciones = computed(() => {
     return (estado: string) => {

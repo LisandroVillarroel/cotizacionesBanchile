@@ -1,0 +1,71 @@
+<app-cabecera-popup [titulo]="'Aprobar Cotización'"  />
+<mat-dialog-content class="container-fluid p-0"
+[formGroup]="aprobarCotizacion()" name="aprobarCotizacion">
+  <mat-card>
+    <!-- <mat-card-header class="fondoGris d-flex justify-around">
+      <div style="width: 20%;">
+        <p class="destacado">Rut Contratante</p>
+        <p >{{ infoSolicitud()?.rut_contratante }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Nombre / Razón Social</p>
+        <p>{{ infoSolicitud()?.nombre_razon_social_contratante }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Rubro</p>
+        <p>{{ infoSolicitud()?.nombre_rubro }}</p>
+      </div>
+    </mat-card-header> -->
+
+        <mat-card-header class="fondoGris d-flex justify-around">
+      <div style="width: 20%;">
+        <p class="destacado">Rut Contratante</p>
+        <p >{{ data.rut_contratante }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Nombre / Razón Social</p>
+        <p>{{ data.nombre_razon_social_contratante }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 40%; margin-left: 10px;">
+        <p class="destacado">Rubro</p>
+        <p>{{ data.nombre_rubro }}</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- <div class="p-2" style="margin:auto;">
+          <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
+            &nbsp; Está por devolver esta solicitud al ejecutivo con observaciones</h3>
+          <mat-label class="gris">Por favor, indica el motivo de la devolución para que el ejecutivo
+          pueda realizar los ajustes necesarios.</mat-label>
+      </div> -->
+      <!-- <mat-form-field class="textarea-grande col-md-12"
+        matTooltip="Motivo de devolución"
+        matTooltipPosition="above">
+          <mat-label class="gris-claro">Observación</mat-label>
+          <textarea matInput [formControl]="motivo"
+            maxlength="500" rows="6"></textarea>
+          <mat-hint align="end">{{motivo.value?.length}} / 500</mat-hint>
+          @if (motivo.invalid) {
+            <mat-error>{{ getErrorMessage() }}</mat-error>
+          }
+        </mat-form-field> -->
+      <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
+  </mat-dialog-content>
+    <mat-card-actions>
+      <div class="container-fluid d-flex p-2">
+        <div class="botones-derecha">
+          <button mat-stroked-button class="btn-danger"
+            (click)="cancelar()">Cancelar</button>
+          <button mat-stroked-button class="btn-success"
+
+            (click)="aprobar()">Aprobar Cotización</button>
+        </div>
+      </div>
+    </mat-card-actions>

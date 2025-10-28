@@ -49,9 +49,22 @@
             >
               <mat-icon class="destacado">{{ btn.icon }}</mat-icon>
             </button>
+            <!-- <mat-divider [vertical]="true"></mat-divider> -->
+
             }
           </div>
         </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="p-2" style="width: 15%">
+          <p class="fontSmall">Seleccionar Cotización</p>
+          <mat-radio-button
+      [value]="obj.p_id_cotizacion_compania"
+      (change)="seleccionarCotizacion(obj.p_id_cotizacion_compania)">
+    </mat-radio-button>
+        </div>
+
+
+
       </mat-card-content>
     </mat-card>
   </div>

@@ -187,6 +187,15 @@
       >
         Generar Propuesta
       </button>
+
+      <button
+        mat-stroked-button
+        class="btn-success"
+        [hidden]="this.flagAprobarCot || this.verEjec"
+        (click)="aprobarCotizacion()"
+      >
+        Aprobar Cotizacion
+      </button>
     </div>
   </div>
 </mat-dialog-actions>

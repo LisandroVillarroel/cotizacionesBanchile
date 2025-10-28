@@ -55,6 +55,7 @@ import { CompaniasContactadasService } from './service/companias-contactadas.ser
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
 import { IMinimoResponse } from './modelo/compania';
+import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprobar-cotizacion/aprobar-cotizacion.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -111,6 +112,8 @@ export default class DetalleSolicitudComponent {
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
 
+
+
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
   flagDevolver = true;
@@ -119,6 +122,7 @@ export default class DetalleSolicitudComponent {
   flagCoordinador = true;
   flagPropuesta = true;
   flagCotizacion = true;
+  flagAprobarCot = false;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
@@ -440,5 +444,31 @@ export default class DetalleSolicitudComponent {
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
     });
+  }
+
+
+   aprobarCotizacion(): void {
+    const dato = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_ejecutivo,
+    };
+    console.log('p_id_solicitud,p_id_usuario', dato.p_id_solicitud, dato.p_id_usuario);
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AprobarCotizacionComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
+      });
   }
 }
