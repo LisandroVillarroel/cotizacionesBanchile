@@ -15,7 +15,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDivider } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
@@ -27,12 +26,9 @@ import { IEliminaCompania } from '@features/detalle-solicitud/modelo/compania';
 
 export interface EliminarCompaniaData {
   p_id_solicitud: number;
+  p_id_compania_seguro: number;
   p_id_usuario: string;
   p_tipo_usuario: string;
-  id_rubro: number;
-  id_tipo_seguro: number;
-  fecha: string;
-  ejecutivo: string;
 }
 
 @Component({
@@ -46,7 +42,6 @@ export interface EliminarCompaniaData {
     MatCardModule,
     MatInputModule,
     FormsModule,
-    MatDivider,
     ReactiveFormsModule,
     MatCheckboxModule,
     MatSelectModule,
@@ -88,7 +83,7 @@ export class EliminarCompaniaComponent {
 
     const payload: IEliminaCompania = {
       p_id_solicitud: this.data.p_id_solicitud,
-      p_id_compania_seguro: this.eliminaCompania().get('compania')!.value,
+      p_id_compania_seguro: this.data.p_id_compania_seguro,
       p_id_usuario: this.data.p_id_usuario,
       p_tipo_usuario: this.data.p_tipo_usuario,
     };

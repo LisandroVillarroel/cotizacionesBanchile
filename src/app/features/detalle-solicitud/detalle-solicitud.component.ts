@@ -56,7 +56,6 @@ import { CompaniasContactadasService } from './service/companias-contactadas.ser
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
 import { IMinimoResponse } from './modelo/compania';
-import { EliminarCompaniaComponent } from './companias-contactadas/eliminar-compania/eliminar-compania.component';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -382,36 +381,6 @@ export default class DetalleSolicitudComponent {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
-      });
-  }
-
-  borrarCompania(): void {
-    const dato = {
-      p_id_solicitud: this.idSolicitud, //'ID123456789',
-      fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
-      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
-      id_rubro: this.infoGral()?.id_rubro,
-      id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '40%';
-    dialogConfig.maxHeight = '80%';
-    dialogConfig.panelClass = 'custom-dialog-container';
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EliminarCompaniaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.cargarCompanias(this.idSolicitud);
-          this.obtenerMinimo(this.idSolicitud);
-        }
       });
   }
 

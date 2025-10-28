@@ -15,8 +15,11 @@ import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Output, EventEmitter } from '@angular/core';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania.component';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -41,11 +44,15 @@ export class CompaniasContactadasComponent {
   @Input() verEjec: boolean = true;
   @Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
+  @Input() idSolicitud!: number;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  id_usuario = this._storage()?.usuarioLogin.usuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
+  dialog = inject(MatDialog);
 
   constructor() {}
 
@@ -87,20 +94,46 @@ export class CompaniasContactadasComponent {
     };
   }
 
-  verCotizacion(idCotizacion: string) {
+  verCotizacion(idCotizacion: number) {
     // lógica para ver cotización
   }
 
-  verCotiPropuesta(idCotizacion: string) {
+  verCotiPropuesta(idCotizacion: number) {
     // lógica para ver cotipropuesta
   }
 
-  registrarRespuesta(idCotizacion: string) {
+  registrarRespuesta(idCotizacion: number) {
     // lógica para registrar respuesta
   }
 
-  borrarCompania(idCotizacion: string) {
-    // lógica para eliminar cotización
+  @Output() actualizarDatos = new EventEmitter<void>();
+
+  borrarCompania(idCompania: number) {
+    const dato = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_compania_seguro: idCompania,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+    };
+
+    console.log('Payload enviado:', dato);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '40%';
+    dialogConfig.maxHeight = '80%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(EliminarCompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit(); // o refrescar la grilla
+        }
+      });
   }
 
   acciones = computed(() => {
@@ -111,7 +144,7 @@ export class CompaniasContactadasComponent {
         icon: string;
         tooltip: string;
         mostrar: boolean;
-        accion: (id: string) => void;
+        accion: (id: number) => void;
       }[] = [];
 
       // Cotipropuesta: todos los usuarios, solo si estado es "recibida"
@@ -119,7 +152,7 @@ export class CompaniasContactadasComponent {
         icon: 'preview',
         tooltip: 'Ver cotipropuesta',
         mostrar: estadoLower === 'recibida',
-        accion: (id: string) => this.verCotiPropuesta(id),
+        accion: (id: number) => this.verCotiPropuesta(id),
       });
 
       // Solo si NO es ejecutivo
@@ -129,7 +162,7 @@ export class CompaniasContactadasComponent {
           icon: 'visibility',
           tooltip: 'Ver cotización',
           mostrar: estadoLower === 'pendiente',
-          accion: (id: string) => this.verCotizacion(id),
+          accion: (id: number) => this.verCotizacion(id),
         });
 
         // Registrar respuesta: estado "enviada"
@@ -137,7 +170,7 @@ export class CompaniasContactadasComponent {
           icon: 'edit_square',
           tooltip: 'Registrar respuesta',
           mostrar: estadoLower === 'enviada',
-          accion: (id: string) => this.registrarRespuesta(id),
+          accion: (id: number) => this.registrarRespuesta(id),
         });
 
         // Borrar: estado "pendiente" y usuario coordinador
@@ -145,7 +178,7 @@ export class CompaniasContactadasComponent {
           icon: 'delete',
           tooltip: 'Eliminar cotización',
           mostrar: estadoLower === 'pendiente' && this.verCoord,
-          accion: (id: string) => this.borrarCompania(id),
+          accion: (id: number) => this.borrarCompania(id),
         });
       }
 
