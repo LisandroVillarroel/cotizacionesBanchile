@@ -96,7 +96,6 @@ export default class DetalleSolicitudComponent {
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
   tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
