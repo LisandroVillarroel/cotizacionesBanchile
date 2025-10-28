@@ -1,11 +1,10 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({

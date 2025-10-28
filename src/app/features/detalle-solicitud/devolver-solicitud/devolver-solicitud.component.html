@@ -22,7 +22,7 @@
       <div class="p-2" style="margin:auto;">
           <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
             &nbsp; Está por devolver esta solicitud al ejecutivo con observaciones</h3>
-          <mat-label class="gris">Por favor, indica el motivo de la devolución para que el ejecutivo
+          <mat-label class="gris">Por favor, indique el motivo de la devolución para que el ejecutivo
           pueda realizar los ajustes necesarios.</mat-label>
       </div>
       <mat-form-field class="textarea-grande col-md-12"
@@ -47,7 +47,7 @@
             (click)="cancelar()">Cancelar</button>
           <button mat-stroked-button class="btn-success"
             [disabled]="motivo.value === null || motivo.value === ''"
-            (click)="devolver()">Confirmar devolución</button>
+            (click)="devolver(motivo.value!)">Confirmar devolución</button>
         </div>
       </div>
     </mat-card-actions>

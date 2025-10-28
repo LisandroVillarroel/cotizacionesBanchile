@@ -96,7 +96,8 @@ export default class DetalleSolicitudComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_ejecutivo = this._storage()?.usuarioLogin.usuario!;
+  id_usuario = this._storage()?.usuarioLogin.usuario!;
+  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -244,6 +245,8 @@ export default class DetalleSolicitudComponent {
       solicitudId: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
+      id_usuario: this.id_usuario,
+      id_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -256,7 +259,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -266,7 +269,8 @@ export default class DetalleSolicitudComponent {
   aprobarSolicitud(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -280,7 +284,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AprobarSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -288,7 +292,11 @@ export default class DetalleSolicitudComponent {
   }
 
   anularSolicitud(): void {
-    const dato = { solicitudId: this.idSolicitud };
+    const dato = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario
+    };
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -301,7 +309,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -311,7 +319,8 @@ export default class DetalleSolicitudComponent {
   enviarCoordinador(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -327,7 +336,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(EnviarCoordinadorComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -341,7 +350,7 @@ export default class DetalleSolicitudComponent {
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario
     };
 
@@ -358,7 +367,7 @@ export default class DetalleSolicitudComponent {
 
     this.dialog.open(AgregarCompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -368,7 +377,7 @@ export default class DetalleSolicitudComponent {
   enviarCia(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario
     };
 
@@ -384,7 +393,7 @@ export default class DetalleSolicitudComponent {
 
     this.dialog.open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -410,7 +419,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
@@ -435,7 +444,7 @@ export default class DetalleSolicitudComponent {
     dialogConfig.data = this.idSolicitud;
     this.dialog.open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((dato) => {
+      .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
