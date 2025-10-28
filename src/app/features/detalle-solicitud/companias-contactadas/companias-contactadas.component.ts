@@ -108,6 +108,14 @@ export class CompaniasContactadasComponent {
     // lógica para registrar respuesta
   }
 
+  cotizacionSeleccionada: string | null = null;
+
+seleccionarCotizacion(id: string) {
+  this.cotizacionSeleccionada = id;
+  console.log('Cotización seleccionada:', id);
+}
+
+
   @Output() actualizarDatos = new EventEmitter<void>();
 
   borrarCompania(idCompania: number) {
