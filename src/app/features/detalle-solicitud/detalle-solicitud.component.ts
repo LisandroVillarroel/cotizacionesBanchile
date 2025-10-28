@@ -99,7 +99,7 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -126,7 +126,7 @@ export default class DetalleSolicitudComponent {
     this.cargarCompanias(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
 
-    switch (this.tipo_usuario) {
+    switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
         break;
@@ -256,7 +256,7 @@ export default class DetalleSolicitudComponent {
       fecha: this.infoGral()?.fecha_creacion_solicitud,
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
       id_usuario: this.id_usuario,
-      id_tipo_usuario: this.tipo_usuario
+      id_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -280,7 +280,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+      p_tipo_usuario: this.tipoUsuario
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -305,7 +305,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+      p_tipo_usuario: this.tipoUsuario
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -330,6 +330,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -360,7 +361,7 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -392,7 +393,7 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario,
+      p_tipo_usuario: this.tipoUsuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -418,7 +419,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+      p_tipo_usuario: this.tipoUsuario
     };
 
     const dialogConfig = new MatDialogConfig();

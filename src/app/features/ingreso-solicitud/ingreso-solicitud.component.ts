@@ -445,6 +445,7 @@ export default class IngresoSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
     };
 
     const dialogConfig = new MatDialogConfig();
