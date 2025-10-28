@@ -181,6 +181,8 @@ export class AgregaSolicitudBeneficiarioComponent {
   grabar() {
     this.beneficiario = {
       p_id_solicitud: Number(this.data),
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
       p_rut_beneficiario:
         this.agregaBeneficiario().get('rutBeneficiario')!.value,
       p_nombre_razon_social_beneficiario:
@@ -207,7 +209,6 @@ export class AgregaSolicitudBeneficiarioComponent {
       )!.value,
       p_casa_beneficiario:
         this.agregaBeneficiario().get('casaBeneficiario')!.value,
-      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Beneficiario Grabado:', this.beneficiario);

@@ -319,6 +319,8 @@ export default class IngresoSolicitudComponent {
   async agregarAsegurado() {
     this.asegurado = {
       p_id_solicitud: Number(this.contratanteInfo().id),
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       p_rut_asegurado: this.ingresoSolicitud.contratante.rut_contratante,
       p_nombre_razon_social_asegurado:
         this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
@@ -335,7 +337,6 @@ export default class IngresoSolicitudComponent {
       p_departamento_block_asegurado:
         this.ingresoSolicitud.contratante.departamento_block_contratante,
       p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
-      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
 
