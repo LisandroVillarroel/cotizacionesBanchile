@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
 import {
-  IAgregaAsegurado,
+  IAsegurado,
   IAseguradoListaParametro,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
@@ -39,7 +39,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
   styleUrl: './modifica-solicitud-asegurado.component.css',
 })
 export class ModificaSolicitudAseguradoComponent {
-  asegurado!: IAgregaAsegurado;
+  asegurado!: IAsegurado;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
@@ -199,6 +199,8 @@ export class ModificaSolicitudAseguradoComponent {
   modificar() {
     this.asegurado = {
       p_id_solicitud: Number(this.data.idSolicitud),
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
       p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.modificaAsegurado().get('nombreAsegurado')!.value,
@@ -220,7 +222,6 @@ export class ModificaSolicitudAseguradoComponent {
         'deptoDireccionAsegurado'
       )!.value,
       p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value,
-      p_usuario_modificacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Asegurado Modificado:', this.asegurado);

@@ -1,12 +1,11 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { catchError, Observable, retry, throwError } from 'rxjs';
-import { IAgregaBeneficiario,  DatosBeneficiariosInterface,} from '../modelo/ingresoSolicitud-Interface';
+import { Observable } from 'rxjs';
+import { IBeneficiario,  DatosBeneficiariosInterface,} from '../modelo/ingresoSolicitud-Interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +19,7 @@ export class BeneficiarioService {
   });
 
   constructor() {}
-  postAgregaBeneficiario(agregaBeneficiario: IAgregaBeneficiario): Observable<any> {
-    console.log('Agrega Beneficiario Service:', agregaBeneficiario);
+  postAgregaBeneficiario(agregaBeneficiario: IBeneficiario): Observable<any> {
     return this.http
       .post<any>(
         `${environment.apiUrlConsumer}/ingresarBeneficiario`,
@@ -32,8 +30,7 @@ export class BeneficiarioService {
       )
   }
 
-  postModificaBeneficiario(modificaBeneficiario: IAgregaBeneficiario): Observable<any> {
-    console.log('Modifica Beneficiario Service:', modificaBeneficiario);
+  postModificaBeneficiario(modificaBeneficiario: IBeneficiario): Observable<any> {
     return this.http
       .post<any>(
         `${environment.apiUrlConsumer}/modificarBeneficiario`,

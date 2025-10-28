@@ -63,10 +63,8 @@ export default class DashboardComponent   {
       "p_fecha": fechaFiltrar,
       "p_tipo_usuario": this._storage()?.usuarioLogin.tipoUsuario!
     }
-    console.log('estructura_listaSolicitudes', estructura_listaSolicitudes);
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
       next: (dato: any) => {
-        console.log('resultado soli:',dato)
         if (dato.codigo === 200) {
           this.resumenGeneral.set({
             p_EnProceso: dato.p_EnProceso,

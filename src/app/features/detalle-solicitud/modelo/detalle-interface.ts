@@ -39,6 +39,7 @@ export interface ICompania {
   p_fecha_inicio_vigencia: string;
   p_fecha_termino_vigencia: string;
   p_dia_vencimiento_primera_cuota: string;
+  p_dias_transcurridos: number;
   p_id_cotizacion_compania: string;
   p_ruta_cotizacion_compania: string;
   p_id_cotizacion_propuesta: string;
@@ -47,7 +48,6 @@ export interface ICompania {
   p_usuario_creacion: string;
   p_fecha_modificacion: string;
   p_usuario_modificacion: string;
-  p_dias_transcurridos: number
 }
 
 export interface ICompanias {

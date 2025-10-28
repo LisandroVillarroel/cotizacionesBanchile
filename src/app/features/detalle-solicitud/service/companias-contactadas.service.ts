@@ -6,7 +6,11 @@ import {
   ICompaniaResponse,
   ICompaniasResponse,
 } from '../modelo/detalle-interface';
-import { IAgregaCompania, IMinimoResponse } from '@features/detalle-solicitud/modelo/compania';
+import {
+  IAgregaCompania,
+  IEliminaCompania,
+  IMinimoResponse,
+} from '@features/detalle-solicitud/modelo/compania';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +55,19 @@ export class CompaniasContactadasService {
     );
   }
 
-  postMinimo(IdSolicitud: number): Observable<IMinimoResponse>{
+  postEliminaCompania(
+    eliminarCompaniasSolicitud: IEliminaCompania
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/eliminarCompaniasSolicitud`,
+      eliminarCompaniasSolicitud,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  postMinimo(IdSolicitud: number): Observable<IMinimoResponse> {
     const parametro = { p_id_solicitud: IdSolicitud };
     return this.http.post<IMinimoResponse>(
       `${environment.apiUrlConsumer}/obtenerMinimoCotizaciones`,

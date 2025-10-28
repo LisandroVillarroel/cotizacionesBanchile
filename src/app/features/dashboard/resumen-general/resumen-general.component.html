@@ -4,68 +4,30 @@
     </mat-card-title>
 
     <div class="mat-card-container">
-  <mat-card class="mat-card">
-    <div class="mat-card-content">
-      <div class="mat-card-column_1">En proceso</div>
-      <div class="mat-card-column_2">{{resumenGeneral()?.p_EnProceso}}</div>
-    </div>
-  </mat-card>
+      <mat-card class="mat-card">
+        <div class="mat-card-content">
+          <div class="mat-card-column_1">En proceso</div>
+          <div class="mat-card-column_2">{{resumenGeneral()?.p_EnProceso}}</div>
+        </div>
+      </mat-card>
 
-  <mat-card class="mat-card">
-    <div class="mat-card-content">
-      <div class="mat-card-column_1">Esperando respuesta</div>
-      <div class="mat-card-column_2">{{resumenGeneral()?.p_EsperandoRespuesta}}</div>
+      <mat-card class="mat-card">
+        <div class="mat-card-content">
+          <div class="mat-card-column_1">Esperando respuesta</div>
+          <div class="mat-card-column_2">{{resumenGeneral()?.p_EsperandoRespuesta}}</div>
+        </div>
+      </mat-card>
+      <mat-card class="mat-card">
+        <div class="mat-card-content">
+          <div class="mat-card-column_1">Aprobadas</div>
+          <div class="mat-card-column_2">{{resumenGeneral()?.p_Aprobadas}}</div>
+        </div>
+      </mat-card>
+      <mat-card class="mat-card">
+        <div class="mat-card-content">
+          <div class="mat-card-column_1">Con observaciones</div>
+          <div class="mat-card-column_2">{{resumenGeneral()?.p_ConObservaciones}}</div>
+        </div>
+      </mat-card>
     </div>
-  </mat-card>
-  <mat-card class="mat-card">
-    <div class="mat-card-content">
-      <div class="mat-card-column_1">Aprobadas</div>
-      <div class="mat-card-column_2">{{resumenGeneral()?.p_Aprobadas}}</div>
-    </div>
-  </mat-card>
-  <mat-card class="mat-card">
-    <div class="mat-card-content">
-      <div class="mat-card-column_1">Con observaciones</div>
-      <div class="mat-card-column_2">{{resumenGeneral()?.p_ConObservaciones}}</div>
-    </div>
-  </mat-card>
-</div>
-<!--
-    <mat-card-content class="d-flex p-2 mt-0 justify-around" style="width: 100%;">
-      <mat-card class="d-flex  alinea-cards" style="width: 24%;">
-
-          <div class="d-flex">
-            <p class="d-flex">En proceso:</p></div>
-          <h2 class="d-flex" class="destacado">{{resumenGeneral()?.p_EnProceso}}</h2>
-
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Esperando respuesta</p></div>
-          <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_EsperandoRespuesta}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Aprobadas</p></div>
-          <div class="container-fluid  alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_Aprobadas}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Con observaciones</p></div>
-          <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGeneral()?.p_ConObservaciones}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-card-content>
-  -->
   </mat-card>

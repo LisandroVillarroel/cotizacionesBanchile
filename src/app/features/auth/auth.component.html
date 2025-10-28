@@ -7,7 +7,7 @@
   <div class="row contenido-form form-con-titulo mat-elevation-z6" data-titulo="Ingreso">
     <mat-form-field class="inputInput">
         <mat-label class="labelI">Código</mat-label>
-        <input matInput aria-label="labelI" [formControl]="usuario" required />
+        <input matInput aria-label="labelI" [formControl]="usuario" style="text-transform: lowercase;" required />
         @if (usuario.invalid) {
         <mat-error>{{ getErrorMessage("usuario") }}</mat-error>
         }

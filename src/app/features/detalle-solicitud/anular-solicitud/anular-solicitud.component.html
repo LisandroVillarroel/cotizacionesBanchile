@@ -1,4 +1,4 @@
-<app-cabecera-popup [titulo]="'Confirmación de Anulación - '+data.solicitudId" />
+<app-cabecera-popup [titulo]="'Confirmación de Anulación - '+data.p_id_solicitud" />
 <mat-dialog-content class="container-fluid p-0">
 
 
@@ -8,7 +8,7 @@
       <mat-card-content>
         <div class="d-flex" style="margin:auto;">
           <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
-            &nbsp; La solicitud nro. {{ data.solicitudId }} quedará anulada</h3>
+            &nbsp; La solicitud nro. {{ data.p_id_solicitud }} quedará anulada</h3>
         </div>
         <mat-form-field class="textarea-grande col-md-12" matTooltip="Indique el motivo de anulación"
           matTooltipPosition="above">
@@ -30,7 +30,7 @@
           <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cancelar</button>
           <button mat-stroked-button class="btn-success"
               [disabled]="motivo.value === null || motivo.value === ''"
-              (click)="confirmar()">Confirmar anulación</button>
+              (click)="anular(motivo.value)">Confirmar anulación</button>
         </div>
       </div>
     </mat-card-actions>
