@@ -21,7 +21,7 @@ export interface IIngresoSolicitud {
   contratante: ISolicitudContratante;
   // asegurados: ISolicitudAsegurado[];
   // beneficiarios: ISolicitudBeneficiario[];
-}
+}{}
 
 export interface IIngresoSolicitud_Recibe {
   codigo: number;

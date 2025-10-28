@@ -5,17 +5,17 @@
 
   <mat-card>
     <mat-card-header class="fondoGris d-flex justify-around">
-      <div style="width: 20%;">
+      <div [ngStyle]="{ width: '20%' }">
         <p class="destacado">ID solicitud</p>
         <p >{{ data.p_id_solicitud }}</p>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
-      <div style="width: 40%; margin-left: 10px;">
+      <div [ngStyle]="{ width: '40%', 'margin-left': '10px' }">
         <p class="destacado">Fecha</p>
         <p>{{ data.fecha }}</p>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
-      <div style="width: 40%; margin-left: 10px;">
+      <div [ngStyle]="{ width: '40%', 'margin-left': '10px' }">
         <p class="destacado">Ejecutivo</p>
         <p>{{ data.ejecutivo }}</p>
       </div>

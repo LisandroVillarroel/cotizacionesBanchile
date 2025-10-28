@@ -27,7 +27,8 @@ import {
   ICompania,
   ICompaniaResponse,
   IObservacion,
-  ISolicitud } from './modelo/detalle-interface';
+  ISolicitud,
+} from './modelo/detalle-interface';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 //Componentes reutilizados
@@ -95,6 +96,7 @@ export default class DetalleSolicitudComponent {
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
   tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
 
@@ -121,15 +123,21 @@ export default class DetalleSolicitudComponent {
     this.obtenerMinimo(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
 
-    switch(this.tipoUsuario){
-      case "E":
-        this.verCoord = false; break;
-      case "C":
-        this.verEjec = false; break;
-      case "S":
-        this.verEjec = false; this.verCoord = false; break;
-      case "A":
-        this.verEjec = false; this.verCoord = false; break;
+    switch (this.tipoUsuario) {
+      case 'E':
+        this.verCoord = false;
+        break;
+      case 'C':
+        this.verEjec = false;
+        break;
+      case 'S':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
+      case 'A':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
     }
   }
 
@@ -164,15 +172,19 @@ export default class DetalleSolicitudComponent {
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
 
-        /* Inicio BackEnd */
-          if(this.edoSolicitud()! !== "Anulada" &&
-             this.edoSolicitud()! !== "Terminada" &&
-             this.edoSolicitud()! !== "Propuesta Pendiente" &&
-             this.edoSolicitud()! !== "Propuesta Emitida")
-          {
+          /* Inicio BackEnd */
+          if (
+            this.edoSolicitud()! !== 'Anulada' &&
+            this.edoSolicitud()! !== 'Terminada' &&
+            this.edoSolicitud()! !== 'Propuesta Pendiente' &&
+            this.edoSolicitud()! !== 'Propuesta Emitida'
+          ) {
             this.flagAnular = false;
             //this.flagPropuesta = false;
-            if(this.edoSolicitud()! === "Aprobada" || this.edoSolicitud()! === "Cotizacion"){
+            if (
+              this.edoSolicitud()! === 'Aprobada' ||
+              this.edoSolicitud()! === 'Cotizacion'
+            ) {
               this.flagCompania = false;
             }
             if (
@@ -181,27 +193,27 @@ export default class DetalleSolicitudComponent {
             ) {
               this.flagCoordinador = false;
             }
-            if( this.edoSolicitud()!.toUpperCase() === "REVISION"){
+            if (this.edoSolicitud()!.toUpperCase() === 'REVISION') {
               this.flagDevolver = false;
               this.flagAprobar = false;
             }
-            if(this.edoSolicitud()! === "Cotizacion"){
+            if (this.edoSolicitud()! === 'Cotizacion') {
               this.flagCotizacion = false;
             }
           }
-          if(this.edoSolicitud()! === "Propuesta Pendiente"){
+          if (this.edoSolicitud()! === 'Propuesta Pendiente') {
             this.flagPropuesta = false;
           }
-        /* Fin BackEnd */
+          /* Fin BackEnd */
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
-  cargarCompanias(idSolicitud: any){
+  cargarCompanias(idSolicitud: any) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
@@ -214,22 +226,27 @@ export default class DetalleSolicitudComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
-  obtenerMinimo(idSolicitud: number){
-    this.companiasService.postMinimo(idSolicitud). subscribe({
+  obtenerMinimo(idSolicitud: number) {
+    this.companiasService.postMinimo(idSolicitud).subscribe({
       next: (dato: IMinimoResponse) => {
-        if (dato.codigo === 200){
+        if (dato.codigo === 200) {
           this.minimo = dato.p_minimo_cotizaciones;
+          if (this.companias()?.length! < this.minimo) {
+            this.puedeEnviar = true;
+          } else {
+            this.puedeEnviar = false;
+          }
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
-    })
+    });
   }
 
   solicitudId: any;
@@ -360,7 +377,8 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(AgregarCompaniaComponent, dialogConfig)
+    this.dialog
+      .open(AgregarCompaniaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
@@ -386,13 +404,15 @@ export default class DetalleSolicitudComponent {
     dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
     dialogConfig.data = dato;
 
-    this.dialog.open(EnviarACompaniaComponent, dialogConfig)
+    this.dialog
+      .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
-    });
+        this.obtenerMinimo(this.idSolicitud);
+      });
   }
 
   ingresarRespuesta(): void {
@@ -418,7 +438,8 @@ export default class DetalleSolicitudComponent {
         this.cargarSolicitud(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
-    });
+        this.obtenerMinimo(this.idSolicitud);
+      });
   }
 
   crearPropuesta(): void {
@@ -437,12 +458,14 @@ export default class DetalleSolicitudComponent {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = this.idSolicitud;
-    this.dialog.open(CreacionPropuestaComponent, dialogConfig)
+    this.dialog
+      .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
-    });
+        this.obtenerMinimo(this.idSolicitud);
+      });
   }
 }
