@@ -14,7 +14,6 @@ import {
   MatDialog,
   MatDialogConfig,
   MatDialogModule,
-  MatDialogRef,
 } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -26,7 +25,6 @@ import { CommonModule } from '@angular/common';
 import {
   DetalleSolicitudInterface,
   ICompania,
-  ICompanias,
   ICompaniaResponse,
   IObservacion,
   ISolicitud } from './modelo/detalle-interface';
@@ -86,7 +84,6 @@ import { IMinimoResponse } from './modelo/compania';
 export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
-  //private readonly dialogRef = inject(MatDialogRef<DetalleSolicitudComponent>);
   panelOpenState = false;
   panelOpenState2 = false;
 
@@ -97,11 +94,9 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
-
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
   verEjec = true;
   verCoord = true;
@@ -123,8 +118,8 @@ export default class DetalleSolicitudComponent {
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
-    this.cargarCompanias(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
+    this.cargarCompanias(this.idSolicitud);
 
     switch(this.tipoUsuario){
       case "E":
@@ -211,6 +206,11 @@ export default class DetalleSolicitudComponent {
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
+          if(this.companias()?.length! < this.minimo){
+            this.puedeEnviar = true;
+          }else{
+            this.puedeEnviar = false;
+          }
         }
       },
       error: (error) => {
@@ -224,11 +224,6 @@ export default class DetalleSolicitudComponent {
       next: (dato: IMinimoResponse) => {
         if (dato.codigo === 200){
           this.minimo = dato.p_minimo_cotizaciones;
-          if(this.companias()?.length! < this.minimo){
-            this.puedeEnviar = true;
-          }else{
-            this.puedeEnviar = false;
-          }
         }
       },
       error: (error) => {
@@ -261,8 +256,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
       });
   }
 
@@ -286,8 +281,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
       });
   }
 
@@ -311,8 +306,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
       });
   }
 
@@ -338,8 +333,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
       });
   }
 
@@ -369,8 +364,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
       });
   }
 
@@ -395,8 +390,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
     });
   }
 
@@ -421,8 +416,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
     });
   }
 
@@ -446,8 +441,8 @@ export default class DetalleSolicitudComponent {
       .afterClosed()
       .subscribe(() => {
         this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
     });
   }
 }

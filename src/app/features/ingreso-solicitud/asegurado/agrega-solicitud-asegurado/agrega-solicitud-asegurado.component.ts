@@ -39,7 +39,6 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 })
 export class AgregaSolicitudAseguradoComponent {
 
-
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
@@ -184,6 +183,8 @@ export class AgregaSolicitudAseguradoComponent {
   grabar() {
     this.asegurado = {
       p_id_solicitud: Number(this.data),
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
       p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
       p_nombre_razon_social_asegurado:
         this.agregaAsegurado().get('nombreAsegurado')!.value,
@@ -202,7 +203,6 @@ export class AgregaSolicitudAseguradoComponent {
         'deptoDireccionAsegurado'
       )!.value,
       p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
-      p_usuario_creacion: this._storage()?.usuarioLogin.usuario,
     };
 
     console.log('Asegurado Grabado:', this.asegurado);
