@@ -1,18 +1,16 @@
-import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { AprobarSolicitudService } from './aprobar-solicitud.service';
-import { IApruebaRequest } from './aprobar-interface';
+import { IRequest } from '@shared/modelo/servicios-interface';
 
 @Component({
   selector: 'app-aprobar-solicitud',
@@ -35,17 +33,11 @@ import { IApruebaRequest } from './aprobar-interface';
 export class AprobarSolicitudComponent {
 
   constructor(public dialogRef: MatDialogRef<AprobarSolicitudComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: IApruebaRequest,
-      private dialog: MatDialog
-    ) { }
+    @Inject(MAT_DIALOG_DATA) public data: IRequest,
+  ) { }
 
-   storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
-
-  idUsuario = this._storage()?.usuarioLogin.usuario!;
   aprobarService = inject(AprobarSolicitudService);
-  apruebaRequest!: IApruebaRequest;
 
   cerrar(): void {
     this.dialogRef.close();

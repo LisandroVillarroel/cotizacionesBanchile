@@ -1,10 +1,8 @@
-import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { Component, Inject, inject, signal } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,16 +13,11 @@ import { FormControl, FormGroup, FormsModule,
   ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { StorageService } from '@shared/service/storage.service';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { AnularSolicitudService } from './anular-solicitud.service';
 import { IAnulaRequest } from './anular-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-
-export interface DataAnular{
-  solicitudId: number
-}
+import { IRequest } from '@shared/modelo/servicios-interface';
 
 @Component({
   selector: 'app-anular-solicitud',
@@ -48,15 +41,11 @@ export interface DataAnular{
 export class AnularSolicitudComponent {
   constructor(
     public dialogRef: MatDialogRef<AnularSolicitudComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DataAnular,
-    private dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) public data: IRequest,
   ) { }
 
-   storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  idUsuario = this._storage()?.usuarioLogin.usuario!;
   anularService = inject(AnularSolicitudService);
   anulaRequest!: IAnulaRequest;
   motivo = new FormControl('', [Validators.required]);
@@ -73,22 +62,19 @@ export class AnularSolicitudComponent {
     this.dialogRef.close('cancelado');
   }
 
-  anular(): void {
-    if(this.anularSolicitud().get('motivo')!.value===''){
+  anular(motive: string): void {
+    if(motive === '' || motive === null){
       return
     }
     this.anulaRequest = {
-      p_id_solicitud: this.data.solicitudId,
-      p_id_usuario: this.idUsuario,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_observacion: this.anularSolicitud().get('motivo')!.value
+      p_id_solicitud: this.data.p_id_solicitud,
+      p_id_usuario: this.data.p_id_usuario,
+      p_tipo_usuario: this.data.p_tipo_usuario,
+      p_observacion: motive
     };
-
-    this.anularService
-      .postAnulaSolicitud(this.anulaRequest)
+    this.anularService.postAnulaSolicitud(this.anulaRequest)
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.confirmar();
           }
