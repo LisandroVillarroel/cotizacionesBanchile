@@ -50,7 +50,7 @@ import { IAuth } from './auth-Interface';
     }
 
      ingresar() {
-       this.authService.postLogin(this.ingresoLogin().value?.usuario).subscribe({
+       this.authService.postLogin(this.ingresoLogin().value?.usuario.toLowerCase()).subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
             console.log('dato.p_cursor![0]:',dato.p_cursor![0])
