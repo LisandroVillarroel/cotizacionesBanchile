@@ -126,7 +126,7 @@ export default class DetalleSolicitudComponent {
     this.cargarCompanias(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
 
-    switch (this.tipoUsuario) {
+    switch (this.tipo_usuario) {
       case 'E':
         this.verCoord = false;
         break;
@@ -256,7 +256,7 @@ export default class DetalleSolicitudComponent {
       fecha: this.infoGral()?.fecha_creacion_solicitud,
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
       id_usuario: this.id_usuario,
-      id_tipo_usuario: this.tipoUsuario
+      id_tipo_usuario: this.tipo_usuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -280,7 +280,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_tipo_usuario: this.tipo_usuario
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -305,7 +305,7 @@ export default class DetalleSolicitudComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_tipo_usuario: this.tipo_usuario
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -329,7 +329,7 @@ export default class DetalleSolicitudComponent {
   enviarCoordinador(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -359,8 +359,8 @@ export default class DetalleSolicitudComponent {
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipo_usuario
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -391,8 +391,8 @@ export default class DetalleSolicitudComponent {
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: this.tipoUsuario,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipo_usuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -417,8 +417,8 @@ export default class DetalleSolicitudComponent {
   enviarCia(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipo_usuario
     };
 
     const dialogConfig = new MatDialogConfig();
