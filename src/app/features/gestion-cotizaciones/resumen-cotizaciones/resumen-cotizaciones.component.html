@@ -1,44 +1,36 @@
-  <mat-card class="alinea-card-gestion" >
-    <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px;">
-      <h2 mat-dialog-title class="destacado">Resumen general de cotizaciones</h2>
-    </mat-card-title>
+<mat-card class="alinea-card-gestion" >
+  <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px;">
+    <h2 mat-dialog-title class="destacado">Resumen general de cotizaciones</h2>
+  </mat-card-title>
 
-    <mat-card-content class="d-flex p-2 mt-0 justify-around" style="width: 100%;">
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Registradas:</p></div>
-          <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGestion()?.recibidas}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Propuesta Pendiente</p></div>
-          <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGestion()?.pendientes}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Propuesta Emitida</p></div>
-          <div class="container-fluid  alinea-cards-2">
-          <h2 class="destacado">{{resumenGestion()?.emitidas}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="d-flex" style="width: 24%;">
-        <mat-card-content class="d-flex p-1" style="justify-content: start; padding: 0px;">
-          <div class="container-fluid alinea-cards">
-            <p>Propuesta Firmada</p></div>
-          <div class="container-fluid alinea-cards-2">
-          <h2 class="destacado">{{resumenGestion()?.firmadas}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-card-content>
-  </mat-card>
+  <div class="mat-card-container">
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Registradas:</div>
+        <div class="mat-card-column_2">{{resumenGestion()?.recibidas}}</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Propuestas Pendientes</div>
+        <div class="mat-card-column_2">{{resumenGestion()?.pendientes}}</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Propuestas Emitidas</div>
+        <div class="mat-card-column_2">{{resumenGestion()?.emitidas}}</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Propuestas Firmadas</div>
+        <div class="mat-card-column_2">{{resumenGestion()?.firmadas}}</div>
+      </div>
+    </mat-card>
+
+  </div>
+</mat-card>

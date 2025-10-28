@@ -1,12 +1,12 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable} from 'rxjs';
-import { IAnulaRequest, IAnulaResponse } from './anular-interface';
+import { IAnulaRequest } from './anular-interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +21,9 @@ export class AnularSolicitudService {
 
   constructor() {}
 
-  postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IAnulaResponse> {
+  postAnulaSolicitud(anulaSolicitud: IAnulaRequest): Observable<IResponse> {
     //console.log('Anula Solicitud Service:', anulaSolicitud);
-    return this.http.post<IAnulaResponse>(
+    return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/anularSolicitud`,
         anulaSolicitud, { headers: this.headers, }
       )

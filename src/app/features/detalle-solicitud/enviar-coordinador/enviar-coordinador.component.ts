@@ -1,15 +1,15 @@
 import { EnviarCoordinadorService } from './enviar-coordinador.service';
-import { Component, Inject, inject, signal} from '@angular/core';
+import { Component, Inject, inject} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatIconModule } from '@angular/material/icon';
-import { IRequest, IRequestG } from '@shared/modelo/servicios-interface';
+import { IRequest } from '@shared/modelo/servicios-interface';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
@@ -35,13 +35,12 @@ export class EnviarCoordinadorComponent {
 
   constructor(
     public dialogRef: MatDialogRef<EnviarCoordinadorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IRequestG,
-    private dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) public data: IRequest,
   ) { }
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   enviarCoordinadorService = inject(EnviarCoordinadorService);
-  enviarRequest!: IRequestG;
+  enviarRequest!: IRequest;
 
   cerrar(): void {
     this.dialogRef.close();
@@ -52,6 +51,7 @@ export class EnviarCoordinadorComponent {
   }
 
   enviar(): void {
+    console.log("Entradas Enviar a Coordinador: ", this.data) //borrar después de probar ingreso
     this.enviarCoordinadorService
       .postEnviaSolicitud(this.data)
       .subscribe({

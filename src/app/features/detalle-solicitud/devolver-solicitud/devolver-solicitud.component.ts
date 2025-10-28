@@ -3,7 +3,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialogConfig,
   MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,18 +13,17 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { StorageService } from '@shared/service/storage.service';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { DevolverSolicitudService } from './devolver-solicitud.service';
 import { IDevuelveRequest } from './devolver-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 export interface DevolverConObservacionesData {
-  [x: string]: any;
   solicitudId: number;
   fecha: string;
   ejecutivo: string;
+  id_usuario: string;
+  id_tipo_usuario: string;
 }
 
 @Component({
@@ -50,16 +48,12 @@ export interface DevolverConObservacionesData {
 
   export class DevolverSolicitudComponent {
     constructor(
-    private dialog: MatDialog,
     public dialogRef: MatDialogRef<DevolverSolicitudComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
   ) { }
 
-   storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  idUsuario = this._storage()?.usuarioLogin.usuario!;
   devolverService = inject(DevolverSolicitudService);
   devolverRequest!: IDevuelveRequest;
   motivo = new FormControl('', [Validators.required, Validators.maxLength(500)]);
@@ -76,16 +70,16 @@ export interface DevolverConObservacionesData {
     this.dialogRef.close('cancelado');
   }
 
-  devolver(): void {
-    if(this.devolverSolicitud().get('motivo')!.value===''){
+  devolver(motive: string): void {
+    if(motive === '' || motive === null){
       return
     }
 
     this.devolverRequest = {
       p_id_solicitud: this.data.solicitudId,
-      p_id_usuario: this.idUsuario,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_observacion: this.devolverSolicitud().get('motivo')!.value
+      p_id_usuario: this.data.id_usuario,
+      p_tipo_usuario: this.data.id_tipo_usuario,
+      p_observacion: motive
     };
     this.devolverService
       .postDevuelveSolicitud(this.devolverRequest)

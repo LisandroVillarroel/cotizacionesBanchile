@@ -17,9 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-import { IRequestG } from '@shared/modelo/servicios-interface';
-import { StorageService } from '@shared/service/storage.service';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { IRequest } from '@shared/modelo/servicios-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatInputModule } from '@angular/material/input';
 import { EnviarCompaniasService } from './enviar-companias.service';
@@ -46,14 +44,12 @@ import { EnviarCompaniasService } from './enviar-companias.service';
 export class EnviarACompaniaComponent {
 
   constructor(
-    private dialog: MatDialog,
     public dialogRef: MatDialogRef<EnviarACompaniaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IRequestG
+    @Inject(MAT_DIALOG_DATA) public data: IRequest
   ) {}
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   enviarCoordinadorService = inject(EnviarCompaniasService);
-  enviarRequest!: IRequestG;
 
   cerrar(): void {
     this.dialogRef.close();
