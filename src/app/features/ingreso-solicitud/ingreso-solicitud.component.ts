@@ -43,8 +43,6 @@ import { AseguradoComponent } from './asegurado/asegurado.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { CuestionarioComponent } from './cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from './materia-asegurada/materia-asegurada.component';
-import { ConfirmacionSolicitudDialogComponent } from './confirmacion-solicitud/confirmacion-solicitud.component';
-
 import { MatCardContent, MatCard } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -108,8 +106,8 @@ export default class IngresoSolicitudComponent {
 
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
-  idSolicitud = signal<string>('0');
-
+  //idSolicitud = signal<string>('0');
+  idSolicitud = 0;
   flagAseguradoRescata: boolean = false;
   flagBeneficiarioRescata: boolean = false;
 
@@ -154,7 +152,7 @@ export default class IngresoSolicitudComponent {
 
   //Declara los datos del contratante para panel
   contratanteInfo = signal({
-    id: '0',
+    id: 0,
     rut_contratante: '',
     nombre: '',
     idRubro: 0,
@@ -262,7 +260,7 @@ export default class IngresoSolicitudComponent {
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
 
     };
-    await this.ingresoSolicitudService
+    this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
@@ -270,24 +268,25 @@ export default class IngresoSolicitudComponent {
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
               id: dato.p_id_solicitud,
-              rut_contratante:
-                this.agregaSolicitudContratante().get('rutCliente')!.value,
+              rut_contratante: this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
               idRubro: this.agregaSolicitudContratante().get('rubro')!.value,
               idSeguro: this.agregaSolicitudContratante().get('seguro')!.value,
             });
-            if (
-              this.agregaSolicitudContratante().get('aseguradeCheck')!.value ==
-              true
-            ) {
+
+            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value ==
+              true) {
               this.agregarAsegurado();
             } else {
-              this.idSolicitud.set(dato.p_id_solicitud);
+              this.idSolicitud = dato.p_id_solicitud;
+              //this.idSolicitud.set(dato.p_id_solicitud);
             }
+            //this.idSolicitud.set(dato.p_id_solicitud);
+              this.idSolicitud = dato.p_id_solicitud;
           }
         },
         error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
         },
       });
   }
@@ -323,7 +322,8 @@ export default class IngresoSolicitudComponent {
     await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.idSolicitud.set(this.contratanteInfo().id);
+          //this.idSolicitud.set(this.contratanteInfo().id);
+          this.idSolicitud = this.contratanteInfo().id;
         }
       },
       error: (error) => {

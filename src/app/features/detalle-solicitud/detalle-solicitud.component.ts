@@ -88,7 +88,7 @@ export default class DetalleSolicitudComponent {
   panelOpenState = false;
   panelOpenState2 = false;
 
-  idSol = computed(() => this.idSolicitud.toString());
+//  idSol = computed(() => this.idSolicitud.toString());
   minimo = 0;
   puedeEnviar = false;
 
@@ -125,13 +125,15 @@ export default class DetalleSolicitudComponent {
     switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
+        this.verEjec = true;
         break;
       case 'C':
         this.verEjec = false;
+        this.verCoord = true;
         break;
       case 'S':
-        this.verEjec = false;
-        this.verCoord = false;
+        this.verEjec = true;
+        this.verCoord = true;
         break;
       case 'A':
         this.verEjec = false;
@@ -212,6 +214,9 @@ export default class DetalleSolicitudComponent {
     });
   }
 
+  editAsegurado(){
+    return !(this.verEjec && !this.flagCoordinador);
+  }
   cargarCompanias(idSolicitud: any) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {

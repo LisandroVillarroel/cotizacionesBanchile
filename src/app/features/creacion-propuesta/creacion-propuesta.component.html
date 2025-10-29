@@ -5,11 +5,11 @@
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
   <div class="container-fluid mt-3">
-    <app-asegurado [idSolicitud]="idSol()" [mostrarSoloConsulta]="true" />
+    <app-asegurado [idSolicitud]="idSolicitud" [mostrarSoloConsulta]="true" />
   </div>
   <div class="container-fluid mt-3">
     <div class="table-con-titulo mat-elevation-z6" data-titulo="Datos Materia Asegurada" style="margin-top: 32px">
-      <app-materia-asegurada [idSolicitud]="idSol()" [idRubro]="infoGral()?.id_rubro!"
+      <app-materia-asegurada [idSolicitud]="idSolicitud" [idRubro]="infoGral()?.id_rubro!"
         [idSeguro]="infoGral()?.id_tipo_seguro!" [muestraConsulta]="true" />
     </div>
   </div>
