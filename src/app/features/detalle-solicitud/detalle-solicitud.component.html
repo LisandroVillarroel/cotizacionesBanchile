@@ -71,8 +71,8 @@
         <mat-tab label="Asegurados">
           <div class="container-fluid">
             <app-asegurado
-              [idSolicitud]="idSol()"
-              [mostrarSoloConsulta]="false"
+              [idSolicitud]="idSolicitud"
+              [mostrarSoloConsulta]="editAsegurado()"
             />
           </div>
         </mat-tab>
@@ -80,14 +80,14 @@
           <div class="container-fluid">
             <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
             <app-beneficiario
-              [idSolicitud]="idSol()"
+              [idSolicitud]="idSolicitud"
               [mostrarSoloConsulta]="false"
             />
           </div>
         </mat-tab>
         <mat-tab label="Materia Asegurada">
           <app-materia-asegurada
-            [idSolicitud]="idSol()"
+            [idSolicitud]="idSolicitud"
             [idRubro]="infoGral()?.id_rubro!"
             [idSeguro]="infoGral()?.id_tipo_seguro!"
             [muestraConsulta]="false"
@@ -95,7 +95,7 @@
         </mat-tab>
         <mat-tab label="Documentos Asociados">
           <div class="container-fluid">
-            <app-cuestionario-documentos [idSolicitud]="idSol()" />
+            <app-cuestionario-documentos [idSolicitud]="idSolicitud" />
           </div>
         </mat-tab>
       </mat-tab-group>

@@ -55,7 +55,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './asegurado.component.css',
 })
 export class AseguradoComponent {
-  idSolicitud = input.required<string>();
+  idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();  //Es llamado de varios componentes ve si es consulta o ingreso
   datoEmitidoAsegurado = output<boolean>();
   notificacioAlertnService= inject(NotificacioAlertnService);
@@ -115,9 +115,9 @@ export class AseguradoComponent {
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
-       if (this.idSolicitud()!='0'){
-      this.rescataListaAsegurados(this.idSolicitud());
-       }
+      if (this.idSolicitud() !== 0){
+        this.rescataListaAsegurados(this.idSolicitud() );
+      }
 
        this.datoEmitidoAsegurado.emit(this.hayAsegurados())
     }, { allowSignalWrites: true });
@@ -136,10 +136,9 @@ export class AseguradoComponent {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataListaAsegurados(p_id_solicitud: string) {
-    console.log('rescataListaAsegurados', p_id_solicitud);
+  rescataListaAsegurados(p_id_solicitud: number) {
     const estructura_listaAsegurados = {
-      p_id_solicitud: Number(p_id_solicitud),
+      p_id_solicitud: p_id_solicitud,
     };
 
     this.aseguradoService
@@ -158,7 +157,6 @@ export class AseguradoComponent {
   }
 
   agregaNuevoAsegurado() {
-    console.log('this.idSolicitud():', this.idSolicitud());
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

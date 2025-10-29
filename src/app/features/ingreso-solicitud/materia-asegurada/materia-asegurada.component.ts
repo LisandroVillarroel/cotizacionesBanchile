@@ -35,7 +35,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './materia-asegurada.component.css',
 })
 export class MateriaAseguradaComponent {
-  idSolicitud = input.required<string>();
+  idSolicitud = input.required<number>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
   muestraConsulta = input<boolean>();
@@ -43,9 +43,7 @@ export class MateriaAseguradaComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-
   notificacioAlertnService= inject(NotificacioAlertnService);
-
   materiaService = inject(MateriaService);
 
   datoMateriaTiene = signal<IMateria[]>([]);
@@ -63,10 +61,8 @@ export class MateriaAseguradaComponent {
       // Llamar al método cada vez que el valor cambie
       this.datoMateriaEstructura_arr = [];
       this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta())
-      console.log('rubro:',this.idRubro(),'seguro:',this.idSeguro())
       if (this.idRubro()!=null && this.idSeguro()!=null && this.idRubro()!=0 && this.idSeguro()!=0){
-        console.log('pasooo rubro:',this.idRubro(),'seguro:',this.idSeguro())
-      this.rescataListaMaterias(this.idRubro(), this.idSeguro());
+        this.rescataListaMaterias(this.idRubro(), this.idSeguro());
       }
     }, { allowSignalWrites: true });
   }
@@ -76,29 +72,17 @@ export class MateriaAseguradaComponent {
   }));
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
-    /*
-if (!idRubro || !idSeguro){
-      this.materiaForm().addControl('flagSinInfo', new FormControl('',Validators.required));
-       return
-    }
-    //Esto es solo para que bloquee el boton
-    console.log('paso por aca',this.materiaForm().get('flagSinInfo')?.value)
-    this.materiaForm().get('flagSinInfo')?.setValue('ok')
-    */
     this.materiaService
       .postListadoMatetria(idRubro, idSeguro)
       .subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
-            console.log('rescata materia:',dato.p_cursor)
             this.datoMateria.set(dato.p_cursor);
-            this.rescataTieneMateria(Number(this.idSolicitud()), idRubro, idSeguro)
-
+            this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro)
           }
         },
         error: (error) => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
-                   console.log('error materia rescata LISTA :',error)
         },
       });
   }
@@ -116,11 +100,9 @@ if (!idRubro || !idSeguro){
         },
         error: (error) => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
-          console.log('error materia rescata:',error)
         },
       });
   }
-
 
   modificaOriginal() {
     if (this.datoMateriaTiene().length != 0) {
@@ -132,7 +114,6 @@ if (!idRubro || !idSeguro){
     )
     }
   }
-
 
   creaEstructura() {
     let valoresFila;
@@ -225,9 +206,7 @@ if (!idRubro || !idSeguro){
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
-
   agregaFormControl(nombreCampo: string, ValorInicial: any, requerido: boolean): void {
-    console.log('nombreCampo:',nombreCampo,' ValorInicial:',ValorInicial)
     this.materiaForm().addControl(nombreCampo, new FormControl(ValorInicial.trim()));
   }
 
@@ -269,15 +248,13 @@ if (!idRubro || !idSeguro){
     }
 
     const envioMateria: IMateriaEnvia = {
-      p_id_solicitud: Number(this.idSolicitud()),
+      p_id_solicitud: this.idSolicitud(),
       p_id_rubro: this.idRubro(),
       p_id_tipo_seguro: this.idSeguro(),
       items: this.materiaIngresa
     }
 
-    console.log('valor graba:',envioMateria);
     this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
-
       next: (dato) => {
         if (dato.codigo === 200) {
            this.notificacioAlertnService.success('MATERIA','Se guardó de forma Exitosa');
@@ -285,7 +262,6 @@ if (!idRubro || !idSeguro){
       },
       error: (error) => {
         this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        console.log('error materia:',error)
       },
     });
   }
