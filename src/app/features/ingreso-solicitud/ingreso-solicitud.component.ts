@@ -126,9 +126,7 @@ export default class IngresoSolicitudComponent {
   private readonly router = inject(Router);
 
   datoRubros = signal<IRubro[]>([]);
-
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
-
 
   hayAsegurados = signal(false);
 
@@ -205,7 +203,6 @@ export default class IngresoSolicitudComponent {
   }
 
    ngOnInit() {
-    console.log('PASO PROGRESO')
     this.cargaRubro();
   }
 
@@ -213,19 +210,11 @@ export default class IngresoSolicitudComponent {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          console.log('paso biennn rubro')
-          console.log();
           this.datoRubros.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('Error de Sistema:');
-          }
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
@@ -236,16 +225,10 @@ export default class IngresoSolicitudComponent {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('Error de Sistema:');
-          }
         }
       },
       error: (error) => {
-        console.log('Error Inesperado', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
@@ -277,15 +260,12 @@ export default class IngresoSolicitudComponent {
       },
       id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
-      // asegurados: [],
-      // beneficiarios: [],
+
     };
-    //console.log('Ingreso Solicitud:', this.ingresoSolicitud);
     await this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
       .subscribe({
         next: (dato) => {
-          //console.log('dato:', dato);
           if (dato.codigo === 200) {
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
@@ -399,48 +379,7 @@ export default class IngresoSolicitudComponent {
         return;
 
     }
-
-    // Si estoy en paso (asegurado) y quiero ir a pasos siguientes (3, 4, 5)
-    /*
-    if (pasoActual === 1 && pasoDestino > 1) {
-      if (!this.hayAsegurados()) {
-        alert('Debe ingresar al menos un asegurado antes de continuar.');
-        setTimeout(() => {
-          stepper.selectedIndex = pasoActual;
-        });
-        return;
-      }
-    }
-    */
   }
-
-/*   abrirDialogoYAvanzar(): void {
-    const dato = {
-      solicitudId: 'ID123456789',
-      fecha: '00 - 00 - 0000',
-      rut: '11.111.111-1',
-      nombre: 'Juan Alberto Muñoz Sepúlveda',
-      ramo: 'Asistencia en viajes',
-      cuestionario: 'CUESTIONARIO_COT192839_ASIS_VIAJE_39912.docx',
-      documentos: 'COMPILADO_DOCU_ADICIONAL_2025.zip',
-    };
-
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(ConfirmacionSolicitudDialogComponent, dialogConfig)
-      .afterClosed();
-  }
- */
 
   enviarCoordinador(): void {
     const dato = {
