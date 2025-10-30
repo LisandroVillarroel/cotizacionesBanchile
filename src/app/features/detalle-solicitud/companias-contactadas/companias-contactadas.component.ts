@@ -19,9 +19,12 @@ import { StorageService } from '@shared/service/storage.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { ICompania, ISolicitud } from '../modelo/detalle-interface';
+import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
 import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania.component';
-import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
+import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detalle-cotizacion/detalle-cotizacion.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { InformacionGeneralComponent } from '../informacion-general/informacion-general.component';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -35,7 +38,10 @@ import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-r
     MatIcon,
     CommonModule,
     MatTooltip,
-  ],
+    MatRadioButton,
+    MatRadioGroup,
+    MatIcon,MatIconButton,MatDivider
+],
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
@@ -47,6 +53,9 @@ export class CompaniasContactadasComponent {
   @Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
+  @Input() cotizacionSeleccionada: number | null = null;
+
+  @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>()
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -55,6 +64,9 @@ export class CompaniasContactadasComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
+  //detalleGral = signal<InformacionGeneralComponent>
+
+  constructor() {}
 
   getCellStyle(estado: number) {
     let color: string;
@@ -101,6 +113,19 @@ export class CompaniasContactadasComponent {
   verCotiPropuesta(idCotizacion: number) {
     // lógica para ver cotipropuesta
   }
+
+  registrarRespuesta(idCotizacion: number) {
+    // lógica para registrar respuesta
+  }
+
+
+
+seleccionarCotizacion(id: number) {
+  this.cotizacionSeleccionada = id;
+  console.log('Cotización seleccionada:', id);
+  this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
+}
+
 
   @Output() actualizarDatos = new EventEmitter<void>();
 
@@ -180,24 +205,33 @@ export class CompaniasContactadasComponent {
     };
   });
 
-  @Output() cargaRespuesta = new EventEmitter<void>();
-
-  registrarRespuesta(idCompania: number): void {
+   verDetalleCot() {
     const dato = {
-      infoGral: this.infoGral()!,
-      idCompania: idCompania
+      rutContratante: this.infoGral()?.rut_contratante,
+      p_id_solicitud: this.idSolicitud,
+      //p_id_compania_seguro: this.idCompania,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
     };
+
+    console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
+    dialogConfig.width = '40%';
+    dialogConfig.maxHeight = '80%';
+    dialogConfig.panelClass = 'custom-dialog-container';
     dialogConfig.data = dato;
+
     this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
+      .open(DetalleCotizacionComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.cargaRespuesta.emit(); });
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit(); // o refrescar la grilla
+        }
+      });
   }
+
 }

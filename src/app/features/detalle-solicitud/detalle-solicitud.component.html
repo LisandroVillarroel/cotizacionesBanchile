@@ -62,8 +62,15 @@
                   [verCoord]="verCoord"
                   [minimo]="minimo"
                   (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
+                  [cotizacionSeleccionada]="cotizacionSeleccionada"
+                  (cotizacionSeleccionadaEvent)="cotizacionSeleccionada = $event"
                 />
               </mat-expansion-panel>
+
+<div class="debug-info">
+  <p><strong>cotizacionSeleccionada:</strong> {{ cotizacionSeleccionada }}</p>
+</div>
+
               }
             </div>
           </div>
@@ -180,6 +187,16 @@
         (click)="crearPropuesta()"
       >
         Generar Propuesta
+      </button>
+
+      <button
+      mat-stroked-button
+      class="btn-success"
+      [hidden]="flagAprobarCot || verEjec"
+      [disabled]="!cotizacionSeleccionada"
+      (click)="aprobarCotizacion()"
+      >
+        Aprobar Cotización
       </button>
     </div>
   </div>
