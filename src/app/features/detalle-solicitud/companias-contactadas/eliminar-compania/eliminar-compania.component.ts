@@ -23,6 +23,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IEliminaCompania } from '@features/detalle-solicitud/modelo/compania';
+import { MatDivider } from '@angular/material/divider';
 
 export interface EliminarCompaniaData {
   p_id_solicitud: number;
@@ -35,17 +36,15 @@ export interface EliminarCompaniaData {
   selector: 'app-eliminar-compania',
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
     FormsModule,
+    MatDivider,
     ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    CabeceraPopupComponente,
+    CabeceraPopupComponente
   ],
   templateUrl: './eliminar-compania.component.html',
   styleUrl: './eliminar-compania.component.css',
@@ -57,19 +56,7 @@ export class EliminarCompaniaComponent {
 
   datoCompanias = signal<ICompanias[]>([]);
   correoCompania = signal<string>('');
-
-  compania = new FormControl<number | null>(null, Validators.required);
-  detalleControl = new FormControl('', [
-    Validators.maxLength(500),
-    Validators.required,
-  ]);
-
-  eliminaCompania = signal<FormGroup>(
-    new FormGroup({
-      compania: this.compania,
-      detalleControl: this.detalleControl,
-    })
-  );
+  compania = new FormControl<number | null>(null, Validators.required);;
 
   CompaniasContactadasService = inject(CompaniasContactadasService);
 
@@ -99,12 +86,6 @@ export class EliminarCompaniaComponent {
           if (result) {
             this.dialogRef.close(true);
           }
-        } else {
-          this.notificacioAlertnService.error(
-            'ERROR',
-            'No se pudo eliminar la compañía'
-          );
-          this.dialogRef.close(false);
         }
       },
       error: () => {

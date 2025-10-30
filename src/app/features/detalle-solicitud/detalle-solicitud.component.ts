@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -85,6 +86,7 @@ import { IMinimoResponse } from './modelo/compania';
 export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
+
   panelOpenState = false;
   panelOpenState2 = false;
 
@@ -214,7 +216,7 @@ export default class DetalleSolicitudComponent {
     });
   }
 
-  editAsegurado(){
+  soloConsulta(){
     return !(this.verEjec && !this.flagCoordinador);
   }
   cargarCompanias(idSolicitud: any) {
@@ -275,11 +277,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   aprobarSolicitud(): void {
@@ -300,11 +298,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AprobarSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   anularSolicitud(): void {
@@ -325,11 +319,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   enviarCoordinador(): void {
@@ -352,11 +342,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(EnviarCoordinadorComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   agregarCompania(): void {
@@ -384,11 +370,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AgregarCompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   enviarCia(): void {
@@ -411,39 +393,8 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-      });
-  }
+      .subscribe(() => { this.recargar(); });
 
-  ingresarRespuesta(): void {
-    const dato = {
-      solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
-      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
-      rubro: this.infoGral()?.nombre_rubro,
-      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud;
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-      });
   }
 
   crearPropuesta(): void {
@@ -465,11 +416,13 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
+      .subscribe(() => { this.recargar(); });
+  }
+
+  recargar(){
         this.cargarSolicitud(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
-      });
   }
 }

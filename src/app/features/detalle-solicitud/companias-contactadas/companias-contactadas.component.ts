@@ -1,4 +1,3 @@
-import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import {
   Component,
   input,
@@ -6,20 +5,23 @@ import {
   computed,
   signal,
   Input,
+  output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Output, EventEmitter } from '@angular/core';
 import { StorageService } from '@shared/service/storage.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { ICompania, ISolicitud } from '../modelo/detalle-interface';
 import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania.component';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -37,7 +39,7 @@ import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
-
+  infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>();
   companies = computed(() => this.companias());
 
@@ -53,8 +55,6 @@ export class CompaniasContactadasComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
-
-  constructor() {}
 
   getCellStyle(estado: number) {
     let color: string;
@@ -102,10 +102,6 @@ export class CompaniasContactadasComponent {
     // lógica para ver cotipropuesta
   }
 
-  registrarRespuesta(idCotizacion: number) {
-    // lógica para registrar respuesta
-  }
-
   @Output() actualizarDatos = new EventEmitter<void>();
 
   borrarCompania(idCompania: number) {
@@ -115,8 +111,6 @@ export class CompaniasContactadasComponent {
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
     };
-
-    console.log('Payload enviado:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -185,4 +179,25 @@ export class CompaniasContactadasComponent {
       return acciones.filter((a) => a.mostrar);
     };
   });
+
+  @Output() cargaRespuesta = new EventEmitter<void>();
+
+  registrarRespuesta(idCompania: number): void {
+    const dato = {
+      infoGral: this.infoGral()!,
+      idCompania: idCompania
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = dato;
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.cargaRespuesta.emit(); });
+  }
 }

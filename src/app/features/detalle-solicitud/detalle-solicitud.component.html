@@ -56,11 +56,11 @@
                 </mat-expansion-panel-header>
 
                 <app-companias-contactadas
-                  [companias]="companias()"
+                  [infoGral] = "infoGral()"
+                  [companias] = "companias()"
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
-                  [idSolicitud]="idSolicitud"
                   (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
                 />
               </mat-expansion-panel>
@@ -72,7 +72,7 @@
           <div class="container-fluid">
             <app-asegurado
               [idSolicitud]="idSolicitud"
-              [mostrarSoloConsulta]="editAsegurado()"
+              [mostrarSoloConsulta]="soloConsulta()"
             />
           </div>
         </mat-tab>
@@ -81,7 +81,7 @@
             <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
             <app-beneficiario
               [idSolicitud]="idSolicitud"
-              [mostrarSoloConsulta]="false"
+              [mostrarSoloConsulta]="soloConsulta()"
             />
           </div>
         </mat-tab>
@@ -90,7 +90,7 @@
             [idSolicitud]="idSolicitud"
             [idRubro]="infoGral()?.id_rubro!"
             [idSeguro]="infoGral()?.id_tipo_seguro!"
-            [muestraConsulta]="false"
+            [muestraConsulta]="soloConsulta()"
           />
         </mat-tab>
         <mat-tab label="Documentos Asociados">
@@ -171,15 +171,6 @@
         (click)="enviarCia()"
       >
         Enviar a Compañía(s)
-      </button>
-
-      <button
-        mat-stroked-button
-        class="btn-danger"
-        [hidden]="this.flagCompania || this.verEjec"
-        (click)="ingresarRespuesta()"
-      >
-        Ingresar Respuesta
       </button>
 
       <button

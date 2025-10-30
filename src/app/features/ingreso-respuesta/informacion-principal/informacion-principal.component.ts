@@ -18,12 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { StorageService } from '@shared/service/storage.service';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatSelect } from "@angular/material/select";
 import { MatOptionModule } from "@angular/material/core";
 import { MatDatepicker } from "@angular/material/datepicker";
@@ -34,11 +30,9 @@ import { IMoneda } from '@shared/modelo/moneda-interface';
 import { IMedioPago } from '@shared/modelo/medio-pago-interface';
 import { BancoService } from '@shared/service/banco.service';
 import { IBanco } from '@shared/modelo/banco-interface';
-import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
-import { HttpClient, HttpEventType } from '@angular/common/http';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
-import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 
 @Component({
@@ -55,7 +49,6 @@ import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.s
     MatTooltipModule,
     MatStepperModule,
     MatCardModule,
-    MatDivider,
     MatSelect,
     MatOptionModule,
     MatDatepicker,
@@ -82,8 +75,6 @@ export default class InformacionPrincipalComponent {
   pTermino = new FormControl<Date>(new Date());
   pVencimiento = new FormControl<Date>(new Date());
 
-
-
   monedaRes: string = '';
   primaNetaRes: string = '';
   primaAfectaRes: string = '';
@@ -97,12 +88,11 @@ export default class InformacionPrincipalComponent {
   fchTerminoRes: Date | null = null;
   fchVencimientoRes: Date | null = null;
 
-
-
   monedaService = inject(MonedaService);
   medioPagoService = inject(MedioPagoService);
   bancoService = inject(BancoService);
   tipoCuentaService = inject(TipoCuentaService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   datosMoneda = signal<IMoneda[]>([]);
   datosMedioPago = signal<IMedioPago[]>([]);
@@ -128,99 +118,57 @@ export default class InformacionPrincipalComponent {
   nombreArchivoPropuesta: string = '';
   nombreArchivoCompania: string = '';
 
-
-    public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-
-    idSol = computed(() => this.idSolicitud.toString());
-
-
-
-  constructor(private http: HttpClient) {
-
-  }
-
-
   cargaMoneda() {
-    //console.log('Entro cargaRubros');
-
     this.monedaService.postMoneda().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosMoneda.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
   cargaMedioPago() {
-
     this.medioPagoService.postMedioPago().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosMedioPago.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
   cargaBanco() {
-
     this.bancoService.postBanco().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosBanco.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
   cargaTipoCuenta() {
-
     this.tipoCuentaService.postTipoCuenta().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datosTipoCuenta.set(dato.p_cursor);
-        } else {
-          if (dato.codigo != 500) {
-            console.log('Error:', dato.mensaje);
-          } else {
-            console.log('ERROR DE SISTEMA:');
-          }
         }
       },
       error: (error) => {
-        console.log('ERROR INESPERADO', error);
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
-
 
   async ngOnInit() {
     this.cargaMoneda();
@@ -228,9 +176,6 @@ export default class InformacionPrincipalComponent {
     this.cargaBanco();
     this.cargaTipoCuenta();
   }
-
-
-
 
   filtrarFechasTermino = (fecha: Date | null): boolean => {
     if (!fecha || !this.fechaInicio) {
@@ -246,9 +191,6 @@ export default class InformacionPrincipalComponent {
     }
   }
 
-
-
-
   abrirSelectorPropuesta(): void {
     this.fileInputPropuesta.nativeElement.click();
   }
@@ -257,14 +199,11 @@ export default class InformacionPrincipalComponent {
     this.fileInputCompania.nativeElement.click();
   }
 
-
-
   onFileSelectedPropuesta(event: any) {
     const filePpta: File = event.target.files[0];
     if (filePpta) {
       this.selectedPropuestaFile = filePpta;
       this.nombreArchivoPropuesta = filePpta.name;
-      console.log('Archivo de propuesta guardado en variable:', filePpta);
     }
   }
 
@@ -273,10 +212,8 @@ export default class InformacionPrincipalComponent {
     if (fileCia) {
       this.selectedCompaniaFile = fileCia;
       this.nombreArchivoCompania = fileCia.name;
-      console.log('Archivo de compañía guardado en variable:', fileCia);
     }
   }
-
 
   eliminarArchivoPropuesta(): void {
     this.archivoPropuesta = null;
@@ -289,9 +226,4 @@ export default class InformacionPrincipalComponent {
     this.nombreArchivoCompania = '';
     this.fileInputCompania.nativeElement.value = '';
   }
-
-
-
-
-
 }

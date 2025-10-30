@@ -14,5 +14,5 @@ import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/
 export class ModalBeneficiarioComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
 
-  idSol = computed(() => this.idSolicitud.toString());
+  idSol = computed(() => this.idSolicitud);
 }
