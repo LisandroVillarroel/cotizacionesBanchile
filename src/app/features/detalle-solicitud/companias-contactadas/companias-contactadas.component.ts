@@ -25,6 +25,7 @@ import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detal
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { InformacionGeneralComponent } from '../informacion-general/informacion-general.component';
+import { ICompania, ISolicitud } from '../modelo/detalle-interface';
 
 @Component({
   selector: 'app-companias-contactadas',
