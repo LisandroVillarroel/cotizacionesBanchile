@@ -56,6 +56,7 @@ import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compa
 import { IMinimoResponse } from './modelo/compania';
 import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprobar-cotizacion/aprobar-cotizacion.component';
 
+
 @Component({
   selector: 'app-detalle-solicitud',
   standalone: true,
@@ -84,6 +85,7 @@ import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprob
   encapsulation: ViewEncapsulation.None,
 })
 export default class DetalleSolicitudComponent {
+  cotizacionSeleccionada: number | null = null;
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   panelOpenState = false;
@@ -96,7 +98,6 @@ export default class DetalleSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
@@ -475,11 +476,13 @@ export default class DetalleSolicitudComponent {
 
 
    aprobarCotizacion(): void {
+    console.log('Cotización seleccionada: ', this.cotizacionSeleccionada);
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_ejecutivo,
+      p_id_usuario: this.id_usuario,
+      p_id_cotizacion: this.cotizacionSeleccionada
     };
-    console.log('p_id_solicitud,p_id_usuario', dato.p_id_solicitud, dato.p_id_usuario);
+    //console.log('p_id_solicitud,p_id_usuario', dato.p_id_solicitud, dato.p_id_usuario);
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -496,6 +499,7 @@ export default class DetalleSolicitudComponent {
         this.cargarSolicitud(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+        this.cotizacionSeleccionada = null;
       });
   }
 }
