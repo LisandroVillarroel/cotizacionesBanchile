@@ -36,15 +36,18 @@ export interface EliminarCompaniaData {
   selector: 'app-eliminar-compania',
   standalone: true,
   imports: [
+    CommonModule,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
     FormsModule,
-    MatDivider,
     ReactiveFormsModule,
-    CabeceraPopupComponente
+    MatCheckboxModule,
+    MatSelectModule,
+    MatDivider,
+    CabeceraPopupComponente,
   ],
   templateUrl: './eliminar-compania.component.html',
   styleUrl: './eliminar-compania.component.css',
@@ -56,7 +59,19 @@ export class EliminarCompaniaComponent {
 
   datoCompanias = signal<ICompanias[]>([]);
   correoCompania = signal<string>('');
-  compania = new FormControl<number | null>(null, Validators.required);;
+
+  compania = new FormControl<number | null>(null, Validators.required);
+  detalleControl = new FormControl('', [
+    Validators.maxLength(500),
+    Validators.required,
+  ]);
+
+  eliminaCompania = signal<FormGroup>(
+    new FormGroup({
+      compania: this.compania,
+      detalleControl: this.detalleControl,
+    })
+  );
 
   CompaniasContactadasService = inject(CompaniasContactadasService);
 
@@ -74,7 +89,6 @@ export class EliminarCompaniaComponent {
       p_id_usuario: this.data.p_id_usuario,
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
-
     this.CompaniasContactadasService.postEliminaCompania(payload).subscribe({
       next: async (res) => {
         this.cargando.set(false);
@@ -86,9 +100,15 @@ export class EliminarCompaniaComponent {
           if (result) {
             this.dialogRef.close(true);
           }
+        } else {
+          this.notificacioAlertnService.error(
+            'ERROR',
+            'No se pudo eliminar la compañía'
+          );
+          this.dialogRef.close(false);
         }
       },
-      error: () => {
+      error: (error) => {
         this.cargando.set(false);
         this.notificacioAlertnService.error('ERROR', 'Error inesperado');
         this.dialogRef.close(false);

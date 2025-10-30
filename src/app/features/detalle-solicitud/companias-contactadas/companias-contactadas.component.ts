@@ -106,7 +106,7 @@ export class CompaniasContactadasComponent {
 
   borrarCompania(idCompania: number) {
     const dato = {
-      p_id_solicitud: this.idSolicitud,
+      p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,

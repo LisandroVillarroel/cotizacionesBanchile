@@ -1,17 +1,5 @@
-import { TipoCuentaService } from './../../../shared/service/tipo-cuenta.service';
-import { MedioPagoService } from './../../../shared/service/medio-pago.service';
-import {
-  Component,
-  input,
-  signal,
-  ViewChildren,
-  ElementRef,
-  QueryList,
-  inject,
-  ViewChild,
-  computed,
-} from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { Component, signal, ElementRef, inject, ViewChild } from '@angular/core';
+import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,14 +13,18 @@ import { MatOptionModule } from "@angular/material/core";
 import { MatDatepicker } from "@angular/material/datepicker";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MonedaService } from '@shared/service/moneda.service';
+
 import { IMoneda } from '@shared/modelo/moneda-interface';
 import { IMedioPago } from '@shared/modelo/medio-pago-interface';
-import { BancoService } from '@shared/service/banco.service';
 import { IBanco } from '@shared/modelo/banco-interface';
 import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
+
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { TipoCuentaService } from './../../../shared/service/tipo-cuenta.service';
+import { MedioPagoService } from './../../../shared/service/medio-pago.service';
+import { BancoService } from '@shared/service/banco.service';
+import { MonedaService } from '@shared/service/moneda.service';
 
 
 @Component({
@@ -60,6 +52,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './informacion-principal.component.html',
   styleUrl: './informacion-principal.component.css'
 })
+
 export default class InformacionPrincipalComponent {
   moneda = new FormControl();
   primaNeta = new FormControl();
