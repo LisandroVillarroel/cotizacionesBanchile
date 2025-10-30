@@ -56,14 +56,21 @@
                 </mat-expansion-panel-header>
 
                 <app-companias-contactadas
-                  [companias]="companias()"
+                  [infoGral] = "infoGral()"
+                  [companias] = "companias()"
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
-                  [idSolicitud]="idSolicitud"
                   (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
+                  [cotizacionSeleccionada]="cotizacionSeleccionada"
+                  (cotizacionSeleccionadaEvent)="cotizacionSeleccionada = $event"
                 />
               </mat-expansion-panel>
+
+<div class="debug-info">
+  <p><strong>cotizacionSeleccionada:</strong> {{ cotizacionSeleccionada }}</p>
+</div>
+
               }
             </div>
           </div>
@@ -71,8 +78,8 @@
         <mat-tab label="Asegurados">
           <div class="container-fluid">
             <app-asegurado
-              [idSolicitud]="idSol()"
-              [mostrarSoloConsulta]="false"
+              [idSolicitud]="idSolicitud"
+              [mostrarSoloConsulta]="soloConsulta()"
             />
           </div>
         </mat-tab>
@@ -80,22 +87,22 @@
           <div class="container-fluid">
             <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
             <app-beneficiario
-              [idSolicitud]="idSol()"
-              [mostrarSoloConsulta]="false"
+              [idSolicitud]="idSolicitud"
+              [mostrarSoloConsulta]="soloConsulta()"
             />
           </div>
         </mat-tab>
         <mat-tab label="Materia Asegurada">
           <app-materia-asegurada
-            [idSolicitud]="idSol()"
+            [idSolicitud]="idSolicitud"
             [idRubro]="infoGral()?.id_rubro!"
             [idSeguro]="infoGral()?.id_tipo_seguro!"
-            [muestraConsulta]="false"
+            [muestraConsulta]="soloConsulta()"
           />
         </mat-tab>
         <mat-tab label="Documentos Asociados">
           <div class="container-fluid">
-            <app-cuestionario-documentos [idSolicitud]="idSol()" />
+            <app-cuestionario-documentos [idSolicitud]="idSolicitud" />
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -175,20 +182,21 @@
 
       <button
         mat-stroked-button
-        class="btn-danger"
-        [hidden]="this.flagCompania || this.verEjec"
-        (click)="ingresarRespuesta()"
-      >
-        Ingresar Respuesta
-      </button>
-
-      <button
-        mat-stroked-button
         class="btn-primary"
         [hidden]="this.flagPropuesta || this.verEjec"
         (click)="crearPropuesta()"
       >
         Generar Propuesta
+      </button>
+
+      <button
+      mat-stroked-button
+      class="btn-success"
+      [hidden]="flagAprobarCot || verEjec"
+      [disabled]="!cotizacionSeleccionada"
+      (click)="aprobarCotizacion()"
+      >
+        Aprobar Cotización
       </button>
     </div>
   </div>

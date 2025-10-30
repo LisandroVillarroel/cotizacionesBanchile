@@ -26,7 +26,7 @@ export interface IIngresoSolicitud {
 export interface IIngresoSolicitud_Recibe {
   codigo: number;
   mensaje: string;
-  p_id_solicitud: string;
+  p_id_solicitud: number;
   vcEstado: string;
   vcEstadoCreacion: string;
 }
@@ -75,7 +75,7 @@ export interface IAseguradoLista {
 
 export interface IAseguradoListaParametro {
   datoAseguradoPar: IAseguradoLista;
-  idSolicitud: string;
+  idSolicitud: number;
 }
 
 /* export interface IAgregaAsegurado {
@@ -159,7 +159,7 @@ export interface IBeneficiarioLista {
 
 export interface IBeneficiarioListaParametro {
   datoBeneficiarioPar: IBeneficiarioLista;
-  idSolicitud: string;
+  idSolicitud: number;
 }
 
 export interface DatosBeneficiariosInterface {

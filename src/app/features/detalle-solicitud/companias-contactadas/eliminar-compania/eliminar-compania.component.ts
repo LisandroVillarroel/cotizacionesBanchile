@@ -23,6 +23,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IEliminaCompania } from '@features/detalle-solicitud/modelo/compania';
+import { MatDivider } from '@angular/material/divider';
 
 export interface EliminarCompaniaData {
   p_id_solicitud: number;
@@ -45,6 +46,7 @@ export interface EliminarCompaniaData {
     ReactiveFormsModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatDivider,
     CabeceraPopupComponente,
   ],
   templateUrl: './eliminar-compania.component.html',
@@ -87,7 +89,6 @@ export class EliminarCompaniaComponent {
       p_id_usuario: this.data.p_id_usuario,
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
-
     this.CompaniasContactadasService.postEliminaCompania(payload).subscribe({
       next: async (res) => {
         this.cargando.set(false);
@@ -107,7 +108,7 @@ export class EliminarCompaniaComponent {
           this.dialogRef.close(false);
         }
       },
-      error: () => {
+      error: (error) => {
         this.cargando.set(false);
         this.notificacioAlertnService.error('ERROR', 'Error inesperado');
         this.dialogRef.close(false);

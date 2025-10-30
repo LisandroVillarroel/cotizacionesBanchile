@@ -7,7 +7,7 @@ export interface IRegistrarRespuesta {
   p_valor_prima_bruta: number;
   p_id_medio_de_pago: number;
   p_id_banco: number;
-  p_id_tipo_cuenta: string;
+  p_id_tipo_cuenta: number;
   p_nro_cuenta: number;
   p_cantidad_cuotas: number;
   p_fecha_inicio_vigencia: string;

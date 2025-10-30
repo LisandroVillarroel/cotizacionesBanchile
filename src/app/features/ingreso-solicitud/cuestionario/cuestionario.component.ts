@@ -49,10 +49,10 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   ],
 })
 export class CuestionarioComponent {
-  idSolicitud = input.required<string>();
+  idSolicitud = input.required<number>();
 
 
-   notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService= inject(NotificacioAlertnService);
 
   documentForm = signal(inject(FormBuilder).group({}));
   documentos = signal<IIngresarDocumento[]>([]);

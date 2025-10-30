@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -54,6 +55,8 @@ import { CompaniasContactadasService } from './service/companias-contactadas.ser
 import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
 import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
 import { IMinimoResponse } from './modelo/compania';
+import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprobar-cotizacion/aprobar-cotizacion.component';
+
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -83,12 +86,14 @@ import { IMinimoResponse } from './modelo/compania';
   encapsulation: ViewEncapsulation.None,
 })
 export default class DetalleSolicitudComponent {
+  cotizacionSeleccionada: number | null = null;
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
+
   panelOpenState = false;
   panelOpenState2 = false;
 
-  idSol = computed(() => this.idSolicitud.toString());
+//  idSol = computed(() => this.idSolicitud.toString());
   minimo = 0;
   puedeEnviar = false;
 
@@ -108,6 +113,8 @@ export default class DetalleSolicitudComponent {
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
 
+
+
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
   flagDevolver = true;
@@ -116,6 +123,7 @@ export default class DetalleSolicitudComponent {
   flagCoordinador = true;
   flagPropuesta = true;
   flagCotizacion = true;
+  flagAprobarCot = false;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
@@ -125,13 +133,15 @@ export default class DetalleSolicitudComponent {
     switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
+        this.verEjec = true;
         break;
       case 'C':
         this.verEjec = false;
+        this.verCoord = true;
         break;
       case 'S':
-        this.verEjec = false;
-        this.verCoord = false;
+        this.verEjec = true;
+        this.verCoord = true;
         break;
       case 'A':
         this.verEjec = false;
@@ -212,6 +222,9 @@ export default class DetalleSolicitudComponent {
     });
   }
 
+  soloConsulta(){
+    return !(this.verEjec && !this.flagCoordinador);
+  }
   cargarCompanias(idSolicitud: any) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
@@ -270,11 +283,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(DevolverSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   aprobarSolicitud(): void {
@@ -295,11 +304,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AprobarSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   anularSolicitud(): void {
@@ -320,11 +325,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AnularSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   enviarCoordinador(): void {
@@ -347,11 +348,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(EnviarCoordinadorComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   agregarCompania(): void {
@@ -379,11 +376,7 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(AgregarCompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-      });
+      .subscribe(() => { this.recargar(); });
   }
 
   enviarCia(): void {
@@ -406,39 +399,8 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(EnviarACompaniaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-      });
-  }
+      .subscribe(() => { this.recargar(); });
 
-  ingresarRespuesta(): void {
-    const dato = {
-      solicitudId: this.idSolicitud,
-      rutContratante: this.infoGral()?.rut_contratante, //'00-00-0000',//'00.000.000-0',
-      nomContratante: this.infoGral()?.nombre_razon_social_contratante,
-      rubro: this.infoGral()?.nombre_rubro,
-      tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud;
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-      });
   }
 
   crearPropuesta(): void {
@@ -460,11 +422,42 @@ export default class DetalleSolicitudComponent {
     this.dialog
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => {
+      .subscribe(() => { this.recargar(); });
+  }
+
+  recargar(){
         this.cargarSolicitud(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
         this.cargarCompanias(this.idSolicitud);
         this.obtenerMinimo(this.idSolicitud);
+  }
+
+
+   aprobarCotizacion(): void {
+    console.log('Cotización seleccionada: ', this.cotizacionSeleccionada);
+    const dato = {
+      p_id_solicitud: this.idSolicitud,
+      p_id_usuario: this.id_usuario,
+      p_id_cotizacion: this.cotizacionSeleccionada
+    };
+    //console.log('p_id_solicitud,p_id_usuario', dato.p_id_solicitud, dato.p_id_usuario);
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px'; // Tamaño fijo y controlado
+    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
+    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(AprobarCotizacionComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((dato) => {
+        this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
+        this.cotizacionSeleccionada = null;
       });
   }
 }

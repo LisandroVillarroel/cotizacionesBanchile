@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between align-items-center px-4">
     <h2 mat-dialog-title>Ingresar Nueva Solicitud</h2>
     <div class="panel-derecha">
-      @if (contratanteInfo().id !='0' && stepper.selectedIndex > 0) {
+      @if (contratanteInfo().id !== 0 && stepper.selectedIndex > 0) {
       <div class="info-panel ms-3">
         <mat-card class="panel-borde mat-elevation-z2">
           <div class="d-flex flex-column flex-md-row gap-3 px-2">
@@ -203,7 +203,7 @@
     >
       <form [formGroup]="agregaSolicitudAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
-        <app-asegurado [idSolicitud]="idSolicitud()" [mostrarSoloConsulta]='false' (datoEmitidoAsegurado)="valorAsegurado($event)" />
+        <app-asegurado [idSolicitud]="idSolicitud" [mostrarSoloConsulta]='false' (datoEmitidoAsegurado)="valorAsegurado($event)" />
         <div class="alinear-botones">
           <div class="botones-izquierda">
             <button
@@ -238,7 +238,7 @@
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
         <!-- <app-beneficiario [idSolicitud]="idSolicitud()" /> -->
         <app-beneficiario
-          [idSolicitud]="idSolicitud()"
+          [idSolicitud]="idSolicitud"
           [mostrarSoloConsulta]="false"
         />
         <div class="alinear-botones">
@@ -276,7 +276,7 @@
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
       <app-materia-asegurada
-        [idSolicitud]="contratanteInfo().id"
+        [idSolicitud]="idSolicitud"
         [idRubro]="contratanteInfo().idRubro"
         [idSeguro]="contratanteInfo().idSeguro"
         [muestraConsulta]="false"
@@ -314,7 +314,7 @@
 
     <mat-step>
       <ng-template matStepLabel>Cuestionario y Documentos</ng-template>
-      <app-cuestionario-documentos [idSolicitud]="idSolicitud()" />
+      <app-cuestionario-documentos [idSolicitud]="idSolicitud" />
       <div class="alinear-botones">
         <div class="botones-izquierda">
           <button

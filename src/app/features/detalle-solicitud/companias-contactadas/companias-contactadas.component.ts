@@ -1,4 +1,3 @@
-import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import {
   Component,
   input,
@@ -6,20 +5,27 @@ import {
   computed,
   signal,
   Input,
+  output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ICompania } from '../modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Output, EventEmitter } from '@angular/core';
 import { StorageService } from '@shared/service/storage.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
 import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania.component';
+import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detalle-cotizacion/detalle-cotizacion.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { InformacionGeneralComponent } from '../informacion-general/informacion-general.component';
+import { ICompania, ISolicitud } from '../modelo/detalle-interface';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -33,11 +39,14 @@ import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania
     MatIcon,
     CommonModule,
     MatTooltip,
-  ],
+    MatRadioButton,
+    MatRadioGroup,
+    MatIcon,MatIconButton,MatDivider
+],
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
-
+  infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>();
   companies = computed(() => this.companias());
 
@@ -45,6 +54,9 @@ export class CompaniasContactadasComponent {
   @Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
+  @Input() cotizacionSeleccionada: number | null = null;
+
+  @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>()
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -53,6 +65,7 @@ export class CompaniasContactadasComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
+  //detalleGral = signal<InformacionGeneralComponent>
 
   constructor() {}
 
@@ -106,17 +119,24 @@ export class CompaniasContactadasComponent {
     // lógica para registrar respuesta
   }
 
+
+
+seleccionarCotizacion(id: number) {
+  this.cotizacionSeleccionada = id;
+  console.log('Cotización seleccionada:', id);
+  this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
+}
+
+
   @Output() actualizarDatos = new EventEmitter<void>();
 
   borrarCompania(idCompania: number) {
     const dato = {
-      p_id_solicitud: this.idSolicitud,
+      p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
     };
-
-    console.log('Payload enviado:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -185,4 +205,34 @@ export class CompaniasContactadasComponent {
       return acciones.filter((a) => a.mostrar);
     };
   });
+
+   verDetalleCot() {
+    const dato = {
+      rutContratante: this.infoGral()?.rut_contratante,
+      p_id_solicitud: this.idSolicitud,
+      //p_id_compania_seguro: this.idCompania,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+    };
+
+    console.log('verDetalleCot:', dato);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '40%';
+    dialogConfig.maxHeight = '80%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(DetalleCotizacionComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit(); // o refrescar la grilla
+        }
+      });
+  }
+
 }

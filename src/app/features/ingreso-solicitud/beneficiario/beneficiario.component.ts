@@ -56,7 +56,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './beneficiario.component.css',
 })
 export class BeneficiarioComponent {
-  idSolicitud = input.required<string>();
+  idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();
 
   notificacioAlertnService= inject(NotificacioAlertnService);
@@ -67,9 +67,9 @@ export class BeneficiarioComponent {
   constructor() {
       effect(() => {
         // Llamar al método cada vez que el valor cambie
-         if (this.idSolicitud()!='0'){
-        this.rescataListaBeneficiarios(this.idSolicitud());
-         }
+        if (this.idSolicitud() !== 0){
+          this.rescataListaBeneficiarios(this.idSolicitud()!);
+        }
       }, { allowSignalWrites: true });
     }
 
@@ -124,11 +124,9 @@ export class BeneficiarioComponent {
 
   }
 
-  rescataListaBeneficiarios(idSolicitud: string) {
-
-    console.log('idSolicitud:',idSolicitud)
+  rescataListaBeneficiarios(idSolicitud: number) {
     const estructura_listaBeneficiarios = {
-      p_id_solicitud: Number(idSolicitud),
+      p_id_solicitud: idSolicitud,
     };
     this.beneficiarioService
       .postListadoBeneficiario(estructura_listaBeneficiarios)
@@ -145,8 +143,6 @@ export class BeneficiarioComponent {
   }
 
   agregaNuevoBeneficiario() {
-    //  agregaNuevo(empresaInterface_: EmpresaI) {
-    // Nuevo
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;

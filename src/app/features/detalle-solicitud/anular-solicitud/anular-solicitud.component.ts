@@ -54,10 +54,6 @@ export class AnularSolicitudComponent {
         motivo: this.motivo
     }));
 
-  cerrar(): void {
-    this.dialogRef.close();
-  }
-
   cancelar(): void {
     this.dialogRef.close('cancelado');
   }
