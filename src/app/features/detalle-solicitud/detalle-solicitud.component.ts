@@ -27,6 +27,7 @@ import {
   DetalleSolicitudInterface,
   ICompania,
   ICompaniaResponse,
+  ICompanias,
   IObservacion,
   ISolicitud,
 } from './modelo/detalle-interface';
@@ -112,8 +113,6 @@ export default class DetalleSolicitudComponent {
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
-
-
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -454,9 +453,7 @@ export default class DetalleSolicitudComponent {
       .open(AprobarCotizacionComponent, dialogConfig)
       .afterClosed()
       .subscribe((dato) => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
+        this.recargar();
         this.cotizacionSeleccionada = null;
       });
   }

@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     MatCard,
-    MatCardHeader,
     MatCardContent,
     CommonModule
 ],

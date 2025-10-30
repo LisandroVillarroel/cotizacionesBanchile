@@ -5,7 +5,6 @@ import {
   computed,
   signal,
   Input,
-  output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,7 +23,8 @@ import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania
 import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detalle-cotizacion/detalle-cotizacion.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { InformacionGeneralComponent } from '../informacion-general/informacion-general.component';
+import { ICompania, ISolicitud } from '../modelo/detalle-interface';
+import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -114,17 +114,11 @@ export class CompaniasContactadasComponent {
     // lógica para ver cotipropuesta
   }
 
-  registrarRespuesta(idCotizacion: number) {
-    // lógica para registrar respuesta
+  seleccionarCotizacion(id: number) {
+    this.cotizacionSeleccionada = id;
+    console.log('Cotización seleccionada:', id);
+    this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
   }
-
-
-
-seleccionarCotizacion(id: number) {
-  this.cotizacionSeleccionada = id;
-  console.log('Cotización seleccionada:', id);
-  this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
-}
 
 
   @Output() actualizarDatos = new EventEmitter<void>();
@@ -205,7 +199,7 @@ seleccionarCotizacion(id: number) {
     };
   });
 
-   verDetalleCot() {
+  verDetalleCot() {
     const dato = {
       rutContratante: this.infoGral()?.rut_contratante,
       p_id_solicitud: this.idSolicitud,
@@ -234,4 +228,25 @@ seleccionarCotizacion(id: number) {
       });
   }
 
+
+  @Output() cargaRespuesta = new EventEmitter<void>();
+
+  registrarRespuesta(idCompania: number): void {
+    const dato = {
+      infoGral: this.infoGral()!,
+      idCompania: idCompania
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = dato;
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.cargaRespuesta.emit(); });
+  }
 }

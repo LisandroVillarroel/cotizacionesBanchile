@@ -24,6 +24,7 @@ import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component
 import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
 import CabeceraPopupComponente from "../../shared/ui/cabeceraPopup.component";
 import InformacionPrincipalComponent from "./informacion-principal/informacion-principal.component";
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 export interface IRespuesta {
   /* solicitudId: number,
@@ -57,6 +58,7 @@ export interface IRespuesta {
 export class IngresoRespuestaComponent {
   public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
+  public readonly idSolicitud = this.datos.infoGral.id_solicitud;
 
   infoPrincipalComponent!: InformacionPrincipalComponent;
   constructor(
@@ -64,22 +66,14 @@ export class IngresoRespuestaComponent {
   ) {}
 
   @ViewChild(InformacionPrincipalComponent)
-
   panelOpenState = false;
-  detalleService = inject(DetalleSolicitudService);
-  observaciones = signal<IObservacion[] | undefined>(undefined);
-
-  public readonly idSolicitud = this.datos.infoGral.id_solicitud;
-  idSol = computed(() => this.idSolicitud);
 
   fechaActual = new FormControl<Date>(new Date());
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
-  async ngOnInit() {
-
-  }
-
+  async ngOnInit() {}
 
   verDetalleAse() {
     const dialogConfig = new MatDialogConfig();
@@ -111,21 +105,21 @@ export class IngresoRespuestaComponent {
   const datos: IRegistrarRespuesta = {
     p_id_solicitud: this.datos.infoGral.id_solicitud,
     p_id_compania_seguro: this.datos.idCompania,//
-    p_id_moneda: this.infoPrincipalComponent.moneda.value,
-    p_valor_prima_neta: this.infoPrincipalComponent.primaNeta.value,
-    p_valor_prima_afecta: this.infoPrincipalComponent.primaAfecta.value,
-    p_valor_prima_bruta: this.infoPrincipalComponent.primaBruta.value,
-    p_id_medio_de_pago: this.infoPrincipalComponent.mPago.value,
-    p_id_banco: this.infoPrincipalComponent.banco.value,
-    p_id_tipo_cuenta: this.infoPrincipalComponent.tipoCuenta.value,
-    p_nro_cuenta: this.infoPrincipalComponent.nroCuenta.value,
-    p_cantidad_cuotas: this.infoPrincipalComponent.nroCuotas.value,
-    p_fecha_inicio_vigencia: this.formatFecha(this.infoPrincipalComponent.fechaInicio),
-    p_fecha_termino_vigencia: this.formatFecha(this.infoPrincipalComponent.fechaTermino),
-    p_dia_vencimiento_primera_cuota: this.formatFecha(this.infoPrincipalComponent.fechaVencimiento),
-    p_id_cotizacion_compania: this.infoPrincipalComponent.nombreArchivoCompania,
+    p_id_moneda: this.infoPrincipalComponent.formRespuesta().value.modeda,
+    p_valor_prima_neta: this.infoPrincipalComponent.formRespuesta().value.primaNeta,
+    p_valor_prima_afecta: this.infoPrincipalComponent.formRespuesta().value.primaAfecta,
+    p_valor_prima_bruta: this.infoPrincipalComponent.formRespuesta().value.primaBruta,
+    p_id_medio_de_pago: this.infoPrincipalComponent.formRespuesta().value.mPago,
+    p_id_banco: this.infoPrincipalComponent.formRespuesta().value.banco,
+    p_id_tipo_cuenta: this.infoPrincipalComponent.formRespuesta().value.tipoCuenta,
+    p_nro_cuenta: this.infoPrincipalComponent.formRespuesta().value.nroCuenta,
+    p_cantidad_cuotas: this.infoPrincipalComponent.formRespuesta().value.nroCuotas.value!,
+    p_fecha_inicio_vigencia: this.formatFecha(this.infoPrincipalComponent.formRespuesta().value.fechaInicio),
+    p_fecha_termino_vigencia: this.formatFecha(this.infoPrincipalComponent.formRespuesta().value.fechaTermino),
+    p_dia_vencimiento_primera_cuota: this.formatFecha(this.infoPrincipalComponent.formRespuesta().value.fechaVencimiento),
+    p_id_cotizacion_compania: this.infoPrincipalComponent.formRespuesta().value.nombreArchivoCompania,
     p_ruta_cotizacion_compania: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS",//
-    p_id_cotizacion_propuesta: this.infoPrincipalComponent.nombreArchivoPropuesta,
+    p_id_cotizacion_propuesta: this.infoPrincipalComponent.formRespuesta().value.nombreArchivoPropuesta,
     p_ruta_cotizacion_propuesta: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS",//
 
     //archivoCompania: this.infoPrincipalComponent.selectedCompaniaFile,
@@ -135,14 +129,17 @@ export class IngresoRespuestaComponent {
     p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
   };
   this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
-    next: (res) => {
+    next: async (res) => {
+      if (res.codigo === 200) {
+        const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+          "La respuesta se ha registrado exitosamente.");
+      }
     },
-    error: (err) => {
-
-    }
+    error: (error) => {
+      this.notificacioAlertnService.error('ERROR','Error Inesperado');
+    },
   });
 }
-
 
 formatFecha(fecha: Date | null): string {
   if (!fecha) return '';
@@ -151,4 +148,3 @@ formatFecha(fecha: Date | null): string {
 }
 
 }
-

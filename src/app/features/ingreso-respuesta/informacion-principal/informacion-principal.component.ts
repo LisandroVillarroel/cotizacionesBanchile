@@ -1,5 +1,5 @@
 import { Component, signal, ElementRef, inject, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormControl, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -68,6 +68,22 @@ export default class InformacionPrincipalComponent {
   pTermino = new FormControl<Date>(new Date());
   pVencimiento = new FormControl<Date>(new Date());
 
+  formRespuesta = signal<FormGroup>(new FormGroup({
+    moneda : this.moneda,
+    primaNeta : this.primaNeta,
+    primaAfecta : this.primaAfecta,
+    primaBruta : this.primaBruta,
+    mPago : this.mPago,
+    banco: this.banco,
+    tipoCuenta: this.tipoCuenta,
+    nroCuenta: this.nroCuenta,
+    nroCuotas: this.nroCuotas,
+    fechaActual: this.fechaActual,
+    pInicio: this.pInicio,
+    pTermino: this.pTermino,
+    pVencimiento: this.pVencimiento
+    })
+  );
   monedaRes: string = '';
   primaNetaRes: string = '';
   primaAfectaRes: string = '';
