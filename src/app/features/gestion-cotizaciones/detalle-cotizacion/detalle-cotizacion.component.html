@@ -1,4 +1,4 @@
-<app-cabecera-popup [titulo]="'Detalle Cotización'"  />
+<app-cabecera-popup [titulo]="'Detalle Cotización Compañia: '+ data.p_nombre_compania_seguro"  />
 <mat-dialog-content class="container-fluid p-0"
 [formGroup]="detalleCotizacion()" name="detalleCotizacion">
   <mat-card>
@@ -20,25 +20,25 @@
     </mat-card-header>-->
 
         <mat-card-header class="fondoGris d-flex justify-around">
-      <div style="width: 20%;">
+      <div style="width: 33%;">
         <p class="destacado">Rut Contratante</p>
-        <p >{{ data.infoGral()?.rut_contratante }}</p>
+        <p >{{ data.p_rut_contratante}}</p>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
-      <div style="width: 40%; margin-left: 10px;">
+      <div style="width: 33%; margin-left: 10px;">
         <p class="destacado">Nombre / Razón Social</p>
-        <p>{{ data.infoGral()?.nombre_razon_social_contratante }}</p>
+        <p>{{ data.P_nombre_razon_social_contratante }}</p>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
-      <div style="width: 40%; margin-left: 10px;">
-        <p class="destacado">Rubro</p>
-        <p>{{ data.infoGral()?.nombre_rubro }}</p>
+      <div style="width: 33%; margin-left: 10px;">
+        <p class="destacado">Rubro / Tipo Seguro</p>
+        <p>{{ data.p_nombre_rubro}} / {{data.p_nombre_seguro}}</p>
       </div>
     </mat-card-header>
 
     <mat-card-content>
 
-      {{data.infoGral()?.nombre_rubro}}
+      {{data.p_nombre_rubro}}
     </mat-card-content>
 
     <!-- <mat-card-content>

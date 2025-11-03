@@ -12,6 +12,20 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
 import { MatIconButton } from '@angular/material/button';
 
+export interface DetalleCotizacionData {
+  p_id_solicitud: number;
+  p_id_compania_seguro: number;
+  p_nombre_compania_seguro: string,
+  p_id_usuario: string;
+  p_tipo_usuario: string;
+  p_rut_contratante: string;
+  P_nombre_razon_social_contratante: string;
+  p_id_rubro: string;
+  p_nombre_rubro: string;
+  p_tipo_seguro: string;
+  p_nombre_seguro: string;
+}
+
 
 @Component({
   selector: 'app-detalle-cotizacion',
@@ -25,7 +39,7 @@ export class DetalleCotizacionComponent {
 constructor(
       private dialog: MatDialog,
       public dialogRef: MatDialogRef<AprobarCotizacionComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: InformacionGeneralComponent
+      @Inject(MAT_DIALOG_DATA) public data: DetalleCotizacionData
     ) { }
 
 
