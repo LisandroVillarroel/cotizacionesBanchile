@@ -60,22 +60,6 @@ export default class GestionCotizacionesComponent{
   emitidas = signal<IGestionCotizacion[] >([]);
   firmadas = signal<IGestionCotizacion[] >([]);
 
- /*  recibidas = computed(() => { return this.solicitudes().filter( r =>
-    r.p_nombre_estado?.toLowerCase()?.includes("cotizacion"))
-  });
-
-  pendientes = computed(() => { return this.solicitudes().filter( r =>
-    r.p_nombre_estado?.toLowerCase()?.includes("propuesta pendiente"))
-  });
-
-  emitidas = computed(() => { return this.solicitudes().filter( r =>
-    r.p_nombre_estado?.toLowerCase()?.includes("propuesta emitida"))
-  });
-
-  firmadas = computed(() => { return this.solicitudes().filter( r =>
-    r.p_nombre_estado?.toLowerCase()?.includes("propuesta firmada"))
-  });
- */
   async ngOnInit(){
     this.cargarSolicitudes();
   }
