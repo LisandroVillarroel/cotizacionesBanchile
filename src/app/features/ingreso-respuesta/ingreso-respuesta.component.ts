@@ -7,7 +7,7 @@ import { MatCard, MatCardHeader } from "@angular/material/card";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatButton } from '@angular/material/button';
 
-import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { ICompania, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
 import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
@@ -17,7 +17,8 @@ import InformacionPrincipalComponent from "./informacion-principal/informacion-p
 
 export interface IRespuesta {
   infoGral: ISolicitud,
-  idCompania: number
+  compania: ICompania,
+  flagAccion: boolean
 };
 
 @Component({

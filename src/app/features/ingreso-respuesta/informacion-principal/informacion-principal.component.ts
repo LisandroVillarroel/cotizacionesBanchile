@@ -29,6 +29,7 @@ import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { ICompania } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 @Component({
   selector: 'app-informacion-principal',
@@ -58,7 +59,8 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 export default class InformacionPrincipalComponent {
   solicitudId = input.required<number | undefined>();
-  idCompania = input.required<number | undefined>();
+  compania = input.required<ICompania | undefined>();
+  flagAccion = input.required<boolean | undefined>();
 
   moneda = new FormControl();
   primaNeta = new FormControl();
@@ -239,7 +241,7 @@ export default class InformacionPrincipalComponent {
   registraRespuesta() {
     const datos: IRegistrarRespuesta = {
       p_id_solicitud: this.solicitudId()!,
-      p_id_compania_seguro: this.idCompania()!,//
+      p_id_compania_seguro: this.compania()?.p_id_compania_seguro!,//
       p_id_moneda: this.formRespuesta().get('moneda')!.value,
       p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
       p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,

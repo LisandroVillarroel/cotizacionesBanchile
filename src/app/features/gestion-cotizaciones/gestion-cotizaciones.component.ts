@@ -55,27 +55,27 @@ export default class GestionCotizacionesComponent{
     firmadas: 0
   });
   solicitudes = signal<IGestionCotizacion[] >([]);
-  //recibidas = signal<IGestionCotizacion[] >([]);
-  //pendientes = signal<IGestionCotizacion[] >([]);
-  //emitidas = signal<IGestionCotizacion[] >([]);
-  //firmadas = signal<IGestionCotizacion[] >([]);
+  recibidas = signal<IGestionCotizacion[] >([]);
+  pendientes = signal<IGestionCotizacion[] >([]);
+  emitidas = signal<IGestionCotizacion[] >([]);
+  firmadas = signal<IGestionCotizacion[] >([]);
 
-  recibidas = computed(() => { return this.solicitudes().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
+ /*  recibidas = computed(() => { return this.solicitudes().filter( r =>
+    r.p_nombre_estado?.toLowerCase()?.includes("cotizacion"))
   });
 
   pendientes = computed(() => { return this.solicitudes().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("propuesta pendiente"))
+    r.p_nombre_estado?.toLowerCase()?.includes("propuesta pendiente"))
   });
 
   emitidas = computed(() => { return this.solicitudes().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("propuesta emitida"))
+    r.p_nombre_estado?.toLowerCase()?.includes("propuesta emitida"))
   });
 
   firmadas = computed(() => { return this.solicitudes().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("propuesta firmada"))
+    r.p_nombre_estado?.toLowerCase()?.includes("propuesta firmada"))
   });
-
+ */
   async ngOnInit(){
     this.cargarSolicitudes();
   }
@@ -96,19 +96,17 @@ export default class GestionCotizacionesComponent{
             emitidas: dato.p_nro_prop_gene,
             firmadas: dato.p_nro_prop_firm
           });
-          let res = dato.ps_cursor;
+          let res = dato.ps_cursorRec;
           res.map((valor: IGestionCotizacion)=> {
             return {
               ...valor, // Copiamos las propiedades originales
-              nombre_contratante: (valor.nombre_contratante === null ||
-                valor.nombre_contratante ==="") ? "-" : valor.nombre_contratante
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
             }
           })
-          this.solicitudes.set(res);
-          // this.pendientes.set(dato.pp_cursor);
-          // this.enviadas.set(dato.pc_cursor);
-          // this.recibidas.set(dato.pr_cursor);
-          // this.firmadas.set(dato.pf_cursor);
+          this.pendientes.set(dato.ps_cursorPen);
+          this.emitidas.set(dato.ps_cursorProGen);
+          this.firmadas.set(dato.ps_cursorProFir);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         }
       },

@@ -18,28 +18,41 @@ export interface ICotizacion{
 }
 
 export interface IGestionCotizacion{
-  id_solicitud: number;
-  rut_contratante: string;
-  nombre_contratante: string;
-  rubro: number;
-  nombre_rubro: string;
-  id_tipo_seguro: number;
-  descripcion_tipo_seguro: string;
-  fecha_creacion: string;
-  fecha_envio_coordinador: string,
-  fecha_aprobacion_solicitud: string,
-  id_estado_solicitud: number,
-  nombre_estado_solicitud: string,
-  sla?: string; //ISla;
+  p_id_Solicitud: number,
+  p_rut_contratante: string,
+  p_nombre_contratante: string,
+  p_idrubro: number,
+  p_nombre_rubro: string,
+  p_id_tipo_seguro: number,
+  p_nombre_tipo_seguro: string,
+  p_fecha_creacion: string,
+  p_fecha_envio_coordinador: string,
+  p_fecha_aprobar_solicitud: string,
+  p_fecha_emision_propuesta:string,
+  p_fecha_aceptacion_solicitud: string,
+  p_fecha_rechazo_solicitud: string,
+  p_fecha_anulacion_solicitud: string,
+  p_id_estado_solicitud: number,
+  p_nombre_estado: string,
+  p_sla?: string, //ISla;
+  p_id_compania_seguro: number,
+  nombre_compania_seguro: string,
+  p_id_estado_cotizacion: number,
+  nombre_estado_cotizacion: string,
+  p_fecha_creacion_cotizacion: string,
+  p_valor_prima_bruta: number,
+  p_valor_prima_neta: number,
+  p_fecha_inicio_vigencia: string,
+  p_fecha_termino_vigencia: string
 }
 
 export interface IGestionResponse{
   codigo: number,
   mensaje: string,
-  ps_cursor: IGestionCotizacion[],
-  // pp_cursor: IGestionCotizacion[],
-  // pf_cursor: IGestionCotizacion[],
-  // pc_cursor: IGestionCotizacion[],
+  ps_cursorRec: IGestionCotizacion[],
+  ps_cursorPen: IGestionCotizacion[],
+  ps_cursorProGen: IGestionCotizacion[],
+  ps_cursorProFir: IGestionCotizacion[],
   p_nro_cotiz_reg: number,
   p_nro_prop_pend: number,
   p_nro_prop_gene: number,

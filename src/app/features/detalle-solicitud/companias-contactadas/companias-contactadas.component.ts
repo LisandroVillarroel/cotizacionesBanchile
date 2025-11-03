@@ -230,11 +230,15 @@ export class CompaniasContactadasComponent {
 
 
   @Output() cargaRespuesta = new EventEmitter<void>();
-
   registrarRespuesta(idCompania: number): void {
     const dato = {
       infoGral: this.infoGral()!,
-      idCompania: idCompania
+      compania: computed( () => {
+                  return this.companias()!.filter( c => {
+                    c.p_id_compania_seguro === idCompania
+                  })
+                }),
+      flagAccion: true
     };
 
     const dialogConfig = new MatDialogConfig();

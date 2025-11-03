@@ -94,11 +94,11 @@ export class PropuestasEmitidasComponent {
 
     this.formularioModificado();
     return this.emitidas()!.filter(item => {
-      const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
-      const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
+      const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
       let cumpleFecha=true;
-      const fechaBase = new Date(item.fecha_creacion);
+      const fechaBase = new Date(item.p_fecha_creacion);
 
       if (fechaInicio_Inicial!=null){
         cumpleFecha = !fechaInicio || (
