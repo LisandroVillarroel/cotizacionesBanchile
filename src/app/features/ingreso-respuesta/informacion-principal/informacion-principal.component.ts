@@ -1,5 +1,5 @@
 import { Component, signal, ElementRef, inject, ViewChild, input } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -62,19 +62,19 @@ export default class InformacionPrincipalComponent {
   compania = input.required<ICompania | undefined>();
   flagAccion = input.required<boolean | undefined>();
 
-  moneda = new FormControl();
-  primaNeta = new FormControl();
-  primaAfecta = new FormControl();
-  primaBruta = new FormControl();
-  mPago = new FormControl();
-  banco = new FormControl();
-  tipoCuenta = new FormControl();
-  nroCuenta = new FormControl();
-  nroCuotas = new FormControl();
-  fechaActual = new FormControl<Date>(new Date());
-  pInicio = new FormControl<Date>(new Date());
-  pTermino = new FormControl<Date>(new Date());
-  pVencimiento = new FormControl<Date>(new Date());
+  moneda = new FormControl('', [Validators.required]);
+  primaNeta = new FormControl('', [Validators.required]);
+  primaAfecta = new FormControl('', [Validators.required]);
+  primaBruta = new FormControl('', [Validators.required]);
+  mPago = new FormControl('', [Validators.required]);
+  banco = new FormControl('', [Validators.required]);
+  tipoCuenta = new FormControl('', [Validators.required]);
+  nroCuenta = new FormControl('', [Validators.required]);
+  nroCuotas = new FormControl('', [Validators.required]);
+  fechaActual = new FormControl<Date>(new Date(), [Validators.required]);
+  pInicio = new FormControl<Date | null>(null, [Validators.required]);
+  pTermino = new FormControl<Date | null>(null, [Validators.required]);
+  pVencimiento = new FormControl<Date | null>(null, [Validators.required]);
 
   formRespuesta = signal<FormGroup>(new FormGroup({
     moneda : this.moneda,
@@ -110,7 +110,7 @@ export default class InformacionPrincipalComponent {
 
   panelOpenState = false;
 
-  fechaInicio: Date | null = null;
+  fechaInicio= signal<Date | null>(null);
   fechaTermino: Date | null = null;
   fechaVencimiento: Date | null = null;
 
@@ -182,17 +182,30 @@ export default class InformacionPrincipalComponent {
   }
 
   async ngOnInit() {
+    // Deshabilitar pTermino y pVencimiento inicialmente
+    this.pTermino.disable();
+    this.pVencimiento.disable();
+
+    // Suscribirse a cambios en pInicio
+    this.pInicio.valueChanges.subscribe(value => {
+      if (value) {
+        this.pTermino.enable();
+        this.pVencimiento.enable();
+      } else {
+        this.pTermino.disable();
+        this.pVencimiento.disable();
+      }
+    });
+
     this.cargaMoneda();
     this.cargaMedioPago();
     this.cargaBanco();
     this.cargaTipoCuenta();
-  }
-
-  filtrarFechasTermino = (fecha: Date | null): boolean => {
-    if (!fecha || !this.fechaInicio) {
+  }  filtrarFechasTermino = (fecha: Date | null): boolean => {
+    if (!fecha || !this.fechaInicio()) {
       return false;
     }
-    return fecha >= this.fechaInicio;
+    return fecha >= this.fechaInicio()!;
   };
 
   soloNumeros(event: KeyboardEvent) {
