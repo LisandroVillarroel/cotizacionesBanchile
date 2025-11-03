@@ -119,11 +119,6 @@ export class CompaniasContactadasComponent {
     console.log('Cotización seleccionada:', id);
     this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
   }
-  seleccionarCotizacion(id: number) {
-    this.cotizacionSeleccionada = id;
-    console.log('Cotización seleccionada:', id);
-    this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
-  }
 
 
   @Output() actualizarDatos = new EventEmitter<void>();
