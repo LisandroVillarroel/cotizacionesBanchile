@@ -1,5 +1,5 @@
-import { Component, signal, ElementRef, inject, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { Component, signal, ElementRef, inject, ViewChild, input } from '@angular/core';
+import { ReactiveFormsModule, FormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,18 +14,21 @@ import { MatDatepicker } from "@angular/material/datepicker";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import { IMoneda } from '@shared/modelo/moneda-interface';
-import { IMedioPago } from '@shared/modelo/medio-pago-interface';
-import { IBanco } from '@shared/modelo/banco-interface';
-import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
-import { IDatosArchivo } from '@shared/modelo/archivos-interface';
-
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { TipoCuentaService } from './../../../shared/service/tipo-cuenta.service';
 import { MedioPagoService } from './../../../shared/service/medio-pago.service';
 import { BancoService } from '@shared/service/banco.service';
 import { MonedaService } from '@shared/service/moneda.service';
+import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
 
+import { IMoneda } from '@shared/modelo/moneda-interface';
+import { IMedioPago } from '@shared/modelo/medio-pago-interface';
+import { IBanco } from '@shared/modelo/banco-interface';
+import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
+import { IDatosArchivo } from '@shared/modelo/archivos-interface';
+import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-informacion-principal',
@@ -54,38 +57,47 @@ import { MonedaService } from '@shared/service/moneda.service';
 })
 
 export default class InformacionPrincipalComponent {
-  moneda = new FormControl();
-  primaNeta = new FormControl();
-  primaAfecta = new FormControl();
-  primaBruta = new FormControl();
-  mPago = new FormControl();
-  banco = new FormControl();
-  tipoCuenta = new FormControl();
-  nroCuenta = new FormControl();
-  nroCuotas = new FormControl();
-  fechaActual = new FormControl<Date>(new Date());
-  pInicio = new FormControl<Date>(new Date());
-  pTermino = new FormControl<Date>(new Date());
-  pVencimiento = new FormControl<Date>(new Date());
+  solicitudId = input.required<number | undefined>();
+  idCompania = input.required<number | undefined>();
 
-  monedaRes: string = '';
-  primaNetaRes: string = '';
-  primaAfectaRes: string = '';
-  primaBrutaRes: string = '';
-  mPagoRes: string = '';
-  bancoRes: string = '';
-  tipoCuentaRes: string = '';
-  nroCuentaRes: string = '';
-  nroCuotasRes: string = '';
-  fchInicioRes: Date | null = null;
-  fchTerminoRes: Date | null = null;
-  fchVencimientoRes: Date | null = null;
+  moneda = new FormControl('', [Validators.required]);
+  primaNeta = new FormControl('', [Validators.required]);
+  primaAfecta = new FormControl('', [Validators.required]);
+  primaBruta = new FormControl('', [Validators.required]);
+  mPago = new FormControl('', [Validators.required]);
+  banco = new FormControl('', [Validators.required]);
+  tipoCuenta = new FormControl('', [Validators.required]);
+  nroCuenta = new FormControl('', [Validators.required]);
+  nroCuotas = new FormControl('', [Validators.required]);
+  fechaActual = new FormControl<Date>(new Date(), [Validators.required]);
+  pInicio = new FormControl<Date | null>(null, [Validators.required]);
+  pTermino = new FormControl<Date | null>(null, [Validators.required]);
+  pVencimiento = new FormControl<Date | null>(null, [Validators.required]);
+
+  formRespuesta = signal<FormGroup>(new FormGroup({
+    moneda : this.moneda,
+    primaNeta : this.primaNeta,
+    primaAfecta : this.primaAfecta,
+    primaBruta : this.primaBruta,
+    mPago : this.mPago,
+    banco: this.banco,
+    tipoCuenta: this.tipoCuenta,
+    nroCuenta: this.nroCuenta,
+    nroCuotas: this.nroCuotas,
+    fechaActual: this.fechaActual,
+    pInicio: this.pInicio,
+    pTermino: this.pTermino,
+    pVencimiento: this.pVencimiento
+    })
+  );
 
   monedaService = inject(MonedaService);
   medioPagoService = inject(MedioPagoService);
   bancoService = inject(BancoService);
   tipoCuentaService = inject(TipoCuentaService);
   notificacioAlertnService = inject(NotificacioAlertnService);
+   storage = inject(StorageService);
+   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   datosMoneda = signal<IMoneda[]>([]);
   datosMedioPago = signal<IMedioPago[]>([]);
@@ -96,7 +108,7 @@ export default class InformacionPrincipalComponent {
 
   panelOpenState = false;
 
-  fechaInicio: Date | null = null;
+  fechaInicio= signal<Date | null>(null);
   fechaTermino: Date | null = null;
   fechaVencimiento: Date | null = null;
 
@@ -110,6 +122,10 @@ export default class InformacionPrincipalComponent {
 
   nombreArchivoPropuesta: string = '';
   nombreArchivoCompania: string = '';
+
+  constructor(
+    private registrarRespuestaService: RegistrarRespuestaService
+  ) { }
 
   cargaMoneda() {
     this.monedaService.postMoneda().subscribe({
@@ -164,17 +180,30 @@ export default class InformacionPrincipalComponent {
   }
 
   async ngOnInit() {
+    // Deshabilitar pTermino y pVencimiento inicialmente
+    this.pTermino.disable();
+    this.pVencimiento.disable();
+
+    // Suscribirse a cambios en pInicio
+    this.pInicio.valueChanges.subscribe(value => {
+      if (value) {
+        this.pTermino.enable();
+        this.pVencimiento.enable();
+      } else {
+        this.pTermino.disable();
+        this.pVencimiento.disable();
+      }
+    });
+
     this.cargaMoneda();
     this.cargaMedioPago();
     this.cargaBanco();
     this.cargaTipoCuenta();
-  }
-
-  filtrarFechasTermino = (fecha: Date | null): boolean => {
-    if (!fecha || !this.fechaInicio) {
+  }  filtrarFechasTermino = (fecha: Date | null): boolean => {
+    if (!fecha || !this.fechaInicio()) {
       return false;
     }
-    return fecha >= this.fechaInicio;
+    return fecha >= this.fechaInicio()!;
   };
 
   soloNumeros(event: KeyboardEvent) {
@@ -218,5 +247,86 @@ export default class InformacionPrincipalComponent {
     this.archivoCompania = null;
     this.nombreArchivoCompania = '';
     this.fileInputCompania.nativeElement.value = '';
+  }
+
+  registraRespuesta() {
+    const datos: IRegistrarRespuesta = {
+      p_id_solicitud: this.solicitudId()!,
+      p_id_compania_seguro: this.idCompania()!,//
+      p_id_moneda: this.formRespuesta().get('moneda')!.value,
+      p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
+      p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,
+      p_valor_prima_bruta: this.formRespuesta().get('primaBruta')!.value,
+      p_id_medio_de_pago: this.formRespuesta().get('mPago')!.value,
+      p_id_banco: this.formRespuesta().get('banco')!.value,
+      p_id_tipo_cuenta: this.formRespuesta().get('tipoCuenta')!.value,
+      p_nro_cuenta: this.formRespuesta().get('nroCuenta')!.value,
+      p_cantidad_cuotas: this.formRespuesta().get('nroCuotas')!.value,
+      p_fecha_inicio_vigencia: this.formatFecha(this.formRespuesta().get('pInicio')!.value),
+      p_fecha_termino_vigencia: this.formatFecha(this.formRespuesta().get('pTermino')!.value),
+      p_dia_vencimiento_primera_cuota: this.formatFecha(this.formRespuesta().get('pVencimiento')!.value),
+      p_id_cotizacion_compania: this.nombreArchivoCompania,
+      p_ruta_cotizacion_compania: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS",//
+      p_id_cotizacion_propuesta: this.nombreArchivoPropuesta,
+      p_ruta_cotizacion_propuesta: "C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS",//
+
+      //archivoCompania: this.selectedCompaniaFile,
+      //archivoPropuesta: this.selectedPropuestaFile,
+
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+    };
+    console.log("Respuesta: ", datos);
+    this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
+      next: async (res) => {
+        if (res.codigo === 200) {
+          const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            "La respuesta se ha registrado exitosamente.");
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    });
+  }
+
+  formatFecha(fecha: Date | null): string {
+    if (!fecha) return '';
+    const iso = new Date(fecha).toISOString();
+    return iso.split('T')[0]; // Devuelve formato YYYY-MM-DD
+  }
+
+  getErrorMessage(campo: string){
+    if (campo === 'moneda') {
+      return this.moneda.hasError('required') ? 'Debe seleccionar una moneda' : '';
+    }
+    if (campo === 'mPago') {
+      return this.moneda.hasError('required') ? 'Debe seleccionar un medio de pago' : '';
+    }
+    if (campo === 'banco') {
+      return this.moneda.hasError('required') ? 'Debe seleccionar un banco' : '';
+    }
+    if (campo === 'tipoCuenta') {
+      return this.moneda.hasError('required') ? 'Debe seleccionar un tipo de cuenta' : '';
+    }
+    if (campo === 'nroCuotas') {
+      return this.moneda.hasError('required') ? 'Debe seleccionar un nro. de cuotas' : '';
+    }
+    if (campo === 'primaNeta') {
+      return this.moneda.hasError('required') ? 'Debe indicar la prima neta' : '';
+    }
+    if (campo === 'primaAfecta') {
+      return this.moneda.hasError('required') ? 'Debe indicar la prima afecta' : '';
+    }
+    if (campo === 'primaBruta') {
+      return this.moneda.hasError('required') ? 'Debe indicar la prima bruta' : '';
+    }
+    if (campo === 'nroCuenta') {
+      return this.moneda.hasError('required') ? 'Debe indicar el nro. de cuenta' : '';
+    }
+    if (campo === 'pInicio') {
+      return this.moneda.hasError('required') ? 'Debe indicar la fecha de inicio' : '';
+    }
+    return '';
   }
 }

@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     MatCard,
-    MatCardHeader,
     MatCardContent,
     CommonModule
 ],
@@ -18,7 +17,6 @@ import { CommonModule } from '@angular/common';
 export class InformacionGeneralComponent {
   infoGral = input.required<ISolicitud | undefined>();
   infoSolicitud = computed(()=> this.infoGral());
-
 
   //getCellStyleSla(value: string) {
   getCellClass(value: string): string {
