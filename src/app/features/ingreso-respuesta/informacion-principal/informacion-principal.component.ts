@@ -70,9 +70,9 @@ export default class InformacionPrincipalComponent {
   nroCuenta = new FormControl();
   nroCuotas = new FormControl();
   fechaActual = new FormControl<Date>(new Date());
-  pInicio = new FormControl<Date>(new Date());
-  pTermino = new FormControl<Date>(new Date());
-  pVencimiento = new FormControl<Date>(new Date());
+  pInicio = new FormControl<Date | null>(null);
+  pTermino = new FormControl<Date | null>(null);
+  pVencimiento = new FormControl<Date | null>(null);
 
   formRespuesta = signal<FormGroup>(new FormGroup({
     moneda : this.moneda,
@@ -108,7 +108,7 @@ export default class InformacionPrincipalComponent {
 
   panelOpenState = false;
 
-  fechaInicio: Date | null = null;
+  fechaInicio= signal<Date | null>(null);
   fechaTermino: Date | null = null;
   fechaVencimiento: Date | null = null;
 
@@ -180,17 +180,30 @@ export default class InformacionPrincipalComponent {
   }
 
   async ngOnInit() {
+    // Deshabilitar pTermino y pVencimiento inicialmente
+    this.pTermino.disable();
+    this.pVencimiento.disable();
+
+    // Suscribirse a cambios en pInicio
+    this.pInicio.valueChanges.subscribe(value => {
+      if (value) {
+        this.pTermino.enable();
+        this.pVencimiento.enable();
+      } else {
+        this.pTermino.disable();
+        this.pVencimiento.disable();
+      }
+    });
+
     this.cargaMoneda();
     this.cargaMedioPago();
     this.cargaBanco();
     this.cargaTipoCuenta();
-  }
-
-  filtrarFechasTermino = (fecha: Date | null): boolean => {
-    if (!fecha || !this.fechaInicio) {
+  }  filtrarFechasTermino = (fecha: Date | null): boolean => {
+    if (!fecha || !this.fechaInicio()) {
       return false;
     }
-    return fecha >= this.fechaInicio;
+    return fecha >= this.fechaInicio()!;
   };
 
   soloNumeros(event: KeyboardEvent) {

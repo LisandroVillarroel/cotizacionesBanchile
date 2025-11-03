@@ -170,29 +170,24 @@
       </mat-form-field>
       <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha Inicio:</mat-label>
-        <input matInput [matDatepicker]="pInicio" [(ngModel)]="fechaInicio"
-               name="fechaInicio" readonly required>
-        <mat-datepicker-toggle matIconSuffix [for]="pInicio"></mat-datepicker-toggle>
-        <mat-datepicker #pInicio></mat-datepicker>
-        @if(!fechaInicio){
+        <input matInput [matDatepicker]="pickerInicio" [formControl]="pInicio" required>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerInicio" class="fontSmall"></mat-datepicker-toggle>
+        <mat-datepicker #pickerInicio></mat-datepicker>
+        @if(!fechaInicio()){
           <mat-error>{{ getErrorMessage("pInicio") }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha Término:</mat-label>
-        <input matInput [matDatepicker]="pTermino" [(ngModel)]="fechaTermino"
-               name="fechaTermino" [disabled]="!fechaInicio"
-               [matDatepickerFilter]="filtrarFechasTermino" readonly required>
-        <mat-datepicker-toggle matIconSuffix [for]="pTermino"></mat-datepicker-toggle>
-        <mat-datepicker #pTermino></mat-datepicker>
+        <input matInput [matDatepicker]="pickerTermino" [formControl]="pTermino" required>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerTermino" class="fontSmall"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTermino></mat-datepicker>
       </mat-form-field>
       <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha primer vencimiento:</mat-label>
-        <input matInput [matDatepicker]="pVencimiento" [(ngModel)]="fechaVencimiento"
-               name="fechaVencimiento" [disabled]="!fechaInicio"
-               [matDatepickerFilter]="filtrarFechasTermino" readonly required>
-        <mat-datepicker-toggle matIconSuffix [for]="pVencimiento"></mat-datepicker-toggle>
-        <mat-datepicker #pVencimiento></mat-datepicker>
+        <input matInput [matDatepicker]="pickerVencimiento" [formControl]="pVencimiento" required>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerVencimiento" class="fontSmall"></mat-datepicker-toggle>
+        <mat-datepicker #pickerVencimiento></mat-datepicker>
       </mat-form-field>
     </div>
   </div>
