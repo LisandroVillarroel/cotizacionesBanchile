@@ -18,7 +18,6 @@ export class InformacionGeneralComponent {
   infoGral = input.required<ISolicitud | undefined>();
   infoSolicitud = computed(()=> this.infoGral());
 
-
   //getCellStyleSla(value: string) {
   getCellClass(value: string): string {
     var salida = 'gris';

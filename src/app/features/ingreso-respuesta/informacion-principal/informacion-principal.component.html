@@ -9,7 +9,7 @@
             style="flex-grow: 1; min-width: 0">
             <mat-label class="labelI-cuestionario"></mat-label>
             <input matInput [value]="nombreArchivoCompania" disabled
-              placeholder="Carga el documento oficial del banco" />
+              placeholder="Carga cotización enviada por la compañía" />
           </mat-form-field>
           <!-- Botón para abrir el selector de archivos -->
           <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorCompania()"
@@ -35,7 +35,7 @@
             style="flex-grow: 1; min-width: 0">
             <mat-label class="labelI-cuestionario"></mat-label>
             <input matInput [value]="nombreArchivoPropuesta" disabled
-              placeholder="Carga el documento oficial del banco" />
+              placeholder="Carga cotipropuesta" />
           </mat-form-field>
           <!-- Botón para abrir el selector de archivos -->
           <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorPropuesta()"
@@ -55,7 +55,7 @@
     </div>
   </div>
   <div class="fondoGris container-fluid mt-0">
-    <div class="container-fluid mt-0">
+    <div class="container-fluid mt-0 gap-2 d-flex">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Moneda</mat-label>
         <mat-select [formControl]="moneda">
@@ -66,21 +66,36 @@
           }
           <input matInput />
         </mat-select>
+        @if(moneda.invalid){
+          <mat-error>{{ getErrorMessage("moneda") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima neta</mat-label>
-        <input matInput [formControl]="primaNeta" type="number" step="0.01" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaNeta" type="number"
+               step="0.01" min="0" class="no-spinner" required/>
+        @if (primaNeta.invalid) {
+        <mat-error>{{ getErrorMessage("primaNeta") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima afecta</mat-label>
-        <input matInput [formControl]="primaAfecta" type="number" step="0.01" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaAfecta" type="number"
+               step="0.01" min="0" class="no-spinner" required/>
+        @if(primaAfecta.invalid){
+          <mat-error>{{ getErrorMessage("primaAfecta") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">Valor prima bruta</mat-label>
-        <input matInput [formControl]="primaBruta" type="number" min="0" class="no-spinner" />
+        <input matInput [formControl]="primaBruta" type="number"
+               step="0.01" min="0" class="no-spinner" required/>
+        @if(primaBruta.invalid){
+          <mat-error>{{ getErrorMessage("primaBruta") }}</mat-error>
+        }
       </mat-form-field>
     </div>
-    <div class="container-fluid mt-0">
+    <div class="container-fluid mt-0 gap-2 d-flex">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Medio de Pago</mat-label>
         <mat-select [formControl]="mPago">
@@ -91,6 +106,9 @@
           }
           <input matInput />
         </mat-select>
+        @if(mPago.invalid){
+          <mat-error>{{ getErrorMessage("mPago") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Banco</mat-label>
@@ -102,6 +120,9 @@
           }
           <input matInput />
         </mat-select>
+        @if(banco.invalid){
+          <mat-error>{{ getErrorMessage("banco") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Tipo de Cuenta</mat-label>
@@ -113,13 +134,20 @@
           }
           <input matInput />
         </mat-select>
+        @if(tipoCuenta.invalid){
+          <mat-error>{{ getErrorMessage("tipoCuenta") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="inputBuscar" style="width: 25%;">
         <mat-label class="cursiva gris">N° de cuenta</mat-label>
-        <input matInput [formControl]="nroCuenta" type="number" class="no-spinner" (keypress)="soloNumeros($event)" />
+        <input matInput [formControl]="nroCuenta" type="number"
+               class="no-spinner" (keypress)="soloNumeros($event)" required/>
+        @if(nroCuenta.invalid){
+          <mat-error>{{ getErrorMessage("nroCuenta") }}</mat-error>
+        }
       </mat-form-field>
     </div>
-    <div class="container-fluid mt-0">
+    <div class="container-fluid mt-0 gap-2 d-flex">
       <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
         <mat-label class="cursiva gris">Cuotas</mat-label>
         <mat-select [formControl]="nroCuotas">
@@ -136,24 +164,33 @@
           <mat-option value="11">11</mat-option>
           <mat-option value="12">12</mat-option>
         </mat-select>
+        @if(nroCuotas.invalid){
+          <mat-error>{{ getErrorMessage("nroCuotas") }}</mat-error>
+        }
       </mat-form-field>
-      <mat-form-field class="inputFecha col-md-3">
+      <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha Inicio:</mat-label>
-        <input matInput [matDatepicker]="pInicio" [(ngModel)]="fechaInicio" name="fechaInicio" readonly>
+        <input matInput [matDatepicker]="pInicio" [(ngModel)]="fechaInicio"
+               name="fechaInicio" readonly required>
         <mat-datepicker-toggle matIconSuffix [for]="pInicio"></mat-datepicker-toggle>
         <mat-datepicker #pInicio></mat-datepicker>
+        @if(!fechaInicio){
+          <mat-error>{{ getErrorMessage("pInicio") }}</mat-error>
+        }
       </mat-form-field>
-      <mat-form-field class="inputFecha col-md-3">
+      <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha Término:</mat-label>
-        <input matInput [matDatepicker]="pTermino" [(ngModel)]="fechaTermino" name="fechaTermino"
-          [disabled]="!fechaInicio" [matDatepickerFilter]="filtrarFechasTermino" readonly>
+        <input matInput [matDatepicker]="pTermino" [(ngModel)]="fechaTermino"
+               name="fechaTermino" [disabled]="!fechaInicio"
+               [matDatepickerFilter]="filtrarFechasTermino" readonly required>
         <mat-datepicker-toggle matIconSuffix [for]="pTermino"></mat-datepicker-toggle>
         <mat-datepicker #pTermino></mat-datepicker>
       </mat-form-field>
-      <mat-form-field class="inputFecha col-md-3">
+      <mat-form-field class="inputFecha" style="width: 25%;">
         <mat-label class="cursiva gris">Fecha primer vencimiento:</mat-label>
-        <input matInput [matDatepicker]="pVencimiento" [(ngModel)]="fechaVencimiento" name="fechaVencimiento"
-          [disabled]="!fechaInicio" [matDatepickerFilter]="filtrarFechasTermino" readonly>
+        <input matInput [matDatepicker]="pVencimiento" [(ngModel)]="fechaVencimiento"
+               name="fechaVencimiento" [disabled]="!fechaInicio"
+               [matDatepickerFilter]="filtrarFechasTermino" readonly required>
         <mat-datepicker-toggle matIconSuffix [for]="pVencimiento"></mat-datepicker-toggle>
         <mat-datepicker #pVencimiento></mat-datepicker>
       </mat-form-field>
@@ -161,3 +198,13 @@
   </div>
 
 </div>
+<mat-card-actions>
+  <div class="container-fluid d-flex p-4">
+    <div class="botones-derecha">
+      <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
+        [disabled]="false">Cerrar</button>
+      <button mat-stroked-button class="btn-info" (click)="registraRespuesta()"
+              [disabled]="formRespuesta().invalid">Registrar Respuesta</button>
+    </div>
+  </div>
+</mat-card-actions>
