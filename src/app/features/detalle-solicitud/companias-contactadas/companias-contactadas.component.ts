@@ -41,8 +41,8 @@ import { ICompania, ISolicitud } from '../modelo/detalle-interface';
     MatTooltip,
     MatRadioButton,
     MatRadioGroup,
-    MatIcon,MatIconButton,MatDivider
-],
+    MatIcon, MatIconButton, MatDivider
+  ],
 })
 export class CompaniasContactadasComponent {
   panelOpenState = false;
@@ -67,7 +67,7 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
   //detalleGral = signal<InformacionGeneralComponent>
 
-  constructor() {}
+  constructor() { }
 
   getCellStyle(estado: number) {
     let color: string;
@@ -121,11 +121,11 @@ export class CompaniasContactadasComponent {
 
 
 
-seleccionarCotizacion(id: number) {
-  this.cotizacionSeleccionada = id;
-  console.log('Cotización seleccionada:', id);
-  this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
-}
+  seleccionarCotizacion(id: number) {
+    this.cotizacionSeleccionada = id;
+    console.log('Cotización seleccionada:', id);
+    this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
+  }
 
 
   @Output() actualizarDatos = new EventEmitter<void>();
@@ -206,21 +206,37 @@ seleccionarCotizacion(id: number) {
     };
   });
 
-   verDetalleCot() {
+  verDetalleCot(idCompania: number,nombreCia: string) {
     const dato = {
-      rutContratante: this.infoGral()?.rut_contratante,
-      p_id_solicitud: this.idSolicitud,
-      //p_id_compania_seguro: this.idCompania,
+      p_id_solicitud: this.infoGral()?.id_solicitud,
+      p_id_compania_seguro: idCompania,
+      p_nombre_compania_seguro: nombreCia,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
+      p_rut_contratante: this.infoGral()?.rut_contratante,
+      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
+      p_id_rubro: this.infoGral()?.id_rubro,
+      p_nombre_rubro: this.infoGral()?.nombre_rubro,
+      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
+      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
     };
+
+
+
+
+    //  const dato = {
+    //  p_id_solicitud: this.infoGral()?.id_solicitud,
+    //  p_id_compania_seguro: idCompania,
+    //  p_id_usuario: this.id_usuario,
+    //  p_tipo_usuario: this.tipoUsuario,
+    //  };
 
     console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '40%';
+    dialogConfig.width = '60%';
     dialogConfig.maxHeight = '80%';
     dialogConfig.panelClass = 'custom-dialog-container';
     dialogConfig.data = dato;
