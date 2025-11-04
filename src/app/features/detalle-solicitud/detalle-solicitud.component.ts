@@ -27,7 +27,6 @@ import {
   DetalleSolicitudInterface,
   ICompania,
   ICompaniaResponse,
-  ICompanias,
   IObservacion,
   ISolicitud,
 } from './modelo/detalle-interface';
@@ -113,6 +112,8 @@ export default class DetalleSolicitudComponent {
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
+
+
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -210,6 +211,8 @@ export default class DetalleSolicitudComponent {
             }
           }
           if (this.edoSolicitud()! === 'Propuesta Pendiente') {
+            console.log('edoSolicitud',this.edoSolicitud());
+
             this.flagPropuesta = false;
           }
           /* Fin BackEnd */
@@ -403,6 +406,8 @@ export default class DetalleSolicitudComponent {
   }
 
   crearPropuesta(): void {
+    console.log('flagPropuesta',this.flagPropuesta);
+    console.log('verCoord',this.verCoord);
     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante,
@@ -453,7 +458,9 @@ export default class DetalleSolicitudComponent {
       .open(AprobarCotizacionComponent, dialogConfig)
       .afterClosed()
       .subscribe((dato) => {
-        this.recargar();
+        this.cargarSolicitud(this.idSolicitud);
+        this.cargarCompanias(this.idSolicitud);
+        this.obtenerMinimo(this.idSolicitud);
         this.cotizacionSeleccionada = null;
       });
   }
