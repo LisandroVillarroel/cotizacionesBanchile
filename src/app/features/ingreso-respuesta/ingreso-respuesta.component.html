@@ -1,4 +1,5 @@
-<app-cabecera-popup [titulo]="'Ingresar Respuesta - Solicitud '+ this.datos.infoGral.id_solicitud" />
+<app-cabecera-popup [titulo]="'Ingresar Respuesta de '+ this.datos.compania.p_nombre_compania_seguro +
+' - Solicitud '+ this.datos.infoGral.id_solicitud" />
 <mat-dialog-content class="container-fluid mat-card-detalle p-0">
 
   <div class="container-fluid mt-3">
@@ -35,8 +36,225 @@
     </div>
   </div>
   <div class="container-fluid mt-3">
-    <app-informacion-principal  [solicitudId]="datos.infoGral.id_solicitud"
+    <!-- <app-informacion-principal  [solicitudId]="datos.infoGral.id_solicitud"
                                 [compania]="datos.compania"
-                                [flagAccion]="datos.flagAccion"/>
+                                [flagAccion]="datos.flagAccion"/> -->
+    <div [formGroup]="formRespuesta()"
+      class="table-con-titulo mat-elevation-z6" data-titulo="Información Principal">
+      <div class="container-fluid fondoGris justify-around d-flex p-4">
+        <div style="width: 49%; display: flex; align-items: flex-start">
+          <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+            data-titulo="Cotización Compañía" style="width: 100%">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
+                style="flex-grow: 1; min-width: 0">
+                <mat-label class="labelI-cuestionario"></mat-label>
+                <input matInput [value]="nombreArchivoCompania" disabled
+                  placeholder="Carga cotización enviada por la compañía" />
+              </mat-form-field>
+              <!-- Botón para abrir el selector de archivos -->
+              <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorCompania()"
+                type="button" class="boton-cargar-cuestionario">
+                <mat-icon>upload</mat-icon>
+              </button>
+              <!-- Input file oculto -->
+              <input type="file" #fileInputCompania hidden  (change)="onFileSelectedCompania($event)"/>
+              <!-- (change)="onFileSelectedCompania($event)"-->
+              <!-- Botón para eliminar archivo -->
+              <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoCompania()"
+                type="button" class="boton-eliminar-cuestionario">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-card>
+        </div>
+        <div style="width: 49%; display: flex; align-items: flex-start">
+          <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+            data-titulo="Cotización Propuesta" style="width: 100%">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
+                style="flex-grow: 1; min-width: 0">
+                <mat-label class="labelI-cuestionario"></mat-label>
+                <input matInput [value]="nombreArchivoPropuesta" disabled
+                  placeholder="Carga cotipropuesta" />
+              </mat-form-field>
+              <!-- Botón para abrir el selector de archivos -->
+              <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorPropuesta()"
+                type="button" class="boton-cargar-cuestionario">
+                <mat-icon>upload</mat-icon>
+              </button>
+              <!-- Input file oculto -->
+              <input type="file" #fileInputPropuesta hidden (change)="onFileSelectedPropuesta($event)"/>
+              <!-- (change)="onFileSelectedPropuesta($event)"  -->
+              <!-- Botón para eliminar archivo -->
+              <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoPropuesta()"
+                type="button" class="boton-eliminar-cuestionario">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="fondoGris container-fluid mt-0">
+        <div class="container-fluid mt-0 gap-2 d-flex">
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
+            <mat-label class="cursiva gris">Moneda</mat-label>
+            <mat-select [formControl]="moneda">
+              @for(_monedas of datosMoneda(); track _monedas){
+              <mat-option [value]="_monedas.id_moneda">
+                {{ _monedas.nombre_moneda }}
+              </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+            @if(moneda.invalid){
+              <mat-error>{{ getErrorMessage("moneda") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputBuscar" style="width: 25%;">
+            <mat-label class="cursiva gris">Valor prima neta</mat-label>
+            <input matInput [formControl]="primaNeta" type="number"
+                  step="0.01" min="0" class="no-spinner" required/>
+            @if (primaNeta.invalid) {
+            <mat-error>{{ getErrorMessage("primaNeta") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputBuscar" style="width: 25%;">
+            <mat-label class="cursiva gris">Valor prima afecta</mat-label>
+            <input matInput [formControl]="primaAfecta" type="number"
+                  step="0.01" min="0" class="no-spinner" required/>
+            @if(primaAfecta.invalid){
+              <mat-error>{{ getErrorMessage("primaAfecta") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputBuscar" style="width: 25%;">
+            <mat-label class="cursiva gris">Valor prima bruta</mat-label>
+            <input matInput [formControl]="primaBruta" type="number"
+                  step="0.01" min="0" class="no-spinner" required/>
+            @if(primaBruta.invalid){
+              <mat-error>{{ getErrorMessage("primaBruta") }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="container-fluid mt-0 gap-2 d-flex">
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
+            <mat-label class="cursiva gris">Medio de Pago</mat-label>
+            <mat-select [formControl]="mPago">
+              @for(_mPago of datosMedioPago(); track _mPago){
+              <mat-option [value]="_mPago.id_medio_de_pago">
+                {{ _mPago.nombre_medio_de_pago }}
+              </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+            @if(mPago.invalid){
+              <mat-error>{{ getErrorMessage("mPago") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
+            <mat-label class="cursiva gris">Banco</mat-label>
+            <mat-select [formControl]="banco">
+              @for(_banco of datosBanco(); track _banco){
+              <mat-option [value]="_banco.id_banco">
+                {{ _banco.nombre_banco }}
+              </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+            @if(banco.invalid){
+              <mat-error>{{ getErrorMessage("banco") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
+            <mat-label class="cursiva gris">Tipo de Cuenta</mat-label>
+            <mat-select [formControl]="tipoCuenta">
+              @for(_tipoCuenta of datosTipoCuenta(); track _tipoCuenta){
+              <mat-option [value]="_tipoCuenta.id_tipo_cuenta">
+                {{ _tipoCuenta.nombre_tipo_cuenta }}
+              </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+            @if(tipoCuenta.invalid){
+              <mat-error>{{ getErrorMessage("tipoCuenta") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputBuscar" style="width: 25%;">
+            <mat-label class="cursiva gris">N° de cuenta</mat-label>
+            <input matInput [formControl]="nroCuenta" type="number"
+                  class="no-spinner" (keypress)="soloNumeros($event)" required/>
+            @if(nroCuenta.invalid){
+              <mat-error>{{ getErrorMessage("nroCuenta") }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="container-fluid mt-0 gap-2 d-flex">
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%;">
+            <mat-label class="cursiva gris">Cuotas</mat-label>
+            <mat-select [formControl]="nroCuotas">
+              <mat-option value="1">1</mat-option>
+              <mat-option value="2">2</mat-option>
+              <mat-option value="3">3</mat-option>
+              <mat-option value="4">4</mat-option>
+              <mat-option value="5">5</mat-option>
+              <mat-option value="6">6</mat-option>
+              <mat-option value="7">7</mat-option>
+              <mat-option value="8">8</mat-option>
+              <mat-option value="9">9</mat-option>
+              <mat-option value="10">10</mat-option>
+              <mat-option value="11">11</mat-option>
+              <mat-option value="12">12</mat-option>
+            </mat-select>
+            @if(nroCuotas.invalid){
+              <mat-error>{{ getErrorMessage("nroCuotas") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputFecha" style="width: 25%;">
+            <mat-label class="cursiva gris">Fecha Inicio:</mat-label>
+            <input matInput [matDatepicker]="pickerInicio" [formControl]="pInicio" required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerInicio" class="fontSmall"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
+            @if (pInicio.invalid) {
+              <mat-error>{{ getErrorMessage("pInicio") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputFecha" style="width: 25%;">
+            <mat-label class="cursiva gris">Fecha Término:</mat-label>
+            <input matInput [matDatepicker]="pickerTermino" [formControl]="pTermino" required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerTermino" class="fontSmall"></mat-datepicker-toggle>
+            <mat-datepicker #pickerTermino></mat-datepicker>
+            @if (pTermino.invalid) {
+              <mat-error>{{ getErrorMessage("pTermino") }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="inputFecha" style="width: 25%;">
+            <mat-label class="cursiva gris">Fecha primer vencimiento:</mat-label>
+            <input matInput [matDatepicker]="pickerVencimiento" [formControl]="pVencimiento" required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerVencimiento" class="fontSmall"></mat-datepicker-toggle>
+            <mat-datepicker #pickerVencimiento></mat-datepicker>
+            @if (pVencimiento.invalid) {
+              <mat-error>{{ getErrorMessage("pVencimiento") }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </mat-dialog-content>
+<mat-card-actions>
+  <div class="container-fluid d-flex p-4">
+    <div class="botones-derecha">
+      <button mat-stroked-button color="primary" class="colorFondoBotonSalir" mat-dialog-close
+        [disabled]="false">Cerrar</button>
+      @if(datos.flagAccion){
+        <button mat-stroked-button class="btn-info" (click)="registraRespuesta()"
+              [disabled]="formRespuesta().invalid">Registrar Respuesta</button>
+      }@else{
+        <button mat-stroked-button class="btn-info" (click)="editarRespuesta()"
+              [disabled]="formRespuesta().invalid">Modificar Respuesta</button>
+      }
+    </div>
+  </div>
+</mat-card-actions>

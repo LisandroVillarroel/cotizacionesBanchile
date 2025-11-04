@@ -47,7 +47,9 @@ export class CompaniasContactadasComponent {
   panelOpenState = false;
   infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>();
-  companies = computed(() => this.companias());
+  //compania: ICompania[];
+  idCompania = 0;
+  compania = computed(() => this.companias());
 
   @Input() verEjec: boolean = true;
   @Input() verCoord: boolean = true;
@@ -244,19 +246,16 @@ export class CompaniasContactadasComponent {
       });
   }
 
-
   @Output() cargaRespuesta = new EventEmitter<void>();
   registrarRespuesta(idCompania: number): void {
+      this.compania = computed( () => this.companias()!.filter( c =>
+        { return c.p_id_compania_seguro === idCompania })) ;
     const dato = {
       infoGral: this.infoGral()!,
-      compania: computed( () => {
-                  return this.companias()!.filter( c => {
-                    c.p_id_compania_seguro === idCompania
-                  })
-                }),
+      compania: this.compania()![0],
       flagAccion: true
     };
-
+    console.log("Info hacia Registro: ", dato);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

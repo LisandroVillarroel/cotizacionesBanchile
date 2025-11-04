@@ -45,7 +45,7 @@ export default class GestionCotizacionesComponent{
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipo_usuario = (this.id_usuario.substring(0,1))?.toUpperCase()!;
+  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
   gestionService = inject(GestionCotizacionesService)
   resumenGestion = signal<IResumenCotizaciones>({
@@ -70,10 +70,11 @@ export default class GestionCotizacionesComponent{
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipo_usuario
     };
-
+    console.log("Entradas: ", entrada)
     this.gestionService.postListadoSolicitudes(entrada).subscribe({
       next: (dato: IGestionResponse) => {
         if (dato.codigo === 200) {
+          console.log("Datos: ", dato)
           this.resumenGestion.set({
             recibidas: dato.p_nro_cotiz_reg,
             pendientes: dato.p_nro_prop_pend,
@@ -87,10 +88,38 @@ export default class GestionCotizacionesComponent{
               nombre_contratante: (valor.p_nombre_contratante === null ||
                 valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
             }
-          })
-          this.pendientes.set(dato.ps_cursorPen);
-          this.emitidas.set(dato.ps_cursorProGen);
-          this.firmadas.set(dato.ps_cursorProFir);
+          });
+          this.recibidas.set(res);
+
+          let res2 = dato.ps_cursorPen;
+          res.map((valor: IGestionCotizacion)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+            }
+          });
+          this.pendientes.set(res2);
+
+          let res3 = dato.ps_cursorProGen;
+          res.map((valor: IGestionCotizacion)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+            }
+          });
+          this.emitidas.set(res3);
+
+          let res4 = dato.ps_cursorProFir;
+          res.map((valor: IGestionCotizacion)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+            }
+          });
+          this.firmadas.set(res4);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
         }
       },
