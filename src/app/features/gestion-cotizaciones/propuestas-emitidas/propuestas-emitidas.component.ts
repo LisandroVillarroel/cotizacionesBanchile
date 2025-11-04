@@ -175,21 +175,37 @@ export class PropuestasEmitidasComponent {
     }
     return salida;
   }
-
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
-    verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
+  verPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
 
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = IdSolicitud;
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(VerPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })*/
+  }
+
+  private readonly dialogCarga = inject(MatDialog);
+  retornoCarga = output<boolean>();
+  cargarPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(VerPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })*/
+  }
 }

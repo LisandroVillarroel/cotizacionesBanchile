@@ -177,21 +177,6 @@ export class PropuestasPendientesComponent {
 
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
-/*   verDetalle(IdSolicitud: number) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
-    this.dialog
-      .open(DetalleSolicitudComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })
-  } */
-
   generarPropuesta(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 

@@ -1,20 +1,64 @@
-import { Component } from '@angular/core';
-import { MatIcon } from "@angular/material/icon";
-import { MatLabel } from "@angular/material/form-field";
-import { MatIconButton } from '@angular/material/button';
-import { MatDialogClose } from '@angular/material/dialog';
-import { MatButton } from '@angular/material/button';
+import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
+import { Component, Inject, inject } from '@angular/core';
+import { MatIconModule } from "@angular/material/icon";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardActions } from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDivider } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { IRequest } from '@shared/modelo/servicios-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { GenerarPropuestaService } from '../generar-propuesta.service';
 
 @Component({
   selector: 'app-confirmacion-ppta',
   standalone: true,
-  imports: [MatIcon, MatLabel, MatIconButton, MatDialogClose, MatButton, MatButtonModule, MatCardActions,CabeceraPopupComponente],
+  imports: [
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    FormsModule,
+    MatDivider,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    CabeceraPopupComponente
+  ],
   templateUrl: './confirmacion-ppta.component.html',
   styleUrl: './confirmacion-ppta.component.css'
 })
 export class ConfirmacionPptaComponent {
+  constructor(
+    public dialogRef: MatDialogRef<CreacionPropuestaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: IRequest,
+  ) { }
 
+  notificacioAlertnService = inject(NotificacioAlertnService);
+  generarService = inject(GenerarPropuestaService);
+
+  cancelar(): void {
+    this.dialogRef.close('cancelado');
+  }
+
+  generar(): void {
+    this.generarService.postGeneraPropuesta(this.data)
+      .subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La propuesta ha sido emitida exitosamente.");
+            if (result) {
+              this.dialogRef.close(true);
+            }
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
+      });
+  }
 }
