@@ -47,13 +47,6 @@ import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-r
   ],
 })
 export class CompaniasContactadasComponent {
-  panelOpenState = false;
-  infoGral = input.required<ISolicitud | undefined>();
-  companias = input.required<ICompania[] | undefined>();
-  //compania: ICompania[];
-  idCompania = 0;
-  compania = computed(() => this.companias());
-
   @Input() verEjec: boolean = true;
   @Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
@@ -61,6 +54,16 @@ export class CompaniasContactadasComponent {
   @Input() cotizacionSeleccionada: number | null = null;
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
+  @Output() cargaRespuesta = new EventEmitter<void>();
+
+
+  panelOpenState = false;
+  infoGral = input.required<ISolicitud | undefined>();
+  companias = input.required<ICompania[] | undefined>();
+  //compania: ICompania[];
+  idCompania = 0;
+  compania = computed(() => this.companias());
+
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -131,9 +134,7 @@ export class CompaniasContactadasComponent {
     // lógica para ver cotipropuesta
   }
 
-  registrarRespuesta(idCotizacion: number) {
-    // lógica para registrar respuesta
-  }
+
 
   seleccionarCotizacion(id: number) {
     this.cotizacionSeleccionada = id;
@@ -301,7 +302,7 @@ export class CompaniasContactadasComponent {
       });
   }
 
-  @Output() cargaRespuesta = new EventEmitter<void>();
+
   registrarRespuesta(idCompania: number): void {
       this.compania = computed( () => this.companias()!.filter( c =>
         { return c.p_id_compania_seguro === idCompania })) ;
