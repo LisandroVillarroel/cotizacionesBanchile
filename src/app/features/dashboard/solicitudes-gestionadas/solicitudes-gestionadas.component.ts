@@ -110,18 +110,19 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     "accion"
   ];
 
-  solicitudesCoord(){
-    return this.datosSolicitud()?.filter(item =>{
-      return !item.descripcion_estado?.toLowerCase().includes("edicion")})
-  }
+  // solicitudesCoord(){
+  //   return this.datosSolicitud()?.filter(item =>{
+  //     return !item.descripcion_estado?.toLowerCase().includes("edicion")})
+  // }
 
   dataSourceSolicitud = computed(() => {
+   // console.log('Grilla', this.datosSolicitud());
     var tabla =new MatTableDataSource<IListadoSolicitudes>();
-    if(this.tipoUsuario === "C"){
-      tabla.data = this.solicitudesCoord()!;
-    }else{
-      tabla.data = this.datosSolicitud()!;
-    }
+    // if(this.tipoUsuario === "C"){
+    //   tabla.data = this.solicitudesCoord()!;
+    // }else{
+    tabla.data = this.datosSolicitud()!;
+    // }
     this.setSortingAndPagination(tabla);
     return tabla;
   });

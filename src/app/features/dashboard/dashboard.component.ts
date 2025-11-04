@@ -1,3 +1,4 @@
+//import { es } from '@angular/common/locales/es';
 import { Component, inject, signal } from '@angular/core';
 import { MatLabel } from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -39,20 +40,24 @@ import { DashboardService } from './dashboard.service';
   styleUrls: ['./dashboard.component.css']
 })
 
-export default class DashboardComponent   {
+export default class DashboardComponent {
   fechaActual = new FormControl<Date>(new Date());
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   dashboardService = inject(DashboardService)
-  resumenGeneral = signal<IResumenSolicitudes>({p_EnProceso: 0,
-  p_EsperandoRespuesta: 0,
-  p_Aprobadas: 0,
-  p_ConObservaciones: 0});
-  listadoSolicitudes = signal<IListadoSolicitudes[] >([]);
+  resumenGeneral = signal<IResumenSolicitudes>({
+    p_EnProceso: 0,
+    p_EsperandoRespuesta: 0,
+    p_Aprobadas: 0,
+    p_ConObservaciones: 0
+  });
+  listadoSolicitudes = signal<IListadoSolicitudes[]>([]);
 
-  async ngOnInit(){
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+
+  async ngOnInit() {
     this.seleccionaFecha();
   }
 
@@ -72,18 +77,30 @@ export default class DashboardComponent   {
             p_Aprobadas: dato.p_Aprobadas,
             p_ConObservaciones: dato.p_ConObservaciones
           });
-          this.listadoSolicitudes.set(dato.p_cursor);
+
+
+
+          if (this.tipoUsuario === "C") {
+            const listadoFiltrado = dato.p_cursor.filter((item: IListadoSolicitudes) => {
+              console.log('Listado Solicitudes Coor', item);
+              return !item.descripcion_estado?.toLowerCase().includes("edicion");
+            });
+
+            this.listadoSolicitudes.set(listadoFiltrado);
+          } else {
+            this.listadoSolicitudes.set(dato.p_cursor);
+          }
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
   msj = false;
-  recibido(msj: boolean){
-    if(msj){
+  recibido(msj: boolean) {
+    if (msj) {
       this.seleccionaFecha();
     }
   }
