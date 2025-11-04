@@ -1,6 +1,5 @@
 import { Component, computed, input, output, inject, signal, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
-import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { IGestionCotizacion } from '../gestionCotizacion-interface';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +21,7 @@ import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 
 @Component({
   selector: 'app-propuestas-pendientes',
@@ -177,7 +177,7 @@ export class PropuestasPendientesComponent {
 
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
-  verDetalle(IdSolicitud: number) {
+/*   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -188,6 +188,21 @@ export class PropuestasPendientesComponent {
     dialogConfig.data = IdSolicitud;
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })
+  } */
+
+  generarPropuesta(IdSolicitud: number) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => { this.retorno.emit(true); })
   }
