@@ -8,6 +8,7 @@ import {
 } from '../modelo/detalle-interface';
 import {
   IAgregaCompania,
+  IModificaCompania,
   IEliminaCompania,
   IMinimoResponse,
 } from '@features/detalle-solicitud/modelo/compania';
@@ -35,12 +36,11 @@ export class CompaniasContactadasService {
   }
 
   postCompaniasTipoSeguro(filtro: any): Observable<ICompaniasResponse> {
-    return this.http
-      .post<ICompaniasResponse>(
-        `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
-        filtro,
-        { headers: this.headers }
-      );
+    return this.http.post<ICompaniasResponse>(
+      `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
+      filtro,
+      { headers: this.headers }
+    );
   }
 
   postAgregaCompania(
@@ -49,6 +49,18 @@ export class CompaniasContactadasService {
     return this.http.post<any>(
       `${environment.apiUrlConsumer}/agregarCompaniasSolicitud`,
       agregarCompaniasSolicitud,
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  postModificaCompania(
+    modificarCompaniasSolicitud: IModificaCompania
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/modificarCompaniasSolicitud`,
+      modificarCompaniasSolicitud,
       {
         headers: this.headers,
       }
