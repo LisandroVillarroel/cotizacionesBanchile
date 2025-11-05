@@ -120,7 +120,7 @@
         Cerrar
       </button>
     </div>
-    <div class="botones-derecha">
+    <div class="botones-derecha" *ngIf="!flagSoloCerrar">
       <button
         mat-stroked-button
         class="btn-danger"
@@ -190,7 +190,7 @@
       <button
       mat-stroked-button
       class="btn-success"
-      [hidden]="flagAprobarCot || verEjec"
+      [hidden]="flagAprobarCot || verCoord"
       [disabled]="!cotizacionSeleccionada"
       (click)="aprobarCotizacion()"
       >

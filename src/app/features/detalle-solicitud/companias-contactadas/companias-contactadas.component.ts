@@ -55,6 +55,7 @@ export class CompaniasContactadasComponent {
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() cargaRespuesta = new EventEmitter<void>();
+  @Output() actualizarDatos = new EventEmitter<void>();
 
 
   panelOpenState = false;
@@ -142,7 +143,7 @@ export class CompaniasContactadasComponent {
     this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
   }
 
-  @Output() actualizarDatos = new EventEmitter<void>();
+
 
   verCompania(companiaSeleccionada: any): void {
     const dato = {
@@ -257,7 +258,7 @@ export class CompaniasContactadasComponent {
     };
   });
 
-  verDetalleCot(idCompania: number,nombreCia: string) {
+  verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
@@ -274,14 +275,6 @@ export class CompaniasContactadasComponent {
 
 
 
-
-    //  const dato = {
-    //  p_id_solicitud: this.infoGral()?.id_solicitud,
-    //  p_id_compania_seguro: idCompania,
-    //  p_id_usuario: this.id_usuario,
-    //  p_tipo_usuario: this.tipoUsuario,
-    //  };
-
     console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
@@ -297,15 +290,14 @@ export class CompaniasContactadasComponent {
       .afterClosed()
       .subscribe((confirmado) => {
         if (confirmado) {
-          this.actualizarDatos.emit(); // o refrescar la grilla
+          this.actualizarDatos.emit();
         }
       });
   }
 
 
   registrarRespuesta(idCompania: number): void {
-      this.compania = computed( () => this.companias()!.filter( c =>
-        { return c.p_id_compania_seguro === idCompania })) ;
+    this.compania = computed(() => this.companias()!.filter(c => { return c.p_id_compania_seguro === idCompania }));
     const dato = {
       infoGral: this.infoGral()!,
       compania: this.compania()![0],
@@ -324,4 +316,10 @@ export class CompaniasContactadasComponent {
       .afterClosed()
       .subscribe(() => { this.cargaRespuesta.emit(); });
   }
+
+
+  habilitaRadioButton(estado: string): boolean {
+    return estado?.toLowerCase() === 'recibida';
+  }
+
 }

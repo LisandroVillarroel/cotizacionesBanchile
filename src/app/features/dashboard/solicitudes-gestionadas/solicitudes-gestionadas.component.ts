@@ -53,7 +53,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './solicitudes-gestionadas.component.css'
 })
 
-export class SolicitudesGestionadasComponent  implements OnInit {
+export class SolicitudesGestionadasComponent implements OnInit {
   datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -82,18 +82,18 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   formularioModificado = signal(false);
 
   contratante = new FormControl();
-    rubro = new FormControl();
-    seguro = new FormControl();
-    estado = new FormControl();
-    fecha = new FormControl<Date | null>(null);
+  rubro = new FormControl();
+  seguro = new FormControl();
+  estado = new FormControl();
+  fecha = new FormControl<Date | null>(null);
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante : this.contratante,
-    rubro : this.rubro,
-    seguro : this.seguro,
-    estado : this.estado,
-    fecha : this.fecha
-    })
+    contratante: this.contratante,
+    rubro: this.rubro,
+    seguro: this.seguro,
+    estado: this.estado,
+    fecha: this.fecha
+  })
   );
 
   displayedColumns: string[] = [
@@ -116,8 +116,8 @@ export class SolicitudesGestionadasComponent  implements OnInit {
   // }
 
   dataSourceSolicitud = computed(() => {
-   // console.log('Grilla', this.datosSolicitud());
-    var tabla =new MatTableDataSource<IListadoSolicitudes>();
+    // console.log('Grilla', this.datosSolicitud());
+    var tabla = new MatTableDataSource<IListadoSolicitudes>();
     // if(this.tipoUsuario === "C"){
     //   tabla.data = this.solicitudesCoord()!;
     // }else{
@@ -144,35 +144,35 @@ export class SolicitudesGestionadasComponent  implements OnInit {
 
   // Señal computada para los datos filtrados
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante??'';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
-    const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    const estado = this.filtroFormulario().value.estado??'';
-    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+    const contratante = this.filtroFormulario().value.contratante ?? '';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
+    const estado = this.filtroFormulario().value.estado ?? '';
+    let fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
-    let fechaInicio=new Date();
-    if (fechaInicio_Inicial!=null){
-         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    let fechaInicio = new Date();
+    if (fechaInicio_Inicial != null) {
+      fechaInicio = new Date(this.filtroFormulario().value.fecha);
     }
 
     this.formularioModificado();
     return this.datosSolicitud()!.filter(item => {
 
       const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);
-      let cumpleFecha=true;
+      let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);
 
-      if (fechaInicio_Inicial!=null){
+      if (fechaInicio_Inicial != null) {
         cumpleFecha = !fechaInicio || (
-        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-        fechaBase.getMonth() === fechaInicio.getMonth() &&
-        fechaBase.getDate() === fechaInicio.getDate()
-      );
-    }
-    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+          fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+          fechaBase.getMonth() === fechaInicio.getMonth() &&
+          fechaBase.getDate() === fechaInicio.getDate()
+        );
+      }
+      return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
 
@@ -192,7 +192,7 @@ export class SolicitudesGestionadasComponent  implements OnInit {
       this.updateTableData();
     });
 
-    switch(this.tipoUsuario){
+    switch (this.tipoUsuario) {
       case "E":
         this.verCoord = false; break;
       case "C":
@@ -215,9 +215,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           this.datoRubros.set(dato.p_cursor);
         }
       },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
     });
   }
 
@@ -228,9 +228,9 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           this.datosEstados.set(dato.p_cursor);
         }
       },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
     });
   }
 
@@ -243,13 +243,28 @@ export class SolicitudesGestionadasComponent  implements OnInit {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
       },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
     });
   }
 
   retorno = output<boolean>();
+
+  // verDetalle(IdSolicitud: number) {
+  //   const dialogConfig = new MatDialogConfig();
+
+  //   dialogConfig.disableClose = true;
+  //   dialogConfig.autoFocus = true;
+  //   dialogConfig.width = '80%';
+  //   dialogConfig.height = '90%';
+  //   dialogConfig.position = { top: '3%' };
+  //   dialogConfig.data = IdSolicitud;
+  //   this.dialog
+  //     .open(DetalleSolicitudComponent, dialogConfig)
+  //     .afterClosed()
+  //     .subscribe(() => { this.retorno.emit(true); })
+  // }
 
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
@@ -259,16 +274,21 @@ export class SolicitudesGestionadasComponent  implements OnInit {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
+
+    dialogConfig.data = {
+      idSolicitud: IdSolicitud,
+      flagSoloCerrar: true
+    };
+
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => { this.retorno.emit(true); })
   }
 
-  getEstadoFiltrado(idEstado: number){
+  getEstadoFiltrado(idEstado: number) {
     return this.datosEstados().filter(item =>
-      item.id_estado_solicitud===idEstado
+      item.id_estado_solicitud === idEstado
     );
   }
 

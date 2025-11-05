@@ -77,15 +77,11 @@ export default class DashboardComponent {
             p_Aprobadas: dato.p_Aprobadas,
             p_ConObservaciones: dato.p_ConObservaciones
           });
-
-
-
           if (this.tipoUsuario === "C") {
             const listadoFiltrado = dato.p_cursor.filter((item: IListadoSolicitudes) => {
               console.log('Listado Solicitudes Coor', item);
               return !item.descripcion_estado?.toLowerCase().includes("edicion");
             });
-
             this.listadoSolicitudes.set(listadoFiltrado);
           } else {
             this.listadoSolicitudes.set(dato.p_cursor);
