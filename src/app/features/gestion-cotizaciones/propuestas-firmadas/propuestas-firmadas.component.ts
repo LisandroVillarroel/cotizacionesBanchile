@@ -21,6 +21,7 @@ import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 
 @Component({
   selector: 'app-propuestas-firmadas',
@@ -163,8 +164,8 @@ export class PropuestasFirmadasComponent {
 
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
-  verPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
+    verDetalle(IdSolicitud: number) {
+      const dialogConfig = new MatDialogConfig();
 
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
