@@ -65,7 +65,6 @@ export class PropuestasFirmadasComponent {
   filtroRubro = signal('');
   filtroTipoSeguro = signal('');
   filtroSolicitud = signal('');
-  filtroSolicitud = signal('');
 
   formularioModificado = signal(false);
 
@@ -73,13 +72,11 @@ export class PropuestasFirmadasComponent {
   rubro = new FormControl();
   seguro = new FormControl();
   solicitud = new FormControl();
-  solicitud = new FormControl();
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     contratante : this.contratante,
     rubro : this.rubro,
     seguro : this.seguro,
-    solicitud : this.solicitud
     solicitud : this.solicitud
     })
   );
@@ -89,16 +86,12 @@ export class PropuestasFirmadasComponent {
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
     const solicitud = this.filtroFormulario().value.solicitud??'';
-    const solicitud = this.filtroFormulario().value.solicitud??'';
 
     this.formularioModificado();
     return this.firmadas()!.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
-      const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
-
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
       const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
 
       return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
@@ -171,7 +164,7 @@ export class PropuestasFirmadasComponent {
   }
 
   private readonly dialog = inject(MatDialog);
-  retorno = output<boolean>();
+
   verPropuesta(IdSolicitud: number) {
 /*     const dialogConfig = new MatDialogConfig();
 
@@ -185,16 +178,6 @@ export class PropuestasFirmadasComponent {
       .open(VerPropuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => { this.retorno.emit(true); })*/
-  }
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
-    this.dialog
-      .open(VerPropuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })*/
+
   }
 }
