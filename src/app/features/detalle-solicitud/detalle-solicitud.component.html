@@ -56,18 +56,27 @@
                 </mat-expansion-panel-header>
 
                 <app-companias-contactadas
-                  [infoGral] = "infoGral()"
-                  [companias] = "companias()"
+                  [infoGral]="infoGral()"
+                  [companias]="companias()"
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
-                  (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
+                  (actualizarDatos)="
+                    cargarCompanias(idSolicitud);
+                    obtenerMinimo(idSolicitud);
+                    cargarSolicitud(idSolicitud)
+                  "
                   [cotizacionSeleccionada]="cotizacionSeleccionada"
-                  (cotizacionSeleccionadaEvent)="cotizacionSeleccionada = $event"
+                  (cotizacionSeleccionadaEvent)="
+                    cotizacionSeleccionada = $event
+                  "
+                  (cargaRespuesta)="
+                    cargarSolicitud(idSolicitud);
+                    cargarCompanias(idSolicitud);
+                    obtenerMinimo(idSolicitud)
+                  "
                 />
               </mat-expansion-panel>
-
-
 
               }
             </div>
@@ -188,11 +197,11 @@
       </button>
 
       <button
-      mat-stroked-button
-      class="btn-success"
-      [hidden]="flagAprobarCot || verEjec"
-      [disabled]="!cotizacionSeleccionada"
-      (click)="aprobarCotizacion()"
+        mat-stroked-button
+        class="btn-success"
+        [hidden]="flagAprobarCot || verEjec"
+        [disabled]="!cotizacionSeleccionada"
+        (click)="aprobarCotizacion()"
       >
         Aprobar Cotización
       </button>

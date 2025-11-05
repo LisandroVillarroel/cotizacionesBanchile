@@ -56,14 +56,12 @@ export class CompaniasContactadasComponent {
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() cargaRespuesta = new EventEmitter<void>();
 
-
   panelOpenState = false;
   infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>();
   //compania: ICompania[];
   idCompania = 0;
   compania = computed(() => this.companias());
-
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -74,7 +72,7 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
   //detalleGral = signal<InformacionGeneralComponent>
 
-  constructor() { }
+  constructor() {}
 
   getCellStyle(estado: number) {
     let color: string;
@@ -133,8 +131,6 @@ export class CompaniasContactadasComponent {
   verCotiPropuesta(idCotizacion: number) {
     // lógica para ver cotipropuesta
   }
-
-
 
   seleccionarCotizacion(id: number) {
     this.cotizacionSeleccionada = id;
@@ -257,7 +253,7 @@ export class CompaniasContactadasComponent {
     };
   });
 
-  verDetalleCot(idCompania: number,nombreCia: string) {
+  verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
@@ -265,15 +261,13 @@ export class CompaniasContactadasComponent {
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
       p_rut_contratante: this.infoGral()?.rut_contratante,
-      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
+      P_nombre_razon_social_contratante:
+        this.infoGral()?.nombre_razon_social_contratante,
       p_id_rubro: this.infoGral()?.id_rubro,
       p_nombre_rubro: this.infoGral()?.nombre_rubro,
       p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
       p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
     };
-
-
-
 
     //  const dato = {
     //  p_id_solicitud: this.infoGral()?.id_solicitud,
@@ -297,21 +291,22 @@ export class CompaniasContactadasComponent {
       .afterClosed()
       .subscribe((confirmado) => {
         if (confirmado) {
-          this.actualizarDatos.emit(); // o refrescar la grilla
+          this.actualizarDatos.emit();
         }
       });
   }
 
-
   registrarRespuesta(idCompania: number): void {
-      this.compania = computed( () => this.companias()!.filter( c =>
-        { return c.p_id_compania_seguro === idCompania })) ;
+    this.compania = computed(() =>
+      this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
+    );
+
     const dato = {
       infoGral: this.infoGral()!,
       compania: this.compania()![0],
-      flagAccion: true
+      flagAccion: true,
     };
-    console.log("Info hacia Registro: ", dato);
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -319,9 +314,14 @@ export class CompaniasContactadasComponent {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = dato;
+
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.cargaRespuesta.emit(); });
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.cargaRespuesta.emit();
+        }
+      });
   }
 }

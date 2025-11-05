@@ -46,7 +46,6 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
