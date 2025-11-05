@@ -91,20 +91,23 @@
             <p class="fontLarge">{{item.p_nombre_tipo_seguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%; align-content: center;">
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall destacado" matColumnDef="Fecha">Fecha Emisión</p>
+            <p class="fontLarge">{{item.p_fecha_emision_propuesta | date: 'dd/MM/yyyy'}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 5%; align-content: center;">
             <button (click)="verPropuesta(item.p_id_Solicitud)"
-              mat-button class="btn-info"
-              matTooltip="Ver propuesta"
-              style="width: 100%; font-size: 14px !important; align-items: center !important;">
-              Ver propuesta
+              mat-icon-button
+              matTooltip="Ver propuesta">
+              <mat-icon class="destacado">preview</mat-icon>
             </button>
           </div>
-          <div class="p-2" style="width: 15%; align-content: center;">
+          <div class="p-2" style="width: 5%; align-content: center;">
             <button (click)="cargarPropuesta(item.p_id_Solicitud)"
-              mat-button class="btn-primary"
-              matTooltip="Cargar propuesta"
-              style="width: 100%; font-size: 14px !important; align-items: center !important;">
-              Cargar propuesta
+              mat-icon-button
+              matTooltip="Cargar propuesta firmada">
+              <mat-icon class="destacado">upload_file</mat-icon>
             </button>
           </div>
         </mat-card-content>

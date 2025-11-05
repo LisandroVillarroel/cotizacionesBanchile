@@ -91,12 +91,16 @@
             <p class="fontLarge">{{item.p_nombre_tipo_seguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%; align-content: center;">
+          <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall destacado" matColumnDef="Fecha">Fecha Aceptación</p>
+            <p class="fontLarge">{{item.p_fecha_aceptacion_solicitud | date: 'dd/MM/yyyy'}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 10%; align-content: center;">
             <button (click)="generarPropuesta(item.p_id_Solicitud)"
-              mat-button class="btn-primary"
-              matTooltip="Emitir propuesta a ISOL"
-              style="width: 100%; font-size: 14px !important; align-items: center !important;">
-              Generar propuesta
+              mat-icon-button
+              matTooltip="Generar propuesta">
+              <mat-icon class="destacado">edit_squared</mat-icon>
             </button>
           </div>
         </mat-card-content>
