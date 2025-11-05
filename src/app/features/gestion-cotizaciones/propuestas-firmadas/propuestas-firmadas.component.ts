@@ -50,6 +50,7 @@ import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solic
   styleUrl: './propuestas-firmadas.component.css'
 })
 export class PropuestasFirmadasComponent {
+    retorno = output<boolean>();
   firmadas = input.required<IGestionCotizacion[] | undefined>();
   cotFirmadas = computed(()=> this.firmadas());
 
@@ -162,23 +163,21 @@ export class PropuestasFirmadasComponent {
     return salida;
   }
 
-  private readonly dialog = inject(MatDialog);
-  retorno = output<boolean>();
-    verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
 
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = {
-      idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
-    };
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
+
+
+  verPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(VerPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })*/
+  }
 }

@@ -198,3 +198,6 @@ export class PropuestasEmitidasComponent {
         .subscribe(() => { this.retorno.emit(true); })
     }
 }
+  }*/
+}
+}

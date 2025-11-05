@@ -50,6 +50,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
   styleUrl: './cotizaciones-registradas.component.css'
 })
 export class CotizacionesRegistradasComponent {
+    retorno = output<boolean>();
   recibidas = input.required<IGestionCotizacion[] | undefined>();
   cotRecibidas = computed(()=> this.recibidas());
 
@@ -163,7 +164,7 @@ export class CotizacionesRegistradasComponent {
   }
 
   private readonly dialog = inject(MatDialog);
-  retorno = output<boolean>();
+
     verDetalle(IdSolicitud: number) {
       const dialogConfig = new MatDialogConfig();
 
