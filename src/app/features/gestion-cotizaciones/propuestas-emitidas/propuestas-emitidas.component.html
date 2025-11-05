@@ -6,6 +6,15 @@
 
     <div style="width: 20%;">
       <mat-form-field class="inputBuscar">
+        <mat-label class="cursiva gris-claro">ID Solicitud</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+          <input matInput  [formControl]="solicitud"
+            (keyup)="pagina.set(0)">
+      </mat-form-field>
+    </div>
+
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
         <mat-label class="cursiva gris-claro">Contratante</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
           <input matInput  [formControl]="contratante"
@@ -38,15 +47,6 @@
             }
             <input matInput  />
           </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div style="width: 20%;">
-        <mat-form-field class="inputSelect" style="width: 100%;">
-          <mat-label class="cursiva gris-claro">Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="fecha">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
 

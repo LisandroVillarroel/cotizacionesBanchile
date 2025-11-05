@@ -3,7 +3,14 @@
     <div class="gap-1" style="width: 10%;">
       <span class="gris"> Filtrar por: </span>
     </div>
-
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="cursiva gris-claro">ID Solicitud</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+          <input matInput  [formControl]="solicitud"
+            (keyup)="pagina.set(0)">
+      </mat-form-field>
+    </div>
     <div style="width: 20%;">
       <mat-form-field class="inputBuscar">
         <mat-label class="cursiva gris-claro">Contratante</mat-label>
