@@ -8,88 +8,88 @@
 
 
 
-<mat-radio-group
-  [value]="cotizacionSeleccionada"
-  (change)="seleccionarCotizacion($event.value)"
->
+  <mat-radio-group [value]="cotizacionSeleccionada" (change)="seleccionarCotizacion($event.value)">
 
 
-  <!-- @for(obj of companias(); track $index) { -->
-  <ng-container *ngFor="let obj of companias(); let i = index">
-  <!-- <div class="container-fluid mt-2"> -->
-    <mat-card class="alinea-card-gestion">
-      <mat-card-content class="d-flex p-0">
-        <div class="p-2" style="width: 20%">
-          <p class="fontSmall">Compañía</p>
-          <p class="fontLarge">{{ obj.p_nombre_compania_seguro }}</p>
-        </div>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="p-2" style="width: 20%">
-          <p class="fontSmall">Fecha envío</p>
-          <p class="fontLarge">{{ obj.p_id_fecha_envio_cotizacion }}</p>
-        </div>
-        <!--         <mat-divider [vertical]="true"></mat-divider>
+    <!-- @for(obj of companias(); track $index) { -->
+    <ng-container *ngFor="let obj of companias(); let i = index">
+      <!-- <div class="container-fluid mt-2"> -->
+      <mat-card class="alinea-card-gestion">
+        <mat-card-content class="d-flex p-0">
+          <div class="p-2" style="width: 20%">
+            <p class="fontSmall">Compañía</p>
+            <p class="fontLarge">{{ obj.p_nombre_compania_seguro }}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 20%">
+            <p class="fontSmall">Fecha envío</p>
+            <p class="fontLarge">{{ obj.p_id_fecha_envio_cotizacion }}</p>
+          </div>
+          <!--         <mat-divider [vertical]="true"></mat-divider>
         <div class="p-2" style="width: 15%">
           <p class="fontSmall">Tiempo transcurrido</p>
           <p class="fontLarge">{{ obj.p_dias_transcurridos }}</p>
         </div> -->
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="p-2" style="width: 15%">
-          <p class="fontSmall">Estado cotización</p>
-          <p class="fontLarge" [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)">
-            {{ obj.p_id_nombre_estado_cotizacion }}
-          </p>
-        </div>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="p-2" style="width: 15%">
-          <p class="fontSmall">Acciones</p>
-          <div class="gap-2 d-flex" style="align-content: center; border-radius: 0px; text-align: end">
-            @for(btn of acciones()(obj.p_id_nombre_estado_cotizacion); track
-            $index) {
-            <button class="button-link" [matTooltip]="btn.tooltip" mat-icon-button
-              (click)="btn.accion(obj.p_id_compania_seguro)">
-              <mat-icon class="destacado">{{ btn.icon }}</mat-icon>
-            </button>
-            <!-- <mat-divider [vertical]="true"></mat-divider> -->
-
-            }
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 15%">
+            <p class="fontSmall">Estado cotización</p>
+            <p class="fontLarge" [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)">
+              {{ obj.p_id_nombre_estado_cotizacion }}
+            </p>
           </div>
-        </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 15%">
+            <p class="fontSmall">Acciones</p>
+            <div class="gap-2 d-flex" style="align-content: center; border-radius: 0px; text-align: end">
+              @for(btn of acciones()(obj.p_id_nombre_estado_cotizacion); track
+              $index) {
+              <button class="button-link" [matTooltip]="btn.tooltip" mat-icon-button
+                (click)="btn.accion(obj.p_id_compania_seguro)">
+                <mat-icon class="destacado">{{ btn.icon }}</mat-icon>
+              </button>
+              <!-- <mat-divider [vertical]="true"></mat-divider> -->
 
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="p-2" style="width: 15%">
-          <p class="fontSmall">Detalle</p>
-          <!-- <button mat-stroked-button class="btn-info" (click)="seleccionarCotizacion(obj.p_id_cotizacion_compania)"> -->
-            <button mat-stroked-button class="btn-info" (click)="verDetalleCot(obj.p_id_compania_seguro,obj.p_nombre_compania_seguro)">
-            Ver Detalle
-          </button>
-        </div>
+              }
+            </div>
+          </div>
 
-
-
-
-
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="p-2" style="width: 15%">
-          <p class="fontSmall">Seleccionar Cotización</p>
-          <mat-radio-button [value]="obj.p_id_compania_seguro"
-
-            >
-          </mat-radio-button>
-        </div>
-
-
-
-      </mat-card-content>
-    </mat-card>
-  <!-- </div> -->
-  </ng-container>
-  <!-- } -->
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 15%">
+            <p class="fontSmall">Detalle</p>
+            <!-- <button mat-stroked-button class="btn-info" (click)="seleccionarCotizacion(obj.p_id_cotizacion_compania)"> -->
+            <button mat-stroked-button class="btn-info"
+              (click)="verDetalleCot(obj.p_id_compania_seguro,obj.p_nombre_compania_seguro)">
+              Ver Detalle
+            </button>
+          </div>
 
 
-</mat-radio-group>
+
+
+
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 15%">
+            <p class="fontSmall">Seleccionar Cotización</p>
+            <!-- <mat-radio-button
+          [value]="obj.p_id_compania_seguro"
+          [disabled]="!puedeSeleccionarCotizacion(obj.p_id_nombre_estado_cotizacion)">
+          </mat-radio-button> -->
+
+            <mat-radio-button *ngIf="habilitaRadioButton(obj.p_id_nombre_estado_cotizacion)"
+              [value]="obj.p_id_compania_seguro">
+            </mat-radio-button>
+
+          </div>
+
+
+
+        </mat-card-content>
+      </mat-card>
+      <!-- </div> -->
+    </ng-container>
+    <!-- } -->
+
+
+  </mat-radio-group>
 
 </div>
-
-
-

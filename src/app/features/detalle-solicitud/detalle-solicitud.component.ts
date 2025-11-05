@@ -90,6 +90,15 @@ export default class DetalleSolicitudComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
 
+
+
+constructor() {
+    const data = inject(MAT_DIALOG_DATA) as { idSolicitud: number; flagSoloCerrar?: boolean };
+    this.idSolicitud = data.idSolicitud;
+    this.flagSoloCerrar = data.flagSoloCerrar ?? false;
+  }
+
+
   panelOpenState = false;
   panelOpenState2 = false;
 
@@ -124,6 +133,8 @@ export default class DetalleSolicitudComponent {
   flagPropuesta = true;
   flagCotizacion = true;
   flagAprobarCot = false;
+
+  flagSoloCerrar = false;
 
   async ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
@@ -267,6 +278,7 @@ export default class DetalleSolicitudComponent {
   DetalleSolicitudComponent: any;
 
   devolverSolicitud(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       solicitudId: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,
@@ -289,6 +301,7 @@ export default class DetalleSolicitudComponent {
   }
 
   aprobarSolicitud(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
@@ -310,6 +323,7 @@ export default class DetalleSolicitudComponent {
   }
 
   anularSolicitud(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
@@ -331,6 +345,7 @@ export default class DetalleSolicitudComponent {
   }
 
   enviarCoordinador(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
@@ -354,6 +369,7 @@ export default class DetalleSolicitudComponent {
   }
 
   agregarCompania(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
@@ -382,6 +398,7 @@ export default class DetalleSolicitudComponent {
   }
 
   enviarCia(): void {
+    if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
@@ -406,6 +423,7 @@ export default class DetalleSolicitudComponent {
   }
 
   crearPropuesta(): void {
+    if (this.flagSoloCerrar) return;
     console.log('flagPropuesta',this.flagPropuesta);
     console.log('verCoord',this.verCoord);
     const dato = {
@@ -438,6 +456,7 @@ export default class DetalleSolicitudComponent {
 
 
    aprobarCotizacion(): void {
+    if (this.flagSoloCerrar) return;
     console.log('Cotización seleccionada: ', this.cotizacionSeleccionada);
     const dato = {
       p_id_solicitud: this.idSolicitud,
