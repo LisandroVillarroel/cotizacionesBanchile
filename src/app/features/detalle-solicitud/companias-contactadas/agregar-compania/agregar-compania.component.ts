@@ -159,8 +159,6 @@ export class AgregarCompaniaComponent {
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
 
-    //console.log('Payload enviado:', payload);
-
     this.CompaniasContactadasService.postAgregaCompania(payload).subscribe({
       next: (res) => {
         if (res.codigo === 200) {
