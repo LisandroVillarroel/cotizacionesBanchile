@@ -61,11 +61,8 @@
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
-                  (actualizarDatos)="
-                    cargarCompanias(idSolicitud);
-                    obtenerMinimo(idSolicitud);
-                    cargarSolicitud(idSolicitud)
-                  "
+                  [flagSoloCerrar]="flagSoloCerrar"
+                  (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
                   [cotizacionSeleccionada]="cotizacionSeleccionada"
                   (cotizacionSeleccionadaEvent)="
                     cotizacionSeleccionada = $event

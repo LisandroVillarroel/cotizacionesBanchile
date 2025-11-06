@@ -95,6 +95,7 @@ constructor() {
     const data = inject(MAT_DIALOG_DATA) as { idSolicitud: number; flagSoloCerrar?: boolean };
     this.idSolicitud = data.idSolicitud;
     this.flagSoloCerrar = data.flagSoloCerrar ?? false;
+    console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
   }
 
 
