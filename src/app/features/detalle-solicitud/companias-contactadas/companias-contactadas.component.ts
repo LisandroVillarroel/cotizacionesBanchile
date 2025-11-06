@@ -52,6 +52,7 @@ export class CompaniasContactadasComponent {
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
   @Input() cotizacionSeleccionada: number | null = null;
+  @Input() flagSoloCerrar: boolean = false;
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() cargaRespuesta = new EventEmitter<void>();
@@ -75,7 +76,11 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
   //detalleGral = signal<InformacionGeneralComponent>
 
-  constructor() { }
+  constructor() {
+    //console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
+   }
+
+
 
   getCellStyle(estado: number) {
     let color: string;
