@@ -165,34 +165,6 @@ export class CompaniasContactadasComponent {
     }
   }
 
-  registrarRespuesta(idCompania: number): void {
-    this.compania = computed(() =>
-      this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
-    );
-
-    const dato = {
-      infoGral: this.infoGral()!,
-      compania: this.compania()![0],
-      flagAccion: true,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.cargaRespuesta.emit();
-        }
-      });
-  }
 
   borrarCompania(idCompania: number) {
     const dato = {
@@ -264,7 +236,7 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
+/*
     verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
@@ -307,7 +279,7 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
+*/
   acciones = computed(() => {
     return (estado: string) => {
       const estadoLower = estado.toLowerCase();
