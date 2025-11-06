@@ -43,6 +43,7 @@ import { TipoCuentaService } from '@shared/service/tipo-cuenta.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
+import { ModificarRespuestaService } from '@shared/service/modificar-respuesta.service';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IMoneda } from '@shared/modelo/moneda-interface';
@@ -51,6 +52,7 @@ import { IBanco } from '@shared/modelo/banco-interface';
 import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
+import { IModificarRespuesta } from '@shared/modelo/modificar-respuesta-interface';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -88,8 +90,6 @@ export interface IRespuesta {
     MatSelect,
     MatOptionModule,
     MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatNativeDateModule,
   ],
   templateUrl: './ingreso-respuesta.component.html',
@@ -99,6 +99,7 @@ export class IngresoRespuestaComponent {
   public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
+  public readonly modoEdicion = !this.datos.flagAccion; // false = edición
 
   /*   infoPrincipalComponent!: InformacionPrincipalComponent;
   @ViewChild(InformacionPrincipalComponent)
@@ -191,11 +192,17 @@ export class IngresoRespuestaComponent {
 
   nombreArchivoPropuesta: string = '';
   nombreArchivoCompania: string = '';
+  habilitarModificar = false;
+  tipoUsuario: string;
 
   constructor(
     private registrarRespuestaService: RegistrarRespuestaService,
+    private modificarRespuestaService: ModificarRespuestaService,
     private dialogRef: MatDialogRef<IngresoRespuestaComponent>
-  ) {}
+  ) {
+    const sesion = this._storage();
+    this.tipoUsuario = sesion?.usuarioLogin.tipoUsuario!;
+  }
 
   cargaMoneda() {
     this.monedaService.postMoneda().subscribe({
@@ -265,11 +272,40 @@ export class IngresoRespuestaComponent {
       }
     });
 
+    // Cargar catálogos
     this.cargaMoneda();
     this.cargaMedioPago();
     this.cargaBanco();
     this.cargaTipoCuenta();
+
+    // Prellenar formulario si está en modo edición
+    if (!this.datos.flagAccion) {
+      // flagAccion = false → modo modificar
+      const respuesta = this.datos.compania;
+      this.formRespuesta().patchValue({
+        moneda: respuesta.p_id_moneda,
+        primaNeta: respuesta.p_valor_prima_neta,
+        primaAfecta: respuesta.p_valor_prima_afecta,
+        primaBruta: respuesta.p_valor_prima_bruta,
+        mPago: respuesta.p_id_medio_de_pago,
+        banco: respuesta.p_id_banco,
+        tipoCuenta: respuesta.p_id_tipo_cuenta,
+        nroCuenta: respuesta.p_nro_cuenta,
+        nroCuotas: respuesta.p_cantidad_cuotas,
+        pInicio: new Date(respuesta.p_fecha_inicio_vigencia),
+        pTermino: new Date(respuesta.p_fecha_termino_vigencia),
+        pVencimiento: new Date(respuesta.p_dia_vencimiento_primera_cuota),
+      });
+    }
+
+    // Detectar cambios para habilitar botón Modificar
+    this.formRespuesta().valueChanges.subscribe(() => {
+      if (!this.datos.flagAccion) {
+        this.habilitarModificar = true;
+      }
+    });
   }
+
   filtrarFechasTermino = (fecha: Date | null): boolean => {
     if (!fecha || !this.fechaInicio()) {
       return false;
@@ -371,60 +407,83 @@ export class IngresoRespuestaComponent {
     });
   }
 
-  editarRespuesta() {
-    const datos: IRegistrarRespuesta = {
-      p_id_solicitud: this.idSolicitud,
-      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro!, //
-      p_id_moneda: this.formRespuesta().get('moneda')!.value,
-      p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
-      p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,
-      p_valor_prima_bruta: this.formRespuesta().get('primaBruta')!.value,
-      p_id_medio_de_pago: this.formRespuesta().get('mPago')!.value,
-      p_id_banco: this.formRespuesta().get('banco')!.value,
-      p_id_tipo_cuenta: this.formRespuesta().get('tipoCuenta')!.value,
-      p_nro_cuenta: this.formRespuesta().get('nroCuenta')!.value,
-      p_cantidad_cuotas: this.formRespuesta().get('nroCuotas')!.value,
-      p_fecha_inicio_vigencia: this.formatFecha(
+  modificaRespuesta() {
+    const datos: IModificarRespuesta = {
+      p_id_usuario: String(this._storage()?.usuarioLogin.usuario!),
+      p_tipo_usuario: String(this._storage()?.usuarioLogin.tipoUsuario!),
+      p_id_solicitud: Number(this.idSolicitud),
+      p_id_compania_seguro: Number(this.datos.compania?.p_id_compania_seguro),
+      p_id_moneda: Number(this.formRespuesta().get('moneda')!.value),
+      p_valor_prima_neta: Number(this.formRespuesta().get('primaNeta')!.value),
+      p_valor_prima_afecta: Number(
+        this.formRespuesta().get('primaAfecta')!.value
+      ),
+      p_valor_prima_bruta: Number(
+        this.formRespuesta().get('primaBruta')!.value
+      ),
+      p_id_medio_de_pago: Number(this.formRespuesta().get('mPago')!.value),
+      p_id_banco: Number(this.formRespuesta().get('banco')!.value),
+      p_id_tipo_cuenta: Number(this.formRespuesta().get('tipoCuenta')!.value),
+      p_nro_cuenta: String(this.formRespuesta().get('nroCuenta')!.value),
+      p_cantidad_cuotas: Number(this.formRespuesta().get('nroCuotas')!.value),
+
+      // Fechas en formato DD/MM/YYYY
+      p_fecha_inicio_vigencia: this.formatFechaDDMMYYYY(
         this.formRespuesta().get('pInicio')!.value
       ),
-      p_fecha_termino_vigencia: this.formatFecha(
+      p_fecha_termino_vigencia: this.formatFechaDDMMYYYY(
         this.formRespuesta().get('pTermino')!.value
       ),
-      p_dia_vencimiento_primera_cuota: this.formatFecha(
+      p_dia_vencimiento_primera_cuota: this.formatFechaDDMMYYYY(
         this.formRespuesta().get('pVencimiento')!.value
       ),
-      p_id_cotizacion_compania: this.nombreArchivoCompania,
-      p_ruta_cotizacion_compania:
-        'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS', //
-      p_id_cotizacion_propuesta: this.nombreArchivoPropuesta,
-      p_ruta_cotizacion_propuesta:
-        'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS', //
 
-      //archivoCompania: this.selectedCompaniaFile,
-      //archivoPropuesta: this.selectedPropuestaFile,
+      p_id_cotizacion_compania:
+        this.datos.compania?.p_id_cotizacion_compania ?? '',
+      p_ruta_cotizacion_compania: '/docs/cotizaciones/COT-2025-001-UPD5.pdf',
+      p_id_cotizacion_propuesta:
+        this.datos.compania?.p_id_cotizacion_propuesta ?? '',
+      p_ruta_cotizacion_propuesta: '/docs/propuestas/PROP-2025-005-UPD.pdf',
 
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_detalle_solicitud_cotizacion: 'Modificación realizada',
     };
-    this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
+
+    this.modificarRespuestaService.modificarRespuesta(datos).subscribe({
       next: async (res) => {
         if (res.codigo === 200) {
-          const result = await this.notificacioAlertnService.confirmacion(
+          await this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
-            'La respuesta se ha registrado exitosamente.'
+            'La respuesta se ha modificado exitosamente.'
           );
+          this.dialogRef.close(true);
         }
       },
       error: (error) => {
+        console.error('Error en modificarRespuesta:', error);
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
 
+  // Método para formato YYYY-MM-DD para registrar
   formatFecha(fecha: Date | null): string {
     if (!fecha) return '';
-    const iso = new Date(fecha).toISOString();
-    return iso.split('T')[0]; // Devuelve formato YYYY-MM-DD
+    const dateObj = fecha instanceof Date ? fecha : new Date(fecha);
+    return dateObj.toISOString().split('T')[0]; // YYYY-MM-DD
+  }
+
+  // Método para formato DD/MM/YYYY para modificar
+  formatFechaDDMMYYYY(fecha: any): string {
+    if (!fecha) return '';
+    const dateObj = fecha instanceof Date ? fecha : new Date(fecha);
+    const dia = String(dateObj.getDate()).padStart(2, '0');
+    const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const anio = dateObj.getFullYear();
+    return `${dia}/${mes}/${anio}`;
+  }
+
+  cerrar() {
+    this.dialogRef.close(false);
   }
 
   getErrorMessage(campo: string) {
