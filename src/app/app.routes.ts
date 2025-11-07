@@ -43,6 +43,11 @@ export const routes: Routes = [
         canActivate: [guardRoles(['ejec_bco'])],
         loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
       },
+      {
+        path: 'derivar',
+        canActivate: [guardRoles(['sup_corr'])],
+        loadComponent: () => import('@features/derivar-cartera/derivar-cartera.component'),
+      },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },

@@ -35,7 +35,6 @@ export interface IGestionResponse{
   codigo: number,
   mensaje: string,
   ps_cursor: ISolicitudG[],
-  pb_cursor?: ICompaniaG[],
   vcEstado: string,
   vcEstadoCreacion: string
 }
