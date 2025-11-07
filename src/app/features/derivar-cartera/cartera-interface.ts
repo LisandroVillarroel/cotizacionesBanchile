@@ -2,8 +2,8 @@ export interface ISolicitudCartera {
   id_solicitud: number,
   id_coordinador: string,
   nombre_coordinador: string,
-  id_ejecutivo: string,
-  nombre_ejecutivo: string,
+  id_ejecutivo_banco: string,
+  nombre_ejecutivo_banco: string,
   fecha_creacion: string,
   //...
 }
@@ -17,10 +17,10 @@ export interface ICarteraResponse{
 }
 
 export interface ICoordinador{
-  id_coordinador_banco: string,
-  rut_coordinador_banco?: string,
-  nombre_coordinador_banco: string,
-  correo_coordinador_banco?: string
+  p_id_coordinador: string,
+  rut_coordinador?: string,
+  p_nombre_coordinador: string,
+  correo_coordinador?: string
 }
 
 export interface ICoordinadorResponse{

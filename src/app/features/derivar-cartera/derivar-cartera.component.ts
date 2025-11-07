@@ -61,7 +61,7 @@ import { IRequest } from '@shared/modelo/servicios-interface';
   ],
 })
 export default class DerivarCarteraComponent{
-  datosSolicitud = signal<ISolicitudCartera[] | undefined>([]);
+  solicitudes = signal<ISolicitudCartera[] | undefined>([]);
   coordinadores = signal<ICoordinador[] | undefined>([]);
   ejecutivos = signal<IEjecutivo[] | undefined>([]);
 
@@ -126,7 +126,7 @@ export default class DerivarCarteraComponent{
 
   dataSourceSolicitud = computed(() => {
     var tabla = new MatTableDataSource<ISolicitudCartera>();
-    tabla.data = this.datosSolicitud()!;
+    tabla.data = this.solicitudes()!;
     this.setSortingAndPagination(tabla);
     return tabla;
   });
@@ -160,10 +160,10 @@ export default class DerivarCarteraComponent{
     }
 
     this.formularioModificado();
-    return this.datosSolicitud()!.filter(item => {
+    return this.solicitudes()!.filter(item => {
 
       const cumpleCoordinador = item.nombre_coordinador.toLowerCase().includes(coordinador.toLowerCase());
-      const cumpleEjecutivo = item.nombre_ejecutivo.toLowerCase().includes(ejecutivo.toLowerCase());
+      const cumpleEjecutivo = item.nombre_ejecutivo_banco.toLowerCase().includes(ejecutivo.toLowerCase());
 /*       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);*/
@@ -194,6 +194,7 @@ export default class DerivarCarteraComponent{
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaCoordinadores();
     this.cargaEjecutivos();
+    //this.cargaSolicitudes();
     this.limpiaFiltros();
 
     this.formularioModificado.set(true);
@@ -221,6 +222,19 @@ export default class DerivarCarteraComponent{
       next: async (dato) => {
         if (dato.codigo === 200) {
           this.ejecutivos.set(dato.p_cursor) ;
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    });
+  }
+
+  cargaSolicitudes(){
+    this.carteraService.postlistarCartera(this.request).subscribe({
+      next: async (dato) => {
+        if (dato.codigo === 200) {
+          this.solicitudes.set(dato.ps_cursor) ;
         }
       },
       error: (error) => {
