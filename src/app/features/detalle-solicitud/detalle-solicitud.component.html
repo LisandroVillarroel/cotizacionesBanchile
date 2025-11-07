@@ -56,18 +56,24 @@
                 </mat-expansion-panel-header>
 
                 <app-companias-contactadas
-                  [infoGral] = "infoGral()"
-                  [companias] = "companias()"
+                  [infoGral]="infoGral()"
+                  [companias]="companias()"
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
+                  [flagSoloCerrar]="flagSoloCerrar"
                   (actualizarDatos)="cargarCompanias(idSolicitud); obtenerMinimo(idSolicitud)"
                   [cotizacionSeleccionada]="cotizacionSeleccionada"
-                  (cotizacionSeleccionadaEvent)="cotizacionSeleccionada = $event"
+                  (cotizacionSeleccionadaEvent)="
+                    cotizacionSeleccionada = $event
+                  "
+                  (cargaRespuesta)="
+                    cargarSolicitud(idSolicitud);
+                    cargarCompanias(idSolicitud);
+                    obtenerMinimo(idSolicitud)
+                  "
                 />
               </mat-expansion-panel>
-
-
 
               }
             </div>

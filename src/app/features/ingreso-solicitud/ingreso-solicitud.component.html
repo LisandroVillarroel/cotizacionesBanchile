@@ -40,7 +40,7 @@
             <div class="row d-flex flex-wrap justify-around">
               <!-- Sección 1: RUT, Rubro, Tipo de Seguro -->
               <mat-card
-                class="col-md-6 form-card mat-card-form card-con-titulo contenido-card mat-elevation-z6"
+                class="col-md-6 form-card mat-card-form card-con-titulo contenido-card mat-elevation-z6 mt-3"
                 data-titulo="Ingreso de datos"
               >
                 <mat-card-content>
@@ -54,7 +54,7 @@
                         matInput
                         [formControl]="rutCliente"
                         oninput="this.value = this.value.toUpperCase()"
-                        (blur)="onBlurRutCliente($event)"
+                        (blur)="buscarContratantePorRut()"
                         validaRut
                         required
                       />
@@ -106,7 +106,7 @@
 
               <!-- Sección 2: Nombre, Correo, Teléfonos -->
               <mat-card
-                class="col-md-6 form-card mat-card-form contenido-card card-con-titulo mat-elevation-z6"
+                class="col-md-6 form-card mat-card-form contenido-card card-con-titulo mat-elevation-z6 mt-3"
                 data-titulo="Datos del contratante"
               >
                 <mat-card-content>
@@ -131,7 +131,7 @@
                         matInput
                         disabled
                         aria-label="Correo"
-                        [value]="nombreRazonSocial()"
+                        [value]="emailContratante()"
                       />
                     </mat-form-field>
                   </div>
@@ -145,7 +145,7 @@
                         matInput
                         disabled
                         aria-label="Teléfonos (Personal/Comercial)"
-                        [value]="nombreRazonSocial()"
+                        [value]="telefonoContratante()"
                       />
                     </mat-form-field>
                   </div>

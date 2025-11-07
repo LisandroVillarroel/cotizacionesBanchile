@@ -31,14 +31,14 @@
           <p class="fontLarge">{{ obj.p_dias_transcurridos }}</p>
         </div> -->
           <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%">
+          <div class="p-2" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
             <p class="fontSmall">Estado cotización</p>
             <p class="fontLarge" [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)">
               {{ obj.p_id_nombre_estado_cotizacion }}
             </p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%">
+          <div class="p-2" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
             <p class="fontSmall">Acciones</p>
             <div class="gap-2 d-flex" style="align-content: center; border-radius: 0px; text-align: end">
               @for(btn of acciones()(obj.p_id_nombre_estado_cotizacion); track
@@ -54,7 +54,7 @@
           </div>
 
           <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%">
+          <div class="p-2" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
             <p class="fontSmall">Detalle</p>
             <!-- <button mat-stroked-button class="btn-info" (click)="seleccionarCotizacion(obj.p_id_cotizacion_compania)"> -->
             <button mat-stroked-button class="btn-info"
@@ -67,8 +67,8 @@
 
 
 
-          <mat-divider [vertical]="true"></mat-divider>
-          <div class="p-2" style="width: 15%">
+          <mat-divider *ngIf="!flagSoloCerrar" [vertical]="true"></mat-divider>
+          <div *ngIf="!flagSoloCerrar" class="p-2" style="width: 15%">
             <p class="fontSmall">Seleccionar Cotización</p>
             <!-- <mat-radio-button
           [value]="obj.p_id_compania_seguro"
@@ -78,18 +78,12 @@
             <mat-radio-button *ngIf="habilitaRadioButton(obj.p_id_nombre_estado_cotizacion)"
               [value]="obj.p_id_compania_seguro">
             </mat-radio-button>
-
           </div>
 
 
 
         </mat-card-content>
       </mat-card>
-      <!-- </div> -->
     </ng-container>
-    <!-- } -->
-
-
   </mat-radio-group>
-
 </div>

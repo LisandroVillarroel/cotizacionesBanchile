@@ -102,10 +102,13 @@ import { EnviarCoordinadorComponent } from '@features/detalle-solicitud/enviar-c
 export default class IngresoSolicitudComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   ingresoSolicitud!: IIngresoSolicitud;
   nombreRazonSocial = signal<string>('');
+  emailContratante = signal<string>('');
+  telefonoContratante = signal<string>('');
+
   //idSolicitud = signal<string>('0');
   idSolicitud = 0;
   flagAseguradoRescata: boolean = false;
@@ -185,12 +188,14 @@ export default class IngresoSolicitudComponent {
       return this.rutCliente.hasError('required')
         ? 'Debes ingresar rut de contratante'
         : this.rutCliente.hasError('rutInvalido')
-          ? 'RUT Cliente inválido'
-          : '';
+        ? 'RUT Cliente inválido'
+        : '';
     }
 
     if (campo === 'rubro') {
-      return this.rubro.hasError('required') ? 'Debes seleccionar un rubro' : '';
+      return this.rubro.hasError('required')
+        ? 'Debes seleccionar un rubro'
+        : '';
     }
 
     if (campo === 'seguro') {
@@ -200,7 +205,7 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-   ngOnInit() {
+  ngOnInit() {
     this.cargaRubro();
   }
 
@@ -231,7 +236,65 @@ export default class IngresoSolicitudComponent {
     });
   }
 
-  grabaContratanteAux() { }
+  buscarContratantePorRut() {
+    const rut = this.rutCliente.value;
+    console.log('Consultando RUT:', rut);
+
+    if (!rut || this.rutCliente.invalid) {
+      this.notificacioAlertnService.error('ERROR', 'RUT inválido');
+      return;
+    }
+
+    this.ingresoSolicitudService.getDatosContratante(rut).subscribe({
+      next: (resp) => {
+        console.log('Respuesta del servicio:', resp);
+        if (resp.codigo === 200 && resp.data) {
+          const datos = resp.data;
+
+          this.nombreRazonSocial.set(
+            `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno}`
+          );
+
+          const correo =
+            datos.emailParticularCliente ||
+            datos.emailComercialCliente ||
+            datos.emailEjecutivo ||
+            '';
+          const telefono =
+            datos.celularParticularCliente ||
+            datos.fonoParticularCliente ||
+            datos.fonoComercialCliente ||
+            datos.telefono ||
+            '';
+
+          this.emailContratante.set(correo);
+          this.telefonoContratante.set(telefono);
+
+          this.contratanteInfo.set({
+            id: 0,
+            rut_contratante: datos.rutCliente,
+            nombre: `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno}`,
+            idRubro: 0,
+            idSeguro: 0,
+          });
+        } else {
+          this.notificacioAlertnService.error(
+            'ERROR',
+            'No se encontraron datos para el RUT ingresado'
+          );
+        }
+      },
+      error: (err) => {
+        console.error('Error al consultar el servicio:', err);
+        this.notificacioAlertnService.error(
+          'ERROR',
+          'Error al consultar el servicio'
+        );
+      },
+    });
+  }
+
+  grabaContratanteAux() {}
 
   async grabaContratante() {
     console.log('form contratante:', this.agregaSolicitudContratante().value);
@@ -246,8 +309,8 @@ export default class IngresoSolicitudComponent {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,
         nombre_razon_social_contratante: this.nombreRazonSocial(),
-        mail_contratante: 'mail_contratante',
-        telefono_contratante: 'telefono_contratante',
+        mail_contratante: this.emailContratante(),
+        telefono_contratante: this.telefonoContratante(),
         region_contratante: 'region_contratante',
         ciudad_contratante: 'ciudad_contratante',
         comuna_contratante: 'comuna_contratante',
@@ -258,7 +321,6 @@ export default class IngresoSolicitudComponent {
       },
       id_rubro: this.agregaSolicitudContratante().get('rubro')!.value,
       id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value,
-
     };
     this.ingresoSolicitudService
       .postIngresoSolicitud(this.ingresoSolicitud)
@@ -268,21 +330,24 @@ export default class IngresoSolicitudComponent {
             // Actualizar el signal para mostrar datos del contratante en panel
             this.contratanteInfo.set({
               id: dato.p_id_solicitud,
-              rut_contratante: this.agregaSolicitudContratante().get('rutCliente')!.value,
+              rut_contratante:
+                this.agregaSolicitudContratante().get('rutCliente')!.value,
               nombre: this.nombreRazonSocial(),
               idRubro: this.agregaSolicitudContratante().get('rubro')!.value,
               idSeguro: this.agregaSolicitudContratante().get('seguro')!.value,
             });
 
-            if (this.agregaSolicitudContratante().get('aseguradeCheck')!.value ==
-              true) {
+            if (
+              this.agregaSolicitudContratante().get('aseguradeCheck')!.value ==
+              true
+            ) {
               this.agregarAsegurado();
             } else {
               this.idSolicitud = dato.p_id_solicitud;
               //this.idSolicitud.set(dato.p_id_solicitud);
             }
             //this.idSolicitud.set(dato.p_id_solicitud);
-              this.idSolicitud = dato.p_id_solicitud;
+            this.idSolicitud = dato.p_id_solicitud;
           }
         },
         error: (error) => {
@@ -292,7 +357,7 @@ export default class IngresoSolicitudComponent {
   }
 
   valorAsegurado(dato: boolean) {
-       this.agregaSolicitudAsegurado().get('flagAsegurado')?.setValue(dato)
+    this.agregaSolicitudAsegurado().get('flagAsegurado')?.setValue(dato);
   }
 
   async agregarAsegurado() {
@@ -318,7 +383,6 @@ export default class IngresoSolicitudComponent {
       p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
     };
 
-
     await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -327,7 +391,7 @@ export default class IngresoSolicitudComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }
@@ -371,13 +435,14 @@ export default class IngresoSolicitudComponent {
 
     // Si estoy en paso (asegurado) y quiero ir al paso (contratante)
     if (pasoActual >= 1 && pasoDestino === 0) {
-
-        this.notificacioAlertnService.info('INGRESO SOLICITUD','Acceso denegado')
-        setTimeout(() => {
-          stepper.selectedIndex = pasoActual;
-        });
-        return;
-
+      this.notificacioAlertnService.info(
+        'INGRESO SOLICITUD',
+        'Acceso denegado'
+      );
+      setTimeout(() => {
+        stepper.selectedIndex = pasoActual;
+      });
+      return;
     }
   }
 
@@ -400,7 +465,8 @@ export default class IngresoSolicitudComponent {
 
     this.dialog
       .open(EnviarCoordinadorComponent, dialogConfig)
-      .afterClosed().subscribe(() => {
+      .afterClosed()
+      .subscribe(() => {
         this.router.navigate(['/principal/cotizaciones']);
       });
   }

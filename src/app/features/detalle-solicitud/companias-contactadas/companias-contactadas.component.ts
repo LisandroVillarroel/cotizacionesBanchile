@@ -52,6 +52,7 @@ export class CompaniasContactadasComponent {
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
   @Input() cotizacionSeleccionada: number | null = null;
+  @Input() flagSoloCerrar: boolean = false;
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() cargaRespuesta = new EventEmitter<void>();
@@ -65,7 +66,6 @@ export class CompaniasContactadasComponent {
   idCompania = 0;
   compania = computed(() => this.companias());
 
-
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
@@ -75,7 +75,11 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
   //detalleGral = signal<InformacionGeneralComponent>
 
-  constructor() { }
+  constructor() {
+    //console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
+   }
+
+
 
   getCellStyle(estado: number) {
     let color: string;
@@ -115,6 +119,36 @@ export class CompaniasContactadasComponent {
     };
   }
 
+  verCotiPropuesta(idCompania: number): void {
+    this.compania = computed(() =>
+      this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
+    );
+
+    const dato = {
+      infoGral: this.infoGral()!,
+      compania: this.compania()![0],
+      flagAccion: false, // false indica modo edición
+      modo: 'modificar', // opcional para diferenciar
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit(); // refresca la grilla y estado
+        }
+      });
+  }
+
   verCotizacion(id: number) {
     console.log('ID recibido en verCotizacion:', id);
 
@@ -131,16 +165,37 @@ export class CompaniasContactadasComponent {
     }
   }
 
-  verCotiPropuesta(idCotizacion: number) {
-    // lógica para ver cotipropuesta
+
+  borrarCompania(idCompania: number) {
+    const dato = {
+      p_id_solicitud: this.infoGral()?.id_solicitud,
+      p_id_compania_seguro: idCompania,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+    };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '40%';
+    dialogConfig.maxHeight = '80%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(EliminarCompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit();
+        }
+      });
   }
-
-
 
   seleccionarCotizacion(id: number) {
     this.cotizacionSeleccionada = id;
     console.log('Cotización seleccionada:', id);
-    this.cotizacionSeleccionadaEvent.emit(id); // ← Aquí se comunica al padre
+    this.cotizacionSeleccionadaEvent.emit(id);
   }
 
 
@@ -181,33 +236,50 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
-  borrarCompania(idCompania: number) {
+/*
+    verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
+      p_nombre_compania_seguro: nombreCia,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
+      p_rut_contratante: this.infoGral()?.rut_contratante,
+      P_nombre_razon_social_contratante:
+        this.infoGral()?.nombre_razon_social_contratante,
+      p_id_rubro: this.infoGral()?.id_rubro,
+      p_nombre_rubro: this.infoGral()?.nombre_rubro,
+      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
+      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
     };
+
+    //  const dato = {
+    //  p_id_solicitud: this.infoGral()?.id_solicitud,
+    //  p_id_compania_seguro: idCompania,
+    //  p_id_usuario: this.id_usuario,
+    //  p_tipo_usuario: this.tipoUsuario,
+    //  };
+
+    console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '40%';
+    dialogConfig.width = '60%';
     dialogConfig.maxHeight = '80%';
     dialogConfig.panelClass = 'custom-dialog-container';
     dialogConfig.data = dato;
 
     this.dialog
-      .open(EliminarCompaniaComponent, dialogConfig)
+      .open(DetalleCotizacionComponent, dialogConfig)
       .afterClosed()
       .subscribe((confirmado) => {
         if (confirmado) {
-          this.actualizarDatos.emit(); // o refrescar la grilla
+          this.actualizarDatos.emit();
         }
       });
   }
-
+*/
   acciones = computed(() => {
     return (estado: string) => {
       const estadoLower = estado.toLowerCase();
@@ -219,7 +291,6 @@ export class CompaniasContactadasComponent {
         accion: (id: number) => void;
       }[] = [];
 
-      // Cotipropuesta: todos los usuarios, solo si estado es "recibida"
       acciones.push({
         icon: 'preview',
         tooltip: 'Ver cotipropuesta',
@@ -227,9 +298,9 @@ export class CompaniasContactadasComponent {
         accion: (id: number) => this.verCotiPropuesta(id),
       });
 
-      // Solo si NO es ejecutivo
+
       if (!this.verEjec) {
-        // Ver cotización: estado "pendiente"
+
         acciones.push({
           icon: 'visibility',
           tooltip: 'Ver cotización',
@@ -237,7 +308,6 @@ export class CompaniasContactadasComponent {
           accion: (compania: any) => this.verCotizacion(compania),
         });
 
-        // Registrar respuesta: estado "enviada"
         acciones.push({
           icon: 'edit_square',
           tooltip: 'Registrar respuesta',
@@ -245,7 +315,6 @@ export class CompaniasContactadasComponent {
           accion: (id: number) => this.registrarRespuesta(id),
         });
 
-        // Borrar: estado "pendiente" y usuario coordinador
         acciones.push({
           icon: 'delete',
           tooltip: 'Eliminar cotización',
