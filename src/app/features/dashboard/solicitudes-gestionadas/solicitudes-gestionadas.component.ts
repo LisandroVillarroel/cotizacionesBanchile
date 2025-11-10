@@ -250,22 +250,6 @@ export class SolicitudesGestionadasComponent implements OnInit {
   }
 
   retorno = output<boolean>();
-
-  // verDetalle(IdSolicitud: number) {
-  //   const dialogConfig = new MatDialogConfig();
-
-  //   dialogConfig.disableClose = true;
-  //   dialogConfig.autoFocus = true;
-  //   dialogConfig.width = '80%';
-  //   dialogConfig.height = '90%';
-  //   dialogConfig.position = { top: '3%' };
-  //   dialogConfig.data = IdSolicitud;
-  //   this.dialog
-  //     .open(DetalleSolicitudComponent, dialogConfig)
-  //     .afterClosed()
-  //     .subscribe(() => { this.retorno.emit(true); })
-  // }
-
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -304,8 +288,4 @@ export class SolicitudesGestionadasComponent implements OnInit {
       'padding-right': '1%'
     };
   }
-}
-
-function takeUntilDestroyed(): import("rxjs").OperatorFunction<any, unknown> {
-  throw new Error('Function not implemented.');
 }

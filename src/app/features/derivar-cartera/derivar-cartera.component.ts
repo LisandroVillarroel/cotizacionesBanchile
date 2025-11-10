@@ -10,14 +10,12 @@ import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/d
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { IEstado } from '@shared/modelo/estado-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
@@ -30,7 +28,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { RubroService } from '@shared/service/rubro.service';
 import { StorageService } from '@shared/service/storage.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { ICoordinador, IEjecutivo, ISolicitudCartera } from './cartera-interface';
+import { ICoordinador, IEjecutivo, ISolicitudCartera, IRequestDeriva } from './cartera-interface';
 import { CarteraService } from './cartera.service';
 import { IRequest } from '@shared/modelo/servicios-interface';
 
@@ -43,7 +41,6 @@ import { IRequest } from '@shared/modelo/servicios-interface';
   imports: [
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule,
     MatSortModule,
     MatExpansionModule,
     MatDialogModule,
@@ -74,19 +71,19 @@ export default class DerivarCarteraComponent{
     p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
   };
 
-/*   rubroService = inject(RubroService);
+  rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
-  estadoService = inject(EstadoService); */
+  estadoService = inject(EstadoService);
 
-/*   datoRubros = signal<IRubro[]>([]);
+  datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
-  datosEstados = signal<IEstado[]>([]); */
+  datosEstados = signal<IEstado[]>([]);
 
   filtroCoordinador = signal('');
   filtroEjecutivo = signal('');
-/*   filtroRubro = signal('');
+  filtroRubro = signal('');
   filtroTipoSeguro = signal('');
-  filtroEstado = signal(''); */
+  filtroEstado = signal('');
   filtroFecha = signal<Date | null>(null);
 
   panelOpenState = false;
@@ -95,23 +92,24 @@ export default class DerivarCarteraComponent{
 
   coordinador = new FormControl();
   ejecutivo = new FormControl();
-/*   rubro = new FormControl();
+  rubro = new FormControl();
   seguro = new FormControl();
-  estado = new FormControl(); */
+  estado = new FormControl();
   fecha = new FormControl<Date | null>(null);
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     coordinador: this.coordinador,
     ejecutivo: this.ejecutivo,
-/*     rubro: this.rubro,
+    rubro: this.rubro,
     seguro: this.seguro,
-    estado: this.estado, */
+    estado: this.estado,
     fecha: this.fecha
   })
   );
 
   displayedColumns: string[] = [
     'index',
+    'selected',
     'id_solicitud',
     'fecha_creacion',
     'rut_contratante',
@@ -149,9 +147,9 @@ export default class DerivarCarteraComponent{
   datosFiltrados() {
     const coordinador = this.filtroFormulario().value.coordinador ?? '';
     const ejecutivo = this.filtroFormulario().value.ejecutivo ?? '';
-/*     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
-    const estado = this.filtroFormulario().value.estado ?? ''; */
+    const estado = this.filtroFormulario().value.estado ?? '';
     let fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
     let fechaInicio = new Date();
@@ -164,9 +162,9 @@ export default class DerivarCarteraComponent{
 
       const cumpleCoordinador = item.nombre_coordinador.toLowerCase().includes(coordinador.toLowerCase());
       const cumpleEjecutivo = item.nombre_ejecutivo_banco.toLowerCase().includes(ejecutivo.toLowerCase());
-/*       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
-      const cumpleEstado = item.descripcion_estado.includes(estado);*/
+      const cumpleEstado = item.descripcion_estado.includes(estado);
       let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);
 
@@ -177,8 +175,7 @@ export default class DerivarCarteraComponent{
           fechaBase.getDate() === fechaInicio.getDate()
         );
       }
-      //return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
-      return cumpleCoordinador && cumpleEjecutivo && cumpleFecha;
+      return cumpleCoordinador && cumpleEjecutivo && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
 
@@ -194,6 +191,8 @@ export default class DerivarCarteraComponent{
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaCoordinadores();
     this.cargaEjecutivos();
+    this.cargaRubros();
+    this.cargaEstados();
     //this.cargaSolicitudes();
     this.limpiaFiltros();
 
@@ -230,6 +229,47 @@ export default class DerivarCarteraComponent{
     });
   }
 
+  cargaRubros() {
+    this.rubroService.postRubro().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datoRubros.set(dato.p_cursor);
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
+    });
+  }
+
+  cargaEstados() {
+    this.estadoService.getEstado().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datosEstados.set(dato.p_cursor);
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
+    });
+  }
+
+  async seleccionaRubro(datos: IRubro) {
+    const _codigoRubro = datos.id_rubro
+    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
+    });
+  }
+
   cargaSolicitudes(){
     this.carteraService.postlistarCartera(this.request).subscribe({
       next: async (dato) => {
@@ -244,7 +284,8 @@ export default class DerivarCarteraComponent{
   }
 
   retorno = output<boolean>();
-  verDetalle(IdSolicitud: number) {
+  derivar() {
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -254,8 +295,9 @@ export default class DerivarCarteraComponent{
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = {
-      idSolicitud: IdSolicitud,
-      flagSoloCerrar: true
+      id_solicitud: 3,
+      id_coordinador_anterior: "true",
+      id_coordinador_nuevo: "true"
     };
 
     this.dialog

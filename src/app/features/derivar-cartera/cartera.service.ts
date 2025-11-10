@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { IResponse } from '@shared/modelo/servicios-interface';
 import { Observable } from 'rxjs';
-import { ICarteraResponse, ICoordinadorResponse, IEjecutivoResponse } from './cartera-interface';
+import { ICarteraResponse, ICoordinadorResponse, IEjecutivoResponse, IRequestDeriva } from './cartera-interface';
 import { IRequestGestion } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class CarteraService {
       });
   constructor() { }
 
-   postDerivarCartera(entrada: IRequestGestion): Observable<IResponse> {
+   postDerivarCartera(entrada: IRequestDeriva): Observable<IResponse> {
       return this.http
         .post<IResponse>(`${environment.apiUrlConsumer}/derivarCartera`,
           entrada,

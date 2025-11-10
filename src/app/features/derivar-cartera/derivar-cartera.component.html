@@ -1,3 +1,4 @@
+
 <div class="container-fluid d-flex justify-around p-0 mb-2">
   <h1 mat-dialog-title class="titulo centraVertical">Solicitudes asociadas a mi usuario</h1>
 </div>
@@ -34,14 +35,53 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div style="width: 20%;">
+        <div style="width: 15%;">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Rubro</mat-label>
+            <mat-select [formControl]="rubro"
+              (selectionChange)="seleccionaRubro($event.value)">
+              @for(_rubros of datoRubros(); track _rubros){
+              <mat-option [value]="_rubros">
+                {{ _rubros.nombre_rubro }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 15%;">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
+            <mat-select [formControl]="seguro">
+              @for(_seguros of rescatadoSeguro(); track _seguros){
+              <mat-option [value]="_seguros.nombre_tipo_seguro">
+                {{ _seguros.nombre_tipo_seguro }}
+              </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 15%;">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Estado</mat-label>
+            <mat-select [formControl]="estado">
+              @for(_estados of datosEstados(); track _estados){
+                <mat-option [value]="_estados.nombre_estado">
+                  {{ _estados.nombre_estado }}
+                </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+<!--         <div style="width: 20%;">
           <mat-form-field class="inputSelect" style="width: 100%;">
             <mat-label class="cursiva gris-claro">Fecha</mat-label>
             <input matInput [matDatepicker]="picker" [formControl]="fecha">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-        </div>
+        </div> -->
         <div  style="width: 10%; align-items: center;">
           <button (click)="limpiaFiltros()" mat-button class="button-link" style="width: 100%; font-size: 14px !important; align-items: center !important;">
             Limpiar filtros
@@ -49,13 +89,23 @@
         </div>
       </div>
       <div class="mat-elevation-z8 mt-0">
+<mat-card-actions>
+  <div class="botones-derecha">
+    <button type="button"
+      mat-raised-button
+      class="btn-info"
+      (click)="derivar()">Derivar
+    </button>
+  </div>
+</mat-card-actions>
+
 <!--         <table mat-table [dataSource]="dataSourceSolicitud()" multiTemplateDataRows matSort>
-          <ng-container matColumnDef="index">
-            <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
+          <ng-container matColumnDef="selected">
+            <th id="checkI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
               Seleccionar
             </th>
-            <td mat-cell *matCellDef="let element; let i = dataIndex" class="gris" style="width: 4%">
-              <mat-checkbox></mat-checkbox>
+            <td mat-cell *matCellDef="let element; class="gris" style="width: 4%">
+              <input type="checkbox" [(ngModel)]="element.selected" />
             </td>
           </ng-container>
           <ng-container matColumnDef="id_solicitud">
@@ -115,25 +165,11 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="accion">
-            <th id="accionI" mat-header-cell *matHeaderCellDef style="width: 8%; text-align: center">
-              Acción
-            </th>
-            <td mat-cell *matCellDef="let element; let i = index" style="width: 8%; text-align: center;">
-              <button matTooltip="Ver detalles"
-                      mat-icon-button (click)="verDetalle(element.id_solicitud)">
-                  <mat-icon class="destacado">visibility</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table> -->
         @if(this.dataSourceSolicitud().data.length === 0 ){
-          <div class="info SinInfoTabla">
-            No hay solicitudes para mostrar</div>
+          <div class="info SinInfoTabla">No hay solicitudes para mostrar</div>
         }
         <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
       </div>

@@ -5,6 +5,13 @@ export interface ISolicitudCartera {
   id_ejecutivo_banco: string,
   nombre_ejecutivo_banco: string,
   fecha_creacion: string,
+  id_rubro: number,
+  nombre_rubro: string,
+  id_tipo_seguro: number,
+  nombre_tipo_seguro: string,
+  id_estado: number,
+  descripcion_estado: string,
+  selected?: boolean
   //...
 }
 
@@ -44,4 +51,10 @@ export interface IEjecutivoResponse{
   p_cursor: IEjecutivo[],
   vcEstado: string,
   vcEstadoCreacion: string
+}
+
+export interface IRequestDeriva{
+  id_solicitud: number,
+  id_coordinador_anterior: string,
+  id_coordinador_nuevo: string
 }
