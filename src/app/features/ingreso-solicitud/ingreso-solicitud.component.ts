@@ -24,7 +24,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  cleanRut,
+} from '@fdograph/rut-utilities';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
@@ -237,24 +242,46 @@ export default class IngresoSolicitudComponent {
   }
 
   buscarContratantePorRut() {
-    const rut = this.rutCliente.value;
-    console.log('Consultando RUT:', rut);
+    let rutIngresado = this.rutCliente.value;
 
-    if (!rut || this.rutCliente.invalid) {
+    if (!rutIngresado || this.rutCliente.invalid) {
       this.notificacioAlertnService.error('ERROR', 'RUT inválido');
       return;
     }
 
-    this.ingresoSolicitudService.getDatosContratante(rut).subscribe({
+    //Si desea volver a como estaba antes el formato del rut borrar este if
+    if (validateRut(rutIngresado)) {
+      //Muestra en el input con puntos y guion
+      this.rutCliente.setValue(
+        formatRut(cleanRut(rutIngresado), RutFormat.DOTS_DASH),
+        { emitEvent: false }
+      );
+
+      //Enviar al servicio sin puntos y con guion
+      rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
+    }
+
+    console.log('RUT enviado al servicio:', rutIngresado);
+
+    this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
-        console.log('Respuesta del servicio:', resp);
         if (resp.codigo === 200 && resp.data) {
           const datos = resp.data;
+
+          if (datos.rutCliente !== '11898216-9') {
+            this.notificacioAlertnService.error(
+              'ERROR',
+              'Este RUT no tiene datos disponibles'
+            );
+            this.nombreRazonSocial.set('');
+            this.emailContratante.set('');
+            this.telefonoContratante.set('');
+            return;
+          }
 
           this.nombreRazonSocial.set(
             `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno}`
           );
-
           const correo =
             datos.emailParticularCliente ||
             datos.emailComercialCliente ||
@@ -266,7 +293,6 @@ export default class IngresoSolicitudComponent {
             datos.fonoComercialCliente ||
             datos.telefono ||
             '';
-
           this.emailContratante.set(correo);
           this.telefonoContratante.set(telefono);
 
@@ -284,8 +310,7 @@ export default class IngresoSolicitudComponent {
           );
         }
       },
-      error: (err) => {
-        console.error('Error al consultar el servicio:', err);
+      error: () => {
         this.notificacioAlertnService.error(
           'ERROR',
           'Error al consultar el servicio'

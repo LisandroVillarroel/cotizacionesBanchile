@@ -13,7 +13,12 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  cleanRut,
+} from '@fdograph/rut-utilities';
 import {
   IAsegurado,
   IAseguradoListaParametro,
@@ -33,7 +38,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    CabeceraPopupComponente
+    CabeceraPopupComponente,
   ],
   templateUrl: './modifica-solicitud-asegurado.component.html',
   styleUrl: './modifica-solicitud-asegurado.component.css',
@@ -43,7 +48,7 @@ export class ModificaSolicitudAseguradoComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   aseguradoService = inject(AseguradoService);
 
@@ -186,7 +191,8 @@ export class ModificaSolicitudAseguradoComponent {
     return null as any;
   }
 
-  async onBlurRutAsegurado(event: any) {
+  //Éste es el método antiguo para formatear rut con puntos y guión
+  /* async onBlurRutAsegurado(event: any) {
     const rut = event.target.value;
 
     if (validateRut(rut) === true) {
@@ -194,14 +200,36 @@ export class ModificaSolicitudAseguradoComponent {
         .get('rutAsegurado')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
+  } */
+
+  async onBlurRutAsegurado(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      //Mostrar en el input con puntos y guion
+      await this.modificaAsegurado()
+        .get('rutAsegurado')!
+        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
+          emitEvent: false,
+        });
+
+      //Guardar en BD sin puntos y con guion
+      formatRut(cleanRut(rut), RutFormat.DASH);
+    }
   }
 
   modificar() {
+    const rutVisual = this.modificaAsegurado().get('rutAsegurado')!.value;
+
+    //Convertir a formato BD (sin puntos, con guion)
+    const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
+
     this.asegurado = {
       p_id_solicitud: Number(this.data.idSolicitud),
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
-      p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      //p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
+      p_rut_asegurado: rutParaBD,
       p_nombre_razon_social_asegurado:
         this.modificaAsegurado().get('nombreAsegurado')!.value,
       p_mail_asegurado: this.modificaAsegurado().get('correoAsegurado')!.value,
@@ -233,7 +261,7 @@ export class ModificaSolicitudAseguradoComponent {
         }
       },
       error: (error) => {
-       this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }

@@ -13,7 +13,12 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  cleanRut,
+} from '@fdograph/rut-utilities';
 import {
   IBeneficiario,
   IBeneficiarioListaParametro,
@@ -33,7 +38,7 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    CabeceraPopupComponente
+    CabeceraPopupComponente,
   ],
   templateUrl: './modifica-solicitud-beneficiario.component.html',
   styleUrl: './modifica-solicitud-beneficiario.component.css',
@@ -42,7 +47,7 @@ export class ModificaSolicitudBeneficiarioComponent {
   beneficiario!: IBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-   notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   beneficiarioService = inject(BeneficiarioService);
 
@@ -92,8 +97,11 @@ export class ModificaSolicitudBeneficiarioComponent {
     [Validators.required]
   );
   deptoDireccionBeneficiario = new FormControl(
-    this.data.datoBeneficiarioPar.departamento_block_beneficiario);
-  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario);
+    this.data.datoBeneficiarioPar.departamento_block_beneficiario
+  );
+  casaBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.casa_beneficiario
+  );
 
   modificaBeneficiario = signal<FormGroup>(
     new FormGroup({
@@ -188,7 +196,8 @@ export class ModificaSolicitudBeneficiarioComponent {
     return null as any;
   }
 
-  async onBlurRutBeneficiario(event: any) {
+  //Éste es el método antiguo para formatear rut con puntos y guión
+  /* async onBlurRutBeneficiario(event: any) {
     const rut = event.target.value;
 
     if (validateRut(rut) === true) {
@@ -196,15 +205,36 @@ export class ModificaSolicitudBeneficiarioComponent {
         .get('rutBeneficiario')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
+  } */
+
+  async onBlurRutBeneficiario(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      //Mostrar en el input con puntos y guion
+      await this.modificaBeneficiario()
+        .get('rutBeneficiario')!
+        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
+          emitEvent: false,
+        });
+
+      //Guardar en BD sin puntos y con guion
+      formatRut(cleanRut(rut), RutFormat.DASH);
+    }
   }
 
   modificar() {
+    const rutVisual = this.modificaBeneficiario().get('rutAsegurado')!.value;
+
+    //Convertir a formato BD (sin puntos, con guion)
+    const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
+
     this.beneficiario = {
       p_id_solicitud: Number(this.data.idSolicitud),
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
-      p_rut_beneficiario:
-        this.modificaBeneficiario().get('rutBeneficiario')!.value,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      //p_rut_beneficiario: this.modificaBeneficiario().get('rutBeneficiario')!.value,
+      p_rut_beneficiario: rutParaBD,
       p_nombre_razon_social_beneficiario:
         this.modificaBeneficiario().get('nombreBeneficiario')!.value,
       p_mail_beneficiario:
@@ -241,7 +271,7 @@ export class ModificaSolicitudBeneficiarioComponent {
           }
         },
         error: (error) => {
-          this.notificacioAlertnService= inject(NotificacioAlertnService);
+          this.notificacioAlertnService = inject(NotificacioAlertnService);
         },
       });
   }
