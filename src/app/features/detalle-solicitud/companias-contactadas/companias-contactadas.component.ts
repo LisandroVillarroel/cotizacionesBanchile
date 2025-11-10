@@ -52,9 +52,12 @@ export class CompaniasContactadasComponent {
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
   @Input() cotizacionSeleccionada: number | null = null;
+  @Input() flagSoloCerrar: boolean = false;
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() cargaRespuesta = new EventEmitter<void>();
+  @Output() actualizarDatos = new EventEmitter<void>();
+
 
   panelOpenState = false;
   infoGral = input.required<ISolicitud | undefined>();
@@ -72,7 +75,11 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
   //detalleGral = signal<InformacionGeneralComponent>
 
-  constructor() {}
+  constructor() {
+    //console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
+   }
+
+
 
   getCellStyle(estado: number) {
     let color: string;
@@ -158,34 +165,6 @@ export class CompaniasContactadasComponent {
     }
   }
 
-  registrarRespuesta(idCompania: number): void {
-    this.compania = computed(() =>
-      this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
-    );
-
-    const dato = {
-      infoGral: this.infoGral()!,
-      compania: this.compania()![0],
-      flagAccion: true,
-    };
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.cargaRespuesta.emit();
-        }
-      });
-  }
 
   borrarCompania(idCompania: number) {
     const dato = {
@@ -219,7 +198,7 @@ export class CompaniasContactadasComponent {
     this.cotizacionSeleccionadaEvent.emit(id);
   }
 
-  @Output() actualizarDatos = new EventEmitter<void>();
+
 
   verCompania(companiaSeleccionada: any): void {
     const dato = {
@@ -257,7 +236,7 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
+/*
     verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
@@ -300,7 +279,7 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
+*/
   acciones = computed(() => {
     return (estado: string) => {
       const estadoLower = estado.toLowerCase();
@@ -347,4 +326,69 @@ export class CompaniasContactadasComponent {
       return acciones.filter((a) => a.mostrar);
     };
   });
+
+  verDetalleCot(idCompania: number, nombreCia: string) {
+    const dato = {
+      p_id_solicitud: this.infoGral()?.id_solicitud,
+      p_id_compania_seguro: idCompania,
+      p_nombre_compania_seguro: nombreCia,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+      p_rut_contratante: this.infoGral()?.rut_contratante,
+      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
+      p_id_rubro: this.infoGral()?.id_rubro,
+      p_nombre_rubro: this.infoGral()?.nombre_rubro,
+      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
+      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
+    };
+
+
+
+    console.log('verDetalleCot:', dato);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    dialogConfig.maxHeight = '80%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(DetalleCotizacionComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.actualizarDatos.emit();
+        }
+      });
+  }
+
+
+  registrarRespuesta(idCompania: number): void {
+    this.compania = computed(() => this.companias()!.filter(c => { return c.p_id_compania_seguro === idCompania }));
+    const dato = {
+      infoGral: this.infoGral()!,
+      compania: this.compania()![0],
+      flagAccion: true
+    };
+    console.log("Info hacia Registro: ", dato);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = dato;
+    this.dialog
+      .open(IngresoRespuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.cargaRespuesta.emit(); });
+  }
+
+
+  habilitaRadioButton(estado: string): boolean {
+    return estado?.toLowerCase() === 'recibida';
+  }
+
 }

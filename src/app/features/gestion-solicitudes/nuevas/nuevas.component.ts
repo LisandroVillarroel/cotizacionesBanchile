@@ -190,7 +190,10 @@ export class NuevasComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
+    dialogConfig.data = {
+      idSolicitud: IdSolicitud,
+      flagSoloCerrar: false
+    };
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()

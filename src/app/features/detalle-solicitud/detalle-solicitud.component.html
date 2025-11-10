@@ -61,6 +61,7 @@
                   [verEjec]="verEjec"
                   [verCoord]="verCoord"
                   [minimo]="minimo"
+                  [flagSoloCerrar]="flagSoloCerrar"
                   (actualizarDatos)="
                     cargarCompanias(idSolicitud);
                     obtenerMinimo(idSolicitud);
@@ -129,7 +130,7 @@
         Cerrar
       </button>
     </div>
-    <div class="botones-derecha">
+    <div class="botones-derecha" *ngIf="!flagSoloCerrar">
       <button
         mat-stroked-button
         class="btn-danger"
@@ -197,11 +198,11 @@
       </button>
 
       <button
-        mat-stroked-button
-        class="btn-success"
-        [hidden]="flagAprobarCot || verEjec"
-        [disabled]="!cotizacionSeleccionada"
-        (click)="aprobarCotizacion()"
+      mat-stroked-button
+      class="btn-success"
+      [hidden]="flagAprobarCot || verCoord"
+      [disabled]="!cotizacionSeleccionada"
+      (click)="aprobarCotizacion()"
       >
         Aprobar Cotización
       </button>

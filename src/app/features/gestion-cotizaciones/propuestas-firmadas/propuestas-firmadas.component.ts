@@ -1,6 +1,5 @@
 import { Component, computed, input, output, inject, signal, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
-import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { IGestionCotizacion } from '../gestionCotizacion-interface';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +21,7 @@ import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 
 @Component({
   selector: 'app-propuestas-firmadas',
@@ -50,9 +50,9 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
   styleUrl: './propuestas-firmadas.component.css'
 })
 export class PropuestasFirmadasComponent {
+    retorno = output<boolean>();
   firmadas = input.required<IGestionCotizacion[] | undefined>();
   cotFirmadas = computed(()=> this.firmadas());
-
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -64,20 +64,20 @@ export class PropuestasFirmadasComponent {
   filtroContratante = signal('');
   filtroRubro = signal('');
   filtroTipoSeguro = signal('');
-  filtroFecha = signal<Date | null>(null);
+  filtroSolicitud = signal('');
 
   formularioModificado = signal(false);
 
   contratante = new FormControl();
   rubro = new FormControl();
   seguro = new FormControl();
-  fecha = new FormControl<Date | null>(null);
+  solicitud = new FormControl();
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     contratante : this.contratante,
     rubro : this.rubro,
     seguro : this.seguro,
-    fecha : this.fecha
+    solicitud : this.solicitud
     })
   );
 
@@ -85,29 +85,16 @@ export class PropuestasFirmadasComponent {
     const contratante = this.filtroFormulario().value.contratante??'';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
-
-    let fechaInicio=new Date();
-    if (fechaInicio_Inicial!=null){
-         fechaInicio = new Date(this.filtroFormulario().value.fecha);
-    }
+    const solicitud = this.filtroFormulario().value.solicitud??'';
 
     this.formularioModificado();
     return this.firmadas()!.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
-      let cumpleFecha=true;
-      const fechaBase = new Date(item.p_fecha_creacion);
+      const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
 
-      if (fechaInicio_Inicial!=null){
-        cumpleFecha = !fechaInicio || (
-        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-        fechaBase.getMonth() === fechaInicio.getMonth() &&
-        fechaBase.getDate() === fechaInicio.getDate()
-      );
-    }
-    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
+      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
     });
   };
 
@@ -176,20 +163,21 @@ export class PropuestasFirmadasComponent {
     return salida;
   }
 
-  private readonly dialog = inject(MatDialog);
-  retorno = output<boolean>();
-    verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
 
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = IdSolicitud;
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
+
+
+  verPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(VerPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })*/
+  }
 }

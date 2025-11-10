@@ -33,6 +33,7 @@ export class GraficoBarraComponent implements OnInit {
   constructor() {
     effect((): void => {
       const resumen = this.resumenGeneral();
+     // console.log('grafico BArra', this.resumenGeneral());
       if (!resumen) return;
       let arrTotales = [];
       for (let i = 0; i < this.datoEstadoNombre().length; i++) {
@@ -40,6 +41,7 @@ export class GraficoBarraComponent implements OnInit {
           .reduce((contador) => contador = contador + 1, 0);
       }
       this.arrTotalesSignal.set(arrTotales)
+
       this.data.set({
         labels: this.datoEstadoNombre(),
         datasets: [{

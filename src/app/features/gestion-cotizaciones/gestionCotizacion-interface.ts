@@ -26,24 +26,14 @@ export interface IGestionCotizacion{
   p_id_tipo_seguro: number,
   p_nombre_tipo_seguro: string,
   p_fecha_creacion: string,
-  p_fecha_envio_coordinador: string,
-  p_fecha_aprobar_solicitud: string,
-  p_fecha_emision_propuesta:string,
-  p_fecha_aceptacion_solicitud: string,
-  p_fecha_rechazo_solicitud: string,
-  p_fecha_anulacion_solicitud: string,
   p_id_estado_solicitud: number,
   p_nombre_estado: string,
-  p_sla?: string, //ISla;
-  p_id_compania_seguro: number,
-  nombre_compania_seguro: string,
-  p_id_estado_cotizacion: number,
-  nombre_estado_cotizacion: string,
-  p_fecha_creacion_cotizacion: string,
-  p_valor_prima_bruta: number,
-  p_valor_prima_neta: number,
-  p_fecha_inicio_vigencia: string,
-  p_fecha_termino_vigencia: string
+  p_sla: string, //ISla;
+  p_cotizaciones_recibidas?: number,
+  p_fecha_aceptacion_solicitud?: string,
+  p_fecha_emision_propuesta?:string,
+  p_doc_propuesta?: string,
+  p_fecha_firma_propuesta?: string,
 }
 
 export interface IGestionResponse{
