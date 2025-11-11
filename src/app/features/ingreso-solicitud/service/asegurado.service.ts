@@ -1,7 +1,4 @@
-import {
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -23,21 +20,23 @@ export class AseguradoService {
 
   constructor() {}
   postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
-    return this.http
-      .post<any>(`${environment.apiUrlConsumer}/ingresarAsegurado`, agregaAsegurado, {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/ingresarAsegurado`,
+      agregaAsegurado,
+      {
         headers: this.headers,
-      })
+      }
+    );
   }
 
   postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
-    return this.http
-      .post<any>(
-        `${environment.apiUrlConsumer}/modificarAsegurado`,
-        modificaAsegurado,
-        {
-          headers: this.headers,
-        }
-      )
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/modificarAsegurado`,
+      modificaAsegurado,
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   postEliminaAsegurado(
@@ -48,19 +47,27 @@ export class AseguradoService {
       p_id_solicitud: isolicitud,
       p_rut_asegurado: rutAsegurado,
     };
-    return this.http
-      .post<any>(`${environment.apiUrlConsumer}/eliminarAsegurado`, parametro, {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/eliminarAsegurado`,
+      parametro,
+      {
         headers: this.headers,
-      })
+      }
+    );
   }
 
   postListadoAsegurado(filtro: any): Observable<DatosAseguradosInterface> {
-    return this.http
-      .post<DatosAseguradosInterface>(
-        `${environment.apiUrlConsumer}/listarAsegurados`,
-        filtro,
-        { headers: this.headers }
-      )
+    return this.http.post<DatosAseguradosInterface>(
+      `${environment.apiUrlConsumer}/listarAsegurados`,
+      filtro,
+      { headers: this.headers }
+    );
   }
 
+  //Servicio para traer datos del mock a asegurado
+  /*   getDatosAsegurado(rut: string): Observable<any> {
+    return this.http.get(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
+    );
+  } */
 }

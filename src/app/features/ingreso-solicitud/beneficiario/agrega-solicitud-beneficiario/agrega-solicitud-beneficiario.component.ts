@@ -184,6 +184,65 @@ export class AgregaSolicitudBeneficiarioComponent {
     }
   } */
 
+  //Éste es el método para cargar datos del mock en agregar beneficiario
+  /* async onBlurRutBeneficiario(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      // Mostrar en el input con puntos y guion
+      await this.agregaBeneficiario()
+        .get('rutBeneficiario')!
+        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
+          emitEvent: false,
+        });
+
+      // Formato para BD
+      const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+
+      if (rutParaBD === '11898216-9') {
+        this.beneficiarioService.getDatosBenficiario(rutParaBD).subscribe({
+          next: (response: any) => {
+            if (response.codigo === 200 && response.data) {
+              const data = response.data;
+
+              this.agregaBeneficiario().patchValue({
+                nombreBeneficiario: `${data.nombre} ${data.apellidoPaterno} ${data.apellidoMaterno}`,
+                correoBeneficiario: data.emailEjecutivo || '',
+                telefonoBeneficiario: data.telefono || '',
+                regionBeneficiario: data.region || '',
+                ciudadBeneficiario: data.ciudad || '',
+                comunaBeneficiario: data.comuna || '',
+                direccionBeneficiario: data.direccion || '',
+                numeroDireccionBeneficiario: data.numeroDireccion || '',
+                deptoDireccionBeneficiario: data.complementoDireccion || '',
+                casaBeneficiario: data.numeroDireccion || '',
+              });
+            }
+          },
+          error: () => {
+            this.notificacioAlertnService.error(
+              'ERROR',
+              'Error al consultar datos del beneficiario'
+            );
+          },
+        });
+      } else {
+        this.agregaBeneficiario().patchValue({
+          nombreBeneficiario: '',
+          correoBeneficiario: '',
+          telefonoBeneficiario: '',
+          regionBeneficiario: '',
+          ciudadBeneficiario: '',
+          comunaBeneficiario: '',
+          direccionBeneficiario: '',
+          numeroDireccionBeneficiario: '',
+          deptoDireccionBeneficiario: '',
+          casaBeneficiario: '',
+        });
+      }
+    }
+  } */
+
   async onBlurRutBeneficiario(event: any) {
     const rut = event.target.value;
 

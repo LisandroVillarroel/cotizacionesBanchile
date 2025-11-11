@@ -178,6 +178,65 @@ export class AgregaSolicitudAseguradoComponent {
     }
   } */
 
+  //Éste es el método para cargar datos del mock en agregar asegurado
+  /* async onBlurRutAsegurado(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      // Formatear el RUT visualmente
+      await this.agregaAsegurado()
+        .get('rutAsegurado')!
+        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
+          emitEvent: false,
+        });
+
+      // Formato para BD
+      const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+
+      if (rutParaBD === '11898216-9') {
+        this.aseguradoService.getDatosAsegurado(rutParaBD).subscribe({
+          next: (response: any) => {
+            if (response.codigo === 200 && response.data) {
+              const data = response.data;
+
+              this.agregaAsegurado().patchValue({
+                nombreAsegurado: `${data.nombre} ${data.apellidoPaterno} ${data.apellidoMaterno}`,
+                correoAsegurado: data.emailEjecutivo || '',
+                telefonoAsegurado: data.telefono || '',
+                regionAsegurado: data.region || '',
+                ciudadAsegurado: data.ciudad || '',
+                comunaAsegurado: data.comuna || '',
+                direccionAsegurado: data.direccion || '',
+                numeroDireccionAsegurado: data.numeroDireccion || '',
+                deptoDireccionAsegurado: data.complementoDireccion || '',
+                casaAsegurado: data.numeroDireccion || '',
+              });
+            }
+          },
+          error: () => {
+            this.notificacioAlertnService.error(
+              'ERROR',
+              'Error al consultar datos del asegurado'
+            );
+          },
+        });
+      } else {
+        this.agregaAsegurado().patchValue({
+          nombreAsegurado: '',
+          correoAsegurado: '',
+          telefonoAsegurado: '',
+          regionAsegurado: '',
+          ciudadAsegurado: '',
+          comunaAsegurado: '',
+          direccionAsegurado: '',
+          numeroDireccionAsegurado: '',
+          deptoDireccionAsegurado: '',
+          casaAsegurado: '',
+        });
+      }
+    }
+  } */
+
   async onBlurRutAsegurado(event: any) {
     const rut = event.target.value;
 
