@@ -44,6 +44,11 @@ export const routes: Routes = [
         loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
       },
       {
+        path: 'propuestas',
+        canActivate: [guardRoles(['coord_corr', 'sup_corr'])],
+        loadComponent: () => import('@features/gestion-propuestas/gestion-propuestas.component'),
+      },
+      {
         path: 'derivar',
         canActivate: [guardRoles(['sup_corr'])],
         loadComponent: () => import('@features/derivar-cartera/derivar-cartera.component'),

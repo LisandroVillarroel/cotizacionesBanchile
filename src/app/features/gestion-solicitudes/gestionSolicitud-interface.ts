@@ -1,4 +1,4 @@
-import { IObservacion, ISla } from "@features/detalle-solicitud/modelo/detalle-interface";
+import { IObservacion } from "@features/detalle-solicitud/modelo/detalle-interface";
 
 export interface ISolicitudG {
   id_solicitud: number;

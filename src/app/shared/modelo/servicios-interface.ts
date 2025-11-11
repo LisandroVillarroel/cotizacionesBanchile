@@ -10,3 +10,8 @@ export interface IResponse {
   vcEstado: string,
   vcEstadoCreacion: string
 }
+
+export interface IRequestGestion{
+  p_id_usuario: string,
+  p_tipo_usuario: string
+}

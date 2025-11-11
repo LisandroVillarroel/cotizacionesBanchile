@@ -11,12 +11,15 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
-import { IGestionCotizacion, IGestionResponse, IRequestGestion, IResumenCotizaciones } from './gestionCotizacion-interface';
+import { IRequestGestion } from '@shared/modelo/servicios-interface';
+
+import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-firmadas.component';
 import { CotizacionesRegistradasComponent } from './cotizaciones-registradas/cotizaciones-registradas.component';
 import { PropuestasPendientesComponent } from './propuestas-pendientes/propuestas-pendientes.component';
 import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-emitidas.component";
+import { FirmaPendienteComponent } from '@features/gestion-propuestas/firma-pendiente/firma-pendiente.component';
 
 @Component({
   selector: 'app-gestion-cotizaciones',
@@ -36,7 +39,8 @@ import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-em
     PropuestasPendientesComponent,
     PropuestasEmitidasComponent,
     PropuestasFirmadasComponent,
-    PropuestasEmitidasComponent
+    PropuestasEmitidasComponent,
+    FirmaPendienteComponent
 ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })
@@ -52,13 +56,15 @@ export default class GestionCotizacionesComponent{
     recibidas: 0,
     pendientes: 0,
     emitidas: 0,
-    firmadas: 0
+    firmadas: 0,
+    por_firmar: 0
   });
   solicitudes = signal<IGestionCotizacion[] >([]);
   recibidas = signal<IGestionCotizacion[] >([]);
   pendientes = signal<IGestionCotizacion[] >([]);
   emitidas = signal<IGestionCotizacion[] >([]);
   firmadas = signal<IGestionCotizacion[] >([]);
+  por_firmar = signal<IGestionCotizacion[] >([]);
 
   async ngOnInit(){
     this.cargarSolicitudes();
@@ -79,7 +85,8 @@ export default class GestionCotizacionesComponent{
             recibidas: dato.p_nro_cotiz_reg,
             pendientes: dato.p_nro_prop_pend,
             emitidas: dato.p_nro_prop_gene,
-            firmadas: dato.p_nro_prop_firm
+            firmadas: dato.p_nro_prop_firm,
+            por_firmar: dato.p_nro_prop_firm_pend
           });
           let res = dato.ps_cursorRec;
           res.map((valor: IGestionCotizacion)=> {
@@ -120,7 +127,16 @@ export default class GestionCotizacionesComponent{
             }
           });
           this.firmadas.set(res4);
-          //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
+
+          let res5 = dato.ps_cursorPorFir;
+          res.map((valor: IGestionCotizacion)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+            }
+          });
+          this.por_firmar.set(res5);
         }
       },
       error: (error) => {

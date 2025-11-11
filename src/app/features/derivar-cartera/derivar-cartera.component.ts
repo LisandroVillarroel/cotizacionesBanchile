@@ -274,7 +274,14 @@ export default class DerivarCarteraComponent{
     this.carteraService.postlistarCartera(this.request).subscribe({
       next: async (dato) => {
         if (dato.codigo === 200) {
-          this.solicitudes.set(dato.ps_cursor) ;
+          let res = dato.ps_cursor;
+          res.map((valor: ISolicitudCartera)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              selected: false
+            }
+          })
+          this.solicitudes.set(res) ;
         }
       },
       error: (error) => {

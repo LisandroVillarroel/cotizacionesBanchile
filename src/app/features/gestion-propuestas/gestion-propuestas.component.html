@@ -1,0 +1,18 @@
+<div class="container-fluid d-flex justify-around p-0 mb-2">
+  <h1 mat-dialog-title class="titulo centraVertical">Gestión de propuestas</h1>
+</div>
+
+<div  class="container-fluid fondoGris p-0 ">
+  <mat-tab-group>
+    <mat-tab label="Solicitudes Emitidas">
+      <div class="container-fluid">
+        <app-propuestas-emitidas [emitidas]="emitidas()" (retorno)="recibido($event)" />
+      </div>
+    </mat-tab>
+    <mat-tab label="Solicitudes con Firma Pendiente">
+      <div class="container-fluid ">
+        <app-firma-pendiente [pendientes]="pendientes()" (retorno)="recibido($event)"/>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

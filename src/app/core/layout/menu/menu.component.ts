@@ -32,17 +32,23 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <li class="nav-item border-end" [routerLinkActive]="['active']">
                 <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
               </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
+              </li>
             }
             @if(hasRole(['coord_corr', 'sup_corr'])){
               <li class="nav-item border-end" [routerLinkActive]="['active']">
                 <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
               </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="propuestas">Gestión de Propuestas</a>
+              </li>
             }
-            @if(hasRole(['ejec_bco'])){
+<!--             @if(hasRole(['ejec_bco'])){
               <li class="nav-item border-end" [routerLinkActive]="['active']">
                 <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
               </li>
-            }
+            } -->
             @if(hasRole(['sup_corr'])){
               <li class="nav-item border-end" [routerLinkActive]="['active']">
                 <a class="nav-link" routerLink="derivar">Derivar Cartera</a>

@@ -1,20 +1,9 @@
-import { IObservacion } from "@features/detalle-solicitud/modelo/detalle-interface";
-import { ICompaniaG } from '@features/gestion-solicitudes/gestionSolicitud-interface';
-
-export interface IRequestGestion{
-  p_id_usuario: string,
-  p_tipo_usuario: string
-}
-
 export interface IResumenCotizaciones{
   recibidas: number,
   pendientes: number,
   emitidas: number,
   firmadas: number,
-}
-
-export interface ICotizacion{
-
+  por_firmar: number
 }
 
 export interface IGestionCotizacion{
@@ -34,6 +23,7 @@ export interface IGestionCotizacion{
   p_fecha_emision_propuesta?:string,
   p_doc_propuesta?: string,
   p_fecha_firma_propuesta?: string,
+  selected?: boolean
 }
 
 export interface IGestionResponse{
@@ -43,10 +33,12 @@ export interface IGestionResponse{
   ps_cursorPen: IGestionCotizacion[],
   ps_cursorProGen: IGestionCotizacion[],
   ps_cursorProFir: IGestionCotizacion[],
+  ps_cursorPorFir: IGestionCotizacion[],
   p_nro_cotiz_reg: number,
   p_nro_prop_pend: number,
   p_nro_prop_gene: number,
   p_nro_prop_firm: number,
+  p_nro_prop_firm_pend: number
   vcEstado: string,
   vcEstadoCreacion: string
 }
