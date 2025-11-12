@@ -178,8 +178,25 @@ export class AgregaSolicitudAseguradoComponent {
     }
   } */
 
-  //Éste es el método para cargar datos del mock en agregar asegurado
+  //Éste es el método para formatear rut con puntos y guión y guarda el rut sin puntos y con guion en BD
   /* async onBlurRutAsegurado(event: any) {
+    const rut = event.target.value;
+
+    if (validateRut(rut) === true) {
+      //Mostrar en el input con puntos y guion
+      await this.agregaAsegurado()
+        .get('rutAsegurado')!
+        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
+          emitEvent: false,
+        });
+
+      //Guardar en BD sin puntos y con guion
+      formatRut(cleanRut(rut), RutFormat.DASH);
+    }
+  } */
+
+  //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
+  async onBlurRutAsegurado(event: any) {
     const rut = event.target.value;
 
     if (validateRut(rut) === true) {
@@ -202,7 +219,7 @@ export class AgregaSolicitudAseguradoComponent {
               this.agregaAsegurado().patchValue({
                 nombreAsegurado: `${data.nombre} ${data.apellidoPaterno} ${data.apellidoMaterno}`,
                 correoAsegurado: data.emailEjecutivo || '',
-                telefonoAsegurado: data.telefono || '',
+                telefonoAsegurado: data.celularParticularCliente || '',
                 regionAsegurado: data.region || '',
                 ciudadAsegurado: data.ciudad || '',
                 comunaAsegurado: data.comuna || '',
@@ -234,22 +251,6 @@ export class AgregaSolicitudAseguradoComponent {
           casaAsegurado: '',
         });
       }
-    }
-  } */
-
-  async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
-
-    if (validateRut(rut) === true) {
-      //Mostrar en el input con puntos y guion
-      await this.agregaAsegurado()
-        .get('rutAsegurado')!
-        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
-          emitEvent: false,
-        });
-
-      //Guardar en BD sin puntos y con guion
-      formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 

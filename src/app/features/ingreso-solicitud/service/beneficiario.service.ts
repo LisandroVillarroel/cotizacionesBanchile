@@ -70,9 +70,9 @@ export class BeneficiarioService {
   }
 
   //Servicio para traer datos del mock a beneficiario
-  /*   getDatosBenficiario(rut: string): Observable<any> {
+  getDatosBenficiario(rut: string): Observable<any> {
     return this.http.get(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
     );
-  } */
+  }
 }

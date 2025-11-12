@@ -249,7 +249,7 @@ export default class IngresoSolicitudComponent {
       return;
     }
 
-    //Si desea volver a como estaba antes el formato del rut borrar este if
+    //Si desea volver a como estaba antes el formato del rut, borrar este if
     if (validateRut(rutIngresado)) {
       //Muestra en el input con puntos y guion
       this.rutCliente.setValue(
@@ -386,11 +386,15 @@ export default class IngresoSolicitudComponent {
   }
 
   async agregarAsegurado() {
+    const rutVisual = this.ingresoSolicitud.contratante.rut_contratante;
+
+    const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
+
     this.asegurado = {
       p_id_solicitud: Number(this.contratanteInfo().id),
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_rut_asegurado: this.ingresoSolicitud.contratante.rut_contratante,
+      p_rut_asegurado: rutParaBD,
       p_nombre_razon_social_asegurado:
         this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
       p_mail_asegurado: this.ingresoSolicitud.contratante.mail_contratante,
