@@ -1,4 +1,4 @@
-import { Component, computed, input, output, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, input, output, inject, signal, ViewChild, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { IGestionCotizacion } from '../gestionCotizacion-interface';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -21,6 +21,11 @@ import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { CargarPropuestaFirmadaComponent } from '../cargar-propuesta-firmada/cargar-propuesta-firmada.component';
+import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+
 
 @Component({
   selector: 'app-propuestas-emitidas',
@@ -44,13 +49,29 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     MatGridListModule,
     FormsModule,
     CommonModule
-],
+  ],
   templateUrl: './propuestas-emitidas.component.html',
   styleUrl: './propuestas-emitidas.component.css'
 })
 export class PropuestasEmitidasComponent {
+  //panelOpenState = false;
+
+
+  infoGral = input.required<ISolicitud | undefined>();
+
+ //infoGral = signal<ISolicitud | undefined>();
+
+ //infoGral = signal<ISolicitud | undefined>(undefined);
+
+
+
   emitidas = input.required<IGestionCotizacion[] | undefined>();
-  cotRecibidas = computed(()=> this.emitidas());
+  cotRecibidas = computed(() => this.emitidas());
+
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  id_usuario = this._storage()?.usuarioLogin.usuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
 
   rubroService = inject(RubroService);
@@ -73,33 +94,33 @@ export class PropuestasEmitidasComponent {
   solicitud = new FormControl();
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante : this.contratante,
-    rubro : this.rubro,
-    seguro : this.seguro,
-    solicitud : this.solicitud
-    })
+    contratante: this.contratante,
+    rubro: this.rubro,
+    seguro: this.seguro,
+    solicitud: this.solicitud
+  })
   );
 
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante??'';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
-    const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    const solicitud = this.filtroFormulario().value.solicitud??'';
+    const contratante = this.filtroFormulario().value.contratante ?? '';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
+    const solicitud = this.filtroFormulario().value.solicitud ?? '';
 
     this.formularioModificado();
     return this.emitidas()!.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
 
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
+      return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
     });
   };
 
-  datosPaginados(){
-      const start = this.pagina() * this.pageSize;
-      return this.datosFiltrados()!.slice(start, start + this.pageSize);
+  datosPaginados() {
+    const start = this.pagina() * this.pageSize;
+    return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
   onPage(event: any) {
@@ -134,12 +155,12 @@ export class PropuestasEmitidasComponent {
     const _codigoRubro = datos.id_rubro;
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          }
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
-      });
+      }
+    });
   }
 
   limpiaFiltros() {
@@ -148,10 +169,10 @@ export class PropuestasEmitidasComponent {
 
   getCellClass(value: string): string {
     var salida = 'gris';
-    if(value !== null){
-      switch(value.toLowerCase()){
+    if (value !== null) {
+      switch (value.toLowerCase()) {
         case 'v':
-          salida = 'verde' ; break;
+          salida = 'verde'; break;
         case 'a':
           salida = 'amarillo'; break;
         case 'r':
@@ -164,40 +185,55 @@ export class PropuestasEmitidasComponent {
   private readonly dialog = inject(MatDialog);
   retorno = output<boolean>();
   verPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
+    /*     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
-    this.dialog
-      .open(VerPropuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })*/
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '80%';
+        dialogConfig.height = '90%';
+        dialogConfig.position = { top: '3%' };
+        dialogConfig.data = IdSolicitud;
+        this.dialog
+          .open(VerPropuestaComponent, dialogConfig)
+          .afterClosed()
+          .subscribe(() => { this.retorno.emit(true); })*/
   }
 
   private readonly dialogCarga = inject(MatDialog);
   retornoCarga = output<boolean>();
-  cargarPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
 
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = {
-      idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
+
+  cargarPropuesta(IdSolicitud: number) {
+    console.log('ID Solicitud recibida :', IdSolicitud);
+    console.log('infoGral :', this.infoGral());
+    const dato = {
+      p_id_solicitud: IdSolicitud,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+      p_rut_contratante: this.infoGral()?.rut_contratante,
+      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
+      p_id_rubro: this.infoGral()?.id_rubro,
+      p_nombre_rubro: this.infoGral()?.nombre_rubro,
+      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
+      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
     };
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
-}
-  }*/
-}
+
+    console.log('dato cargar propuesta', dato);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    dialogConfig.maxHeight = '90%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
+    this.dialog
+      .open(CargarPropuestaFirmadaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+        }
+      });
+  }
 }
