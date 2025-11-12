@@ -19,53 +19,6 @@
     </mat-card-header>
     <mat-card-content class="fondoGris">
 
-      <!-- {{data.p_id_usuario}}-->
-
-      <!-- <div class="container-fluid fondoGris justify-around d-flex p-4">
-        <div style="width: 49%; display: flex; align-items: flex-start">
-          <mat-card t-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
-            data-titulo="Cotización Propuesta" style="width: 100%">
-            <div style="display: flex; align-items: center; gap: 8px">
-              <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
-                style="flex-grow: 1; min-width: 0">
-                <mat-label class="labelI-cuestionario"></mat-label>
-                <input matInput [value]="nombreArchivoPropuesta" disabled placeholder="Carga cotipropuesta" />
-              </mat-form-field>
-              <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorPropuesta()"
-                type="button" class="boton-cargar-cuestionario">
-                <mat-icon>upload</mat-icon>
-              </button>
-              <input type="file" #fileInputPropuesta hidden (change)="onFileSelectedPropuesta($event)" />
-              <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoPropuesta()"
-                type="button" class="boton-eliminar-cuestionario">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </mat-card>
-        </div>
-        <div style="width: 49%; display: flex; align-items: flex-start">
-          <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
-            data-titulo="Cotización Compañía" style="width: 100%">
-            <div style="display: flex; align-items: center; gap: 8px">
-              <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
-                style="flex-grow: 1; min-width: 0">
-                <mat-label class="labelI-cuestionario"></mat-label>
-                <input matInput [value]="" disabled placeholder="Carga cotización enviada por la compañía" />
-              </mat-form-field>
-              <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirSelectorCompania()"
-                type="button" class="boton-cargar-cuestionario">
-                <mat-icon>upload</mat-icon>
-              </button>
-              <input type="file" #fileInputCompania hidden (change)="onFileSelectedCompania($event)" />
-
-              <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarArchivoCompania()"
-                type="button" class="boton-eliminar-cuestionario">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </mat-card>
-        </div>
-      </div> -->
 
 
       <mat-divider></mat-divider>
@@ -102,7 +55,11 @@
         </mat-card>
 
         <!-- Segundo mat-card -->
-        <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+
+<mat-card [style.pointer-events]="habilitarCards ? 'auto' : 'none'"
+            [style.opacity]="habilitarCards ? '1' : '0.5'"
+            class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z
+6"
           data-titulo="Factura (opcional)" style="width: 100%;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
@@ -126,7 +83,11 @@
         </mat-card>
 
         <!-- Tercer mat-card -->
-        <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+
+<mat-card [style.pointer-events]="habilitarCards ? 'auto' : 'none'"
+            [style.opacity]="habilitarCards ? '1' : '0.5'"
+            class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+
           data-titulo="Documento Adicional" style="width: 100%;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
@@ -154,14 +115,7 @@
     </mat-card-content>
   </mat-card>
 </mat-dialog-content>
-<!-- <mat-card-actions>
-  <div class="container-fluid d-flex p-2">
-    <div class="botones-derecha">
-      <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cerrar</button>
-      <button mat-stroked-button class="btn-success" (click)="cancelar()">Cargar y enviar a Coordinador</button>
-    </div>
-  </div>
-</mat-card-actions> -->
+
 
 <mat-card-actions>
 <div class="container-fluid d-flex p-4 mb-0">

@@ -11,6 +11,9 @@ import { AprobarCotizacionComponent, AprobarCotizacionData } from '../aprobar-co
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
 import { MatIconButton } from '@angular/material/button';
+import { MatFormField} from "@angular/material/form-field";
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 export interface DetalleCotizacionData {
   p_id_solicitud: number;
@@ -31,7 +34,7 @@ export interface DetalleCotizacionData {
   selector: 'app-detalle-cotizacion',
   standalone: true,
   imports: [CabeceraPopupComponente, MatDialogContent, MatCard, MatCardContent,
-    MatLabel, MatIcon, MatDivider, MatCardActions, ReactiveFormsModule, MatCardHeader,MatDivider],
+    MatLabel, MatIcon, MatDivider, MatCardActions, ReactiveFormsModule, MatCardHeader,MatDivider,MatIconButton,MatFormField,MatInput,MatInputModule,MatButton],
   templateUrl: './detalle-cotizacion.component.html',
   styleUrl: './detalle-cotizacion.component.css'
 })

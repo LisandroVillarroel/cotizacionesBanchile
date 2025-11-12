@@ -1,12 +1,11 @@
-<app-cabecera-popup [titulo]="'Detalle Cotización Compañia: '+ data.p_nombre_compania_seguro"  />
-<mat-dialog-content class="container-fluid p-0"
-[formGroup]="detalleCotizacion()" name="detalleCotizacion">
+<app-cabecera-popup [titulo]="'Detalle Cotización Compañia: '+ data.p_nombre_compania_seguro" />
+<mat-dialog-content class="container-fluid p-0" [formGroup]="detalleCotizacion()" name="detalleCotizacion">
   <mat-card>
 
-        <mat-card-header class="fondoGris d-flex justify-around">
+    <mat-card-header class="fondoGris d-flex justify-around">
       <div style="width: 33%;">
         <p class="destacado">Rut Contratante</p>
-        <p >{{ data.p_rut_contratante}}</p>
+        <p>{{ data.p_rut_contratante}}</p>
       </div>
       <mat-divider [vertical]="true"></mat-divider>
       <div style="width: 33%; margin-left: 10px;">
@@ -25,15 +24,14 @@
       {{data.p_nombre_rubro}}
     </mat-card-content>
   </mat-card>
-  </mat-dialog-content>
-    <mat-card-actions>
-      <div class="container-fluid d-flex p-2">
-        <div class="botones-derecha">
-          <button mat-stroked-button class="btn-danger"
-            (click)="cancelar()">Cancelar</button>
-          <button mat-stroked-button class="btn-success"
+</mat-dialog-content>
 
-            (click)="cancelar()">Aceptar</button>
-        </div>
-      </div>
-    </mat-card-actions>
+
+<mat-card-actions>
+<div class="container-fluid d-flex p-4 mb-0">
+  <div class="botones-derecha">
+    <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cerrar</button>
+      <button mat-stroked-button class="btn-success" (click)="cancelar()">Cargar y enviar a Coordinador</button>
+  </div>
+</div>
+</mat-card-actions>
