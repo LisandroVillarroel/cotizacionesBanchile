@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -7,13 +7,15 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
+
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
-import { IRequestGestion } from '@shared/modelo/servicios-interface';
 
+import { IRequestGestion } from '@shared/modelo/servicios-interface';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
+
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-firmadas.component';
 import { CotizacionesRegistradasComponent } from './cotizaciones-registradas/cotizaciones-registradas.component';

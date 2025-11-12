@@ -472,8 +472,9 @@ th#opcionesI {
 
   /*FORMS*/
   .titulo {
-    font-size: 18px;
+    font-size: 18px !important;
     font-weight: bold;
+    color: #234e85;
   }
 
   .barra-titulo {
@@ -985,9 +986,9 @@ mat-divider[vertical] {
   color: white;
 }
 
-.titulo {
+/* .titulo {
   color: #234e85;
-}
+} */
 
 .danger {
   color: #f45516;

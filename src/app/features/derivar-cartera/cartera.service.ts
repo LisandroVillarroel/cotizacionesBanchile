@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { IResponse } from '@shared/modelo/servicios-interface';
+import { IRequestGestion, IResponse } from '@shared/modelo/servicios-interface';
 import { Observable } from 'rxjs';
 import { ICarteraResponse, ICoordinadorResponse, IEjecutivoResponse, IRequestDeriva } from './cartera-interface';
-import { IRequestGestion } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
+
 
 @Injectable({
   providedIn: 'root'
