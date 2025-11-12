@@ -67,9 +67,6 @@ export default class GestionCotizacionesComponent{
   pendientes = signal<IGestionCotizacion[] >([]);
   emitidas = signal<IGestionCotizacion[] >([]);
   firmadas = signal<IGestionCotizacion[] >([]);
- infoGral = signal<ISolicitud | undefined>(undefined);
-
- //infoGral = signal<ISolicitud[]>([]);
   por_firmar = signal<IGestionCotizacion[] >([]);
 
   async ngOnInit(){
@@ -145,34 +142,6 @@ export default class GestionCotizacionesComponent{
             }
           });
           this.por_firmar.set(res5);
-
-
-
-        // ✅ Asignar infoGral con la primera solicitud emitida
-        if (res3.length > 0) {
-
-const primera = res3[0];
-          const solicitud: ISolicitud = {
-            id_solicitud: primera.p_id_Solicitud,
-            fecha_creacion_solicitud: primera.p_fecha_creacion,
-            rut_contratante: primera.p_rut_contratante,
-            nombre_razon_social_contratante: primera.p_nombre_contratante,
-            id_rubro: primera.p_idrubro,
-            nombre_rubro: primera.p_nombre_rubro,
-            id_tipo_seguro: primera.p_id_tipo_seguro,
-            nombre_tipo_seguro: primera.p_nombre_tipo_seguro,
-            sla: primera.p_sla,
-            id_estado_solicitud: primera.p_id_estado_solicitud,
-            nombre_estado: primera.p_nombre_estado,
-            nombre_ejecutivo_banco: primera.p_nombre_contratante,
-            id_ejecutivo_banco: primera.p_rut_contratante
-          };
-          this.infoGral.set(solicitud);
-          console.log('infoGral seteado:', this.infoGral());
-        }
-
-
-
 
         }
       },
