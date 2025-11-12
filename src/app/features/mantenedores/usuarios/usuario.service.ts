@@ -5,7 +5,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { IUsuario } from './usuario-Interface';
+import { DatosUsuarioInterface, IUsuario } from './usuario-Interface';
 
 
 @Injectable({
@@ -52,9 +52,9 @@ export class UsuarioService {
       })
   }
 
-  postListadoUsuario(filtro: any): Observable<IUsuario[]> {
+  postListadoUsuario(filtro: any): Observable<DatosUsuarioInterface> {
     return this.http
-      .post<IUsuario[]>(
+      .post<DatosUsuarioInterface>(
         `${environment.apiUrlConsumer}/listarUsuarios`,
         filtro,
         { headers: this.headers }

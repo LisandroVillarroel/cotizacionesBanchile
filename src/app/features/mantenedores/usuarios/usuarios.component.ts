@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { IUsuario } from './usuario-Interface';
+import { DatosUsuarioInterface, IUsuario, IUsuarioListaParametro } from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
 
 @Component({
@@ -28,13 +28,14 @@ import { UsuarioService } from './usuario.service';
 export class UsuariosComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
 
+  tipoUsuario = signal<string>('');
   datoUsuarios = signal<IUsuario[]>([]);
   usuarioService = inject(UsuarioService);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  displayedColumnsUsuario: string[] = [
+  displayedColumns: string[] = [
     'index',
     'rutUsuario',
     'nombreUsuario',
@@ -49,7 +50,7 @@ export class UsuariosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  applyFilterAsegurado(event: Event) {
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource().filter = filterValue.trim().toLowerCase();
 
@@ -80,15 +81,15 @@ export class UsuariosComponent {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataListaAsegurados(p_id_solicitud: number) {
-    const estructura_listaAsegurados = {
+  rescataLista(p_id_solicitud: string) {
+    const estructura_lista = {
       p_id_solicitud: p_id_solicitud,
     };
 
     this.usuarioService
-      .postListadoUsuario(estructura_listaAsegurados)
+      .postListadoUsuario(estructura_lista)
       .subscribe({
-        next: (dato: IUsuario) => {
+        next: (dato: DatosUsuarioInterface) => {
           if (dato.codigo === 200) {
             this.datoUsuarios.set(dato.p_cursor);
           }
@@ -99,30 +100,30 @@ export class UsuariosComponent {
       });
   }
 
-  agregaNuevoAsegurado() {
+  agregaNuevo() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud();
+    dialogConfig.data = this.tipoUsuario();
 
     this.dialog
       .open(AgregaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataListaAsegurados(this.idSolicitud()!);
+          this.rescataLista(this.tipoUsuario()!);
         }
       });
   }
 
-  modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
-    console.log('Dato Modificar:', datoAseguradoPar);
-    const parametro: IAseguradoListaParametro = {
-      datoAseguradoPar: datoAseguradoPar,
-      idSolicitud: this.idSolicitud(),
+  modificaUsuario(datoUsuarioPar: IUsuario): void {
+    console.log('Dato Modificar:', datoUsuarioPar);
+    const parametro: IUsuarioListaParametro = {
+      datoUsuarioPar: datoUsuarioPar,
+      tipoUsuario: this.tipoUsuario(),
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -139,29 +140,29 @@ export class UsuariosComponent {
       .subscribe((data) => {
         if (data === 'modificado') {
           console.log('Modificación Confirmada:', data);
-          this.rescataListaAsegurados(this.idSolicitud()!);
+          this.rescataLista(this.tipoUsuario()!);
         }
       });
   }
 
-  consultaAsegurado(datoAseguradoPar: IAsegurado) {
+  consultaUsuario(datoUsuarioPar: IUsuario) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = datoAseguradoPar;
+    dialogConfig.data = datoUsuarioPar;
 
     this.dialog
       .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
       .afterClosed();
   }
 
-  eliminaAsegurado(datoAseguradoPar: any) {
-    const parametro: IAseguradoListaParametro = {
-      datoAseguradoPar: datoAseguradoPar,
-      idSolicitud: this.idSolicitud(),
+  eliminaUsuario(datoUsuarioPar: IUsuario) {
+     const parametro: IUsuarioListaParametro = {
+      datoUsuarioPar: datoUsuarioPar,
+      tipoUsuario: this.tipoUsuario(),
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -177,7 +178,7 @@ export class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataListaAsegurados(this.idSolicitud()!);
+          this.rescataLista(this.tipoUsuario()!);
         }
       });
   }

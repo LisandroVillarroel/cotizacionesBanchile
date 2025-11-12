@@ -5,7 +5,7 @@
 >
   <table
     mat-table
-    [dataSource]="dataSourceUsuarios()"
+    [dataSource]="dataSource()"
     multiTemplateDataRows
     matSort
   >
@@ -24,9 +24,9 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rutAsegurado">
+    <ng-container matColumnDef="rutUsuario">
       <th
-        id="_rutAsegurado"
+        id="_rutUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -35,93 +35,89 @@
         Rut
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.rutAsegurado }}
+        {{ row.rutUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="nombreRazonSocialAsegurado">
+    <ng-container matColumnDef="nombreUsuario">
       <th
-        id="_nombreRazonSocialAsegurado"
+        id="_nombreUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 33%"
       >
-        Nombre/Razón Social
+        Nombre
       </th>
       <td mat-cell *matCellDef="let row" style="width: 33%">
-        {{ row.nombreRazonSocialAsegurado }}
+        {{ row.nombreUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="regionAsegurado">
+    <ng-container matColumnDef="apePaternoUsuario">
       <th
-        hidden="true"
-        id="_regionAsegurado"
+        id="_apePaternoUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Región
+        Apellido Paterno
       </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.regionAsegurado }}
+      <td  mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.apePaternoUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="ciudadAsegurado">
+    <ng-container matColumnDef="apeMaternoUsuario">
       <th
         hidden="true"
-        id="_ciudadAsegurado"
+        id="_apeMaternoUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Ciudad
+        Apellido Materno
       </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.ciudadAsegurado }}
+      <td  mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.apeMaternoUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="comunaAsegurado">
+    <ng-container matColumnDef="mailUsuario">
       <th
-        hidden="true"
-        id="_comunaAsegurado"
+        id="_mailUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Comuna
+        Correo
       </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.comunaAsegurado }}
+      <td  mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.mailUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="direccionAsegurado">
+    <ng-container matColumnDef="telefonoUsuario">
       <th
-        hidden="true"
-        id="_direccionAsegurado"
+        id="_telefonoUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         style="width: 0%"
       >
-        Dirección
+        Teléfono
       </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.direccionAsegurado }}
+      <td  mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.telefonoUsuario }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="numeroDirAsegurado">
+    <ng-container matColumnDef="dependenciaUsuario">
       <th
-        hidden="true"
-        id="_numeroDirAsegurado"
+        id="_dependenciaUsuario"
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
@@ -129,70 +125,8 @@
       >
         Número Dirección
       </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.numeroDirAsegurado }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="departamentoBlockAsegurado">
-      <th
-        hidden="true"
-        id="_departamentoBlockAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 0%"
-      >
-        Número Depto Dirección
-      </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.departamentoBlockAsegurado }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="casaAsegurado">
-      <th
-        hidden="true"
-        id="casaAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 0%"
-      >
-        Número Casa Dirección
-      </th>
-      <td hidden="true" mat-cell *matCellDef="let row" style="width: 0%">
-        {{ row.casaAsegurado }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="telefonoAsegurado">
-      <th
-        id="_telefonoAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 11%"
-      >
-        Teléfono
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.telefonoAsegurado }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="mailAsegurado">
-      <th
-        id="_mailAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 27%"
-      >
-        Correo
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 27%">
-        {{ row.mailAsegurado }}
+      <td  mat-cell *matCellDef="let row" style="width: 0%">
+        {{ row.dependenciaUsuario }}
       </td>
     </ng-container>
 
@@ -205,10 +139,9 @@
       >
         <span
           class="agregar-texto"
-          matTooltip="Agregar nuevo asegurado"
+          matTooltip="Agregar nuevo Usuario"
           matTooltipPosition="above"
-          (click)="agregaNuevoAsegurado()"
-          [hidden]="mostrarSoloConsulta()"
+          (click)="agregaNuevo()"
         >
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
@@ -225,8 +158,7 @@
           matTooltip="Modificar"
           mat-icon-button
           class="tabla"
-          (click)="modificaAsegurado(row)"
-          [hidden]="mostrarSoloConsulta()"
+          (click)="modificaUsuario(row)"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -236,7 +168,7 @@
           matTooltip="Consultar"
           mat-icon-button
           class="tabla"
-          (click)="consultaAsegurado(row)"
+          (click)="consultaUsuario(row)"
         >
           <mat-icon>visibility</mat-icon>
         </button>
@@ -246,29 +178,27 @@
           matTooltip="Eliminar"
           mat-icon-button
           class="tabla"
-          (click)="eliminaAsegurado(row)"
-          [hidden]="mostrarSoloConsulta()"
+          (click)="eliminaUsuario(row)"
         >
           <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumnsAsegurado"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr
       mat-row
-      *matRowDef="let row; columns: displayedColumnsAsegurado"
+      *matRowDef="let row; columns: displayedColumns"
       class="example-element-row"
     ></tr>
   </table>
-  @if(this.datoAsegurados().length === 0 ){
+  @if(this.datoUsuarios().length === 0 ){
           <div class="info SinInfoTabla">
-            No hay asegurados para mostrar</div>
+            No hay usuarios para mostrar</div>
         }
 </div>
 
 <mat-paginator
   #myPaginator
   [pageSizeOptions]="[10, 20, 30, 100]"
-  [hidden]="mostrarSoloConsulta()"
 ></mat-paginator>
