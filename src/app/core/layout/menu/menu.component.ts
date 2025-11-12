@@ -24,41 +24,55 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']" >
-              <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
-            </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']" >
+                <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
+              </li>
             }
              @if(hasRole(['ejec_bco'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
-            </li>
-             }
-              @if(hasRole(['coord_corr', 'sup_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
-            </li>
-              }
-              @if(hasRole(['ejec_bco'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
-            </li>
-              }
-             @if(hasRole(['ejec_bco', 'coord_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="crt">Generación de Informes</a>
-            </li>
-             }
-            <li class="nav-item dropdown" [routerLinkActive]="['active']">
-              <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Mantenedores
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mantenedor 1</a></li>
-                <li><a class="dropdown-item" href="#">Mantenedor 2</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
-              </ul>
-            </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
+              </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
+              </li>
+            }
+            @if(hasRole(['coord_corr', 'sup_corr'])){
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
+              </li>
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="propuestas">Gestión de Propuestas</a>
+              </li>
+            }
+<!--             @if(hasRole(['ejec_bco'])){
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
+              </li>
+            } -->
+            @if(hasRole(['sup_corr'])){
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="derivar">Derivar Cartera</a>
+              </li>
+            }
+            @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="crt">Generación de Informes</a>
+              </li>
+            }
+           <!--  @if(hasRole(['adm_corr'])){
+            { -->
+              <li class="nav-item dropdown" [routerLinkActive]="['active']">
+                <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Mantenedores
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Mantenedor 1</a></li>
+                  <li><a class="dropdown-item" href="#">Mantenedor 2</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
+                </ul>
+              </li>
+            <!-- } -->
           </ul>
         </div>
       </div>

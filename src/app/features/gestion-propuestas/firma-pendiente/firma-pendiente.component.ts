@@ -1,30 +1,33 @@
-import { Component, computed, input, output, inject, signal, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
-import { IGestionCotizacion } from '../gestionCotizacion-interface';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSortModule } from '@angular/material/sort';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
-import { RubroService } from '@shared/service/rubro.service';
-import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { Component, input, inject, OnInit, signal, ViewChild, output } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { IGestionCotizacion } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
+
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 
 @Component({
-  selector: 'app-propuestas-firmadas',
+  selector: 'app-firma-pendiente',
+  templateUrl: './firma-pendiente.component.html',
+  styleUrls: ['./firma-pendiente.component.css'],
   standalone: true,
   imports: [
     MatPaginatorModule,
@@ -45,14 +48,10 @@ import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solic
     MatGridListModule,
     FormsModule,
     CommonModule
-  ],
-  templateUrl: './propuestas-firmadas.component.html',
-  styleUrl: './propuestas-firmadas.component.css'
+],
 })
-export class PropuestasFirmadasComponent {
-    retorno = output<boolean>();
-  firmadas = input.required<IGestionCotizacion[] | undefined>();
-  cotFirmadas = computed(()=> this.firmadas());
+export class FirmaPendienteComponent {
+  pendientes = input.required<IGestionCotizacion[] | undefined>();
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -88,7 +87,7 @@ export class PropuestasFirmadasComponent {
     const solicitud = this.filtroFormulario().value.solicitud??'';
 
     this.formularioModificado();
-    return this.firmadas()!.filter(item => {
+    return this.pendientes()!.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
@@ -164,6 +163,7 @@ export class PropuestasFirmadasComponent {
   }
 
   private readonly dialog = inject(MatDialog);
+  retorno = output<boolean>();
 
   verPropuesta(IdSolicitud: number) {
 /*     const dialogConfig = new MatDialogConfig();
@@ -178,6 +178,24 @@ export class PropuestasFirmadasComponent {
       .open(VerPropuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe(() => { this.retorno.emit(true); })*/
+  }
 
+  private readonly dialogCarga = inject(MatDialog);
+  retornoCarga = output<boolean>();
+  cargarPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
+  verPropuesta(IdSolicitud: number) {
+/*     const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = IdSolicitud;
+    this.dialog
+      .open(VerPropuestaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })*/
   }
 }

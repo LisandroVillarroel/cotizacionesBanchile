@@ -21,7 +21,6 @@ export class AprobarSolicitudService {
   constructor() {}
 
   postApruebaSolicitud(apruebaSolicitud: IRequest): Observable<IResponse> {
-    //console.log('Anula Solicitud Service:', apruebaSolicitud);
     return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/aprobarSolicitud`,
         apruebaSolicitud, { headers: this.headers, }

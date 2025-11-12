@@ -2,13 +2,11 @@ import {
   Component,
   Inject,
   inject,
-  signal,
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
