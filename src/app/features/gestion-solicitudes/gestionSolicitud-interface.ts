@@ -1,4 +1,4 @@
-import { IObservacion, ISla } from "@features/detalle-solicitud/modelo/detalle-interface";
+import { IObservacion } from "@features/detalle-solicitud/modelo/detalle-interface";
 
 export interface ISolicitudG {
   id_solicitud: number;
@@ -35,7 +35,6 @@ export interface IGestionResponse{
   codigo: number,
   mensaje: string,
   ps_cursor: ISolicitudG[],
-  pb_cursor?: ICompaniaG[],
   vcEstado: string,
   vcEstadoCreacion: string
 }

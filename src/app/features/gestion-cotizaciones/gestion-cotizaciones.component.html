@@ -21,11 +21,15 @@
         <div class="container-fluid ">
           <app-propuestas-emitidas
           [emitidas]="emitidas()"
-          [infoGral]="infoGral()"
+
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>
-
+      <mat-tab label="Solicitudes con Firma Pendiente">
+        <div class="container-fluid ">
+          <app-firma-pendiente [pendientes]="pendientes()" (retorno)="recibido($event)"/>
+        </div>
+      </mat-tab>
       <mat-tab label="Propuestas Firmadas">
         <div class="container-fluid ">
           <app-propuestas-firmadas [firmadas]="firmadas()"

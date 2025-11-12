@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Inject, input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -7,17 +7,22 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
+
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
-import { IGestionCotizacion, IGestionResponse, IRequestGestion, IResumenCotizaciones } from './gestionCotizacion-interface';
+
+import { IRequestGestion } from '@shared/modelo/servicios-interface';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
+
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-firmadas.component';
 import { CotizacionesRegistradasComponent } from './cotizaciones-registradas/cotizaciones-registradas.component';
 import { PropuestasPendientesComponent } from './propuestas-pendientes/propuestas-pendientes.component';
 import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-emitidas.component";
 import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { FirmaPendienteComponent } from '@features/gestion-propuestas/firma-pendiente/firma-pendiente.component';
 
 @Component({
   selector: 'app-gestion-cotizaciones',
@@ -37,7 +42,8 @@ import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface
     PropuestasPendientesComponent,
     PropuestasEmitidasComponent,
     PropuestasFirmadasComponent,
-    PropuestasEmitidasComponent
+    PropuestasEmitidasComponent,
+    FirmaPendienteComponent
 ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })
@@ -53,16 +59,15 @@ export default class GestionCotizacionesComponent{
     recibidas: 0,
     pendientes: 0,
     emitidas: 0,
-    firmadas: 0
+    firmadas: 0,
+    por_firmar: 0
   });
   solicitudes = signal<IGestionCotizacion[] >([]);
   recibidas = signal<IGestionCotizacion[] >([]);
   pendientes = signal<IGestionCotizacion[] >([]);
   emitidas = signal<IGestionCotizacion[] >([]);
   firmadas = signal<IGestionCotizacion[] >([]);
- infoGral = signal<ISolicitud | undefined>(undefined);
-
- //infoGral = signal<ISolicitud[]>([]);
+  por_firmar = signal<IGestionCotizacion[] >([]);
 
   async ngOnInit(){
     this.cargarSolicitudes();
@@ -85,7 +90,8 @@ export default class GestionCotizacionesComponent{
             recibidas: dato.p_nro_cotiz_reg,
             pendientes: dato.p_nro_prop_pend,
             emitidas: dato.p_nro_prop_gene,
-            firmadas: dato.p_nro_prop_firm
+            firmadas: dato.p_nro_prop_firm,
+            por_firmar: dato.p_nro_prop_firm_pend
           });
           let res = dato.ps_cursorRec;
           res.map((valor: IGestionCotizacion)=> {
@@ -126,35 +132,16 @@ export default class GestionCotizacionesComponent{
             }
           });
           this.firmadas.set(res4);
-          //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
 
-
-
-        // ✅ Asignar infoGral con la primera solicitud emitida
-        if (res3.length > 0) {
-
-const primera = res3[0];
-          const solicitud: ISolicitud = {
-            id_solicitud: primera.p_id_Solicitud,
-            fecha_creacion_solicitud: primera.p_fecha_creacion,
-            rut_contratante: primera.p_rut_contratante,
-            nombre_razon_social_contratante: primera.p_nombre_contratante,
-            id_rubro: primera.p_idrubro,
-            nombre_rubro: primera.p_nombre_rubro,
-            id_tipo_seguro: primera.p_id_tipo_seguro,
-            nombre_tipo_seguro: primera.p_nombre_tipo_seguro,
-            sla: primera.p_sla,
-            id_estado_solicitud: primera.p_id_estado_solicitud,
-            nombre_estado: primera.p_nombre_estado,
-            nombre_ejecutivo_banco: primera.p_nombre_contratante,
-            id_ejecutivo_banco: primera.p_rut_contratante
-          };
-          this.infoGral.set(solicitud);
-          console.log('infoGral seteado:', this.infoGral());
-        }
-
-
-
+          let res5 = dato.ps_cursorPorFir;
+          res.map((valor: IGestionCotizacion)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              nombre_contratante: (valor.p_nombre_contratante === null ||
+                valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+            }
+          });
+          this.por_firmar.set(res5);
 
         }
       },

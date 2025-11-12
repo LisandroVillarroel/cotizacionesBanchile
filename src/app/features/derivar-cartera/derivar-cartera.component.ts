@@ -1,41 +1,48 @@
-import { Component, ViewChild, inject, signal, input, computed, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Component, ViewChild,computed,inject, input, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
-import { RubroService } from '@shared/service/rubro.service';
-import { IRubro } from '@shared/modelo/rubro-interface';
-import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
-import { IListadoSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
-import { EstadoService } from '@shared/service/estado.service';
 import { IEstado } from '@shared/modelo/estado-interface';
-import { StorageService } from '@shared/service/storage.service';
+import { IRubro } from '@shared/modelo/rubro-interface';
+
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { EstadoService } from '@shared/service/estado.service';
+
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { RubroService } from '@shared/service/rubro.service';
+import { StorageService } from '@shared/service/storage.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { ICoordinador, IEjecutivo, ISolicitudCartera, IRequestDeriva } from './cartera-interface';
+import { CarteraService } from './cartera.service';
+import { IRequest } from '@shared/modelo/servicios-interface';
 
 @Component({
-  selector: 'app-solicitudes-gestionadas',
+  selector: 'app-derivar-cartera',
+  templateUrl: './derivar-cartera.component.html',
+  styleUrls: ['./derivar-cartera.component.css'],
+  providers: [provideNativeDateAdapter()],
   standalone: true,
   imports: [
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule,
     MatSortModule,
+    MatExpansionModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
@@ -44,34 +51,36 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatSelectModule,
     MatDatepickerModule,
     MatTooltipModule,
-    MatExpansionModule,
     MatDividerModule,
     MatCardModule,
+    MatCheckboxModule,
     CommonModule,
   ],
-  templateUrl: './solicitudes-gestionadas.component.html',
-  styleUrl: './solicitudes-gestionadas.component.css'
 })
+export default class DerivarCarteraComponent{
+  solicitudes = signal<ISolicitudCartera[] | undefined>([]);
+  coordinadores = signal<ICoordinador[] | undefined>([]);
+  ejecutivos = signal<IEjecutivo[] | undefined>([]);
 
-export class SolicitudesGestionadasComponent implements OnInit {
-  datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
+  carteraService = inject(CarteraService);
+  request = {
+    p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+    p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+  };
 
-  verEjec = true;
-  verCoord = true;
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
-
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
   datosEstados = signal<IEstado[]>([]);
 
-  filtroContratante = signal('');
+  filtroCoordinador = signal('');
+  filtroEjecutivo = signal('');
   filtroRubro = signal('');
   filtroTipoSeguro = signal('');
   filtroEstado = signal('');
@@ -81,14 +90,16 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   formularioModificado = signal(false);
 
-  contratante = new FormControl();
+  coordinador = new FormControl();
+  ejecutivo = new FormControl();
   rubro = new FormControl();
   seguro = new FormControl();
   estado = new FormControl();
   fecha = new FormControl<Date | null>(null);
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante: this.contratante,
+    coordinador: this.coordinador,
+    ejecutivo: this.ejecutivo,
     rubro: this.rubro,
     seguro: this.seguro,
     estado: this.estado,
@@ -98,6 +109,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   displayedColumns: string[] = [
     'index',
+    'selected',
     'id_solicitud',
     'fecha_creacion',
     'rut_contratante',
@@ -110,19 +122,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
     "accion"
   ];
 
-  // solicitudesCoord(){
-  //   return this.datosSolicitud()?.filter(item =>{
-  //     return !item.descripcion_estado?.toLowerCase().includes("edicion")})
-  // }
-
   dataSourceSolicitud = computed(() => {
-    // console.log('Grilla', this.datosSolicitud());
-    var tabla = new MatTableDataSource<IListadoSolicitudes>();
-    // if(this.tipoUsuario === "C"){
-    //   tabla.data = this.solicitudesCoord()!;
-    // }else{
-    tabla.data = this.datosSolicitud()!;
-    // }
+    var tabla = new MatTableDataSource<ISolicitudCartera>();
+    tabla.data = this.solicitudes()!;
     this.setSortingAndPagination(tabla);
     return tabla;
   });
@@ -134,7 +136,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
-  setSortingAndPagination(dataSource: MatTableDataSource<IListadoSolicitudes>): void {
+  setSortingAndPagination(dataSource: MatTableDataSource<ISolicitudCartera>): void {
     dataSource.sort = this.sort;
     dataSource.paginator = this.paginator;
   }
@@ -142,9 +144,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  // Señal computada para los datos filtrados
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante ?? '';
+    const coordinador = this.filtroFormulario().value.coordinador ?? '';
+    const ejecutivo = this.filtroFormulario().value.ejecutivo ?? '';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const estado = this.filtroFormulario().value.estado ?? '';
@@ -156,9 +158,10 @@ export class SolicitudesGestionadasComponent implements OnInit {
     }
 
     this.formularioModificado();
-    return this.datosSolicitud()!.filter(item => {
+    return this.solicitudes()!.filter(item => {
 
-      const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleCoordinador = item.nombre_coordinador.toLowerCase().includes(coordinador.toLowerCase());
+      const cumpleEjecutivo = item.nombre_ejecutivo_banco.toLowerCase().includes(ejecutivo.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);
@@ -172,9 +175,13 @@ export class SolicitudesGestionadasComponent implements OnInit {
           fechaBase.getDate() === fechaInicio.getDate()
         );
       }
-      return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+      return cumpleCoordinador && cumpleEjecutivo && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
   };
+
+  private updateTableData(): void {
+    this.dataSourceSolicitud().data = this.datosFiltrados();
+  }
 
   limpiaFiltros() {
     this.filtroFormulario().reset();
@@ -182,8 +189,11 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   async ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+    this.cargaCoordinadores();
+    this.cargaEjecutivos();
     this.cargaRubros();
     this.cargaEstados();
+    //this.cargaSolicitudes();
     this.limpiaFiltros();
 
     this.formularioModificado.set(true);
@@ -191,21 +201,32 @@ export class SolicitudesGestionadasComponent implements OnInit {
       this.datosFiltrados()
       this.updateTableData();
     });
-
-    switch (this.tipoUsuario) {
-      case "E":
-        this.verCoord = false; break;
-      case "C":
-        this.verEjec = false; break;
-      case "S":
-        this.verEjec = false; this.verCoord = false; break;
-      case "A":
-        this.verEjec = false; this.verCoord = false; break;
-    }
   }
 
-  private updateTableData(): void {
-    this.dataSourceSolicitud().data = this.datosFiltrados();
+  cargaCoordinadores(){
+    this.carteraService.postlistarCoordinadores(this.request).subscribe({
+      next: async (dato) => {
+        if (dato.codigo === 200) {
+          this.coordinadores.set(dato.p_cursor) ;
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    });
+  }
+
+  cargaEjecutivos(){
+    this.carteraService.postlistarEjecutivos(this.request).subscribe({
+      next: async (dato) => {
+        if (dato.codigo === 200) {
+          this.ejecutivos.set(dato.p_cursor) ;
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    });
   }
 
   cargaRubros() {
@@ -249,8 +270,29 @@ export class SolicitudesGestionadasComponent implements OnInit {
     });
   }
 
+  cargaSolicitudes(){
+    this.carteraService.postlistarCartera(this.request).subscribe({
+      next: async (dato) => {
+        if (dato.codigo === 200) {
+          let res = dato.ps_cursor;
+          res.map((valor: ISolicitudCartera)=> {
+            return {
+              ...valor, // Copiamos las propiedades originales
+              selected: false
+            }
+          })
+          this.solicitudes.set(res) ;
+        }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      },
+    });
+  }
+
   retorno = output<boolean>();
-  verDetalle(IdSolicitud: number) {
+  derivar() {
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -260,8 +302,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = {
-      idSolicitud: IdSolicitud,
-      flagSoloCerrar: true
+      id_solicitud: 3,
+      id_coordinador_anterior: "true",
+      id_coordinador_nuevo: "true"
     };
 
     this.dialog
@@ -270,22 +313,4 @@ export class SolicitudesGestionadasComponent implements OnInit {
       .subscribe(() => { this.retorno.emit(true); })
   }
 
-  getEstadoFiltrado(idEstado: number) {
-    return this.datosEstados().filter(item =>
-      item.id_estado_solicitud === idEstado
-    );
-  }
-
-  getCellStyle(idEstado: number) {
-    const estado = this.getEstadoFiltrado(idEstado)[0];
-    return {
-      'color': estado?.color_estado,
-      'background-color': estado?.background_estado,
-      'border': '1px solid' + estado?.color_estado,
-      'width': '141px',//'fit-content',
-      'text-align': 'center',
-      'padding-left': '1%',
-      'padding-right': '1%'
-    };
-  }
 }

@@ -54,15 +54,6 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   styleUrl: './propuestas-emitidas.component.css'
 })
 export class PropuestasEmitidasComponent {
-  //panelOpenState = false;
-
-
-  infoGral = input.required<ISolicitud | undefined>();
-
- //infoGral = signal<ISolicitud | undefined>();
-
- //infoGral = signal<ISolicitud | undefined>(undefined);
-
 
 
   emitidas = input.required<IGestionCotizacion[] | undefined>();
@@ -203,19 +194,19 @@ export class PropuestasEmitidasComponent {
   retornoCarga = output<boolean>();
 
 
-  cargarPropuesta(IdSolicitud: number) {
-    console.log('ID Solicitud recibida :', IdSolicitud);
-    console.log('infoGral :', this.infoGral());
+  cargarPropuesta(gestionCotizacion: IGestionCotizacion) {
+
+
     const dato = {
-      p_id_solicitud: IdSolicitud,
+      p_id_solicitud: gestionCotizacion.p_id_Solicitud,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
-      p_rut_contratante: this.infoGral()?.rut_contratante,
-      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
-      p_id_rubro: this.infoGral()?.id_rubro,
-      p_nombre_rubro: this.infoGral()?.nombre_rubro,
-      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
+      p_rut_contratante: gestionCotizacion.p_rut_contratante,
+      P_nombre_razon_social_contratante: gestionCotizacion.p_nombre_contratante,
+      p_id_rubro: gestionCotizacion.p_idrubro,
+      p_nombre_rubro: gestionCotizacion.p_nombre_rubro,
+      p_tipo_seguro: gestionCotizacion.p_id_tipo_seguro,
+      p_nombre_seguro: gestionCotizacion.p_nombre_tipo_seguro,
     };
 
     console.log('dato cargar propuesta', dato);

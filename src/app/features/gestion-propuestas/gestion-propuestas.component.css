@@ -1,0 +1,20 @@
+
+.centraVertical {
+    margin: 0px !important;
+    align-self: center !important;
+}
+
+.fondoGestion{
+  background-color: #E8E8EA;
+  color: #666668;
+  padding: 5px 10px;
+}
+
+.alinea-card-gestion{
+  margin-bottom: 0.5rem;
+  padding-bottom: 0px;
+}
+
+.mat-mdc-form-field {
+  flex-direction:initial;
+}

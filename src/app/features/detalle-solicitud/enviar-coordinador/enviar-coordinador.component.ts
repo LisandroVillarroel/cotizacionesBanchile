@@ -51,7 +51,6 @@ export class EnviarCoordinadorComponent {
   }
 
   enviar(): void {
-    console.log("Entradas Enviar a Coordinador: ", this.data) //borrar después de probar ingreso
     this.enviarCoordinadorService
       .postEnviaSolicitud(this.data)
       .subscribe({
