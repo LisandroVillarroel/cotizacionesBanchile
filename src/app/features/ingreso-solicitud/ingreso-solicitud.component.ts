@@ -244,20 +244,21 @@ export default class IngresoSolicitudComponent {
   buscarContratantePorRut() {
     let rutIngresado = this.rutCliente.value;
 
-    if (!rutIngresado || this.rutCliente.invalid) {
+    if (rutIngresado && this.rutCliente.invalid) {
       this.notificacioAlertnService.error('ERROR', 'RUT inválido');
       return;
     }
 
-    //Si desea volver a como estaba antes el formato del rut, borrar este if
+    if (!rutIngresado) {
+      return;
+    }
+
     if (validateRut(rutIngresado)) {
-      //Muestra en el input con puntos y guion
       this.rutCliente.setValue(
         formatRut(cleanRut(rutIngresado), RutFormat.DOTS_DASH),
         { emitEvent: false }
       );
 
-      //Enviar al servicio sin puntos y con guion
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
 
