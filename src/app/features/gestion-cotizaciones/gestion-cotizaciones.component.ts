@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Inject, signal } from '@angular/core';
+import { Component, computed, inject, Inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -17,6 +17,7 @@ import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-fi
 import { CotizacionesRegistradasComponent } from './cotizaciones-registradas/cotizaciones-registradas.component';
 import { PropuestasPendientesComponent } from './propuestas-pendientes/propuestas-pendientes.component';
 import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-emitidas.component";
+import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 @Component({
   selector: 'app-gestion-cotizaciones',
@@ -59,10 +60,15 @@ export default class GestionCotizacionesComponent{
   pendientes = signal<IGestionCotizacion[] >([]);
   emitidas = signal<IGestionCotizacion[] >([]);
   firmadas = signal<IGestionCotizacion[] >([]);
+ infoGral = signal<ISolicitud | undefined>(undefined);
+
+ //infoGral = signal<ISolicitud[]>([]);
 
   async ngOnInit(){
     this.cargarSolicitudes();
   }
+
+
 
   cargarSolicitudes() {
     var entrada: IRequestGestion;
@@ -121,6 +127,35 @@ export default class GestionCotizacionesComponent{
           });
           this.firmadas.set(res4);
           //console.log('rescata listadoSolicitudes:', this.listadoSolicitudes());
+
+
+
+        // ✅ Asignar infoGral con la primera solicitud emitida
+        if (res3.length > 0) {
+
+const primera = res3[0];
+          const solicitud: ISolicitud = {
+            id_solicitud: primera.p_id_Solicitud,
+            fecha_creacion_solicitud: primera.p_fecha_creacion,
+            rut_contratante: primera.p_rut_contratante,
+            nombre_razon_social_contratante: primera.p_nombre_contratante,
+            id_rubro: primera.p_idrubro,
+            nombre_rubro: primera.p_nombre_rubro,
+            id_tipo_seguro: primera.p_id_tipo_seguro,
+            nombre_tipo_seguro: primera.p_nombre_tipo_seguro,
+            sla: primera.p_sla,
+            id_estado_solicitud: primera.p_id_estado_solicitud,
+            nombre_estado: primera.p_nombre_estado,
+            nombre_ejecutivo_banco: primera.p_nombre_contratante,
+            id_ejecutivo_banco: primera.p_rut_contratante
+          };
+          this.infoGral.set(solicitud);
+          console.log('infoGral seteado:', this.infoGral());
+        }
+
+
+
+
         }
       },
       error: (error) => {
