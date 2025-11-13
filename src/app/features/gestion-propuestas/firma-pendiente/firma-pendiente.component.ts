@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,10 +19,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { IGestionCotizacion } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 import { RubroService } from '@shared/service/rubro.service';
+import { StorageService } from '@shared/service/storage.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { CargarPropuestaIsolComponent } from '../cargar-propuesta-isol/cargar-propuesta-isol.component';
 
 @Component({
   selector: 'app-firma-pendiente',
@@ -48,9 +51,13 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
     MatGridListModule,
     FormsModule,
     CommonModule
-],
+  ],
 })
 export class FirmaPendienteComponent {
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  id_usuario = this._storage()?.usuarioLogin.usuario!;
+  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   pendientes = input.required<IGestionCotizacion[] | undefined>();
 
   rubroService = inject(RubroService);
@@ -73,33 +80,33 @@ export class FirmaPendienteComponent {
   solicitud = new FormControl();
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante : this.contratante,
-    rubro : this.rubro,
-    seguro : this.seguro,
-    solicitud : this.solicitud
-    })
+    contratante: this.contratante,
+    rubro: this.rubro,
+    seguro: this.seguro,
+    solicitud: this.solicitud
+  })
   );
 
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante??'';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
-    const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    const solicitud = this.filtroFormulario().value.solicitud??'';
+    const contratante = this.filtroFormulario().value.contratante ?? '';
+    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
+    const solicitud = this.filtroFormulario().value.solicitud ?? '';
 
     this.formularioModificado();
     return this.pendientes()!.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
 
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
+      return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
     });
   };
 
-  datosPaginados(){
-      const start = this.pagina() * this.pageSize;
-      return this.datosFiltrados()!.slice(start, start + this.pageSize);
+  datosPaginados() {
+    const start = this.pagina() * this.pageSize;
+    return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
   onPage(event: any) {
@@ -134,12 +141,12 @@ export class FirmaPendienteComponent {
     const _codigoRubro = datos.id_rubro;
     const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          }
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
-      });
+      }
+    });
   }
 
   limpiaFiltros() {
@@ -148,10 +155,10 @@ export class FirmaPendienteComponent {
 
   getCellClass(value: string): string {
     var salida = 'gris';
-    if(value !== null){
-      switch(value.toLowerCase()){
+    if (value !== null) {
+      switch (value.toLowerCase()) {
         case 'v':
-          salida = 'verde' ; break;
+          salida = 'verde'; break;
         case 'a':
           salida = 'amarillo'; break;
         case 'r':
@@ -166,36 +173,51 @@ export class FirmaPendienteComponent {
   retorno = output<boolean>();
 
   verPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
+    /*     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
-    this.dialog
-      .open(VerPropuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })*/
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '80%';
+        dialogConfig.height = '90%';
+        dialogConfig.position = { top: '3%' };
+        dialogConfig.data = IdSolicitud;
+        this.dialog
+          .open(VerPropuestaComponent, dialogConfig)
+          .afterClosed()
+          .subscribe(() => { this.retorno.emit(true); })*/
   }
 
   private readonly dialogCarga = inject(MatDialog);
   retornoCarga = output<boolean>();
-  cargarPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
-  verPropuesta(IdSolicitud: number) {
-/*     const dialogConfig = new MatDialogConfig();
+  cargarPropuestaISOL(gestionCotizacion: IGestionCotizacion) {
+    const dato = {
+      p_id_solicitud: gestionCotizacion.p_id_Solicitud,
+      p_id_usuario: this.id_usuario,
+      p_tipo_usuario: this.tipoUsuario,
+      p_rut_contratante: gestionCotizacion.p_rut_contratante,
+      P_nombre_razon_social_contratante: gestionCotizacion.p_nombre_contratante,
+      p_id_rubro: gestionCotizacion.p_idrubro,
+      p_nombre_rubro: gestionCotizacion.p_nombre_rubro,
+      p_tipo_seguro: gestionCotizacion.p_id_tipo_seguro,
+      p_nombre_seguro: gestionCotizacion.p_nombre_tipo_seguro,
+    };
 
+    console.log('dato cargar propuesta', dato);
+
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = IdSolicitud;
+    dialogConfig.width = '60%';
+    dialogConfig.maxHeight = '90%';
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.data = dato;
+
     this.dialog
-      .open(VerPropuestaComponent, dialogConfig)
+      .open(CargarPropuestaIsolComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })*/
+      .subscribe((result) => {
+        if (result) {
+        }
+      });
   }
 }
