@@ -19,8 +19,8 @@ export interface IIngresoSolicitud {
   id_rubro: number;
   id_tipo_seguro: number;
   contratante: ISolicitudContratante;
-  // asegurados: ISolicitudAsegurado[];
-  // beneficiarios: ISolicitudBeneficiario[];
+  // asegurados: IAsegurado[];
+  // beneficiarios: IBeneficiario[];
 }{}
 
 export interface IIngresoSolicitud_Recibe {
