@@ -22,18 +22,18 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-elimina-beneficiario',
-  templateUrl: './elimina-beneficiario.component.html',
-  styleUrls: ['./elimina-beneficiario.component.css'],
   standalone: true,
-    imports: [
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatIconModule,
-      MatDialogModule,
-      MatButtonModule,
-      CabeceraPopupComponente
-    ]
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente
+  ],
+  templateUrl: './elimina-beneficiario.component.html',
+  styleUrl: './elimina-beneficiario.component.css',
 })
 export class EliminaBeneficiarioComponent {
   beneficiario!: IBeneficiario;

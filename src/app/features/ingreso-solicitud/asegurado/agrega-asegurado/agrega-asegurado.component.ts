@@ -29,20 +29,21 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-agrega-asegurado',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './agrega-asegurado.component.html',
-  styleUrls: ['./agrega-asegurado.component.css'],
-    standalone: true,
-    imports: [
-      CommonModule,
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatDialogModule,
-      MatButtonModule,
-      CabeceraPopupComponente,
-    ]
+  styleUrl: './agrega-asegurado.component.css',
 })
 export class AgregaAseguradoComponent {
+
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 

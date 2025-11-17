@@ -1,22 +1,16 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgregaBeneficiarioComponent } from './agrega-beneficiario.component';
 
 describe('AgregaBeneficiarioComponent', () => {
   let component: AgregaBeneficiarioComponent;
   let fixture: ComponentFixture<AgregaBeneficiarioComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AgregaBeneficiarioComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AgregaBeneficiarioComponent]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AgregaBeneficiarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

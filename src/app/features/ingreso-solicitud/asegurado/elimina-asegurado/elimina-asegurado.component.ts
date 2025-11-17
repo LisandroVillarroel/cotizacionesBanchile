@@ -28,18 +28,18 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-elimina-asegurado',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente
+  ],
   templateUrl: './elimina-asegurado.component.html',
-  styleUrls: ['./elimina-asegurado.component.css'],
-    standalone: true,
-    imports: [
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatIconModule,
-      MatDialogModule,
-      MatButtonModule,
-      CabeceraPopupComponente
-    ]
+  styleUrl: './elimina-asegurado.component.css',
 })
 export class EliminaAseguradoComponent {
 

@@ -32,8 +32,6 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-modifica-beneficiario',
-  templateUrl: './modifica-beneficiario.component.html',
-  styleUrls: ['./modifica-beneficiario.component.css'],
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -42,7 +40,9 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatDialogModule,
     MatButtonModule,
     CabeceraPopupComponente,
-  ]
+  ],
+  templateUrl: './modifica-beneficiario.component.html',
+  styleUrl: './modifica-beneficiario.component.css',
 })
 export class ModificaBeneficiarioComponent {
   beneficiario!: IBeneficiario;

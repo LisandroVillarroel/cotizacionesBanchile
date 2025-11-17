@@ -3,7 +3,6 @@ import {
   computed,
   effect,
   inject,
-  Input,
   input,
   signal,
   ViewChild,
@@ -33,10 +32,10 @@ import {
 import { BeneficiarioService } from '../service/beneficiario.service';
 import { CommonModule } from '@angular/common';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { ConsultaBeneficiarioComponent } from './consulta-beneficiario/consulta-beneficiario.component';
-import { ModificaBeneficiarioComponent } from './modifica-beneficiario/modifica-beneficiario.component';
-import { EliminaBeneficiarioComponent } from './elimina-beneficiario/elimina-beneficiario.component';
 import { AgregaBeneficiarioComponent } from './agrega-beneficiario/agrega-beneficiario.component';
+import { ModificaBeneficiarioComponent } from './modifica-beneficiario/modifica-beneficiario.component';
+import { ConsultaBeneficiarioComponent } from './consulta-beneficiario/consulta-beneficiario.component';
+import { EliminaBeneficiarioComponent } from './elimina-beneficiario/elimina-beneficiario.component';
 
 @Component({
   selector: 'app-beneficiario',

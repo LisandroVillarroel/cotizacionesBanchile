@@ -32,17 +32,17 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-modifica-asegurado',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './modifica-asegurado.component.html',
-  styleUrls: ['./modifica-asegurado.component.css'],
-    standalone: true,
-    imports: [
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatDialogModule,
-      MatButtonModule,
-      CabeceraPopupComponente,
-    ]
+  styleUrl: './modifica-asegurado.component.css',
 })
 export class ModificaAseguradoComponent {
   asegurado!: IAsegurado;

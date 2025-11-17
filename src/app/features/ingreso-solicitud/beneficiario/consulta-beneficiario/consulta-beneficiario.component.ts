@@ -9,14 +9,14 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-consulta-beneficiario',
-  templateUrl: './consulta-beneficiario.component.html',
-  styleUrls: ['./consulta-beneficiario.component.css'],
   standalone: true,
   imports: [MatInputModule,
   MatIconModule,
   MatDialogModule,
   MatButtonModule,
-  CabeceraPopupComponente],
+CabeceraPopupComponente],
+  templateUrl: './consulta-beneficiario.component.html',
+  styleUrl: './consulta-beneficiario.component.css'
 })
 export class ConsultaBeneficiarioComponent {
 private readonly dialogRef = inject(MatDialogRef<ConsultaBeneficiarioComponent>);

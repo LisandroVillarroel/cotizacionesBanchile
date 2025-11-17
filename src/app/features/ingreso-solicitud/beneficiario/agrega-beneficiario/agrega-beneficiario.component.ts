@@ -29,18 +29,18 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
   selector: 'app-agrega-beneficiario',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './agrega-beneficiario.component.html',
-  styleUrls: ['./agrega-beneficiario.component.css'],
-    standalone: true,
-    imports: [
-      CommonModule,
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatDialogModule,
-      MatButtonModule,
-      CabeceraPopupComponente,
-    ]
+  styleUrl: './agrega-beneficiario.component.css',
 })
 export class AgregaBeneficiarioComponent {
   beneficiario!: IBeneficiario;
