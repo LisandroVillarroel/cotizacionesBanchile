@@ -24,10 +24,6 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { AgregaSolicitudBeneficiarioComponent } from './agrega-solicitud-beneficiario/agrega-solicitud-beneficiario.component';
-import { ModificaSolicitudBeneficiarioComponent } from './modifica-solicitud-beneficiario/modifica-solicitud-beneficiario.component';
-import { ConsultaSolicitudBeneficiarioComponent } from './consulta-solicitud-beneficiario/consulta-solicitud-beneficiario.component';
-import { EliminaSolicitudBeneficiarioComponent } from './elimina-solicitud-beneficiario/elimina-solicitud-beneficiario.component';
 import {
   DatosBeneficiariosInterface,
   IBeneficiario,
@@ -37,6 +33,10 @@ import {
 import { BeneficiarioService } from '../service/beneficiario.service';
 import { CommonModule } from '@angular/common';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { ConsultaBeneficiarioComponent } from './consulta-beneficiario/consulta-beneficiario.component';
+import { ModificaBeneficiarioComponent } from './modifica-beneficiario/modifica-beneficiario.component';
+import { EliminaBeneficiarioComponent } from './elimina-beneficiario/elimina-beneficiario.component';
+import { AgregaBeneficiarioComponent } from './agrega-beneficiario/agrega-beneficiario.component';
 
 @Component({
   selector: 'app-beneficiario',
@@ -153,7 +153,7 @@ export class BeneficiarioComponent {
     dialogConfig.data = this.idSolicitud();
 
     this.dialog
-      .open(AgregaSolicitudBeneficiarioComponent, dialogConfig)
+      .open(AgregaBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
@@ -176,7 +176,7 @@ export class BeneficiarioComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = parametro;
     this.dialog
-      .open(ModificaSolicitudBeneficiarioComponent, dialogConfig)
+      .open(ModificaBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
@@ -197,7 +197,7 @@ export class BeneficiarioComponent {
 
     dialogConfig.data = datoBeneficiarioPar;
     this.dialog
-      .open(ConsultaSolicitudBeneficiarioComponent, dialogConfig)
+      .open(ConsultaBeneficiarioComponent, dialogConfig)
       .afterClosed();
   }
 
@@ -216,7 +216,7 @@ export class BeneficiarioComponent {
 
     dialogConfig.data = parametro;
     this.dialog
-      .open(EliminaSolicitudBeneficiarioComponent, dialogConfig)
+      .open(EliminaBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {

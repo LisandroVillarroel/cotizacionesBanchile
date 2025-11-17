@@ -28,21 +28,21 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-agrega-solicitud-beneficiario',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    CabeceraPopupComponente,
-  ],
-  templateUrl: './agrega-solicitud-beneficiario.component.html',
-  styleUrl: './agrega-solicitud-beneficiario.component.css',
+  selector: 'app-agrega-beneficiario',
+  templateUrl: './agrega-beneficiario.component.html',
+  styleUrls: ['./agrega-beneficiario.component.css'],
+    standalone: true,
+    imports: [
+      CommonModule,
+      MatFormFieldModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      MatDialogModule,
+      MatButtonModule,
+      CabeceraPopupComponente,
+    ]
 })
-export class AgregaSolicitudBeneficiarioComponent {
+export class AgregaBeneficiarioComponent {
   beneficiario!: IBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -53,7 +53,7 @@ export class AgregaSolicitudBeneficiarioComponent {
   beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<AgregaSolicitudBeneficiarioComponent>
+    MatDialogRef<AgregaBeneficiarioComponent>
   );
 
   rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);

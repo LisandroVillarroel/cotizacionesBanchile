@@ -29,21 +29,22 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
+
 @Component({
-  selector: 'app-modifica-solicitud-asegurado',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    CabeceraPopupComponente,
-  ],
-  templateUrl: './modifica-solicitud-asegurado.component.html',
-  styleUrl: './modifica-solicitud-asegurado.component.css',
+  selector: 'app-modifica-asegurado',
+  templateUrl: './modifica-asegurado.component.html',
+  styleUrls: ['./modifica-asegurado.component.css'],
+    standalone: true,
+    imports: [
+      MatFormFieldModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      MatDialogModule,
+      MatButtonModule,
+      CabeceraPopupComponente,
+    ]
 })
-export class ModificaSolicitudAseguradoComponent {
+export class ModificaAseguradoComponent {
   asegurado!: IAsegurado;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -53,7 +54,7 @@ export class ModificaSolicitudAseguradoComponent {
   aseguradoService = inject(AseguradoService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<ModificaSolicitudAseguradoComponent>
+    MatDialogRef<ModificaAseguradoComponent>
   );
 
   readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);

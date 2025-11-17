@@ -28,21 +28,21 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-agrega-solicitud-asegurado',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    CabeceraPopupComponente,
-  ],
-  templateUrl: './agrega-solicitud-asegurado.component.html',
-  styleUrl: './agrega-solicitud-asegurado.component.css',
+  selector: 'app-agrega-asegurado',
+  templateUrl: './agrega-asegurado.component.html',
+  styleUrls: ['./agrega-asegurado.component.css'],
+    standalone: true,
+    imports: [
+      CommonModule,
+      MatFormFieldModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      MatDialogModule,
+      MatButtonModule,
+      CabeceraPopupComponente,
+    ]
 })
-export class AgregaSolicitudAseguradoComponent {
+export class AgregaAseguradoComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
@@ -54,7 +54,7 @@ export class AgregaSolicitudAseguradoComponent {
 
   asegurado!: IAsegurado;
   private readonly dialogRef = inject(
-    MatDialogRef<AgregaSolicitudAseguradoComponent>
+    MatDialogRef<AgregaAseguradoComponent>
   );
 
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);

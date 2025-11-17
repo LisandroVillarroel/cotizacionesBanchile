@@ -29,8 +29,11 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
+
 @Component({
-  selector: 'app-modifica-solicitud-beneficiario',
+  selector: 'app-modifica-beneficiario',
+  templateUrl: './modifica-beneficiario.component.html',
+  styleUrls: ['./modifica-beneficiario.component.css'],
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -39,11 +42,9 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatDialogModule,
     MatButtonModule,
     CabeceraPopupComponente,
-  ],
-  templateUrl: './modifica-solicitud-beneficiario.component.html',
-  styleUrl: './modifica-solicitud-beneficiario.component.css',
+  ]
 })
-export class ModificaSolicitudBeneficiarioComponent {
+export class ModificaBeneficiarioComponent {
   beneficiario!: IBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -52,7 +53,7 @@ export class ModificaSolicitudBeneficiarioComponent {
   beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<ModificaSolicitudBeneficiarioComponent>
+    MatDialogRef<ModificaBeneficiarioComponent>
   );
 
   readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);

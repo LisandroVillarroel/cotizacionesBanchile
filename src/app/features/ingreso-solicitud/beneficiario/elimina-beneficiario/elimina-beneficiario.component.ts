@@ -1,10 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -14,62 +9,58 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { formatRut, RutFormat, validateRut } from '@fdograph/rut-utilities';
+
 import {
-  IAsegurado,
-  IAseguradoLista,
-  IAseguradoListaParametro,
+  IBeneficiario,
+  IBeneficiarioListaParametro,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
-import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
+import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-elimina-solicitud-asegurado',
+  selector: 'app-elimina-beneficiario',
+  templateUrl: './elimina-beneficiario.component.html',
+  styleUrls: ['./elimina-beneficiario.component.css'],
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
-    MatDialogModule,
-    MatButtonModule,
-    CabeceraPopupComponente
-  ],
-  templateUrl: './elimina-solicitud-asegurado.component.html',
-  styleUrl: './elimina-solicitud-asegurado.component.css',
+    imports: [
+      MatFormFieldModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      MatIconModule,
+      MatDialogModule,
+      MatButtonModule,
+      CabeceraPopupComponente
+    ]
 })
-export class EliminaSolicitudAseguradoComponent {
+export class EliminaBeneficiarioComponent {
+  beneficiario!: IBeneficiario;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-
   notificacioAlertnService= inject(NotificacioAlertnService);
 
-  aseguradoService = inject(AseguradoService);
-  asegurado!: IAsegurado;
+  beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<EliminaSolicitudAseguradoComponent>
+    MatDialogRef<EliminaBeneficiarioComponent>
   );
-  public readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);
+  public readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
   eliminar() {
-    this.aseguradoService
-      .postEliminaAsegurado(
+    this.beneficiarioService
+      .postEliminaBeneficiario(
         Number(this.data.idSolicitud),
-        this.data.datoAseguradoPar.rutAsegurado
+        this.data.datoBeneficiarioPar.rut_beneficiario
       )
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Eliminó Asegurado Bien');
             this.dialogRef.close('eliminado');
           }
-
         },
         error: (error) => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
