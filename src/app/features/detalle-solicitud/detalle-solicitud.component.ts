@@ -47,12 +47,9 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
-import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
-import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
-import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
 import { IMinimoResponse } from './modelo/compania';
 import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprobar-cotizacion/aprobar-cotizacion.component';
 
@@ -112,17 +109,15 @@ constructor() {
   tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
+  solicitudService = inject(DetalleSolicitudService);
 
   verEjec = true;
   verCoord = true;
 
-  detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
-
-
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -170,7 +165,7 @@ constructor() {
     this.flagPropuesta = true;
     this.flagCotizacion = true;
 
-    this.detalleService.postDetalle(idSolicitud).subscribe({
+    this.solicitudService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
@@ -178,7 +173,7 @@ constructor() {
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
             nombre_razon_social_contratante:
-              dato.p_nombre_razon_social_contratante,
+            dato.p_nombre_razon_social_contratante,
             id_rubro: dato.p_id_rubro,
             nombre_rubro: dato.p_nombre_rubro,
             id_tipo_seguro: dato.p_id_tipo_seguro,
@@ -300,26 +295,40 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  aprobarSolicitud(): void {
+  async aprobarSolicitud(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario
     };
-    const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
+    const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Aprobar solicitud',
+      'La solicitud nro. '+ this.idSolicitud +' será aprobada. \n\n'+
+      'Una vez aprobada estará disponible para \n '+
+      'ser enviada a las compañías de seguros. \n' +
+      'Puedes revisar su status ingresando al \n '+
+      'detalle de la solicitud desde el menú de \n'+
+      'Gestión de Solicitudes.\n\n ¿Deseas continuar?',
+      'Aprobar solicitud', 'Cancelar'
+    );
 
-    this.dialog
-      .open(AprobarSolicitudComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
+    if(aprobada)
+    {
+      this.solicitudService.postApruebaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido aprobada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','No fue posible aprobar la solicitud.');
+        },
+      });
+    }
   }
 
   anularSolicitud(): void {
@@ -344,28 +353,39 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  enviarCoordinador(): void {
+  async enviarCoordinador(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada al coordinador. \n\n'+
+      'Una vez enviada, puedes seguir su estado \n '+
+      'desde el Menú de Gestión de Cotizaciones. \n' +
+      'El coordinador responsable será notificado y revisará \n '+
+      'que la información esté completa y correcta. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarCoordinadorComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
+    if(enviada)
+    {
+      this.solicitudService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
+        },
+      });
+    }
   }
 
   agregarCompania(): void {
@@ -397,30 +417,40 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  enviarCia(): void {
+  async enviarCia(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada a las compañías seleccionadas. \n\n'+
+      'Si deseas enviarla a otras compañías, puedes \n '+
+      'hacerlo desde el detalle de la solicitud \n' +
+      'en el menú de Gestión de solicitudes. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarACompaniaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
-
+    if(enviada)
+    {
+      this.companiasService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
+        },
+      });
+    }
   }
+
 
   crearPropuesta(): void {
     if (this.flagSoloCerrar) return;

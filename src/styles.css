@@ -1191,3 +1191,7 @@ div:where(.swal2-container) div:where(.swal2-actions) {
 .mat-mdc-card-content:first-child {
     padding-top: 0px !important;
 }
+
+.swal-text-pre {
+  white-space: pre-line; /* Respeta \n como salto de línea */
+}

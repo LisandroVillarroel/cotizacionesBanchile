@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { DetalleSolicitudInterface } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { Observable } from 'rxjs';
+import { DetalleSolicitudInterface } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,4 +25,17 @@ export class DetalleSolicitudService {
          parametro,{headers: this.headers})
   }
 
+  postApruebaSolicitud(apruebaSolicitud: IRequest): Observable<IResponse> {
+    return this.http.post<IResponse>(
+        `${environment.apiUrlConsumer}/aprobarSolicitud`,
+        apruebaSolicitud, { headers: this.headers, }
+      )
+  }
+
+  postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
+    return this.http.post<IResponse>(
+        `${environment.apiUrlConsumer}/enviarSolicitudCoordinador`,
+        enviaSolicitud, { headers: this.headers, }
+      )
+  }
 }

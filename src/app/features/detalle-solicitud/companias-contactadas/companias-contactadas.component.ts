@@ -19,7 +19,6 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { EliminarCompaniaComponent } from './eliminar-compania/eliminar-compania.component';
 import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detalle-cotizacion/detalle-cotizacion.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
@@ -78,8 +77,6 @@ export class CompaniasContactadasComponent {
   constructor() {
     //console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
    }
-
-
 
   getCellStyle(estado: number) {
     let color: string;
@@ -166,30 +163,36 @@ export class CompaniasContactadasComponent {
   }
 
 
-  borrarCompania(idCompania: number) {
-    const dato = {
-      p_id_solicitud: this.infoGral()?.id_solicitud,
+  async borrarCompania(idCompania: number) {
+    const request = {
+      p_id_solicitud: this.infoGral()?.id_solicitud!,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '40%';
-    dialogConfig.maxHeight = '80%';
-    dialogConfig.panelClass = 'custom-dialog-container';
-    dialogConfig.data = dato;
+    const eliminada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Eliminar Compañía',
+      'Esta compañía será desvinculada de la solicitud nro. '+ request.p_id_solicitud +'.'+
+      '\n\n ¿Deseas continuar?',
+      'Eliminar compañía', 'Cancelar'
+    );
 
-    this.dialog
-      .open(EliminarCompaniaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.actualizarDatos.emit();
-        }
+    if(eliminada)
+    {
+      this.companiasService.postEliminaCompania(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La compañía ha sido eliminada exitosamente.");
+            this.actualizarDatos.emit();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','No fue posible eliminar la compañia.');
+        },
       });
+    }
   }
 
   seleccionarCotizacion(id: number) {
