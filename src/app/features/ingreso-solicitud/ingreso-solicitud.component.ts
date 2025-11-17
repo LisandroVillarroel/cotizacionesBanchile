@@ -176,13 +176,13 @@ export default class IngresoSolicitudComponent {
     })
   );
 
-  agregaSolicitudAsegurado = signal<FormGroup>(
+  agregaAsegurado = signal<FormGroup>(
     new FormGroup({
       flagAsegurado: this.flagAsegurado,
     })
   );
 
-  agregaSolicitudBeneficiario = signal<FormGroup>(
+  agregaBeneficiario = signal<FormGroup>(
     new FormGroup({
       flagBeneficiario: this.flagBeneficiario,
     })
@@ -383,7 +383,7 @@ export default class IngresoSolicitudComponent {
   }
 
   valorAsegurado(dato: boolean) {
-    this.agregaSolicitudAsegurado().get('flagAsegurado')?.setValue(dato);
+       this.agregaAsegurado().get('flagAsegurado')?.setValue(dato)
   }
 
   async agregarAsegurado() {

@@ -8,7 +8,7 @@ import { IAseguradoLista, IBeneficiarioLista } from '@features/ingreso-solicitud
 export class SolicitudesService {
   /*
  private _http = inject(HttpClient);
-  private datoAsegurados = signal<ISolicitudAsegurado[]>([
+  private datoAsegurados = signal<IAsegurado[]>([
         {
           rutAsegurado: '12514508-6',
           nombreAsegurado: 'Nombre Asegurado 1',
@@ -35,7 +35,7 @@ export class SolicitudesService {
         },
       ]);
 
-  private datoBeneficiarios = signal<ISolicitudBeneficiario[]>([
+  private datoBeneficiarios = signal<IBeneficiario[]>([
         {
           rutBeneficiario: '12514508-6',
           nombreBeneficiario: 'Nombre Beneficiario 1',
@@ -62,11 +62,11 @@ export class SolicitudesService {
         },
       ]);
 
-   getSolicitudId(id: string): ISolicitudAsegurado[] | undefined {
+   getSolicitudId(id: string): IAsegurado[] | undefined {
     return this.datoAsegurados();
   }
 
-  getBeneficiarioId(id: string): ISolicitudBeneficiario[] | undefined {
+  getBeneficiarioId(id: string): IBeneficiario[] | undefined {
     return this.datoBeneficiarios();
   }
     */
