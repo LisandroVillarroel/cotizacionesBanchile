@@ -27,7 +27,7 @@ import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-elimina-solicitud-asegurado',
+  selector: 'app-elimina-asegurado',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -38,10 +38,10 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatButtonModule,
     CabeceraPopupComponente
   ],
-  templateUrl: './elimina-solicitud-asegurado.component.html',
-  styleUrl: './elimina-solicitud-asegurado.component.css',
+  templateUrl: './elimina-asegurado.component.html',
+  styleUrl: './elimina-asegurado.component.css',
 })
-export class EliminaSolicitudAseguradoComponent {
+export class EliminaAseguradoComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -52,7 +52,7 @@ export class EliminaSolicitudAseguradoComponent {
   asegurado!: IAsegurado;
 
   private readonly dialogRef = inject(
-    MatDialogRef<EliminaSolicitudAseguradoComponent>
+    MatDialogRef<EliminaAseguradoComponent>
   );
   public readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);
 

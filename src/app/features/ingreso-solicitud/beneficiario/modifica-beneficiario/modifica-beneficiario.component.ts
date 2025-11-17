@@ -14,19 +14,20 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { validateRut, formatRut, RutFormat } from '@fdograph/rut-utilities';
-import { CommonModule } from '@angular/common';
+import {
+  IBeneficiario,
+  IBeneficiarioListaParametro,
+} from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
-import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
-import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-agrega-solicitud-beneficiario',
+  selector: 'app-modifica-beneficiario',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -34,42 +35,67 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatButtonModule,
     CabeceraPopupComponente
   ],
-  templateUrl: './agrega-solicitud-beneficiario.component.html',
-  styleUrl: './agrega-solicitud-beneficiario.component.css',
+  templateUrl: './modifica-beneficiario.component.html',
+  styleUrl: './modifica-beneficiario.component.css',
 })
-export class AgregaSolicitudBeneficiarioComponent {
+export class ModificaBeneficiarioComponent {
   beneficiario!: IBeneficiario;
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  notificacioAlertnService= inject(NotificacioAlertnService);
-
-  public readonly data = inject<string>(MAT_DIALOG_DATA);
+   notificacioAlertnService= inject(NotificacioAlertnService);
 
   beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<AgregaSolicitudBeneficiarioComponent>
+    MatDialogRef<ModificaBeneficiarioComponent>
   );
 
-  rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);
-  nombreBeneficiario = new FormControl('', [Validators.required]);
-  correoBeneficiario = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
-  ]);
-  telefonoBeneficiario = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^(9\d{8}|22\d{7})$/),
-  ]);
-  regionBeneficiario = new FormControl('', [Validators.required]);
-  ciudadBeneficiario = new FormControl('', [Validators.required]);
-  comunaBeneficiario = new FormControl('', [Validators.required]);
-  direccionBeneficiario = new FormControl('', [Validators.required]);
-  numeroDireccionBeneficiario = new FormControl('', [Validators.required]);
-  deptoDireccionBeneficiario = new FormControl('');
-  casaBeneficiario = new FormControl('');
+  readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
-  agregaBeneficiario = signal<FormGroup>(
+  rutBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.rut_beneficiario,
+    [Validators.required, this.validaRut]
+  );
+  nombreBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.nombre_razon_social_beneficiario,
+    [Validators.required]
+  );
+
+  correoBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.mail_beneficiario,
+    [Validators.required]
+  );
+
+  telefonoBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.telefono_beneficiario,
+    [Validators.required]
+  );
+
+  regionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.region_beneficiario,
+    [Validators.required]
+  );
+  ciudadBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.ciudad_beneficiario,
+    [Validators.required]
+  );
+  comunaBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.comuna_beneficiario,
+    [Validators.required]
+  );
+  direccionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.direccion_beneficiario,
+    [Validators.required]
+  );
+  numeroDireccionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.numero_dir_beneficiario,
+    [Validators.required]
+  );
+  deptoDireccionBeneficiario = new FormControl(
+    this.data.datoBeneficiarioPar.departamento_block_beneficiario);
+  casaBeneficiario = new FormControl(this.data.datoBeneficiarioPar.casa_beneficiario);
+
+  modificaBeneficiario = signal<FormGroup>(
     new FormGroup({
       rutBeneficiario: this.rutBeneficiario,
       nombreBeneficiario: this.nombreBeneficiario,
@@ -88,73 +114,67 @@ export class AgregaSolicitudBeneficiarioComponent {
   getErrorMessage(campo: string) {
     if (campo === 'rutBeneficiario') {
       return this.rutBeneficiario.hasError('required')
-        ? 'Debes ingresar rut beneficiario'
+        ? 'Debes ingresar Rut Beneficiario'
         : this.rutBeneficiario.hasError('rutInvalido')
         ? 'Rut Inválido'
         : '';
     }
     if (campo === 'nombreBeneficiario') {
       return this.nombreBeneficiario.hasError('required')
-        ? 'Debes ingresar nombre'
+        ? 'Debes ingresar Nombre'
         : '';
     }
 
     if (campo === 'correoBeneficiario') {
-      if (this.correoBeneficiario.hasError('required')) {
-        return 'Debes ingresar correo';
-      }
-      if (this.correoBeneficiario.hasError('pattern')) {
-        return 'Debes ingresar un correo válido';
-      }
+      return this.correoBeneficiario.hasError('required')
+        ? 'Debes ingresar Correo'
+        : '';
     }
 
     if (campo === 'telefonoBeneficiario') {
-      if (this.telefonoBeneficiario.hasError('required')) {
-        return 'Debes ingresar teléfono';
-      }
-      if (this.telefonoBeneficiario.hasError('pattern')) {
-        return 'Formato de teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
-      }
+      return this.telefonoBeneficiario.hasError('required')
+        ? 'Debes ingresar Teléfono'
+        : '';
     }
 
     if (campo === 'regionBeneficiario') {
       return this.regionBeneficiario.hasError('required')
-        ? 'Debes ingresar región'
+        ? 'Debes ingresar Región'
         : '';
     }
 
     if (campo === 'ciudadBeneficiario') {
       return this.ciudadBeneficiario.hasError('required')
-        ? 'Debes ingresar ciudad'
+        ? 'Debes ingresar Dirección'
         : '';
     }
     if (campo === 'comunaBeneficiario') {
       return this.comunaBeneficiario.hasError('required')
-        ? 'Debes ingresar comuna'
+        ? 'Debes ingresar Comuna'
         : '';
     }
 
     if (campo === 'direccionBeneficiario') {
       return this.direccionBeneficiario.hasError('required')
-        ? 'Debes ingresar dirección'
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
     if (campo === 'numeroDireccionBeneficiario') {
       return this.numeroDireccionBeneficiario.hasError('required')
-        ? 'Debes ingresar número dirección'
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
     if (campo === 'deptoDireccionBeneficiario') {
       return this.deptoDireccionBeneficiario.hasError('required')
-        ? 'Debes ingresar departamento dirección'
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
     if (campo === 'casaBeneficiario') {
       return this.casaBeneficiario.hasError('required')
-        ? 'Debes ingresar casa dirección'
+        ? 'Debes ingresar Dirección'
         : '';
     }
 
@@ -172,58 +192,56 @@ export class AgregaSolicitudBeneficiarioComponent {
     const rut = event.target.value;
 
     if (validateRut(rut) === true) {
-      await this.agregaBeneficiario()
+      await this.modificaBeneficiario()
         .get('rutBeneficiario')!
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
     }
   }
 
-  grabar() {
+  modificar() {
     this.beneficiario = {
-      p_id_solicitud: Number(this.data),
+      p_id_solicitud: Number(this.data.idSolicitud),
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario:  this._storage()?.usuarioLogin.tipoUsuario!,
       p_rut_beneficiario:
-        this.agregaBeneficiario().get('rutBeneficiario')!.value,
+        this.modificaBeneficiario().get('rutBeneficiario')!.value,
       p_nombre_razon_social_beneficiario:
-        this.agregaBeneficiario().get('nombreBeneficiario')!.value,
+        this.modificaBeneficiario().get('nombreBeneficiario')!.value,
       p_mail_beneficiario:
-        this.agregaBeneficiario().get('correoBeneficiario')!.value,
-      p_telefono_beneficiario: this.agregaBeneficiario().get(
+        this.modificaBeneficiario().get('correoBeneficiario')!.value,
+      p_telefono_beneficiario: this.modificaBeneficiario().get(
         'telefonoBeneficiario'
       )!.value,
       p_region_beneficiario:
-        this.agregaBeneficiario().get('regionBeneficiario')!.value,
+        this.modificaBeneficiario().get('regionBeneficiario')!.value,
       p_ciudad_beneficiario:
-        this.agregaBeneficiario().get('ciudadBeneficiario')!.value,
+        this.modificaBeneficiario().get('ciudadBeneficiario')!.value,
       p_comuna_beneficiario:
-        this.agregaBeneficiario().get('comunaBeneficiario')!.value,
-      p_direccion_beneficiario: this.agregaBeneficiario().get(
+        this.modificaBeneficiario().get('comunaBeneficiario')!.value,
+      p_direccion_beneficiario: this.modificaBeneficiario().get(
         'direccionBeneficiario'
       )!.value,
-      p_numero_dir_beneficiario: this.agregaBeneficiario().get(
+      p_numero_dir_beneficiario: this.modificaBeneficiario().get(
         'numeroDireccionBeneficiario'
       )!.value,
-      p_departamento_block_beneficiario: this.agregaBeneficiario().get(
+      p_departamento_block_beneficiario: this.modificaBeneficiario().get(
         'deptoDireccionBeneficiario'
       )!.value,
       p_casa_beneficiario:
-        this.agregaBeneficiario().get('casaBeneficiario')!.value,
+        this.modificaBeneficiario().get('casaBeneficiario')!.value,
     };
-
-    console.log('Beneficiario Grabado:', this.beneficiario);
-
+    console.log('Beneficiario Modificado:', this.beneficiario);
     this.beneficiarioService
-      .postAgregaBeneficiario(this.beneficiario)
+      .postModificaBeneficiario(this.beneficiario)
       .subscribe({
         next: (dato) => {
           console.log('dato:', dato);
           if (dato.codigo === 200) {
-            this.dialogRef.close('agregado');
+            this.dialogRef.close('modificado');
           }
         },
         error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          this.notificacioAlertnService= inject(NotificacioAlertnService);
         },
       });
   }

@@ -43,6 +43,11 @@ export const routes: Routes = [
         canActivate: [guardRoles(['ejec_bco'])],
         loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
       },
+       {
+        path: 'mantenedores',
+        canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+        loadChildren: () => import('@features/mantenedores/mantenedores.route'),
+      },
     ],
     //loadComponent: () => import('./componentes/portada/portada.component'),
   },

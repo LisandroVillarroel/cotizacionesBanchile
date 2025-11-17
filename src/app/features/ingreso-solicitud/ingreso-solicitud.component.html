@@ -198,10 +198,10 @@
     </mat-step>
 
     <mat-step
-      [stepControl]="agregaSolicitudAsegurado()"
+      [stepControl]="agregaAsegurado()"
       errorMessage="Valores Requeridos"
     >
-      <form [formGroup]="agregaSolicitudAsegurado()">
+      <form [formGroup]="agregaAsegurado()">
         <ng-template matStepLabel>Información del Asegurado</ng-template>
         <app-asegurado [idSolicitud]="idSolicitud" [mostrarSoloConsulta]='false' (datoEmitidoAsegurado)="valorAsegurado($event)" />
         <div class="alinear-botones">
@@ -222,7 +222,7 @@
               mat-raised-button
               matStepperNext
               class="colorFondoBotonSiguiente"
-              [disabled]="agregaSolicitudAsegurado().invalid" >
+              [disabled]="agregaAsegurado().invalid" >
               Siguiente
             </button>
           </div>
@@ -231,10 +231,10 @@
     </mat-step>
 
     <mat-step
-      [stepControl]="agregaSolicitudBeneficiario()"
+      [stepControl]="agregaBeneficiario()"
       errorMessage="Valores Requeridos"
     >
-      <form [formGroup]="agregaSolicitudBeneficiario()">
+      <form [formGroup]="agregaBeneficiario()">
         <ng-template matStepLabel>Información del Beneficiario</ng-template>
         <!-- <app-beneficiario [idSolicitud]="idSolicitud()" /> -->
         <app-beneficiario

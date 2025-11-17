@@ -21,7 +21,7 @@ import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
-  selector: 'app-elimina-solicitud-beneficiario',
+  selector: 'app-elimina-beneficiario',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -32,10 +32,10 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
     MatButtonModule,
     CabeceraPopupComponente
   ],
-  templateUrl: './elimina-solicitud-beneficiario.component.html',
-  styleUrl: './elimina-solicitud-beneficiario.component.css',
+  templateUrl: './elimina-beneficiario.component.html',
+  styleUrl: './elimina-beneficiario.component.css',
 })
-export class EliminaSolicitudBeneficiarioComponent {
+export class EliminaBeneficiarioComponent {
   beneficiario!: IBeneficiario;
 
   storage = inject(StorageService);
@@ -45,7 +45,7 @@ export class EliminaSolicitudBeneficiarioComponent {
   beneficiarioService = inject(BeneficiarioService);
 
   private readonly dialogRef = inject(
-    MatDialogRef<EliminaSolicitudBeneficiarioComponent>
+    MatDialogRef<EliminaBeneficiarioComponent>
   );
   public readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 

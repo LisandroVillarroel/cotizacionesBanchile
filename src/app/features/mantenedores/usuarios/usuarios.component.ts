@@ -8,28 +8,26 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { DatosUsuarioInterface, IUsuario, IUsuarioListaParametro } from './usuario-Interface';
+import {  DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro } from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
+import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.component';
+import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
+import { ConsultaUsuarioComponent } from './consulta-usuario/consulta-usuario.component';
+import { EliminaUsuarioComponent } from './elimina-usuario/elimina-usuario.component';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [MatFormFieldModule,
-      MatDialogModule,
-      MatTableModule,
-      MatSortModule,
-      MatPaginatorModule,
-      MatIconModule,
-      MatTooltipModule,
-      MatInputModule,],
+  imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
+      MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })
-export class UsuariosComponent {
+export default class UsuariosComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   tipoUsuario = signal<string>('');
-  datoUsuarios = signal<IUsuario[]>([]);
+  datoUsuarios = signal<IUsuarioLista[]>([]);
   usuarioService = inject(UsuarioService);
 
   private readonly dialog = inject(MatDialog);
@@ -37,13 +35,16 @@ export class UsuariosComponent {
 
   displayedColumns: string[] = [
     'index',
-    'rutUsuario',
-    'nombreUsuario',
-    'apePaternoUsuario',
-    'apeMaternoUsuario',
-    'mailUsuario',
-    'telefonoUsuario',
-    'dependenciaUsuario',
+    'p_tipo_usuario',
+    'p_id_usuario',
+    'p_rut_usuario',
+    'p_nombre_usuario',
+    'p_apellido_paterno_usuario',
+    'p_apellido_materno_usuario',
+    'p_mail_usuario',
+    'p_telefono_usuario',
+    'p_id_dependencia_usuario',
+    'p_id_perfil',
     'opciones',
   ];
 
@@ -60,7 +61,7 @@ export class UsuariosComponent {
   }
 
   dataSource = computed(() => {
-    const tabla = new MatTableDataSource<IUsuario>(
+    const tabla = new MatTableDataSource<IUsuarioLista>(
       this.datoUsuarios()
     );
     tabla.paginator = this.paginator;
@@ -78,19 +79,23 @@ export class UsuariosComponent {
   }
 
   async ngOnInit() {
+    this.rescataLista("1");
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataLista(p_id_solicitud: string) {
     const estructura_lista = {
-      p_id_solicitud: p_id_solicitud,
+      p_id_usuario: "sup002",
+    p_tipo_usuario: "S",
+    p_tipo_consulta:"E"
     };
 
     this.usuarioService
       .postListadoUsuario(estructura_lista)
       .subscribe({
-        next: (dato: DatosUsuarioInterface) => {
+        next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
+            console.log('Lista de Usuarios:', dato.p_cursor);
             this.datoUsuarios.set(dato.p_cursor);
           }
         },
@@ -110,7 +115,7 @@ export class UsuariosComponent {
     dialogConfig.data = this.tipoUsuario();
 
     this.dialog
-      .open(AgregaSolicitudAseguradoComponent, dialogConfig)
+      .open(AgregaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
@@ -135,7 +140,7 @@ export class UsuariosComponent {
     dialogConfig.data = parametro;
 
     this.dialog
-      .open(ModificaSolicitudAseguradoComponent, dialogConfig)
+      .open(ModificaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
@@ -155,7 +160,7 @@ export class UsuariosComponent {
     dialogConfig.data = datoUsuarioPar;
 
     this.dialog
-      .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
+      .open(ConsultaUsuarioComponent, dialogConfig)
       .afterClosed();
   }
 
@@ -174,7 +179,7 @@ export class UsuariosComponent {
     dialogConfig.data = parametro;
 
     this.dialog
-      .open(EliminaSolicitudAseguradoComponent, dialogConfig)
+      .open(EliminaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {

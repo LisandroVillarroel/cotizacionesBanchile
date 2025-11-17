@@ -53,7 +53,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
                 Mantenedores
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mantenedor 1</a></li>
+                  <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
                 <li><a class="dropdown-item" href="#">Mantenedor 2</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>

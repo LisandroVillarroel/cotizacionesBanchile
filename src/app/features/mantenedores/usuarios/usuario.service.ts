@@ -1,12 +1,8 @@
-import {
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http';
+import {HttpClient,  HttpHeaders,} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { DatosUsuarioInterface, IUsuario } from './usuario-Interface';
-
+import { DatosUsuarioLista, IUsuario, IUsuarioLista } from './usuario-Interface';
 
 @Injectable({
   providedIn: 'root',
@@ -52,13 +48,9 @@ export class UsuarioService {
       })
   }
 
-  postListadoUsuario(filtro: any): Observable<DatosUsuarioInterface> {
+  postListadoUsuario(filtro: any): Observable<DatosUsuarioLista> {
     return this.http
-      .post<DatosUsuarioInterface>(
-        `${environment.apiUrlConsumer}/listarUsuarios`,
-        filtro,
-        { headers: this.headers }
-      )
+      .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, filtro, { headers: this.headers } )
   }
 
 }

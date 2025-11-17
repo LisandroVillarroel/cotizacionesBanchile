@@ -25,10 +25,6 @@ import {
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 
-import { AgregaSolicitudAseguradoComponent } from './agrega-solicitud-asegurado/agrega-solicitud-asegurado.component';
-import { ModificaSolicitudAseguradoComponent } from './modifica-solicitud-asegurado/modifica-solicitud-asegurado.component';
-import { ConsultaSolicitudAseguradoComponent } from './consulta-solicitud-asegurado/consulta-solicitud-asegurado.component';
-import { EliminaSolicitudAseguradoComponent } from './elimina-solicitud-asegurado/elimina-solicitud-asegurado.component';
 import {
   DatosAseguradosInterface,
   IAsegurado,
@@ -37,6 +33,11 @@ import {
 } from '../modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '../service/asegurado.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { AgregaAseguradoComponent } from './agrega-asegurado/agrega-asegurado.component';
+import { ModificaAseguradoComponent } from './modifica-asegurado/modifica-asegurado.component';
+import { ConsultaAseguradoComponent } from './consulta-asegurado/consulta-asegurado.component';
+import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado.component';
+
 
 @Component({
   selector: 'app-asegurado',
@@ -166,7 +167,7 @@ export class AseguradoComponent {
     dialogConfig.data = this.idSolicitud();
 
     this.dialog
-      .open(AgregaSolicitudAseguradoComponent, dialogConfig)
+      .open(AgregaAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
@@ -191,7 +192,7 @@ export class AseguradoComponent {
     dialogConfig.data = parametro;
 
     this.dialog
-      .open(ModificaSolicitudAseguradoComponent, dialogConfig)
+      .open(ModificaAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
@@ -211,7 +212,7 @@ export class AseguradoComponent {
     dialogConfig.data = datoAseguradoPar;
 
     this.dialog
-      .open(ConsultaSolicitudAseguradoComponent, dialogConfig)
+      .open(ConsultaAseguradoComponent, dialogConfig)
       .afterClosed();
   }
 
@@ -230,7 +231,7 @@ export class AseguradoComponent {
     dialogConfig.data = parametro;
 
     this.dialog
-      .open(EliminaSolicitudAseguradoComponent, dialogConfig)
+      .open(EliminaAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
