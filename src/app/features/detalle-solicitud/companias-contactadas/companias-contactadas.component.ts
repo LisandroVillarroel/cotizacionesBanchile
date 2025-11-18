@@ -47,7 +47,7 @@ import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-r
 })
 export class CompaniasContactadasComponent {
   @Input() verEjec: boolean = true;
-  @Input() verCoord: boolean = true;
+  //@Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
   @Input() cotizacionSeleccionada: number | null = null;
@@ -63,7 +63,7 @@ export class CompaniasContactadasComponent {
   companias = input.required<ICompania[] | undefined>();
   //compania: ICompania[];
   idCompania = 0;
-  compania = computed(() => this.companias());
+  compania = signal<ICompania | undefined>(undefined);
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -117,13 +117,15 @@ export class CompaniasContactadasComponent {
   }
 
   verCotiPropuesta(idCompania: number): void {
-    this.compania = computed(() =>
+    this.compania.set(this.companias()?.find(
+      (c) => c.p_id_compania_seguro === idCompania));
+    /* this.compania = computed(() =>
       this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
-    );
+    ); */
 
     const dato = {
       infoGral: this.infoGral()!,
-      compania: this.compania()![0],
+      compania: this.compania()!,
       flagAccion: false, // false indica modo edición
       modo: 'modificar', // opcional para diferenciar
     };
@@ -147,18 +149,19 @@ export class CompaniasContactadasComponent {
   }
 
   verCotizacion(id: number) {
-    console.log('ID recibido en verCotizacion:', id);
+    //console.log('ID recibido en verCotizacion:', id);
 
     // Aquí puedes buscar la compañía completa en tu lista `companias()`
     const companiaSeleccionada = this.companias()?.find(
       (c) => c.p_id_compania_seguro === id
     );
-    console.log('Compañía encontrada:', companiaSeleccionada);
+    //console.log('Compañía encontrada:', companiaSeleccionada);
 
     if (companiaSeleccionada) {
       this.verCompania(companiaSeleccionada);
     } else {
-      console.warn('No se encontró la compañía con el ID:', id);
+      this.notificacioAlertnService.error('error','No se encontró la compañía con el ID: '+ id);
+      //console.warn('No se encontró la compañía con el ID:', id);
     }
   }
 
@@ -201,8 +204,6 @@ export class CompaniasContactadasComponent {
     this.cotizacionSeleccionadaEvent.emit(id);
   }
 
-
-
   verCompania(companiaSeleccionada: any): void {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
@@ -239,96 +240,81 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-/*
-    verDetalleCot(idCompania: number, nombreCia: string) {
-    const dato = {
-      p_id_solicitud: this.infoGral()?.id_solicitud,
-      p_id_compania_seguro: idCompania,
-      p_nombre_compania_seguro: nombreCia,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario,
-      p_rut_contratante: this.infoGral()?.rut_contratante,
-      P_nombre_razon_social_contratante:
-        this.infoGral()?.nombre_razon_social_contratante,
-      p_id_rubro: this.infoGral()?.id_rubro,
-      p_nombre_rubro: this.infoGral()?.nombre_rubro,
-      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
-    };
 
-    //  const dato = {
-    //  p_id_solicitud: this.infoGral()?.id_solicitud,
-    //  p_id_compania_seguro: idCompania,
-    //  p_id_usuario: this.id_usuario,
-    //  p_tipo_usuario: this.tipoUsuario,
-    //  };
-
-    console.log('verDetalleCot:', dato);
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    dialogConfig.maxHeight = '80%';
-    dialogConfig.panelClass = 'custom-dialog-container';
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(DetalleCotizacionComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.actualizarDatos.emit();
-        }
-      });
+  recibida(estado: string){
+    if(estado.toLowerCase() === "recibida"){
+      return false;
+    }
+    return true;
   }
-*/
-  acciones = computed(() => {
+
+  pendiente(estado: string){
+    if(estado.toLowerCase()==='pendiente' && !this.verEjec){
+      return false;
+    }
+    return true;
+  }
+
+  enviada(estado: string){
+    if(estado.toLowerCase()==='enviada' && !this.verEjec){
+      return false;
+    }
+    return true;
+  }
+
+  /*   acciones = computed(() => {
     return (estado: string) => {
-      const estadoLower = estado.toLowerCase();
+    const estadoLower = estado.toLowerCase();
 
-      const acciones: {
-        icon: string;
-        tooltip: string;
-        mostrar: boolean;
-        accion: (id: number) => void;
-      }[] = [];
+    const boton: {
+      icon: string;
+      tooltip: string;
+      // mostrar: boolean;
+      accion: (id: number) => void;
+    }[] = [];
 
-      acciones.push({
+    if(estadoLower === 'recibida'){
+      boton.push({
         icon: 'preview',
         tooltip: 'Ver cotipropuesta',
-        mostrar: estadoLower === 'recibida',
+        // mostrar: estadoLower === 'recibida',
         accion: (id: number) => this.verCotiPropuesta(id),
       });
-
+    }
 
       if (!this.verEjec) {
+        if(estadoLower === 'pendiente'){
+          boton.push({
+            icon: 'visibility',
+            tooltip: 'Ver cotización',
+            mostrar: estadoLower === 'pendiente',
+            accion: (compania: any) => this.verCotizacion(compania),
+          });
+        }
 
-        acciones.push({
-          icon: 'visibility',
-          tooltip: 'Ver cotización',
-          mostrar: estadoLower === 'pendiente',
-          accion: (compania: any) => this.verCotizacion(compania),
-        });
+        if(estadoLower === 'enviada'){
+          boton.push({
+            icon: 'edit_square',
+            tooltip: 'Registrar respuesta',
+            mostrar: estadoLower === 'enviada',
+            accion: (id: number) => this.registrarRespuesta(id),
+          });
+        }
 
-        acciones.push({
-          icon: 'edit_square',
-          tooltip: 'Registrar respuesta',
-          mostrar: estadoLower === 'enviada',
-          accion: (id: number) => this.registrarRespuesta(id),
-        });
-
-        acciones.push({
+        if(estadoLower === 'enviada'){
+          boton.push({
           icon: 'delete',
           tooltip: 'Eliminar cotización',
-          mostrar: estadoLower === 'pendiente' && this.verCoord,
+           mostrar: estadoLower === 'pendiente',
           accion: (id: number) => this.borrarCompania(id),
-        });
+          });
+        }
       }
+      return boton;
+      return boton.filter((a) => a.mostrar);
+      };
+  }); */
 
-      return acciones.filter((a) => a.mostrar);
-    };
-  });
 
   verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
@@ -345,9 +331,7 @@ export class CompaniasContactadasComponent {
       p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
     };
 
-
-
-    console.log('verDetalleCot:', dato);
+    //console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -369,13 +353,16 @@ export class CompaniasContactadasComponent {
 
 
   registrarRespuesta(idCompania: number): void {
-    this.compania = computed(() => this.companias()!.filter(c => { return c.p_id_compania_seguro === idCompania }));
+    // this.compania = computed(() => this.companias()!.filter(c => { return c.p_id_compania_seguro === idCompania }));
+    this.compania.set(this.companias()?.find(
+      (c) => c.p_id_compania_seguro === idCompania));
+
     const dato = {
       infoGral: this.infoGral()!,
-      compania: this.compania()![0],
+      compania: this.compania()!,
       flagAccion: true
     };
-    console.log("Info hacia Registro: ", dato);
+    //console.log("Info hacia Registro: ", dato);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
