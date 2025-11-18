@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { DetalleSolicitudInterface } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
+import { RequestInterface } from '../modelo/request-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,14 @@ export class DetalleSolicitudService {
          parametro,{headers: this.headers})
   }
 
+  postDevuelveSolicitud(devuelveSolicitud: RequestInterface): Observable<IResponse> {
+    //console.log('Devuelve Solicitud Service:', devuelveSolicitud);
+    return this.http.post<IResponse>(
+        `${environment.apiUrlConsumer}/devolverSolicitud`,
+        devuelveSolicitud, { headers: this.headers, }
+      )
+  }
+
   postApruebaSolicitud(apruebaSolicitud: IRequest): Observable<IResponse> {
     return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/aprobarSolicitud`,
@@ -36,6 +45,14 @@ export class DetalleSolicitudService {
     return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/enviarSolicitudCoordinador`,
         enviaSolicitud, { headers: this.headers, }
+      )
+  }
+
+  postAnulaSolicitud(anulaSolicitud: RequestInterface): Observable<IResponse> {
+    //console.log('Anula Solicitud Service:', anulaSolicitud);
+    return this.http.post<IResponse>(
+        `${environment.apiUrlConsumer}/anularSolicitud`,
+        anulaSolicitud, { headers: this.headers, }
       )
   }
 }
