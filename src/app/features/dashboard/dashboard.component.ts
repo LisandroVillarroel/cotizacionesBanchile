@@ -62,7 +62,18 @@ export default class DashboardComponent {
   }
 
   seleccionaFecha() {
-    const fechaFiltrar = this.fechaActual.value?.toLocaleDateString('es-BO');
+    let fechaFiltrar: string | undefined;
+    const fechaValue = this.fechaActual.value;
+    // Forzar conversión a Date
+    const fechaDate = new Date(fechaValue as any);
+    if (!isNaN(fechaDate.getTime())) {
+      fechaFiltrar = fechaDate.toLocaleDateString('es-BO');
+    } else {
+      fechaFiltrar = undefined;
+    }
+
+    console.log('fechaValue:', fechaValue);
+    console.log('fechaFiltrar:', fechaFiltrar);
     const estructura_listaSolicitudes = {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       "p_fecha": fechaFiltrar,
