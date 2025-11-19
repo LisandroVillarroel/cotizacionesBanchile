@@ -1,13 +1,19 @@
 import { Routes } from '@angular/router';
 import { guardRoles } from '@core/auth/guards/guard.service';
 
-
 export default [
   {
     path: 'usuarios',
-    canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+    canActivate: [guardRoles(['ejec_bco', 'sup_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/usuarios/usuarios.component'),
+  },
+
+  {
+    path: 'companias',
+    canActivate: [guardRoles(['ejec_bco', 'sup_corr'])],
+    loadComponent: () =>
+      import('@features/mantenedores/companias/companias.component'),
   },
 
   {
