@@ -30,7 +30,7 @@ export const routes: Routes = [
       },
       {
         path: 'gestion',
-        canActivate: [guardRoles(['coord_corr', 'sup_corr'])],
+        canActivate: [guardRoles(['ejec_bco', 'coord_corr', 'sup_corr'])],
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
       {

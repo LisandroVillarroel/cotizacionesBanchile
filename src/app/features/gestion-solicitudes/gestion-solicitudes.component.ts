@@ -38,9 +38,15 @@ export default class GestionSolicitudesComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  perfil = this._storage()?.usuarioLogin.tipoUsuario!;
+  ejec = signal<boolean>(false);
   gestionService = inject(GestionSolicitudesService);
 
   nuevas = computed(() => { return this.datosSolicitud().filter( r =>
+    r.nombre_estado_solicitud?.toLowerCase()?.includes("edicion"))
+  });
+
+  revisadas = computed(() => { return this.datosSolicitud().filter( r =>
     r.nombre_estado_solicitud?.toLowerCase()?.includes("revision"))
   });
 
@@ -53,13 +59,18 @@ export default class GestionSolicitudesComponent {
   });
 
   async ngOnInit(){
+    if(this.perfil === "E"){
+      this.ejec.set(true);
+    }else{
+      this.ejec.set(false);
+    }
     this.cargarSolicitudes();
   }
 
   cargarSolicitudes() {
     const request = {
       p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_tipo_usuario: this.perfil
     };
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: any) => {
