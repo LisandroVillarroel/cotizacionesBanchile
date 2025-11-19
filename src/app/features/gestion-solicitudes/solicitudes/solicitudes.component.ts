@@ -1,33 +1,34 @@
-import { Component, ViewChild, inject, signal,
-  input, output } from '@angular/core';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatDatepickerModule} from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { ISolicitudG} from '@features/gestion-solicitudes/gestionSolicitud-interface';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
-import { RubroService } from '@shared/service/rubro.service';
+
+import { ISolicitudG } from '../gestionSolicitud-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
-import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+
 
 @Component({
-  selector: 'app-nuevas',
+  selector: 'app-solicitudes',
   standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [
@@ -50,12 +51,11 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     FormsModule,
     CommonModule
   ],
-  templateUrl: './nuevas.component.html',
-  styleUrl: './nuevas.component.css'
+  templateUrl: './solicitudes.component.html',
+  styleUrl: './solicitudes.component.css'
 })
-
-export class NuevasComponent {
-  nuevas = input.required<ISolicitudG[] | undefined>();
+export class SolicitudesComponent {
+  solicitudes = input.required<ISolicitudG[] | undefined>();
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -96,7 +96,7 @@ export class NuevasComponent {
     }
 
     this.formularioModificado();
-    return this.nuevas()!.filter(item => {
+    return this.solicitudes()!.filter(item => {
       const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
       const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
