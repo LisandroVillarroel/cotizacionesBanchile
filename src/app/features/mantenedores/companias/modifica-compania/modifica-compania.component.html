@@ -1,1 +1,107 @@
-<p>modifica-compania works!</p>
+<app-cabecera-popup [titulo]="'Modificar Compañía de Seguros'" />
+
+<mat-dialog-content
+  [formGroup]="modificaCompania()"
+  name="modificaCompania"
+  class="modifica-container"
+>
+  <div
+    class="row form-con-titulo contenido-form mat-elevation-z6"
+    data-titulo="Modificar Datos de la Compañía"
+  >
+    <div class="col-md-6">
+      <!-- Rut Compañía -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Rut Compañía</mat-label>
+        <input
+          matInput
+          autofocus
+          id="rutCompania"
+          aria-label="Rut Compañía"
+          class="input-rut rut"
+          [formControl]="rutCompania"
+          oninput="this.value = this.value.toUpperCase()"
+          (blur)="onBlurRutCompania($event)"
+          required
+        />
+        @if (rutCompania.invalid) {
+        <mat-error>{{ getErrorMessage("rutCompania") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Nombre Compañía -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Compañía</mat-label>
+        <input matInput [formControl]="nombreCompania" required />
+        @if (nombreCompania.invalid) {
+        <mat-error>{{ getErrorMessage("nombreCompania") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Dirección -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Dirección</mat-label>
+        <input matInput [formControl]="direccionCompania" required />
+        @if (direccionCompania.invalid) {
+        <mat-error>{{ getErrorMessage("direccionCompania") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Correo -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Correo</mat-label>
+        <input matInput [formControl]="correoCompania" required />
+        @if (correoCompania.invalid) {
+        <mat-error>{{ getErrorMessage("correoCompania") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Teléfono -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+        <input matInput [formControl]="telefonoCompania" required />
+        @if (telefonoCompania.invalid) {
+        <mat-error>{{ getErrorMessage("telefonoCompania") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Estado -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Estado</mat-label>
+        <mat-select [formControl]="estadoCompania" required>
+          <mat-option value="Vigente">Vigente</mat-option>
+          <mat-option value="No Vigente">No Vigente</mat-option>
+        </mat-select>
+        @if (estadoCompania.invalid) {
+        <mat-error>{{ getErrorMessage("estadoCompania") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="colorFondoBotonCerrar"
+    >
+      Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="modificar()"
+      class="colorFondoBotonGrabar"
+      [disabled]="modificaCompania().invalid"
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,26 +1,30 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import {
   MatDialogRef,
+  MatDialogModule,
   MatDialogContent,
   MatDialogActions,
-  MatDialogModule,
 } from '@angular/material/dialog';
-import { CompaniaService } from '../compania.service';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import CabeceraPopupComponente from '../../../../shared/ui/cabeceraPopup.component';
-import { MatFormField, MatLabel, MatError, MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelect, MatOption, MatSelectModule } from '@angular/material/select';
-import {
-  validateRut,
-  formatRut,
-  RutFormat,
-  cleanRut,
-} from '@fdograph/rut-utilities';
-import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { CompaniaService } from '../compania.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import {
+  validateRut,
+  cleanRut,
+  formatRut,
+  RutFormat,
+} from '@fdograph/rut-utilities';
 
 @Component({
   selector: 'app-agrega-compania',
@@ -38,19 +42,20 @@ import { MatButtonModule } from '@angular/material/button';
     CabeceraPopupComponente,
   ],
   templateUrl: './agrega-compania.component.html',
-  styleUrl: './agrega-compania.component.css',
+  styleUrls: ['./agrega-compania.component.css'],
 })
 export class AgregaCompaniaComponent {
   private companiaService = inject(CompaniaService);
   private notificacioAlertnService = inject(NotificacioAlertnService);
   private dialogRef = inject(MatDialogRef<AgregaCompaniaComponent>);
 
+  // ✅ FormControls
   rutCompania = new FormControl('', [Validators.required, this.validaRut]);
   nombreCompania = new FormControl('', [Validators.required]);
   direccionCompania = new FormControl('', [Validators.required]);
   telefonoCompania = new FormControl('', [
     Validators.required,
-    Validators.pattern(/^(9\d{8}|\+56\d{9})$/), // Ajusta patrón si quieres validar formato chileno
+    Validators.pattern(/^(9\d{8}|\+56\d{9})$/),
   ]);
   estadoCompania = new FormControl('Vigente', [Validators.required]);
   correoCompania = new FormControl('', [
@@ -76,65 +81,93 @@ export class AgregaCompaniaComponent {
     return null;
   }
 
-  getErrorMessage(campo: string): string {
-    switch (campo) {
-      case 'rutCompania':
-        return this.rutCompania.hasError('required')
-          ? 'Debes ingresar Rut'
-          : this.rutCompania.hasError('rutInvalido')
-          ? 'Rut inválido'
-          : '';
-      case 'nombreCompania':
-        return this.nombreCompania.hasError('required')
-          ? 'Debes ingresar nombre'
-          : '';
-      case 'direccionCompania':
-        return this.direccionCompania.hasError('required')
-          ? 'Debes ingresar dirección'
-          : '';
-      case 'telefonoCompania':
-        if (this.telefonoCompania.hasError('required'))
-          return 'Debes ingresar teléfono';
-        if (this.telefonoCompania.hasError('pattern'))
-          return 'Formato inválido (+569XXXXXXXX)';
-        break;
-      case 'correoCompania':
-        if (this.correoCompania.hasError('required'))
-          return 'Debes ingresar correo';
-        if (this.correoCompania.hasError('pattern')) return 'Correo inválido';
-        break;
+  getErrorMessage(campo: string) {
+    if (campo === 'rutCompania') {
+      return this.rutCompania.hasError('required')
+        ? 'Debes ingresar Rut Compañía'
+        : this.rutCompania.hasError('rutInvalido')
+        ? 'Rut Inválido'
+        : '';
     }
+
+    if (campo === 'nombreCompania') {
+      return this.nombreCompania.hasError('required')
+        ? 'Debes ingresar Nombre Compañía'
+        : '';
+    }
+
+    if (campo === 'correoCompania') {
+      if (this.correoCompania.hasError('required')) {
+        return 'Debes ingresar Correo';
+      }
+      if (this.correoCompania.hasError('pattern')) {
+        return 'Debes ingresar un correo válido';
+      }
+    }
+
+    if (campo === 'telefonoCompania') {
+      if (this.telefonoCompania.hasError('required')) {
+        return 'Debes ingresar Teléfono';
+      }
+      if (this.telefonoCompania.hasError('pattern')) {
+        return 'Formato de teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
+      }
+    }
+
+    if (campo === 'direccionCompania') {
+      return this.direccionCompania.hasError('required')
+        ? 'Debes ingresar Dirección'
+        : '';
+    }
+
+    if (campo === 'estadoCompania') {
+      return this.estadoCompania.hasError('required')
+        ? 'Debes seleccionar Estado'
+        : '';
+    }
+
     return '';
   }
 
   async onBlurRutCompania(event: any) {
-    const rut = event.target.value;
-    if (validateRut(rut)) {
-      await this.agregaCompania()
-        .get('rutCompania')!
-        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
-          emitEvent: false,
-        });
-    } else {
-      this.notificacioAlertnService.error('ERROR', 'Rut inválido');
+    const rutIngresado = this.agregaCompania().get('rutCompania')!.value;
+
+    if (!rutIngresado) {
+      return;
     }
+
+    if (this.rutCompania.invalid) {
+      this.notificacioAlertnService.error('ERROR', 'RUT inválido');
+      return;
+    }
+
+    await this.agregaCompania()
+      .get('rutCompania')!
+      .setValue(formatRut(cleanRut(rutIngresado), RutFormat.DOTS_DASH), {
+        emitEvent: false,
+      });
   }
 
   grabar() {
-    if (this.agregaCompania().invalid) return;
+    const rutVisual = this.agregaCompania().get('rutCompania')!.value;
 
-    const rutVisual = this.rutCompania.value!;
+    // Convertir a formato BD (sin puntos, con guion)
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     const payload = {
       p_id_usuario: 'ADM042', // parametrizable
       p_tipo_usuario: 'A',
       p_rut_compania_seguro: rutParaBD,
-      p_nombre_compania_seguro: this.nombreCompania.value,
-      p_direccion_compania_seguro: this.direccionCompania.value,
-      p_telefono_compania_seguro: this.telefonoCompania.value,
-      p_estado_compania_seguro: this.estadoCompania.value,
-      p_correo_compania_seguro: this.correoCompania.value,
+      p_nombre_compania_seguro:
+        this.agregaCompania().get('nombreCompania')!.value,
+      p_direccion_compania_seguro:
+        this.agregaCompania().get('direccionCompania')!.value,
+      p_telefono_compania_seguro:
+        this.agregaCompania().get('telefonoCompania')!.value,
+      p_estado_compania_seguro:
+        this.agregaCompania().get('estadoCompania')!.value,
+      p_correo_compania_seguro:
+        this.agregaCompania().get('correoCompania')!.value,
     };
 
     this.companiaService.postAgregaCompania(payload).subscribe({
