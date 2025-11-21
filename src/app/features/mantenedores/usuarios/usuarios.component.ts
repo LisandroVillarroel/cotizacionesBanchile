@@ -21,7 +21,11 @@ import { EliminaUsuarioComponent } from './elimina-usuario/elimina-usuario.compo
   imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
       MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+  styles: `
+    table {
+      width: 100%;
+    }
+  `
 })
 export default class UsuariosComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
