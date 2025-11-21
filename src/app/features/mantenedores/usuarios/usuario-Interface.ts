@@ -1,14 +1,17 @@
 export interface IUsuario {
-  tipoUsuario: string;
-  idUsuario: string;
-  rutUsuario: string;
-  nombreUsuario: string;
-  apePaternoUsuario: string;
-  apeMaternoUsuario: string;
-  mailUsuario: string;
-  telefonoUsuario: string;
-  dependenciaUsuario: string;
-  idPerfil: string;
+  p_id_usuario_nuevo: string;// ID del nuevo usuario
+  p_tipo_usuario_nuevo: string;// Tipo del nuevo usuario, aca hay que llamar un servicio que muestre si es ejec, coor o sup
+  p_rut_usuario_nuevo: string; // Rut del nuevo usuario
+  p_nombre_usuario_nuevo: string;// Nombre del nuevo usuario
+  p_apellido_paterno_usuario_nuevo: string;// Apellido paterno del nuevo usuario
+  p_apellido_materno_usuario_nuevo: string;// Apellido materno del nuevo usuario
+  p_mail_usuario_nuevo: string;// Correo electrónico del nuevo usuario
+  p_telefono_usuario_nuevo: string;// Teléfono del nuevo usuario
+  p_id_dependencia_usuario_nuevo: string;// ID de la dependencia del nuevo usuario, llamar el servicio y mostrar los corr o sup dependiendo
+  //p_id_perfil: string;// ID del perfil del nuevo usuario
+  p_id_usuario: string;  // Usuario que realiza la acción
+  p_tipo_usuario: string// Tipo de usuario que realiza la acción
+
 }
 
 export interface IUsuarioLista {

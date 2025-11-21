@@ -1,27 +1,29 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
+import { IUsuario, IUsuarioLista } from '../usuario-Interface';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { cleanRut, formatRut, RutFormat, validateRut } from '@fdograph/rut-utilities';
+import { UsuarioService } from '../usuario.service';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-import { IUsuario } from '../usuario-Interface';
-import { validateRut } from '@fdograph/rut-utilities';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-agrega-usuario',
   standalone: true,
-  imports: [   CommonModule,
+  imports: [  CommonModule,
       MatFormFieldModule,
       ReactiveFormsModule,
       MatInputModule,
       MatDialogModule,
       MatButtonModule,
+      MatSelectModule,
       CabeceraPopupComponente,],
   templateUrl: './agrega-usuario.component.html',
   styleUrl: './agrega-usuario.component.css'
@@ -35,175 +37,124 @@ export class AgregaUsuarioComponent {
 
   public readonly data = inject<string>(MAT_DIALOG_DATA);
 
-  aseguradoService = inject(AseguradoService);
+  usuarioService = inject(UsuarioService);
+
+  dependencia = signal<IUsuarioLista[]>([]);
 
   usuario!: IUsuario;
   private readonly dialogRef = inject(
     MatDialogRef<AgregaUsuarioComponent>
   );
 
-  tipoUsuario = new FormControl('', [Validators.required, this.validaRut]);
-  idUsuario = new FormControl('', [Validators.required]);
-  rutUsuario = new FormControl('', [Validators.required, this.validaRut]);
-  nombreUsuario = new FormControl('', [Validators.required]);
-  apePaternoUsuario = new FormControl('', [Validators.required])
-  apeMaternoUsuario = new FormControl('', [Validators.required]);
-  mailUsuario = new FormControl('', [Validators.required,
+
+  idUsuarioNuevo = new FormControl('', [Validators.required]);
+  rutUsuarioNuevo = new FormControl('', [Validators.required, this.validaRut]);
+  nombreUsuarioNuevo = new FormControl('', [Validators.required]);
+  apePaternoUsuarioNuevo = new FormControl('', [Validators.required]);
+  apeMaternoUsuarioNuevo = new FormControl('', [Validators.required]);
+  mailUsuarioNuevo = new FormControl('', [
+    Validators.required,
     Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
   ]);
-  telefonoUsuario = new FormControl('', [
+  telefonoUsuarioNuevo = new FormControl('', [
     Validators.required,
     Validators.pattern(/^(9\d{8}|22\d{7})$/),
   ]);
-  dependenciaUsuario = new FormControl('', [Validators.required]);
-  idPerfil = new FormControl('', [Validators.required]);
+  tipoUsuarioNuevo = new FormControl('', [Validators.required]);
+  dependenciaUsuarioNuevo = new FormControl('', [Validators.required]);
+
 
   agregaUsuario = signal<FormGroup>(
     new FormGroup({
-      tipoUsuario: this.tipoUsuario,
-      idUsuario: this.idUsuario,
-      rutUsuario: this.rutUsuario,
-      nombreUsuario: this.nombreUsuario,
-      mailUsuario: this.mailUsuario,
-      telefonoUsuario: this.telefonoUsuario,
-      dependenciaUsuario: this.dependenciaUsuario,
-      idPerfil: this.idPerfil,
+      idUsuarioNuevo: this.idUsuarioNuevo,
+      rutUsuarioNuevo: this.rutUsuarioNuevo,
+      nombreUsuarioNuevo: this.nombreUsuarioNuevo,
+      apePaternoUsuarioNuevo: this.apePaternoUsuarioNuevo,
+      apeMaternoUsuarioNuevo: this.apeMaternoUsuarioNuevo,
+      mailUsuarioNuevo: this.mailUsuarioNuevo,
+      telefonoUsuarioNuevo: this.telefonoUsuarioNuevo,
+      dependenciaUsuarioNuevo: this.dependenciaUsuarioNuevo,
+      tipoUsuarioNuevo: this.tipoUsuarioNuevo,
+
     })
   );
 
   getErrorMessage(campo: string) {
-    if (campo === 'rutUsuario') {
-      return this.rutUsuario.hasError('required')
-        ? 'Debes ingresar rut usuario'
-        : this.rutUsuario.hasError('rutInvalido')
-        ? 'Rut Inválido'
+     if (campo === 'idUsuarioNuevo') {
+      return this.idUsuarioNuevo.hasError('required')
+        ? 'Debes ingresar Id Usuario'
         : '';
     }
-    if (campo === 'nombreUsuario') {
-      return this.nombreUsuario.hasError('required')
-        ? 'Debes ingresar Nombre'
+     if (campo === 'rutUsuarioNuevo') {
+      return this.rutUsuarioNuevo.hasError('required')
+        ? 'Debes ingresar Rut Usuario '
         : '';
     }
-  if (campo === 'apePaternoUsuario') {
-      return this.apePaternoUsuario.hasError('required')
+     if (campo === 'nombreUsuarioNuevo') {
+      return this.nombreUsuarioNuevo.hasError('required')
+        ? 'Debes ingresar Nombre Usuario'
+        : '';
+    }
+     if (campo === 'apePaternoUsuarioNuevo') {
+      return this.apePaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Paterno'
         : '';
     }
-  if (campo === 'apeMaternoUsuario') {
-      return this.apeMaternoUsuario.hasError('required')
+     if (campo === 'apeMaternoUsuarioNuevo') {
+      return this.apeMaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Materno'
         : '';
     }
 
-    if (campo === 'telefonoUsuario') {
-      if (this.telefonoUsuario.hasError('required')) {
-        return 'Debes ingresar teléfono';
+    if (campo === 'mailUsuarioNuevo') {
+      if (this.mailUsuarioNuevo.hasError('required')) {
+        return 'Debes ingresar Correo';
       }
-      if (this.telefonoUsuario.hasError('pattern')) {
-        return 'Formato de teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
+      if (this.mailUsuarioNuevo.hasError('pattern')) {
+        return 'Debes ingresar un Correo válido';
       }
     }
 
-    if (campo === 'dependenciaUsuario') {
-      return this.dependenciaUsuario.hasError('required')
-        ? 'Debes ingresar dependencia'
+    if (campo === 'telefonoUsuarioNuevo') {
+      if (this.telefonoUsuarioNuevo.hasError('required')) {
+        return 'Debes ingresar Teléfono';
+      }
+      if (this.telefonoUsuarioNuevo.hasError('pattern')) {
+        return 'Formato de Teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
+      }
+    }
+
+    if (campo === 'dependenciaUsuarioNuevo') {
+      return this.dependenciaUsuarioNuevo.hasError('required')
+        ? 'Debes seleccionar Dependencia'
         : '';
     }
 
-    if (campo === 'idPerfil') {
-      return this.idPerfil.hasError('required')
-        ? 'Debes ingresar perfil'
+    if (campo === 'tipoUsuarioNuevo') {
+      return this.tipoUsuarioNuevo.hasError('required')
+        ? 'Debes seleccionar Tipo de Usuario'
         : '';
     }
-
 
     return '';
   }
 
-  //Éste es el método antiguo para formatear rut con puntos y guión
-  /* async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
 
-    if (validateRut(rut) === true) {
-      await this.agregaAsegurado()
-        .get('rutAsegurado')!
-        .setValue(formatRut(rut, RutFormat.DOTS_DASH));
-    }
-  } */
-
-  //Éste es el método para formatear rut con puntos y guión y guarda el rut sin puntos y con guion en BD
-  /* async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
-
-    if (validateRut(rut) === true) {
-      //Mostrar en el input con puntos y guion
-      await this.agregaAsegurado()
-        .get('rutAsegurado')!
-        .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
-          emitEvent: false,
-        });
-
-      //Guardar en BD sin puntos y con guion
-      formatRut(cleanRut(rut), RutFormat.DASH);
-    }
-  } */
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutAsegurado(event: any) {
+  async onBlurRutUsuarioNuevo(event: any) {
     const rut = event.target.value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
-      await this.agregaAsegurado()
-        .get('rutAsegurado')!
+      await this.agregaUsuario()
+        .get('rutUsuarioNuevo')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
         });
 
       // Formato para BD
       const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
-
-      if (rutParaBD === '11898216-9') {
-        this.aseguradoService.getDatosAsegurado(rutParaBD).subscribe({
-          next: (response: any) => {
-            if (response.codigo === 200 && response.data) {
-              const data = response.data;
-
-              this.agregaAsegurado().patchValue({
-                nombreAsegurado: `${data.nombre} ${data.apellidoPaterno} ${data.apellidoMaterno}`,
-                correoAsegurado: data.emailEjecutivo || '',
-                telefonoAsegurado: data.celularParticularCliente || '',
-                regionAsegurado: data.region || '',
-                ciudadAsegurado: data.ciudad || '',
-                comunaAsegurado: data.comuna || '',
-                direccionAsegurado: data.direccion || '',
-                numeroDireccionAsegurado: data.numeroDireccion || '',
-                deptoDireccionAsegurado: data.complementoDireccion || '',
-                casaAsegurado: data.numeroDireccion || '',
-              });
-            }
-          },
-          error: () => {
-            this.notificacioAlertnService.error(
-              'ERROR',
-              'Error al consultar datos del asegurado'
-            );
-          },
-        });
-      } else {
-        this.agregaAsegurado().patchValue({
-          nombreAsegurado: '',
-          correoAsegurado: '',
-          telefonoAsegurado: '',
-          regionAsegurado: '',
-          ciudadAsegurado: '',
-          comunaAsegurado: '',
-          direccionAsegurado: '',
-          numeroDireccionAsegurado: '',
-          deptoDireccionAsegurado: '',
-          casaAsegurado: '',
-        });
-      }
     }
   }
 
@@ -215,47 +166,33 @@ export class AgregaUsuarioComponent {
   }
 
   grabar() {
-    const rutVisual = this.agregaAsegurado().get('rutAsegurado')!.value;
-
     //Convertir a formato BD (sin puntos, con guion)
-    const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
+    const rutParaBD = formatRut(cleanRut(this.agregaUsuario().get('rutUsuarioNuevo')!.value), RutFormat.DASH);
 
-    this.asegurado = {
-      p_id_solicitud: Number(this.data),
+    this.usuario = {
+      p_id_usuario_nuevo: this.agregaUsuario().get('idUsuarioNuevo')!.value,
+      p_tipo_usuario_nuevo: this.agregaUsuario().get('tipoUsuarioNuevo')!.value,
+      p_rut_usuario_nuevo: rutParaBD,
+      p_nombre_usuario_nuevo: this.agregaUsuario().get('nombreUsuarioNuevo')!.value,
+      p_apellido_paterno_usuario_nuevo: this.agregaUsuario().get('apePaternoUsuarioNuevo')!.value,
+      p_apellido_materno_usuario_nuevo: this.agregaUsuario().get('apeMaternoUsuarioNuevo')!.value,
+      p_mail_usuario_nuevo: this.agregaUsuario().get('mailUsuarioNuevo')!.value,
+      p_telefono_usuario_nuevo: this.agregaUsuario().get('telefonoUsuarioNuevo')!.value,
+      p_id_dependencia_usuario_nuevo: this.agregaUsuario().get('dependenciaUsuarioNuevo')!.value,
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      //p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
-      p_rut_asegurado: rutParaBD,
-      p_nombre_razon_social_asegurado:
-        this.agregaAsegurado().get('nombreAsegurado')!.value,
-      p_mail_asegurado: this.agregaAsegurado().get('correoAsegurado')!.value,
-      p_telefono_asegurado:
-        this.agregaAsegurado().get('telefonoAsegurado')!.value,
-      p_region_asegurado: this.agregaAsegurado().get('regionAsegurado')!.value,
-      p_ciudad_asegurado: this.agregaAsegurado().get('ciudadAsegurado')!.value,
-      p_comuna_asegurado: this.agregaAsegurado().get('comunaAsegurado')!.value,
-      p_direccion_asegurado:
-        this.agregaAsegurado().get('direccionAsegurado')!.value,
-      p_numero_dir_asegurado: this.agregaAsegurado().get(
-        'numeroDireccionAsegurado'
-      )!.value,
-      p_departamento_block_asegurado: this.agregaAsegurado().get(
-        'deptoDireccionAsegurado'
-      )!.value,
-      p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
     };
 
-    console.log('Asegurado Grabado:', this.asegurado);
 
-    this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
-      next: (dato) => {
+    this.usuarioService.postAgregaUsuario(this.usuario).subscribe({
+      next: (dato:any) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
-          //alert('Grabó Asegurado Bien');
+          //alert('Grabó Usuario Bien');
           this.dialogRef.close('agregado');
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
