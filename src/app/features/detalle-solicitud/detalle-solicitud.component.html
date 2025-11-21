@@ -48,11 +48,6 @@
                   <mat-panel-title class="destacado">
                     Compañías Contactadas
                   </mat-panel-title>
-                  <!--                   <div class="msj-warning">
-                    <h3><mat-icon>info</mat-icon>
-                      Se requiere contactar un mínimo de {{minimo}} compañías para esta solicitud.
-                    </h3>
-                  </div> -->
                 </mat-expansion-panel-header>
 
                 <app-companias-contactadas
@@ -61,20 +56,9 @@
                   [verEjec]="verEjec"
                   [minimo]="minimo"
                   [flagSoloCerrar]="flagSoloCerrar"
-                  (actualizarDatos)="
-                    cargarCompanias(idSolicitud);
-                    obtenerMinimo(idSolicitud);
-                    cargarSolicitud(idSolicitud)
-                  "
-                  [cotizacionSeleccionada]="cotizacionSeleccionada"
                   (cotizacionSeleccionadaEvent)="
-                    cotizacionSeleccionada = $event
-                  "
-                  (cargaRespuesta)="
-                    cargarSolicitud(idSolicitud);
-                    cargarCompanias(idSolicitud);
-                    obtenerMinimo(idSolicitud)
-                  "
+                    cotizacionSeleccionada = $event"
+                  (actualizarDatos) = "recargar()"
                 />
               </mat-expansion-panel>
 
@@ -129,82 +113,77 @@
         Cerrar
       </button>
     </div>
-    <div class="botones-derecha" *ngIf="!flagSoloCerrar">
-      <button
-        mat-stroked-button
-        class="btn-danger"
-        [hidden]="this.flagAnular"
-        (click)="anularSolicitud()"
-      >
-        Anular Solicitud
-      </button>
 
-      <button
-        mat-stroked-button
-        class="btn-primary"
-        [disabled]="this.flagCoordinador"
-        [hidden]="this.verCoord"
-        (click)="enviarCoordinador()"
-      >
-        Enviar a Coordinador
-      </button>
+    @if(!flagSoloCerrar){
+      <div class="botones-derecha">
+        <button
+          mat-stroked-button
+          class="btn-danger"
+          [hidden]="this.flagAnular"
+          (click)="anularSolicitud()">
+          Anular Solicitud
+        </button>
 
-      <button
-        mat-stroked-button
-        class="btn-warning"
-        [hidden]="this.flagDevolver || this.verEjec"
-        (click)="devolverSolicitud()"
-      >
-        Devolver solicitud
-      </button>
+        <button
+          mat-stroked-button
+          class="btn-primary"
+          [disabled]="this.flagCoordinador"
+          [hidden]="this.verCoord || this.flagCoordinador"
+          (click)="enviarCoordinador()">
+          Enviar a Coordinador
+        </button>
 
-      <button
-        mat-stroked-button
-        class="btn-success"
-        [hidden]="this.flagAprobar || this.verEjec"
-        (click)="aprobarSolicitud()"
-      >
-        Aprobar Solicitud
-      </button>
+        <button
+          mat-stroked-button
+          class="btn-warning"
+          [hidden]="this.flagDevolver || this.verEjec"
+          (click)="devolverSolicitud()">
+          Devolver solicitud
+        </button>
 
-      <button
-        mat-stroked-button
-        class="btn-info"
-        [disabled]="this.flagCompania"
-        [hidden]="this.verEjec || this.flagCompania"
-        (click)="agregarCompania()"
-      >
-        Agregar Compañía
-      </button>
+        <button
+          mat-stroked-button
+          class="btn-success"
+          [hidden]="this.flagAprobar || this.verEjec"
+          (click)="aprobarSolicitud()">
+          Aprobar Solicitud
+        </button>
 
-      <button
-        mat-stroked-button
-        class="btn-info"
-        [hidden]="this.flagCotizacion || this.verEjec"
-        [disabled]="this.puedeEnviar"
-        (click)="enviarCia()"
-      >
-        Enviar a Compañía(s)
-      </button>
+        <button
+          mat-stroked-button
+          class="btn-info"
+          [disabled]="this.flagCompania"
+          [hidden]="this.verEjec || this.flagCompania"
+          (click)="agregarCompania()">
+          Agregar Compañía
+        </button>
 
-      <button
-        mat-stroked-button
-        class="btn-primary"
-        [hidden]="this.flagPropuesta || this.verCoord"
-        (click)="crearPropuesta()"
-      >
-        Generar Propuesta
-      </button>
+        <button
+          mat-stroked-button
+          class="btn-info"
+          [hidden]="this.flagCotizacion || this.verEjec"
+          [disabled]="this.puedeEnviar"
+          (click)="enviarCia()">
+          Enviar a Compañía(s)
+        </button>
 
-      <button
-      mat-stroked-button
-      class="btn-success"
-      [hidden]="flagAprobarCot || verCoord"
-      [disabled]="!cotizacionSeleccionada"
-      (click)="aprobarCotizacion()"
-      >
-        Aprobar Cotización
-      </button>
-    </div>
+        <button
+          mat-stroked-button
+          class="btn-primary"
+          [hidden]="this.flagPropuesta || this.verCoord"
+          (click)="crearPropuesta()">
+          Generar Propuesta
+        </button>
+
+        <button
+          mat-stroked-button
+          class="btn-success"
+          [hidden]="flagAprobarCot || verCoord"
+          [disabled]="!cotizacionSeleccionada"
+          (click)="aprobarCotizacion()">
+          Aprobar Cotización
+        </button>
+      </div>
+    }
   </div>
 </mat-dialog-actions>

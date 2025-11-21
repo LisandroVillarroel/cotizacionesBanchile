@@ -1,0 +1,191 @@
+<div class="container-fluid p-0">
+  <div [formGroup]="filtroFormulario()" class="box-form-fields gap-2 p-2" style="align-items: center;">
+    <div class="gap-1" style="width: 10%;">
+      <span class="gris"> Filtrar por: </span>
+    </div>
+
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="cursiva gris-claro">ID Solicitud</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+          <input matInput  [formControl]="solicitud"
+            (keyup)="pagina.set(0)">
+      </mat-form-field>
+    </div>
+
+    <div style="width: 20%;">
+      <mat-form-field class="inputBuscar">
+        <mat-label class="cursiva gris-claro">Contratante</mat-label>
+        <mat-icon matSuffix class="gris">search</mat-icon>
+          <input matInput  [formControl]="contratante"
+            (keyup)="pagina.set(0)">
+      </mat-form-field>
+    </div>
+
+      <div style="width: 20%;">
+        <mat-form-field class="inputSelect">
+          <mat-label class="cursiva gris-claro">Rubro</mat-label>
+            <mat-select [formControl]="rubro"
+              (selectionChange)="seleccionaRubro($event.value); pagina.set(0)">
+              @for(_rubros of datoRubros(); track _rubros){
+                <mat-option [value]="_rubros" >
+                  {{ _rubros.nombre_rubro }}
+                </mat-option>
+              }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div style="width: 20%;">
+        <mat-form-field class="inputSelect">
+          <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
+          <mat-select [formControl]="seguro" (selectionChange)="pagina.set(0)">
+            @for(_seguros of rescatadoSeguro(); track _seguros){
+              <mat-option [value]="_seguros.nombre_tipo_seguro">
+                {{ _seguros.nombre_tipo_seguro }}
+              </mat-option>
+            }
+            <input matInput  />
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    <div>
+      <button mat-stroked-button color="primary" class="button-link"
+        (click)="limpiaFiltros()"> Limpiar filtros
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;">
+    @for(item of datosPaginados(); track $index){
+      <mat-card class="mt-2"  style="padding: 0px 0px 0px;">
+        <mat-card-content class="d-flex p-0">
+          <div style="width: 5%; align-content: center; text-indent: 15%;">
+            <mat-icon [ngClass]="getCellClass(item.p_sla!)">alarm</mat-icon>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 8%;">
+            <p class="fontSmall destacado" matColumnDef="ID">ID solicitud</p>
+            <p class="fontLarge">{{item.p_id_Solicitud}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 9%;">
+            <p class="fontSmall destacado" matColumnDef="Rut">RUT contratante</p>
+            <p class="fontLarge">{{item.p_rut_contratante}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 25%;">
+            <p class="fontSmall destacado" matColumnDef="Contratante">Nombre o Razón social</p>
+            <p class="fontLarge">{{item.p_nombre_contratante}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 12%;">
+            <p class="fontSmall destacado" matColumnDef="Rubro">Rubro</p>
+            <p class="fontLarge">{{item.p_nombre_rubro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 23%;">
+            <p class="fontSmall destacado" matColumnDef="TipoSeguro">Tipo de Seguro</p>
+            <p class="fontLarge">{{item.p_nombre_tipo_seguro}}</p>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class ="p-2" style="width: 10%;">
+            @if(registradas()){
+              <p class="fontSmall destacado" matColumnDef="Fecha">Cotizaciones</p>
+              <p class="fontLarge">{{item.p_cotizaciones_recibidas}}</p>
+            }
+            @if(aceptadas()){
+              <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de aceptación</p>
+              <p class="fontLarge">{{item.p_fecha_aceptacion_solicitud | date: 'dd/MM/yyyy'}}</p>
+            }
+            @if(emitidas()){
+              <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de emisión</p>
+              <p class="fontLarge">{{item.p_fecha_emision_propuesta | date: 'dd/MM/yyyy'}}</p>
+            }
+            @if(pendientes()){
+              <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de emisión</p>
+              <p class="fontLarge">{{item.p_fecha_emision_propuesta | date: 'dd/MM/yyyy'}}</p>
+            }
+            @if(firmadas()){
+              <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de firma</p>
+              <p class="fontLarge">{{item.p_fecha_firma_propuesta | date: 'dd/MM/yyyy'}}</p>
+            }
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="p-2" style="width: 5%; align-content: center;">
+              <button
+                matTooltip="Ver detalle"
+                mat-icon-button
+                (click)="verDetalle(item.p_id_Solicitud)"
+              >
+                <mat-icon class="destacado">visibility</mat-icon>
+              </button>
+          </div>
+          @if(aceptadas()){
+            <div class="p-2" style="width: 10%; align-content: center;">
+              <button (click)="emitirPropuesta(item.p_id_Solicitud)"
+                mat-icon-button
+                matTooltip="Emitir propuesta">
+                <mat-icon class="destacado">edit_squared</mat-icon>
+              </button>
+            </div>
+          }
+          <!-- @if(emitidas()){
+            <div class="p-2" style="width: 5%; align-content: center;">
+              <button (click)="verPropuesta(item.p_id_Solicitud)"
+                mat-icon-button
+                matTooltip="Ver propuesta">
+                <mat-icon class="destacado">preview</mat-icon>
+              </button>
+              <button (click)="cargarPropuesta(item)"
+                mat-icon-button
+                matTooltip="Cargar propuesta firmada">
+                <mat-icon class="destacado">upload_file</mat-icon>
+              </button>
+            </div>
+          } -->
+          @if(pendientes()){
+            <div class="p-2" style="width: 10%; align-content: center;">
+              <button (click)="verPropuesta(item.p_id_Solicitud)"
+                mat-icon-button
+                matTooltip="Ver propuesta firmada">
+                <mat-icon class="destacado">preview</mat-icon>
+              </button>
+            </div>
+            <div class="p-2" style="width: 5%; align-content: center;">
+              <button (click)="cargarFirma(item)"
+                mat-icon-button
+                matTooltip="Cargar propuesta firmada">
+                <mat-icon class="destacado">upload_file</mat-icon>
+              </button>
+            </div>
+          }
+          @if(firmadas()){
+            <div class="p-2" style="width: 10%; align-content: center;">
+              <button (click)="verFirmada(item.p_id_Solicitud)"
+                mat-icon-button
+                matTooltip="Ver propuesta firmada">
+                <mat-icon class="destacado">preview</mat-icon>
+              </button>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+    @if(this.cotizaciones()?.length === 0 ){
+      <div class="info SinInfoTabla">
+        No hay solicitudes para mostrar</div>
+    }
+
+  <mat-paginator #mypaginator
+                  [length]="datosFiltrados()!.length"
+                  [pageSize]="pageSize"
+                  [pageIndex]="pagina()"
+                  (page)="onPage($event)"
+                  class="mb-2"
+                  >
+  </mat-paginator>
+</div>
+

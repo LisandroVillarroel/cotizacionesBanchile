@@ -25,25 +25,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
-import {
-  ICompania,
-  ISolicitud,
-} from '@features/detalle-solicitud/modelo/detalle-interface';
-
-import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
-import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
-import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
-import CabeceraPopupComponente from '../../shared/ui/cabeceraPopup.component';
-//import InformacionPrincipalComponent from "./informacion-principal/informacion-principal.component";
-import { MonedaService } from '@shared/service/moneda.service';
-import { MedioPagoService } from '@shared/service/medio-pago.service';
-import { BancoService } from '@shared/service/banco.service';
-import { TipoCuentaService } from '@shared/service/tipo-cuenta.service';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { StorageService } from '@shared/service/storage.service';
-import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
-import { ModificarRespuestaService } from '@shared/service/modificar-respuesta.service';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelect } from '@angular/material/select';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IMoneda } from '@shared/modelo/moneda-interface';
@@ -53,19 +41,22 @@ import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 import { IModificarRespuesta } from '@shared/modelo/modificar-respuesta-interface';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatSelect } from '@angular/material/select';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ICompania, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 
-export interface IRespuesta {
-  infoGral: ISolicitud;
-  compania: ICompania;
-  flagAccion: boolean;
-}
+import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
+import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
+import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
+import CabeceraPopupComponente from '../../shared/ui/cabeceraPopup.component';
+
+import { MonedaService } from '@shared/service/moneda.service';
+import { MedioPagoService } from '@shared/service/medio-pago.service';
+import { BancoService } from '@shared/service/banco.service';
+import { TipoCuentaService } from '@shared/service/tipo-cuenta.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { StorageService } from '@shared/service/storage.service';
+import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
+import { ModificarRespuestaService } from '@shared/service/modificar-respuesta.service';
+import { IRespuesta } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -75,7 +66,6 @@ export interface IRespuesta {
     InformacionGeneralComponent,
     CabeceraPopupComponente,
     MatDialogContent,
-    //InformacionPrincipalComponent,
     MatCardHeader,
     CommonModule,
     ReactiveFormsModule,
@@ -93,7 +83,6 @@ export interface IRespuesta {
     MatNativeDateModule,
   ],
   templateUrl: './ingreso-respuesta.component.html',
-  styleUrl: './ingreso-respuesta.component.css',
 })
 export class IngresoRespuestaComponent {
   public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
@@ -101,10 +90,6 @@ export class IngresoRespuestaComponent {
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
   public readonly modoEdicion = !this.datos.flagAccion; // false = edición
 
-  /*   infoPrincipalComponent!: InformacionPrincipalComponent;
-  @ViewChild(InformacionPrincipalComponent)
-  panelOpenState = false;
- */
   verDetalleAse() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

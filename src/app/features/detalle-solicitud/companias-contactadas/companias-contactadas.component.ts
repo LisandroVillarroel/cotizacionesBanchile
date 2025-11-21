@@ -19,7 +19,6 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CompaniasContactadasService } from '../service/companias-contactadas.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { DetalleCotizacionComponent } from '@features/gestion-cotizaciones/detalle-cotizacion/detalle-cotizacion.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { ICompania, ISolicitud } from '../modelo/detalle-interface';
@@ -47,21 +46,17 @@ import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-r
 })
 export class CompaniasContactadasComponent {
   @Input() verEjec: boolean = true;
-  //@Input() verCoord: boolean = true;
   @Input() minimo: number = 0;
   @Input() idSolicitud!: number;
   @Input() cotizacionSeleccionada: number | null = null;
   @Input() flagSoloCerrar: boolean = false;
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
-  @Output() cargaRespuesta = new EventEmitter<void>();
   @Output() actualizarDatos = new EventEmitter<void>();
-
 
   panelOpenState = false;
   infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>();
-  //compania: ICompania[];
   idCompania = 0;
   compania = signal<ICompania | undefined>(undefined);
 
@@ -72,10 +67,8 @@ export class CompaniasContactadasComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
-  //detalleGral = signal<InformacionGeneralComponent>
 
   constructor() {
-    //console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
    }
 
   getCellStyle(estado: number) {
@@ -142,29 +135,21 @@ export class CompaniasContactadasComponent {
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe((confirmado) => {
-        if (confirmado) {
-          this.actualizarDatos.emit(); // refresca la grilla y estado
-        }
+        this.actualizarDatos.emit();
       });
   }
 
   verCotizacion(id: number) {
-    //console.log('ID recibido en verCotizacion:', id);
-
-    // Aquí puedes buscar la compañía completa en tu lista `companias()`
     const companiaSeleccionada = this.companias()?.find(
       (c) => c.p_id_compania_seguro === id
     );
-    //console.log('Compañía encontrada:', companiaSeleccionada);
 
     if (companiaSeleccionada) {
       this.verCompania(companiaSeleccionada);
     } else {
       this.notificacioAlertnService.error('error','No se encontró la compañía con el ID: '+ id);
-      //console.warn('No se encontró la compañía con el ID:', id);
     }
   }
-
 
   async borrarCompania(idCompania: number) {
     const request = {
@@ -235,9 +220,7 @@ export class CompaniasContactadasComponent {
       .open(VerCompaniaComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
-        if (result) {
-          this.actualizarDatos.emit();
-        }
+        if (result) { this.actualizarDatos.emit(); }
       });
   }
 
@@ -262,76 +245,15 @@ export class CompaniasContactadasComponent {
     return true;
   }
 
-  /*   acciones = computed(() => {
-    return (estado: string) => {
-    const estadoLower = estado.toLowerCase();
+  cotizar(idCompania: number, accion: boolean): void {
+    this.compania.set(this.companias()?.find(
+      (c) => c.p_id_compania_seguro === idCompania));
 
-    const boton: {
-      icon: string;
-      tooltip: string;
-      // mostrar: boolean;
-      accion: (id: number) => void;
-    }[] = [];
-
-    if(estadoLower === 'recibida'){
-      boton.push({
-        icon: 'preview',
-        tooltip: 'Ver cotipropuesta',
-        // mostrar: estadoLower === 'recibida',
-        accion: (id: number) => this.verCotiPropuesta(id),
-      });
-    }
-
-      if (!this.verEjec) {
-        if(estadoLower === 'pendiente'){
-          boton.push({
-            icon: 'visibility',
-            tooltip: 'Ver cotización',
-            mostrar: estadoLower === 'pendiente',
-            accion: (compania: any) => this.verCotizacion(compania),
-          });
-        }
-
-        if(estadoLower === 'enviada'){
-          boton.push({
-            icon: 'edit_square',
-            tooltip: 'Registrar respuesta',
-            mostrar: estadoLower === 'enviada',
-            accion: (id: number) => this.registrarRespuesta(id),
-          });
-        }
-
-        if(estadoLower === 'enviada'){
-          boton.push({
-          icon: 'delete',
-          tooltip: 'Eliminar cotización',
-           mostrar: estadoLower === 'pendiente',
-          accion: (id: number) => this.borrarCompania(id),
-          });
-        }
-      }
-      return boton;
-      return boton.filter((a) => a.mostrar);
-      };
-  }); */
-
-
-  verDetalleCot(idCompania: number, nombreCia: string) {
     const dato = {
-      p_id_solicitud: this.infoGral()?.id_solicitud,
-      p_id_compania_seguro: idCompania,
-      p_nombre_compania_seguro: nombreCia,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario,
-      p_rut_contratante: this.infoGral()?.rut_contratante,
-      P_nombre_razon_social_contratante: this.infoGral()?.nombre_razon_social_contratante,
-      p_id_rubro: this.infoGral()?.id_rubro,
-      p_nombre_rubro: this.infoGral()?.nombre_rubro,
-      p_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_nombre_seguro: this.infoGral()?.nombre_tipo_seguro,
+      infoGral: this.infoGral()!,
+      compania: this.compania()!,
+      flagAccion: accion
     };
-
-    //console.log('verDetalleCot:', dato);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -342,7 +264,7 @@ export class CompaniasContactadasComponent {
     dialogConfig.data = dato;
 
     this.dialog
-      .open(DetalleCotizacionComponent, dialogConfig)
+      .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
       .subscribe((confirmado) => {
         if (confirmado) {
@@ -350,32 +272,6 @@ export class CompaniasContactadasComponent {
         }
       });
   }
-
-
-  registrarRespuesta(idCompania: number): void {
-    // this.compania = computed(() => this.companias()!.filter(c => { return c.p_id_compania_seguro === idCompania }));
-    this.compania.set(this.companias()?.find(
-      (c) => c.p_id_compania_seguro === idCompania));
-
-    const dato = {
-      infoGral: this.infoGral()!,
-      compania: this.compania()!,
-      flagAccion: true
-    };
-    //console.log("Info hacia Registro: ", dato);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = dato;
-    this.dialog
-      .open(IngresoRespuestaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.cargaRespuesta.emit(); });
-  }
-
 
   habilitaRadioButton(estado: string): boolean {
     return estado?.toLowerCase() === 'recibida';

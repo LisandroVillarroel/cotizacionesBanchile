@@ -30,31 +30,27 @@
               {{ obj.p_id_nombre_estado_cotizacion }}
             </p>
           </div>
+          @if (!flagSoloCerrar) {
+            <mat-divider [vertical]="true"></mat-divider>
 
-          <mat-divider [vertical]="true"></mat-divider>
+            <div class="p-2" style="text-align: center;" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
+              <p class="fontSmall">Acciones</p>
+              <div class="gap-2 d-flex" style="border-radius: 0px;">
+                  <button class="button-link" matTooltip='Ver cotipropuesta' mat-icon-button
+                          [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)"
+                          (click)="verCotiPropuesta(obj.p_id_compania_seguro)">
+                          <mat-icon class="destacado">preview</mat-icon>
+                  </button>
 
-          <div class="p-2" style="text-align: center;" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
-            <p class="fontSmall">Acciones</p>
-            <div class="gap-2 d-flex" style="border-radius: 0px;">
-              <!-- @if(obj.p_id_nombre_estado_cotizacion==='Recibida'){ -->
-                <button class="button-link" matTooltip='Ver cotipropuesta' mat-icon-button
-                        [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)"
-                        (click)="verCotiPropuesta(obj.p_id_compania_seguro)">
-                        <mat-icon class="destacado">preview</mat-icon>
-                </button>
-              <!-- } -->
-<!--               @if(!this.verEjec){
-                @if(obj.p_id_nombre_estado_cotizacion==='Pendiente'){ -->
                   <button class="button-link" matTooltip='Ver cotización' mat-icon-button
                           [hidden]="pendiente(obj.p_id_nombre_estado_cotizacion)"
                           (click)="verCotizacion(obj.p_id_compania_seguro)">
                           <mat-icon class="destacado">visibility</mat-icon>
                   </button>
-                <!-- }
-                @if(obj.p_id_nombre_estado_cotizacion==='Enviada'){-->
+
                   <button class="button-link" matTooltip='Registrar respuesta' mat-icon-button
                           [hidden]="enviada(obj.p_id_nombre_estado_cotizacion)"
-                          (click)="registrarRespuesta(obj.p_id_compania_seguro)">
+                          (click)="cotizar(obj.p_id_compania_seguro,true)">
                           <mat-icon class="destacado">edit_square</mat-icon>
                   </button>
                   <button class="button-link" matTooltip='Eliminar cotización' mat-icon-button
@@ -62,32 +58,15 @@
                           (click)="borrarCompania(obj.p_id_compania_seguro)">
                           <mat-icon class="destacado">delete</mat-icon>
                   </button>
-<!--                 }
-              } -->
-<!--               @for (btn of acciones()(obj.p_id_nombre_estado_cotizacion); track btn) {
-                <button class="button-link" [matTooltip]='btn.tooltip' mat-icon-button
-                        (click)="btn.accion(obj.p_id_compania_seguro)">
-                  <mat-icon class="destacado">{{ btn.icon }}</mat-icon>
-                </button>
-              } -->
+                  <button mat-stroked-button class="btn-info"
+                          (click)="cotizar(obj.p_id_compania_seguro,false)">
+                          [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)">
+                    Ver Detalle
+                  </button>
+              </div>
             </div>
-          </div>
 
-          <mat-divider [vertical]="true"></mat-divider>
-
-          <div class="p-2" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
-            <p class="fontSmall">Detalle</p>
-            <button mat-stroked-button class="btn-info"
-                    (click)="verDetalleCot(obj.p_id_compania_seguro, obj.p_nombre_compania_seguro)">
-              Ver Detalle
-            </button>
-          </div>
-
-          @if (!flagSoloCerrar) {
             <mat-divider [vertical]="true"></mat-divider>
-          }
-
-          @if (!flagSoloCerrar) {
             <div class="p-2" style="width: 15%">
               <p class="fontSmall">Seleccionar Cotización</p>
               @if (habilitaRadioButton(obj.p_id_nombre_estado_cotizacion)) {
