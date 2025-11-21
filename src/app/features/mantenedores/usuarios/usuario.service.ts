@@ -18,7 +18,7 @@ export class UsuarioService {
   constructor() {}
   postAgregaUsuario(agregaUsuario: IUsuario): Observable<any> {
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/ingresarUsuario`, agregaUsuario, {
+      .post<any>(`${environment.apiUrlConsumer}/crearUsuario`, agregaUsuario, {
         headers: this.headers,
       })
   }
