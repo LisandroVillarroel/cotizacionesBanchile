@@ -149,19 +149,7 @@ export default class CompaniasComponent {
       });
   }
 
-  consultaCompania(datoCompania: ICompaniaSeguroLista) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '80%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = datoCompania;
-
-    this.dialog.open(ConsultaCompaniaComponent, dialogConfig);
-  }
-
-/* eliminaCompania(datoCompania: ICompaniaSeguroLista) {
+  /* eliminaCompania(datoCompania: ICompaniaSeguroLista) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -179,4 +167,20 @@ export default class CompaniasComponent {
         }
       });
   } */
+
+  consultaCompania(datoCompania: ICompaniaSeguroLista) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+
+    // Pasar solo el ID al modal
+    dialogConfig.data = { id_compania_seguro: datoCompania.p_id_compania_seguro };
+
+    console.log('ID compañía seleccionado:', datoCompania.p_id_compania_seguro);
+
+    this.dialog.open(ConsultaCompaniaComponent, dialogConfig);
+  }
 }

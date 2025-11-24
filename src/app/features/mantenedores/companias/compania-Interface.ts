@@ -58,7 +58,7 @@ export interface DatosCompaniaSeguroModificar {
   vcEstadoCreacion: string;
 }
 
-export interface ICompaniaSeguroEliminar {
+/* export interface ICompaniaSeguroEliminar {
   p_id_usuario: string;
   p_tipo_usuario: string;
   p_id_compania_seguro: number;
@@ -67,6 +67,26 @@ export interface ICompaniaSeguroEliminar {
 export interface DatosCompaniaSeguroEliminar {
   codigo: number;
   mensaje: string;
+  vcEstado: string;
+  vcEstadoCreacion: string;
+} */
+
+
+export interface ITipoSeguroCompania {
+  id_compania_seguro: number;
+  id_rubro: number;
+  id_tipo_seguro: number;
+  estado_tipo_seguro: string;
+  fecha_creacion: string;
+  usuario_creacion: string;
+  fecha_modificacion: string | null;
+  usuario_modificacion: string | null;
+}
+
+export interface DatosTipoSeguroCompania {
+  codigo: number;
+  mensaje: string;
+  c_TipoSeguroCompania: ITipoSeguroCompania[];
   vcEstado: string;
   vcEstadoCreacion: string;
 }

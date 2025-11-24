@@ -1,1 +1,136 @@
-<p>consulta-compania works!</p>
+<div
+  class="table-con-titulo mat-elevation-z6"
+  data-titulo="Tipos de Seguros Asociados a Compañías de Seguros"
+  style="
+    margin: 32px 20px 0 20px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #fff;
+  "
+>
+  <!-- Tabla -->
+  <table
+    mat-table
+    [dataSource]="listaTiposSeguros()"
+    matSort
+    multiTemplateDataRows
+    style="width: 100%; border-collapse: collapse"
+    [style.display]="listaTiposSeguros().length > 0 ? 'table' : 'none'"
+  >
+    <!-- N° -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%">
+        N°
+      </th>
+      <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 3%">
+        {{ getRowIndex(i) }}
+      </td>
+    </ng-container>
+
+    <!-- ID Rubro -->
+    <ng-container matColumnDef="id_rubro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%">
+        ID Rubro
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.id_rubro }}
+      </td>
+    </ng-container>
+
+    <!-- ID Tipo Seguro -->
+    <ng-container matColumnDef="id_tipo_seguro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%">
+        ID Tipo Seguro
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.id_tipo_seguro }}
+      </td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="estado_tipo_seguro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%">
+        Estado
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.estado_tipo_seguro }}
+      </td>
+    </ng-container>
+
+    <!-- Fecha Creación -->
+    <ng-container matColumnDef="fecha_creacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
+        Fecha Creación
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 12%">
+        {{ row.fecha_creacion }}
+      </td>
+    </ng-container>
+
+    <!-- Usuario Creación -->
+    <ng-container matColumnDef="usuario_creacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
+        Usuario Creación
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 12%">
+        {{ row.usuario_creacion }}
+      </td>
+    </ng-container>
+
+    <!-- Fecha Modificación -->
+    <ng-container matColumnDef="fecha_modificacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
+        Fecha Modificación
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 12%">
+        {{ row.fecha_modificacion ?? "-" }}
+      </td>
+    </ng-container>
+
+    <!-- Usuario Modificación -->
+    <ng-container matColumnDef="usuario_modificacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 12%">
+        Usuario Modificación
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 12%">
+        {{ row.usuario_modificacion ?? "-" }}
+      </td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="opciones">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="width: 15%; text-align: center"
+      >
+        <!-- Botón agregar (opcional) -->
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 15%; text-align: center">
+        <!-- Puedes agregar botones aquí -->
+        <button mat-icon-button color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    #myPaginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    style="margin-top: 16px"
+    [style.display]="listaTiposSeguros().length > 0 ? 'table' : 'none'"
+  ></mat-paginator>
+
+  <div
+    style="text-align: center; font-size: 14px; padding: 16px"
+    [style.display]="listaTiposSeguros().length === 0 ? 'table' : 'none'"
+  >
+    No hay tipos de seguros para mostrar
+  </div>
+</div>
