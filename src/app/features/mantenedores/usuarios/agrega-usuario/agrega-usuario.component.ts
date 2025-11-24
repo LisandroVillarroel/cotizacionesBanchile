@@ -26,7 +26,14 @@ import { MatSelectModule } from '@angular/material/select';
       MatSelectModule,
       CabeceraPopupComponente,],
   templateUrl: './agrega-usuario.component.html',
-  styleUrl: './agrega-usuario.component.css'
+  styles: `
+    .mat-mdc-form-field {
+    width: 50% !important;
+    padding-bottom: 25px;
+    padding-right: 10px;
+  }
+  `
+
 })
 export class AgregaUsuarioComponent {
 
