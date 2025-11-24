@@ -9,6 +9,12 @@ export default [
     loadComponent: () =>
       import('@features/mantenedores/usuarios/usuarios.component'),
   },
+   {
+    path: 'rubros',
+    canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+    loadComponent: () =>
+      import('@features/mantenedores/rubros/rubros.component'),
+  },
 
   {
     path: '**',
