@@ -25,9 +25,19 @@
     </div>
 
     <div class="col-md-3">
-      <mat-form-field class="inputInput">
+      <!-- <mat-form-field class="inputInput">
         <mat-label class="labelI">Estado</mat-label>
         <input matInput aria-label="Estado" value="{{ data.estado_rubro }}" />
+      </mat-form-field> -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Estado</mat-label>
+        <mat-select aria-label="estado_rubro" [formControl]="estado_rubro" required>
+          <mat-option value="1">Vigente</mat-option>
+          <mat-option value="2">No Vigente</mat-option>
+        </mat-select>
+        @if (estado_rubro.invalid) {
+        <mat-error>{{ getErrorMessage("estado_rubro") }}</mat-error>
+        }
       </mat-form-field>
 
 
@@ -40,9 +50,10 @@
     </div>
     <div class="col-md-3">
       <mat-form-field class="inputInput" style="visibility: hidden;">
-        <mat-label class="labelI" ></mat-label>
-        <input matInput aria-label="Estado"  disabled="true" />
+        <mat-label class="labelI"></mat-label>
+        <input matInput aria-label="Estado" disabled="true" />
       </mat-form-field>
+
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Modificación</mat-label>
         <input matInput aria-label="usuario_modificacion" value="{{ data.usuario_modificacion }}" disabled="true" />
