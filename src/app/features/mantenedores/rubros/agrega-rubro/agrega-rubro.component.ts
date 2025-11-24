@@ -65,12 +65,6 @@ export class AgregaRubroComponent {
         ? 'Debes ingresar Nombre Rubro'
         : '';
     }
-
-    if (campo === 'estado_rubro') {
-      if (this.estado_rubro.hasError('required')) {
-        return 'Debes ingresar Estado Rubro';
-      }
-    }
     return '';
   }
 

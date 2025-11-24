@@ -21,82 +21,56 @@
     <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input matInput aria-label="nombre_rubro" [formControl]="nombre_rubro" required/>
+        <input matInput aria-label="nombre_rubro" [formControl]="nombre_rubro" required />
         @if (nombre_rubro.invalid) {
-          <mat-error>{{ getErrorMessage("nombre_rubro") }}</mat-error>
-      }
+        <mat-error>{{ getErrorMessage("nombre_rubro") }}</mat-error>
+        }
       </mat-form-field>
-
-
-
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Creación</mat-label>
-        <input matInput aria-label="usuario_creacion" [formControl]="usuario_creacion" required/>
+        <input matInput aria-label="usuario_creacion" [formControl]="usuario_creacion" required />
         @if (nombre_rubro.invalid) {
-          <mat-error>{{ getErrorMessage("usuario_creacion") }}</mat-error>
-      }
+        <mat-error>{{ getErrorMessage("usuario_creacion") }}</mat-error>
+        }
       </mat-form-field>
-
     </div>
-
     <div class="col-md-4">
-      <!-- <mat-form-field class="inputInput">
+      <mat-form-field class="inputInput">
         <mat-label class="labelI">Estado</mat-label>
-       <input matInput aria-label="estado_rubro" [formControl]="estado_rubro" required/>
+        <mat-select aria-label="estado_rubro" [formControl]="estado_rubro" required>
+          <mat-option value="1">Vigente</mat-option>
+          <mat-option value="2">No Vigente</mat-option>
+        </mat-select>
         @if (estado_rubro.invalid) {
-          <mat-error>{{ getErrorMessage("estado_rubro") }}</mat-error>
-      }
-      </mat-form-field> -->
-
-
-  <mat-form-field class="inputInput">
-    <mat-label class="labelI">Estado</mat-label>
-    <mat-select aria-label="estado_rubro" [formControl]="estado_rubro" required>
-      <mat-option value="1">Vigente</mat-option>
-      <mat-option value="2">No Vigente</mat-option>
-    </mat-select>
-    @if (estado_rubro.invalid) {
-      <mat-error>{{ getErrorMessage("estado_rubro") }}</mat-error>
-    }
-  </mat-form-field>
-
-
-
+        <mat-error>{{ getErrorMessage("estado_rubro") }}</mat-error>
+        }
+      </mat-form-field>
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Modificación</mat-label>
-        <input matInput aria-label="fecha_modificacion" [formControl]="fecha_modificacion" required/>
+        <input matInput aria-label="fecha_modificacion" [formControl]="fecha_modificacion" required />
         @if (fecha_modificacion.invalid) {
-          <mat-error>{{ getErrorMessage("fecha_modificacion") }}</mat-error>
-      }
+        <mat-error>{{ getErrorMessage("fecha_modificacion") }}</mat-error>
+        }
       </mat-form-field>
-
-
     </div>
     <div class="col-md-4">
-      <!-- <mat-form-field class="inputInput" style="visibility: hidden;">
-        <mat-label class="labelI" ></mat-label>
-        <input matInput aria-label="Estado"  disabled="true" />
-      </mat-form-field> -->
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Creación</mat-label>
-        <input matInput aria-label="fCreacion" [formControl]="fCreacion" required/>
+        <input matInput aria-label="fCreacion" [formControl]="fCreacion" required />
         @if (fCreacion.invalid) {
-          <mat-error>{{ getErrorMessage("fCreacion") }}</mat-error>
-      }
+        <mat-error>{{ getErrorMessage("fCreacion") }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Modificación</mat-label>
-        <input matInput aria-label="usuario_modificacion" [formControl]="usuario_modificacion" required/>
+        <input matInput aria-label="usuario_modificacion" [formControl]="usuario_modificacion" required />
         @if (usuario_modificacion.invalid) {
-          <mat-error>{{ getErrorMessage("usuario_modificacion") }}</mat-error>
-      }
+        <mat-error>{{ getErrorMessage("usuario_modificacion") }}</mat-error>
+        }
       </mat-form-field>
     </div>
   </div>
 </mat-dialog-content>
-
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button type="button" mat-raised-button class="colorFondoBotonCerrar" mat-dialog-close [disabled]="false">
