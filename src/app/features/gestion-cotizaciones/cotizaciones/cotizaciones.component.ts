@@ -140,19 +140,19 @@ export class CotizacionesComponent implements OnInit {
       this.datosPaginados()
     });
 
-    if(this.estado()?.toLowerCase()==="recibida"){
+    if(this.estado().toLowerCase()==="recibida"){
       this.registradas.set(true);
     }
-    if(this.estado()?.toLowerCase()==="propuesta pendiente"){
+    if(this.estado().toLowerCase()==="pendiente"){
       this.aceptadas.set(true);
     }
-    if(this.estado()?.toLowerCase()==="emitida"){
+    if(this.estado().toLowerCase()==="emitida"){
       this.emitidas.set(true);
     }
-    if(this.estado()?.toLowerCase()==="firma pendiente"){
+    if(this.estado().toLowerCase()==="firma"){
       this.pendientes.set(true);
     }
-    if(this.estado()?.toLowerCase()==="terminada"){
+    if(this.estado().toLowerCase()==="terminada"){
       this.firmadas.set(true);
     }
   }

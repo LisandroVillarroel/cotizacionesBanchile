@@ -41,7 +41,6 @@ import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 import { IModificarRespuesta } from '@shared/modelo/modificar-respuesta-interface';
-import { ICompania, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 
 import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
 import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
@@ -89,6 +88,7 @@ export class IngresoRespuestaComponent {
   private readonly dialog = inject(MatDialog);
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
   public readonly modoEdicion = !this.datos.flagAccion; // false = edición
+  public titulo: string = '';
 
   verDetalleAse() {
     const dialogConfig = new MatDialogConfig();
@@ -197,7 +197,7 @@ export class IngresoRespuestaComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar las monedas.');
       },
     });
   }
@@ -210,7 +210,7 @@ export class IngresoRespuestaComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los medios de pago.');
       },
     });
   }
@@ -223,7 +223,7 @@ export class IngresoRespuestaComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los bancos.');
       },
     });
   }
@@ -236,13 +236,18 @@ export class IngresoRespuestaComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los tipos de cuenta.');
       },
     });
   }
 
   async ngOnInit() {
     // Deshabilitar pTermino y pVencimiento inicialmente
+    if(this.datos.flagAccion){
+      this.titulo ="Ingresar";
+    } else {
+      this.titulo = "Modificar";
+    }
     this.pTermino.disable();
     this.pVencimiento.disable();
 

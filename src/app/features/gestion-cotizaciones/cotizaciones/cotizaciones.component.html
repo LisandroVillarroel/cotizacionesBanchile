@@ -98,19 +98,19 @@
             }
             @if(aceptadas()){
               <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de aceptación</p>
-              <p class="fontLarge">{{item.p_fecha_aceptacion_solicitud | date: 'dd/MM/yyyy'}}</p>
+              <p class="fontLarge">{{item.p_fecha_aceptacion_solicitud}}</p>
             }
             @if(emitidas()){
               <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de emisión</p>
-              <p class="fontLarge">{{item.p_fecha_emision_propuesta | date: 'dd/MM/yyyy'}}</p>
+              <p class="fontLarge">{{item.p_fecha_emision_propuesta}}</p>
             }
             @if(pendientes()){
               <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de emisión</p>
-              <p class="fontLarge">{{item.p_fecha_emision_propuesta | date: 'dd/MM/yyyy'}}</p>
+              <p class="fontLarge">{{item.p_fecha_emision_propuesta}}</p>
             }
             @if(firmadas()){
               <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de firma</p>
-              <p class="fontLarge">{{item.p_fecha_firma_propuesta | date: 'dd/MM/yyyy'}}</p>
+              <p class="fontLarge">{{item.p_fecha_firma_propuesta}}</p>
             }
           </div>
           <mat-divider [vertical]="true"></mat-divider>
