@@ -5,6 +5,7 @@
     class="row form-con-titulo contenido-form mat-elevation-z6"
     data-titulo="Agregar Datos de la Compañía"
   >
+    <!-- Columna 1 -->
     <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut Compañía</mat-label>
@@ -31,26 +32,16 @@
       </mat-form-field>
 
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Estado</mat-label>
-        <mat-select [formControl]="estadoCompania" required>
-          <mat-option value="Vigente">Vigente</mat-option>
-          <mat-option value="No Vigente">No Vigente</mat-option>
-        </mat-select>
-        @if (estadoCompania.invalid) {
-        <mat-error>{{ getErrorMessage("estadoCompania") }}</mat-error>
-        }
-      </mat-form-field>
-    </div>
-
-    <div class="col-md-6">
-      <mat-form-field class="inputInput">
         <mat-label class="labelI">Dirección</mat-label>
         <input matInput [formControl]="direccionCompania" required />
         @if (direccionCompania.invalid) {
         <mat-error>{{ getErrorMessage("direccionCompania") }}</mat-error>
         }
       </mat-form-field>
+    </div>
 
+    <!-- Columna 2 -->
+    <div class="col-md-6">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
         <input matInput [formControl]="telefonoCompania" required />

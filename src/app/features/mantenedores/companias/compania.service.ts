@@ -49,7 +49,7 @@ export class CompaniaService {
     );
   }
 
-  postEliminarCompania(
+/*   postEliminarCompania(
     payload: ICompaniaSeguroEliminar
   ): Observable<DatosCompaniaSeguroEliminar> {
     return this.http.post<DatosCompaniaSeguroEliminar>(
@@ -57,5 +57,5 @@ export class CompaniaService {
       payload,
       { headers: this.headers }
     );
-  }
+  } */
 }

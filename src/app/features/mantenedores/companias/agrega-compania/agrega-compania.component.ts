@@ -14,7 +14,6 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { CompaniaService } from '../compania.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -36,7 +35,6 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule,
     MatDialogContent,
     MatDialogActions,
     CabeceraPopupComponente,
@@ -49,7 +47,7 @@ export class AgregaCompaniaComponent {
   private notificacioAlertnService = inject(NotificacioAlertnService);
   private dialogRef = inject(MatDialogRef<AgregaCompaniaComponent>);
 
-  // ✅ FormControls
+
   rutCompania = new FormControl('', [Validators.required, this.validaRut]);
   nombreCompania = new FormControl('', [Validators.required]);
   direccionCompania = new FormControl('', [Validators.required]);
@@ -57,7 +55,6 @@ export class AgregaCompaniaComponent {
     Validators.required,
     Validators.pattern(/^(9\d{8}|\+56\d{9})$/),
   ]);
-  estadoCompania = new FormControl('Vigente', [Validators.required]);
   correoCompania = new FormControl('', [
     Validators.required,
     Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
@@ -69,7 +66,6 @@ export class AgregaCompaniaComponent {
       nombreCompania: this.nombreCompania,
       direccionCompania: this.direccionCompania,
       telefonoCompania: this.telefonoCompania,
-      estadoCompania: this.estadoCompania,
       correoCompania: this.correoCompania,
     })
   );
@@ -120,12 +116,6 @@ export class AgregaCompaniaComponent {
         : '';
     }
 
-    if (campo === 'estadoCompania') {
-      return this.estadoCompania.hasError('required')
-        ? 'Debes seleccionar Estado'
-        : '';
-    }
-
     return '';
   }
 
@@ -150,12 +140,10 @@ export class AgregaCompaniaComponent {
 
   grabar() {
     const rutVisual = this.agregaCompania().get('rutCompania')!.value;
-
-    // Convertir a formato BD (sin puntos, con guion)
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     const payload = {
-      p_id_usuario: 'ADM042', // parametrizable
+      p_id_usuario: 'ADM042', // temporal
       p_tipo_usuario: 'A',
       p_rut_compania_seguro: rutParaBD,
       p_nombre_compania_seguro:
@@ -164,8 +152,6 @@ export class AgregaCompaniaComponent {
         this.agregaCompania().get('direccionCompania')!.value,
       p_telefono_compania_seguro:
         this.agregaCompania().get('telefonoCompania')!.value,
-      p_estado_compania_seguro:
-        this.agregaCompania().get('estadoCompania')!.value,
       p_correo_compania_seguro:
         this.agregaCompania().get('correoCompania')!.value,
     };

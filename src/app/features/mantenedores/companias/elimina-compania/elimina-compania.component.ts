@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+/* import { Component, inject, signal } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -71,4 +71,4 @@ export class EliminaCompaniaComponent {
       },
     });
   }
-}
+} */

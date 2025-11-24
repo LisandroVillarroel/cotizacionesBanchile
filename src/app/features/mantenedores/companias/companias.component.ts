@@ -23,7 +23,7 @@ import {
 import { CompaniaService } from './compania.service';
 import { ModificaCompaniaComponent } from './modifica-compania/modifica-compania.component';
 import { ConsultaCompaniaComponent } from './consulta-compania/consulta-compania.component';
-import { EliminaCompaniaComponent } from './elimina-compania/elimina-compania.component';
+// import { EliminaCompaniaComponent } from './elimina-compania/elimina-compania.component';
 import { AgregaCompaniaComponent } from './agrega-compania/agrega-compania.component';
 
 @Component({
@@ -161,7 +161,7 @@ export default class CompaniasComponent {
     this.dialog.open(ConsultaCompaniaComponent, dialogConfig);
   }
 
-  eliminaCompania(datoCompania: ICompaniaSeguroLista) {
+/* eliminaCompania(datoCompania: ICompaniaSeguroLista) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -178,5 +178,5 @@ export default class CompaniasComponent {
           this.rescataLista();
         }
       });
-  }
+  } */
 }
