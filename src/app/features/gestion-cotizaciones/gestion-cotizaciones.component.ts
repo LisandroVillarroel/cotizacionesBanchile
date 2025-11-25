@@ -17,11 +17,6 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
-import { PropuestasFirmadasComponent } from './propuestas-firmadas/propuestas-firmadas.component';
-import { CotizacionesRegistradasComponent } from './cotizaciones-registradas/cotizaciones-registradas.component';
-import { PropuestasPendientesComponent } from './propuestas-pendientes/propuestas-pendientes.component';
-import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-emitidas.component";
-import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { FirmaPendienteComponent } from '@features/gestion-propuestas/firma-pendiente/firma-pendiente.component';
 import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
 
@@ -89,7 +84,7 @@ export default class GestionCotizacionesComponent{
             firmadas: dato.p_nro_prop_firm,
             por_firmar: dato.p_nro_prop_firm_pend
           });
-          let res = dato.ps_cursorRec;
+/*           let res = dato.ps_cursorRec;
           res.map((valor: IGestionCotizacion)=> {
             return {
               ...valor, // Copiamos las propiedades originales
@@ -137,14 +132,29 @@ export default class GestionCotizacionesComponent{
                 valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
             }
           });
-          this.por_firmar.set(res5);
-
+          this.por_firmar.set(res5); */
+          this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
+          this.pendientes.set(this.cargaLista(dato.ps_cursorPen));
+          this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
+          this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
+          this.por_firmar.set(this.cargaLista(dato.ps_cursorPorFir));
         }
       },
       error: (error) => {
         this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });
+  }
+  private cargaLista(lista: IGestionCotizacion[]): IGestionCotizacion[]{
+    lista.map((valor: IGestionCotizacion)=> {
+      return {
+        ...valor, // Copiamos las propiedades originales
+        nombre_contratante: (valor.p_nombre_contratante === null ||
+          valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
+      }
+    });
+
+    return lista;
   }
 
   msj = false;
