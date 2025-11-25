@@ -43,6 +43,7 @@ export default class GestionCotizacionesComponent{
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   id_usuario = this._storage()?.usuarioLogin.usuario!;
   tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  ejec = signal<boolean>(false);
 
   gestionService = inject(GestionCotizacionesService)
   resumenGestion = signal<IResumenCotizaciones>({
@@ -60,6 +61,11 @@ export default class GestionCotizacionesComponent{
   por_firmar = signal<IGestionCotizacion[] >([]);
 
   async ngOnInit(){
+    if(this.tipo_usuario === "E"){
+      this.ejec.set(true);
+    }else{
+      this.ejec.set(false);
+    }
     this.cargarSolicitudes();
   }
 
@@ -82,12 +88,12 @@ export default class GestionCotizacionesComponent{
           this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
           this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
           this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
-          this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
           this.por_firmar.set(this.cargaLista(dato.ps_cursorPorFir));
+          this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener las cotizaciones.');
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de cotizaciones.');
       },
     });
   }

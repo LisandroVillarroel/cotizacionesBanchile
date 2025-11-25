@@ -40,7 +40,7 @@ export const routes: Routes = [
       },
       {
         path: 'cotizaciones',
-        canActivate: [guardRoles(['ejec_bco'])],
+        canActivate: [guardRoles(['ejec_bco', 'coord_corr', 'sup_corr'])],
         loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
       },
        {

@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UsuarioRoles } from '@features/auth/auth-Interface';
@@ -14,8 +13,6 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   imports: [
     MatButtonModule,
     MatProgressBarModule,
-    RouterLink,
-    RouterModule
 ],
   template: `
     <nav class="navbar navbar-expand-lg bg-body-tertiary" >
@@ -24,31 +21,31 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-              <li class="nav-item border-end" [routerLinkActive]="['active']" >
+              <li class="nav-item border-end" routerLinkActive="active" >
                 <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
               </li>
             }
             @if(hasRole(['ejec_bco'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
+            <li class="nav-item border-end" routerLinkActive="active">
               <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
             </li>
              }
             @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
+            <li class="nav-item border-end" routerLinkActive="active">
               <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>
               }
-              @if(hasRole(['ejec_bco'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
+              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
+            <li class="nav-item border-end" routerLinkActive="active">
               <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
             </li>
               }
              @if(hasRole(['ejec_bco', 'coord_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
+            <li class="nav-item border-end" routerLinkActive="active">
               <a class="nav-link" routerLink="crt">Generación de Informes</a>
             </li>
              }
-            <li class="nav-item dropdown" [routerLinkActive]="['active']">
+            <li class="nav-item dropdown" routerLinkActive="active">
               <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Mantenedores
               </a>

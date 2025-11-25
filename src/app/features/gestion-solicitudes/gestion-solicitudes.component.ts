@@ -14,6 +14,7 @@ import { StorageService } from '@shared/service/storage.service';
 import { GestionSolicitudesService } from './gestion-solicitudes.service';
 
 import { SolicitudesComponent } from './solicitudes/solicitudes.component';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -36,6 +37,7 @@ export default class GestionSolicitudesComponent {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
 
+  notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   perfil = this._storage()?.usuarioLogin.tipoUsuario!;
@@ -85,7 +87,10 @@ export default class GestionSolicitudesComponent {
           })
           this.datosSolicitud.set(res);
         }
-      }
+      },
+      error: (error) => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de solicitudes.');
+      },
     });
   }
 
