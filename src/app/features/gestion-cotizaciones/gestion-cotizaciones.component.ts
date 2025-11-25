@@ -23,6 +23,7 @@ import { PropuestasPendientesComponent } from './propuestas-pendientes/propuesta
 import { PropuestasEmitidasComponent } from "./propuestas-emitidas/propuestas-emitidas.component";
 import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { FirmaPendienteComponent } from '@features/gestion-propuestas/firma-pendiente/firma-pendiente.component';
+import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
 
 @Component({
   selector: 'app-gestion-cotizaciones',
@@ -38,12 +39,7 @@ import { FirmaPendienteComponent } from '@features/gestion-propuestas/firma-pend
     MatCardModule,
     CommonModule,
     ResumenCotizacionesComponent,
-    CotizacionesRegistradasComponent,
-    PropuestasPendientesComponent,
-    PropuestasEmitidasComponent,
-    PropuestasFirmadasComponent,
-    PropuestasEmitidasComponent,
-    FirmaPendienteComponent
+    CotizacionesComponent,
 ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })

@@ -38,7 +38,6 @@ import { ModificaAseguradoComponent } from './modifica-asegurado/modifica-asegur
 import { ConsultaAseguradoComponent } from './consulta-asegurado/consulta-asegurado.component';
 import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado.component';
 
-
 @Component({
   selector: 'app-asegurado',
   standalone: true,

@@ -7,13 +7,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { NuevasComponent } from './nuevas/nuevas.component';
-import { ConObservacionesComponent } from './con-observaciones/con-observaciones.component';
+
 import { ISolicitudG } from './gestionSolicitud-interface';
-import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { StorageService } from '@shared/service/storage.service';
 import { GestionSolicitudesService } from './gestion-solicitudes.service';
-import { EnCotizacionComponent } from './en-cotizacion/en-cotizacion.component';
+
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -27,9 +27,7 @@ import { EnCotizacionComponent } from './en-cotizacion/en-cotizacion.component';
     MatTabsModule,
     MatCardModule,
     CommonModule,
-    NuevasComponent,
-    ConObservacionesComponent,
-    EnCotizacionComponent
+    SolicitudesComponent
   ],
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css'
@@ -37,13 +35,18 @@ import { EnCotizacionComponent } from './en-cotizacion/en-cotizacion.component';
 export default class GestionSolicitudesComponent {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
-  //solicitudes = computed(()=> this.datosSolicitud());
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  perfil = this._storage()?.usuarioLogin.tipoUsuario!;
+  ejec = signal<boolean>(false);
   gestionService = inject(GestionSolicitudesService);
 
   nuevas = computed(() => { return this.datosSolicitud().filter( r =>
+    r.nombre_estado_solicitud?.toLowerCase()?.includes("edicion"))
+  });
+
+  revisadas = computed(() => { return this.datosSolicitud().filter( r =>
     r.nombre_estado_solicitud?.toLowerCase()?.includes("revision"))
   });
 
@@ -56,13 +59,18 @@ export default class GestionSolicitudesComponent {
   });
 
   async ngOnInit(){
+    if(this.perfil === "E"){
+      this.ejec.set(true);
+    }else{
+      this.ejec.set(false);
+    }
     this.cargarSolicitudes();
   }
 
   cargarSolicitudes() {
     const request = {
       p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_tipo_usuario: this.perfil
     };
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: any) => {

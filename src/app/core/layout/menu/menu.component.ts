@@ -28,12 +28,12 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
                 <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
               </li>
             }
-             @if(hasRole(['ejec_bco'])){
+            @if(hasRole(['ejec_bco'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
             </li>
              }
-              @if(hasRole(['coord_corr', 'sup_corr'])){
+            @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>

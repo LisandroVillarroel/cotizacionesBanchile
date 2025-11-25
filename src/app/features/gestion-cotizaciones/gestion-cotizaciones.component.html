@@ -7,32 +7,36 @@
     <mat-tab-group>
       <mat-tab label="Cotizaciones Registradas">
         <div class="container-fluid">
-          <app-cotizaciones-registradas [recibidas]="recibidas()"
+          <app-cotizaciones [cotizaciones]="recibidas()"
+            [estado]="'recibida'"
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Propuestas Pendientes">
         <div class="container-fluid ">
-          <app-propuestas-pendientes [pendientes]="pendientes()"
+          <app-cotizaciones [cotizaciones]="pendientes()"
+            [estado]="'pendiente'"
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Propuestas Emitidas">
         <div class="container-fluid ">
-          <app-propuestas-emitidas
-          [emitidas]="emitidas()"
-
+          <app-cotizaciones [cotizaciones]="emitidas()"
+            [estado]="'emitida'"
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes con Firma Pendiente">
         <div class="container-fluid ">
-          <app-firma-pendiente [pendientes]="pendientes()" (retorno)="recibido($event)"/>
+          <app-cotizaciones [cotizaciones]="pendientes()"
+            [estado]="'firma'"
+            (retorno)="recibido($event)"/>
         </div>
       </mat-tab>
       <mat-tab label="Propuestas Firmadas">
         <div class="container-fluid ">
-          <app-propuestas-firmadas [firmadas]="firmadas()"
+          <app-cotizaciones [cotizaciones]="firmadas()"
+            [estado]="'terminada'"
             (retorno)="recibido($event)" />
         </div>
       </mat-tab>

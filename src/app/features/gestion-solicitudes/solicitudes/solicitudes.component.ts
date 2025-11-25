@@ -1,31 +1,36 @@
-import { Component, computed, input, output, inject, signal, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
-import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
-import { IGestionCotizacion } from '../gestionCotizacion-interface';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSortModule } from '@angular/material/sort';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
-import { RubroService } from '@shared/service/rubro.service';
-import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
+
+import { ISolicitudG } from '../gestionSolicitud-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
+import { RubroService } from '@shared/service/rubro.service';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+
 
 @Component({
-  selector: 'app-cotizaciones-registradas',
+  selector: 'app-solicitudes',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatPaginatorModule,
     MatIconModule,
@@ -46,13 +51,11 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
     FormsModule,
     CommonModule
   ],
-  templateUrl: './cotizaciones-registradas.component.html',
-  styleUrl: './cotizaciones-registradas.component.css'
+  templateUrl: './solicitudes.component.html',
+  styleUrl: './solicitudes.component.css'
 })
-export class CotizacionesRegistradasComponent {
-    retorno = output<boolean>();
-  recibidas = input.required<IGestionCotizacion[] | undefined>();
-  cotRecibidas = computed(()=> this.recibidas());
+export class SolicitudesComponent {
+  solicitudes = input.required<ISolicitudG[] | undefined>();
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -64,20 +67,20 @@ export class CotizacionesRegistradasComponent {
   filtroContratante = signal('');
   filtroRubro = signal('');
   filtroTipoSeguro = signal('');
-  filtroSolicitud = signal('');
+  filtroFecha = signal<Date | null>(null);
 
   formularioModificado = signal(false);
 
-  solicitud = new FormControl();
   contratante = new FormControl();
   rubro = new FormControl();
   seguro = new FormControl();
+  fecha = new FormControl<Date | null>(null);
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     contratante : this.contratante,
     rubro : this.rubro,
     seguro : this.seguro,
-    solicitud : this.solicitud
+    fecha : this.fecha
     })
   );
 
@@ -85,16 +88,29 @@ export class CotizacionesRegistradasComponent {
     const contratante = this.filtroFormulario().value.contratante??'';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    const solicitud = this.filtroFormulario().value.solicitud??'';
+    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+
+    let fechaInicio=new Date();
+    if (fechaInicio_Inicial!=null){
+         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    }
 
     this.formularioModificado();
-    return this.recibidas()!.filter(item => {
-      const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
-      const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
-      const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
+    return this.solicitudes()!.filter(item => {
+      const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+      const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
+      let cumpleFecha=true;
+      const fechaBase = new Date(item.fecha_creacion);
 
-      return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
+      if (fechaInicio_Inicial!=null){
+        cumpleFecha = !fechaInicio || (
+        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+        fechaBase.getMonth() === fechaInicio.getMonth() &&
+        fechaBase.getDate() === fechaInicio.getDate()
+      );
+    }
+    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
     });
   };
 
@@ -108,6 +124,8 @@ export class CotizacionesRegistradasComponent {
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
   async ngOnInit() {
@@ -163,23 +181,22 @@ export class CotizacionesRegistradasComponent {
     return salida;
   }
 
-  private readonly dialog = inject(MatDialog);
+  retorno = output<boolean>();
+  verDetalle(IdSolicitud: number) {
+    const dialogConfig = new MatDialogConfig();
 
-    verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
-
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = {
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
       idSolicitud: IdSolicitud,
       flagSoloCerrar: false
     };
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
-    }
+    this.dialog
+      .open(DetalleSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })
+  }
 }
