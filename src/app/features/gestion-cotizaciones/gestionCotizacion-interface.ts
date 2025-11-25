@@ -2,7 +2,7 @@ import { ICompania, ISolicitud } from "@features/detalle-solicitud/modelo/detall
 
 export interface IResumenCotizaciones{
   recibidas: number,
-  pendientes: number,
+  aceptadas: number,
   emitidas: number,
   firmadas: number,
   por_firmar: number
