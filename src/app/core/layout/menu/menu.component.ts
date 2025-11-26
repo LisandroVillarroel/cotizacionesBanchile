@@ -16,7 +16,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatProgressBarModule,
     RouterLink,
     RouterModule
-],
+  ],
   template: `
     <nav class="navbar navbar-expand-lg bg-body-tertiary" >
       <div class="container-fluid">
@@ -53,8 +53,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
                 Mantenedores
               </a>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
                 <li><a class="dropdown-item" routerLink="/mantenedores/rubros">Rubros</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/tipo-seguro">Tipo Seguro</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
               </ul>
@@ -83,11 +84,11 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   `,
 })
 export default class MenuComponent {
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   ///  readonly progreso = inject(Progreso);
-   hasRole( roles:UsuarioRoles[]) {
-    const rolUsduasrio=this._storage()?.usuarioLogin.perfilUsuario;
-   return roles.some(rol=> rol.includes(rolUsduasrio!))
+  hasRole(roles: UsuarioRoles[]) {
+    const rolUsduasrio = this._storage()?.usuarioLogin.perfilUsuario;
+    return roles.some(rol => rol.includes(rolUsduasrio!))
   }
 }
