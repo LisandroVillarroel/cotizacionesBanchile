@@ -98,16 +98,12 @@ export default class GestionCotizacionesComponent{
     });
   }
 
-  private cargaLista(lista: IGestionCotizacion[]): IGestionCotizacion[]{
-    lista.map((valor: IGestionCotizacion)=> {
-      return {
-        ...valor, // Copiamos las propiedades originales
-        nombre_contratante: (valor.p_nombre_contratante === null ||
-          valor.p_nombre_contratante ==="") ? "-" : valor.p_nombre_contratante
-      }
-    });
-
-    return lista;
+  private cargaLista(lista: IGestionCotizacion[] | undefined): IGestionCotizacion[] {
+    if (!Array.isArray(lista)) return [];
+    return lista.map((valor: IGestionCotizacion) => ({
+      ...valor,
+      nombre_contratante: (valor.p_nombre_contratante === null || valor.p_nombre_contratante === "") ? "-" : valor.p_nombre_contratante
+    }));
   }
 
   msj = false;
