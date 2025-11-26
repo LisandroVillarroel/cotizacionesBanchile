@@ -48,17 +48,7 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        </mat-form-field>
-      </div>
 
-        <div style="width: 20%;">
-          <mat-form-field class="inputSelect" style="width: 100%;">
-            <mat-label class="cursiva gris-claro">Fecha</mat-label>
-            <input matInput [matDatepicker]="picker" [formControl]="fecha">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
 
     <div>
       <button mat-stroked-button color="primary" class="button-link"
@@ -68,13 +58,11 @@
   </div>
 </div>
 
-<div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;" >
+
 <div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;" >
     @for(item of datosPaginados(); track $index){
       <mat-card class="mt-2"  style="padding: 0px 0px 0px;">
         <mat-card-content class="d-flex p-0">
-          <div style="width: 5%; align-content: center; text-indent: 15%; margin-left: 16px;">
-            <mat-icon [ngClass]="getCellClass(item.sla!)">alarm</mat-icon>
           <div style="width: 5%; align-content: center; text-indent: 15%; margin-left: 16px;">
             <mat-icon [ngClass]="getCellClass(item.sla!)">alarm</mat-icon>
           </div>
@@ -124,13 +112,7 @@
               >
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>
-              <button
-                matTooltip="Ver detalles"
-                mat-icon-button
-                (click)="verDetalle(item.id_solicitud)"
-              >
-                <mat-icon class="destacado">visibility</mat-icon>
-              </button>
+
           </div>
         </mat-card-content>
       </mat-card>
