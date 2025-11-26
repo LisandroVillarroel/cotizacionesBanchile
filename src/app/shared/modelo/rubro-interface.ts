@@ -1,9 +1,11 @@
 export interface IRubro {
-  id_rubro: number;
-  nombre_rubro: string;
-  estado_rubro: string;
-  fecha_creacion: string;
-  usuario_creacion: string;
+  p_id_rubro: number;
+  p_nombre_rubro: string;
+  p_estado_rubro: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_fecha_modificacion: string;
+  p_usuario_modificacion: string;
 }
 
 export interface InterfazRubro {

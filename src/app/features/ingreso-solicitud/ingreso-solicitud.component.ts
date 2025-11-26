@@ -61,7 +61,8 @@ import { AseguradoService } from './service/asegurado.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { EnviarCoordinadorComponent } from '@features/detalle-solicitud/enviar-coordinador/enviar-coordinador.component';
+import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
+
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -125,6 +126,7 @@ export default class IngresoSolicitudComponent {
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   ingresoSolicitudService = inject(IngresoSolicitudService);
+  solicitudService = inject(DetalleSolicitudService);
 
   esIgualAlAsegurado: boolean = false;
 
@@ -262,7 +264,7 @@ export default class IngresoSolicitudComponent {
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
 
-    console.log('RUT enviado al servicio:', rutIngresado);
+    //console.log('RUT enviado al servicio:', rutIngresado);
 
     this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
@@ -323,11 +325,11 @@ export default class IngresoSolicitudComponent {
   grabaContratanteAux() {}
 
   async grabaContratante() {
-    console.log('form contratante:', this.agregaSolicitudContratante().value);
+    /* console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-    );
+    ); */
     this.ingresoSolicitud = {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
@@ -476,29 +478,38 @@ export default class IngresoSolicitudComponent {
     }
   }
 
-  enviarCoordinador(): void {
-    const dato = {
+  async enviarCoordinador(): Promise<void> {
+    const request = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada al coordinador. \n\n'+
+      'Una vez enviada, puedes seguir su estado \n '+
+      'desde el Menú de Gestión de Cotizaciones. \n' +
+      'El coordinador responsable será notificado y revisará \n '+
+      'que la información esté completa y correcta. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarCoordinadorComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => {
-        this.router.navigate(['/principal/cotizaciones']);
+    if(enviada)
+    {
+      this.solicitudService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.salir();
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud');
+        },
       });
+    }
   }
 
   salir() {

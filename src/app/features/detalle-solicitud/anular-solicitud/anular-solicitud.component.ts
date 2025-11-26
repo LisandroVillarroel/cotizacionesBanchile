@@ -13,11 +13,12 @@ import { FormControl, FormGroup, FormsModule,
   ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AnularSolicitudService } from './anular-solicitud.service';
-import { IAnulaRequest } from './anular-interface';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { IRequest } from '@shared/modelo/servicios-interface';
+import { RequestInterface } from './../modelo/request-interface';
+import { DetalleSolicitudService } from '../service/detalle-solicitud.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-anular-solicitud',
@@ -46,8 +47,8 @@ export class AnularSolicitudComponent {
 
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  anularService = inject(AnularSolicitudService);
-  anulaRequest!: IAnulaRequest;
+  anularService = inject(DetalleSolicitudService);
+  anulaRequest!: RequestInterface;
   motivo = new FormControl('', [Validators.required]);
   anularSolicitud= signal<FormGroup>(
     new FormGroup({

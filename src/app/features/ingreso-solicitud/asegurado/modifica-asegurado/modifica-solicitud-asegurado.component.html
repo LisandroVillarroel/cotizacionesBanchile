@@ -1,13 +1,12 @@
-
-<app-cabecera-popup [titulo]="'Ingreso Asegurado'"  />
+<app-cabecera-popup [titulo]="'Modifica Asegurado'"  />
 <mat-dialog-content
-  [formGroup]="agregaAsegurado()"
-  name="agregaAsegurado"
-  class="agrega-container"
+  [formGroup]="modificaAsegurado()"
+  name="modificaAsegurado"
+  class="modifica-container"
 >
   <div
     class="row form-con-titulo contenido-form mat-elevation-z6"
-    data-titulo="Agregar Datos del Asegurado"
+    data-titulo="Modifica Datos del Asegurado"
   >
     <div class="col-md-4">
       <mat-form-field class="inputInput">
@@ -144,8 +143,7 @@
           aria-label="Número Departamento"
           [formControl]="deptoDireccionAsegurado"
         />
-        @if (deptoDireccionAsegurado.invalid && deptoDireccionAsegurado.touched)
-        {
+        @if (deptoDireccionAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("deptoDireccionAsegurado") }}</mat-error>
         }
       </mat-form-field>
@@ -157,7 +155,7 @@
           aria-label="Número Casa"
           [formControl]="casaAsegurado"
         />
-        @if (casaAsegurado.invalid && casaAsegurado.touched) {
+        @if (casaAsegurado.invalid) {
         <mat-error>{{ getErrorMessage("casaAsegurado") }}</mat-error>
         }
       </mat-form-field>
@@ -170,8 +168,8 @@
     <button
       type="button"
       mat-raised-button
-      class="colorFondoBotonCerrar"
       mat-dialog-close
+      class="colorFondoBotonCerrar"
       [disabled]="false"
     >
       Cerrar
@@ -181,10 +179,9 @@
     <button
       type="button"
       mat-raised-button
-      (click)="grabar()"
-      [disabled]="agregaAsegurado().invalid"
-      [ngClass]="{ colorFondoBotonGrabar: !agregaAsegurado().invalid
-      }"
+      (click)="modificar()"
+      class="colorFondoBotonGrabar"
+      [disabled]="modificaAsegurado().invalid"
     >
       Grabar
     </button>

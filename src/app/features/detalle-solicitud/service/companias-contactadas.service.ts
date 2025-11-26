@@ -12,6 +12,7 @@ import {
   IEliminaCompania,
   IMinimoResponse,
 } from '@features/detalle-solicitud/modelo/compania';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -86,5 +87,12 @@ export class CompaniasContactadasService {
       parametro,
       { headers: this.headers }
     );
+  }
+
+  postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
+    return this.http.post<IResponse>(
+        `${environment.apiUrlConsumer}/enviarSolicitudCompanias`,
+        enviaSolicitud, { headers: this.headers, }
+      )
   }
 }

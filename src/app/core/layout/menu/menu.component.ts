@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UsuarioRoles } from '@features/auth/auth-Interface';
@@ -18,7 +17,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     RouterModule
   ],
   template: `
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+       <nav class="navbar navbar-expand-lg bg-body-tertiary" >
       <div class="container-fluid">
 
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -33,12 +32,12 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
             </li>
              }
-              @if(hasRole(['coord_corr', 'sup_corr'])){
+              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>
               }
-              @if(hasRole(['ejec_bco'])){
+              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
             </li>
