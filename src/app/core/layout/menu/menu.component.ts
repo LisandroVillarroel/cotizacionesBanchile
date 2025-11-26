@@ -13,6 +13,8 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   imports: [
     MatButtonModule,
     MatProgressBarModule,
+    RouterLink,
+    RouterModule
 ],
   template: `
     <nav class="navbar navbar-expand-lg bg-body-tertiary" >
