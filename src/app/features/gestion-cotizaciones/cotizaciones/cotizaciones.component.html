@@ -9,7 +9,7 @@
         <mat-label class="cursiva gris-claro">ID Solicitud</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
           <input matInput  [formControl]="solicitud"
-            (keyup)="pagina.set(0)">
+            keyup="pagina.set(0)">
       </mat-form-field>
     </div>
 
@@ -18,7 +18,7 @@
         <mat-label class="cursiva gris-claro">Contratante</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
           <input matInput  [formControl]="contratante"
-            (keyup)="pagina.set(0)">
+            keyup="pagina.set(0)">
       </mat-form-field>
     </div>
 
@@ -29,7 +29,7 @@
               (selectionChange)="seleccionaRubro($event.value); pagina.set(0)">
               @for(_rubros of datoRubros(); track _rubros){
                 <mat-option [value]="_rubros" >
-                  {{ _rubros.nombre_rubro }}
+                  {{ _rubros.p_nombre_rubro }}
                 </mat-option>
               }
           </mat-select>

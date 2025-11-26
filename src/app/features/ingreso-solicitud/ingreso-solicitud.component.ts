@@ -264,7 +264,7 @@ export default class IngresoSolicitudComponent {
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
 
-    console.log('RUT enviado al servicio:', rutIngresado);
+    //console.log('RUT enviado al servicio:', rutIngresado);
 
     this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
@@ -325,11 +325,11 @@ export default class IngresoSolicitudComponent {
   grabaContratanteAux() {}
 
   async grabaContratante() {
-    console.log('form contratante:', this.agregaSolicitudContratante().value);
+    /* console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-    );
+    ); */
     this.ingresoSolicitud = {
       p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
