@@ -10,9 +10,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -22,6 +33,7 @@ import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solic
 
 import { ISolicitudG } from '../gestionSolicitud-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
+import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
@@ -30,6 +42,7 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 @Component({
   selector: 'app-solicitudes',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   providers: [provideNativeDateAdapter()],
   imports: [
     MatPaginatorModule,
@@ -68,6 +81,7 @@ export class SolicitudesComponent {
   filtroRubro = signal('');
   filtroTipoSeguro = signal('');
   filtroFecha = signal<Date | null>(null);
+  filtroFecha = signal<Date | null>(null);
 
   formularioModificado = signal(false);
 
@@ -75,11 +89,13 @@ export class SolicitudesComponent {
   rubro = new FormControl();
   seguro = new FormControl();
   fecha = new FormControl<Date | null>(null);
+  fecha = new FormControl<Date | null>(null);
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     contratante : this.contratante,
     rubro : this.rubro,
     seguro : this.seguro,
+    fecha : this.fecha
     fecha : this.fecha
     })
   );
@@ -88,6 +104,12 @@ export class SolicitudesComponent {
     const contratante = this.filtroFormulario().value.contratante??'';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
+    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+
+    let fechaInicio=new Date();
+    if (fechaInicio_Inicial!=null){
+         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    }
     let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
 
     let fechaInicio=new Date();
@@ -124,6 +146,8 @@ export class SolicitudesComponent {
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private readonly dialog = inject(MatDialog);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
@@ -184,6 +208,8 @@ export class SolicitudesComponent {
   retorno = output<boolean>();
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
+  verDetalle(IdSolicitud: number) {
+    const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -194,9 +220,15 @@ export class SolicitudesComponent {
       idSolicitud: IdSolicitud,
       flagSoloCerrar: false
     };
+    dialogConfig.data = {
+      idSolicitud: IdSolicitud,
+      flagSoloCerrar: false
+    };
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
+      .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
+      .subscribe(() => { this.retorno.emit(true); })
       .subscribe(() => { this.retorno.emit(true); })
   }
 }

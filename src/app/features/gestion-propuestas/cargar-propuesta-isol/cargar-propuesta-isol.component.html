@@ -1,0 +1,62 @@
+<app-cabecera-popup [titulo]="'Cargar Propuesta ISOL - Solicitud: '+ data.p_id_solicitud" />
+<mat-dialog-content class="container-fluid p-0">
+  <mat-card>
+    <mat-card-header class="fondoGris d-flex justify-around">
+      <div style="width: 33%;">
+        <p class="destacado">Rut Contratante</p>
+        <p>{{ data.p_rut_contratante}}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 33%; margin-left: 10px;">
+        <p class="destacado">Nombre / Razón Social</p>
+        <p>{{ data.P_nombre_razon_social_contratante }}</p>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div style="width: 33%; margin-left: 10px;">
+        <p class="destacado">Rubro / Tipo Seguro</p>
+        <p>{{ data.p_nombre_rubro}} / {{data.p_nombre_seguro}}</p>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="fondoGris">
+      <mat-divider></mat-divider>
+      <div class="p-2" style="margin:auto;">
+        <h3 class="destacado titulo-seccion">
+          &nbsp; Documentos asociados</h3>
+        <mat-label class="gris">Para avanzar con el proceso, por favor cargar la propuesta generada por ISOL</mat-label>
+      </div>
+      <div class="container-fluid fondoGris p-4" style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Primer mat-card -->
+        <mat-card class="card-borde3 form-card contenido-card card-con-titulo mat-elevation-z6"
+          data-titulo="Propuesta Isol" style="width: 100%;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <mat-form-field appearance="outline" class="inputInput-cuestionario2 col-md-8"
+              style="flex-grow: 1; min-width: 0;">
+              <mat-label class="labelI-cuestionario"></mat-label>
+              <input matInput [value]="nombrePptaIsol" disabled placeholder="Sin documento cargado" />
+            </mat-form-field>
+            <!-- Botón para abrir el selector de archivos -->
+            <button mat-icon-button color="primary" matTooltip="Cargar documento" (click)="abrirPptaIsol()"
+              type="button" class="boton-cargar-cuestionario">
+              <mat-icon>upload</mat-icon>
+            </button>
+            <!-- Input file oculto -->
+            <input type="file" #fileInputPptaIsol hidden (change)="onFileSelectedPptaIsol($event)" />
+            <!-- Botón para eliminar archivo -->
+            <button mat-icon-button color="warn" matTooltip="Eliminar documento" (click)="eliminarPptaIsol()"
+              type="button" class="boton-eliminar-cuestionario">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-card-actions>
+<div class="container-fluid d-flex p-4 mb-0">
+  <div class="botones-derecha">
+    <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cerrar</button>
+      <button mat-stroked-button class="btn-success" (click)="cancelar()">Cargar y enviar a Coordinador</button>
+  </div>
+</div>
+</mat-card-actions>
