@@ -54,7 +54,7 @@
                         matInput
                         [formControl]="rutCliente"
                         oninput="this.value = this.value.toUpperCase()"
-                        blur="buscarContratantePorRut()"
+                        (blur)="buscarContratantePorRut()"
                         validaRut
                         required
                       />

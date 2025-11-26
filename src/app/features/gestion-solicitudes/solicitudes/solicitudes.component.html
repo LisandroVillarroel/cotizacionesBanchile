@@ -8,7 +8,7 @@
       <mat-form-field class="inputBuscar">
         <mat-label class="cursiva gris-claro">Contratante</mat-label>
         <mat-icon matSuffix class="gris">search</mat-icon>
-          <input matInput  [formControl]="contratante" keyup="pagina.set(0)">
+          <input matInput  [formControl]="contratante" (keyup)="pagina.set(0)">
       </mat-form-field>
     </div>
 
