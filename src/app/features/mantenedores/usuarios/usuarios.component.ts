@@ -166,10 +166,10 @@ export default class UsuariosComponent {
 
   modificaUsuario(datoUsuarioPar: IUsuario): void {
     console.log('Dato Modificar:', datoUsuarioPar);
-    const parametro: IUsuarioListaParametro = {
-      datoUsuarioPar: datoUsuarioPar,
-      tipoUsuario: this.tipoUsuario(),
-    };
+  //  const parametro: IUsuarioListaParametro = {
+   //   datoUsuarioPar: datoUsuarioPar,
+ //     tipoUsuario: this.tipoUsuario(),
+ //   };
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -177,7 +177,7 @@ export default class UsuariosComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = parametro;
+    dialogConfig.data = datoUsuarioPar;
 
     this.dialog
       .open(ModificaUsuarioComponent, dialogConfig)
