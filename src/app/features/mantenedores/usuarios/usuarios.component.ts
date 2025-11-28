@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import {  DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro } from './usuario-Interface';
+import {  DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro, IUsuarioListaPerfiles, IUsuarioPerfile } from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
 import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.component';
 import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
@@ -49,16 +49,11 @@ export default class UsuariosComponent {
 
   tipoUsuario = signal<string>('');
   datoUsuarios = signal<IUsuarioLista[]>([]);
+  datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
   usuarioService = inject(UsuarioService);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
-
-  datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
-  { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
-{ p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
-{ p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
 
 
   displayedColumns: string[] = [
@@ -115,6 +110,7 @@ export default class UsuariosComponent {
   }
 
   async ngOnInit() {
+    this.LitaPerfiles();
     this.rescataLista('A');
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
@@ -144,6 +140,23 @@ export default class UsuariosComponent {
         },
       });
   }
+
+ LitaPerfiles() {
+  this.usuarioService
+      .postListaPerfiles(this._storage()?.usuarioLogin.usuario!,
+   this._storage()?.usuarioLogin.tipoUsuario!)
+      .subscribe({
+        next: (dato: IUsuarioListaPerfiles) => {
+          if (dato.codigo === 200) {
+            this.datoPerfilesUsuarios.set(dato.perfiles);
+          }
+        },
+        error: (error) => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
+      });
+  }
+
 
   agregaNuevo() {
     const dialogConfig = new MatDialogConfig();

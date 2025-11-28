@@ -45,7 +45,7 @@ export const routes: Routes = [
       },
        {
         path: 'mantenedores',
-        canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+        canActivate: [guardRoles(['coord_corr','sup_corr'])],
         loadChildren: () => import('@features/mantenedores/mantenedores.route'),
       },
     ],
