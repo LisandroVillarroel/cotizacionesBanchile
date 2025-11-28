@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UsuarioRoles } from '@features/auth/auth-Interface';
@@ -16,9 +15,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatProgressBarModule,
     RouterLink,
     RouterModule
-],
+  ],
   template: `
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+       <nav class="navbar navbar-expand-lg bg-body-tertiary" >
       <div class="container-fluid">
 
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -33,12 +32,12 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
             </li>
              }
-              @if(hasRole(['coord_corr', 'sup_corr'])){
+              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
             </li>
               }
-              @if(hasRole(['ejec_bco'])){
+              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
             <li class="nav-item border-end" [routerLinkActive]="['active']">
               <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
             </li>
@@ -53,8 +52,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
                 Mantenedores
               </a>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
-                <li><a class="dropdown-item" href="#">Mantenedor 2</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/rubros">Rubros</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/tipo-seguro">Tipo Seguro</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" routerLink="/mantenedores/companias">Compañías</a></li>
               </ul>
@@ -83,11 +83,11 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   `,
 })
 export default class MenuComponent {
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   ///  readonly progreso = inject(Progreso);
-   hasRole( roles:UsuarioRoles[]) {
-    const rolUsduasrio=this._storage()?.usuarioLogin.perfilUsuario;
-   return roles.some(rol=> rol.includes(rolUsduasrio!))
+  hasRole(roles: UsuarioRoles[]) {
+    const rolUsduasrio = this._storage()?.usuarioLogin.perfilUsuario;
+    return roles.some(rol => rol.includes(rolUsduasrio!))
   }
 }

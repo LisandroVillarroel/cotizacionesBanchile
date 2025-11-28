@@ -28,3 +28,10 @@ export interface IMinimoResponse{
   vcEstado: string,
   vcEstadoCreacion: string
 }
+
+export interface botonCompania{
+  icon: string,
+  tooltip: string,
+  // mostrar: boolean,
+  accion: (id: number) => void,
+}[]

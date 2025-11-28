@@ -56,6 +56,7 @@ export class NotificacioAlertnService {
       text: mensaje,
       timer:0,
       showConfirmButton: true,
+      confirmButtonColor: "#002464",
       confirmButtonText: mensajeOk
     });
   }
@@ -87,6 +88,9 @@ async confirmacionSelectiva(titulo:string,mensaje:string,textoAceptar:string='Ac
       icon: 'warning',
       title: titulo,
       text: mensaje,
+      customClass: {
+        htmlContainer: 'swal-text-pre'
+      },
       confirmButtonColor: "#002464",
       cancelButtonColor: "#F45516",
       confirmButtonText: textoAceptar,

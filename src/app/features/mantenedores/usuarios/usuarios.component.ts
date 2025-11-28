@@ -14,17 +14,38 @@ import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.componen
 import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
 import { ConsultaUsuarioComponent } from './consulta-usuario/consulta-usuario.component';
 import { EliminaUsuarioComponent } from './elimina-usuario/elimina-usuario.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { StorageService } from '@shared/service/storage.service';
+import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
   imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
-      MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule],
+      MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule,
+      MatSelectModule,ReactiveFormsModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+  styles: `
+    table {
+      width: 100%;
+    }
+    ::ng-deep  .mat-mdc-form-field-subscript-wrapper{
+      height: 10px !important;
+    }
+    .buscar{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+  `
 })
+
+
 export default class UsuariosComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
+ storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   tipoUsuario = signal<string>('');
   datoUsuarios = signal<IUsuarioLista[]>([]);
@@ -32,6 +53,13 @@ export default class UsuariosComponent {
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
+
+
+  datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
+  { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
+{ p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
+{ p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
+
 
   displayedColumns: string[] = [
     'index',
@@ -73,21 +101,33 @@ export default class UsuariosComponent {
 
   }
 
+
+  tipoUsuarioSelect = new FormControl('', Validators.required);
+  agregaSolicitudContratante = signal<FormGroup>(
+    new FormGroup({
+      tipoUsuario: this.tipoUsuarioSelect,
+    })
+  );
+
   ngAfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
 
   async ngOnInit() {
-    this.rescataLista("1");
+    this.rescataLista('A');
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataLista(p_id_solicitud: string) {
+  rescataLista(p_tipo_consulta_: string) {
     const estructura_lista = {
-      p_id_usuario: "sup002",
-    p_tipo_usuario: "S",
-    p_tipo_consulta:"E"
+   // p_id_usuario: "sup002",
+   // p_tipo_usuario: "S",
+   // p_tipo_consulta:"E"
+
+   p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+   p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+   p_tipo_consulta:p_tipo_consulta_
     };
 
     this.usuarioService
@@ -186,5 +226,10 @@ export default class UsuariosComponent {
           this.rescataLista(this.tipoUsuario()!);
         }
       });
+  }
+
+  seleccionaTipoUsuario(event: any) {
+    console.log(event.value);
+
   }
 }
