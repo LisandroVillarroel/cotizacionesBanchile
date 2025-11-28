@@ -207,7 +207,7 @@ export class MateriaAseguradaComponent {
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
-  agregaFormControl(nombreCampo: string, ValorInicial: any): void {
+  agregaFormControl(nombreCampo: string, ValorInicial: string): void {
     this.materiaForm().addControl(nombreCampo, new FormControl(ValorInicial.trim()));
   }
 
@@ -267,7 +267,7 @@ export class MateriaAseguradaComponent {
     });
   }
 
-comparavalorLista(v1: any, v2: any): boolean {
+comparavalorLista(v1: number, v2: number): boolean {
     return Number(v1) === Number(v2);
   }
 }

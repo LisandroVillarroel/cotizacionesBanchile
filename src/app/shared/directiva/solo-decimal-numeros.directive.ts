@@ -11,7 +11,7 @@ export class SoloDecimalNumerosDirective {
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  @HostListener('input', ['$event']) onInput(event: Event): void {
+  @HostListener('input') onInput(): void {
     const inputElement = this.el.nativeElement as HTMLInputElement;
     let value = inputElement.value;
 

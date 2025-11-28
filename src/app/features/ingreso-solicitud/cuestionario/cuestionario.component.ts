@@ -139,10 +139,10 @@ export class CuestionarioComponent {
     const idSolicitud = Number(this.idSolicitud());
     //console.log('ID de solicitud enviado al backend:', idSolicitud);
 
-    const filtro = { p_id_solicitud: idSolicitud };
+    //const filtro = { p_id_solicitud: idSolicitud };
     //console.log('Filtro enviado al backend:', filtro);
 
-    this.cuestionarioService.postListadoDocumento(filtro).subscribe({
+    this.cuestionarioService.postListadoDocumento(idSolicitud).subscribe({
       next: (res: DatosDocumentoInterface) => {
         if (res.codigo === 200) {
           this.documentosFiltrados.set(res.p_cursor);

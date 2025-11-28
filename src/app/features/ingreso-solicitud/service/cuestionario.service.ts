@@ -87,7 +87,8 @@ export class CuestionarioService {
     });
   }
 
-  postListadoDocumento(filtro: any): Observable<DatosDocumentoInterface> {
+  postListadoDocumento(idSolicitud: number): Observable<DatosDocumentoInterface> {
+    const filtro = { p_id_solicitud: idSolicitud }
     return this.http
       .post<DatosDocumentoInterface>(
         `${environment.apiUrlConsumer}/consultarDocumentos`,

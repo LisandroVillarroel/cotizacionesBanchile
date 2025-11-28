@@ -35,7 +35,7 @@ export interface IGestionResponse{
   ps_cursorPen: IGestionCotizacion[],
   ps_cursorProGen: IGestionCotizacion[],
   ps_cursorProFir: IGestionCotizacion[],
-  ps_cursorPorFir: IGestionCotizacion[],
+  ps_cursorFirPen: IGestionCotizacion[],
   p_nro_cotiz_reg: number,
   p_nro_prop_pend: number,
   p_nro_prop_gene: number,

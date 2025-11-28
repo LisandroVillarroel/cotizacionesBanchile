@@ -230,8 +230,8 @@ export default class IngresoSolicitudComponent {
   }
 
   async seleccionaRubro(_codigoRubro: number) {
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    //const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
@@ -444,7 +444,7 @@ export default class IngresoSolicitudComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: false };
   }
 
   validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {

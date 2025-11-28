@@ -86,7 +86,7 @@ export default class GestionCotizacionesComponent{
           this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
           this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
           this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
-          this.por_firmar.set(this.cargaLista(dato.ps_cursorPorFir));
+          this.por_firmar.set(this.cargaLista(dato.ps_cursorFirPen));
           this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
         }
       },

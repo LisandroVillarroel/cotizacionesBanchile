@@ -36,7 +36,11 @@ export class CompaniasContactadasService {
     );
   }
 
-  postCompaniasTipoSeguro(filtro: number): Observable<ICompaniasResponse> {
+  postCompaniasTipoSeguro(idRubro: number, idTipoSeguro: number): Observable<ICompaniasResponse> {
+    const filtro = {
+      p_rubro: idRubro,
+      p_tipo_seguro:idTipoSeguro,
+    };
     return this.http.post<ICompaniasResponse>(
       `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
       filtro,

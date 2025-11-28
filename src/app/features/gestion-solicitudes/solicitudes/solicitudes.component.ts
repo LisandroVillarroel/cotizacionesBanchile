@@ -150,9 +150,7 @@ export class SolicitudesComponent {
   }
 
   seleccionaRubro(datos: IRubro) {
-    const _codigoRubro = datos.p_id_rubro;
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
             this.rescatadoSeguro.set(dato.c_TipoSeguros);

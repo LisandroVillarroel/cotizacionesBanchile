@@ -108,15 +108,8 @@ export class VerCompaniaComponent {
   }
 
   cargarCompanias(): void {
-    const entradas = {
-      p_rubro: this.data.id_rubro,
-      p_tipo_seguro: this.data.id_tipo_seguro,
-    };
-    console.log('Entradas', entradas);
-
     this.CompaniasContactadasService.postCompaniasTipoSeguro(
-      entradas
-    ).subscribe({
+      this.data.id_rubro, this.data.id_tipo_seguro).subscribe({
       next: (dato: ICompaniasResponse) => {
         if (dato.codigo === 200) {
           this.datoCompanias.set(dato.p_cursor);
