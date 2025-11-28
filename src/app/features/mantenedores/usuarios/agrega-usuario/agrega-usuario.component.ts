@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { MatSelectModule } from '@angular/material/select';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Component({
   selector: 'app-agrega-usuario',
@@ -142,8 +143,9 @@ export class AgregaUsuarioComponent {
 
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutUsuarioNuevo(event: any) {
-    const rut = event.target.value;
+  async onBlurRutUsuarioNuevo(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const rut = input.value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
@@ -154,7 +156,7 @@ export class AgregaUsuarioComponent {
         });
 
       // Formato para BD
-      const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+      //const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 
@@ -179,21 +181,21 @@ export class AgregaUsuarioComponent {
       p_mail_usuario_nuevo: this.agregaUsuario().get('mailUsuarioNuevo')!.value,
       p_telefono_usuario_nuevo: this.agregaUsuario().get('telefonoUsuarioNuevo')!.value,
       p_id_dependencia_usuario_nuevo: this.agregaUsuario().get('dependenciaUsuarioNuevo')!.value,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
     };
 
 
     this.usuarioService.postAgregaUsuario(this.usuario).subscribe({
-      next: (dato:any) => {
-        console.log('dato:', dato);
+      next: (dato: IResponse) => {
+        //console.log('dato:', dato);
         if (dato.codigo === 200) {
           //alert('Grabó Usuario Bien');
           this.dialogRef.close('agregado');
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al usuario.');
       },
     });
   }

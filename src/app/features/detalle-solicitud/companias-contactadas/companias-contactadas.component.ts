@@ -2,7 +2,6 @@ import {
   Component,
   input,
   inject,
-  computed,
   signal,
   Input,
 } from '@angular/core';
@@ -62,8 +61,8 @@ export class CompaniasContactadasComponent {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
@@ -134,7 +133,7 @@ export class CompaniasContactadasComponent {
     this.dialog
       .open(IngresoRespuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((confirmado) => {
+      .subscribe(() => {
         this.actualizarDatos.emit();
       });
   }
@@ -153,7 +152,7 @@ export class CompaniasContactadasComponent {
 
   async borrarCompania(idCompania: number) {
     const request = {
-      p_id_solicitud: this.infoGral()?.id_solicitud!,
+      p_id_solicitud: this.infoGral()?.id_solicitud,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
@@ -176,8 +175,8 @@ export class CompaniasContactadasComponent {
             this.actualizarDatos.emit();
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','No fue posible eliminar la compañia.');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible eliminar la compañía.');
         },
       });
     }
@@ -185,11 +184,11 @@ export class CompaniasContactadasComponent {
 
   seleccionarCotizacion(id: number) {
     this.cotizacionSeleccionada = id;
-    console.log('Cotización seleccionada:', id);
+    //console.log('Cotización seleccionada:', id);
     this.cotizacionSeleccionadaEvent.emit(id);
   }
 
-  verCompania(companiaSeleccionada: any): void {
+  verCompania(companiaSeleccionada: ICompania): void {
     const dato = {
       p_id_solicitud: this.infoGral()?.id_solicitud,
       fecha: this.infoGral()?.fecha_creacion_solicitud,

@@ -12,7 +12,6 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 
-import { IRequestGestion } from '@shared/modelo/servicios-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 
@@ -41,8 +40,8 @@ export default class GestionCotizacionesComponent{
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipo_usuario = this._storage()?.usuarioLogin?.tipoUsuario;
   ejec = signal<boolean>(false);
 
   gestionService = inject(GestionCotizacionesService)
@@ -60,7 +59,7 @@ export default class GestionCotizacionesComponent{
   firmadas = signal<IGestionCotizacion[] >([]);
   por_firmar = signal<IGestionCotizacion[] >([]);
 
-  async ngOnInit(){
+  async OnInit(){
     if(this.tipo_usuario === "E"){
       this.ejec.set(true);
     }else{
@@ -70,10 +69,9 @@ export default class GestionCotizacionesComponent{
   }
 
   cargarSolicitudes() {
-    var entrada: IRequestGestion;
-    entrada = {
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+    const entrada = {
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipo_usuario ?? ""
     };
     this.gestionService.postListadoSolicitudes(entrada).subscribe({
       next: (dato: IGestionResponse) => {
@@ -92,8 +90,8 @@ export default class GestionCotizacionesComponent{
           this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de cotizaciones.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  listado de cotizaciones.');
       },
     });
   }

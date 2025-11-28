@@ -20,7 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { ICompanias } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { ICompanias, ICompaniasResponse } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IModificaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
@@ -90,20 +90,19 @@ export class VerCompaniaComponent {
     console.log('Data en constructor:', data);
   }
 
-  registros: any[] = [];
   observaciones: string = '';
 
-  ngOnInit() {
-    console.log('Data completa en ngOnInit:', this.data);
+  OnInit() {
+   /*  console.log('Data completa en ngOnInit:', this.data);
     console.log('Detalle recibido:', this.data.p_id_detalle_solicitud_cotizacion);
-
+ */
     this.detalleControl.setValue(
       this.data.p_id_detalle_solicitud_cotizacion || ''
     );
-    console.log(
+    /* console.log(
       'Valor en detalleControl después de setValue:',
       this.detalleControl.value
-    );
+    ); */
 
     this.cargarCompanias();
   }
@@ -118,16 +117,15 @@ export class VerCompaniaComponent {
     this.CompaniasContactadasService.postCompaniasTipoSeguro(
       entradas
     ).subscribe({
-      next: (dato: any) => {
+      next: (dato: ICompaniasResponse) => {
         if (dato.codigo === 200) {
           this.datoCompanias.set(dato.p_cursor);
-          console.log('Compañías', this.datoCompanias());
-
+          //console.log('Compañías', this.datoCompanias());
           this.setCorreoCompania();
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de compañías.');
       },
     });
   }
@@ -152,13 +150,13 @@ export class VerCompaniaComponent {
       ? cia.correo_compania_seguro.replace(/&nbsp;/g, '').trim()
       : '';
 
-    console.log('Correo encontrado:', correoLimpio);
+    //console.log('Correo encontrado:', correoLimpio);
     this.correoCompania.set(correoLimpio);
   }
 
   actualizarCorreo(companiaSeleccionada: number): void {
-    console.log('ID seleccionado:', companiaSeleccionada);
-    console.log('Lista compañías:', this.datoCompanias());
+/*     console.log('ID seleccionado:', companiaSeleccionada);
+    console.log('Lista compañías:', this.datoCompanias()); */
 
     const cia = this.datoCompanias()?.find(
       (item) => item.id_compania_seguro === companiaSeleccionada
@@ -170,7 +168,7 @@ export class VerCompaniaComponent {
       ? cia.correo_compania_seguro.replace(/&nbsp;/g, '').trim()
       : '';
 
-    console.log('Correo encontrado:', correoLimpio);
+   // console.log('Correo encontrado:', correoLimpio);
     this.correoCompania.set(correoLimpio);
   }
 
@@ -192,7 +190,7 @@ export class VerCompaniaComponent {
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
 
-    console.log('Payload enviado:', payload);
+    //console.log('Payload enviado:', payload);
 
     this.CompaniasContactadasService.postModificaCompania(payload).subscribe({
       next: (res) => {
@@ -201,7 +199,7 @@ export class VerCompaniaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible modificar la compañía.');
       },
     });
   }

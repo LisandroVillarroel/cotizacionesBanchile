@@ -1,16 +1,16 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   IIngresarDocumento,
   IEstadoIngresarDocumento,
   DatosDocumentoInterface,
 } from '../modelo/ingresoSolicitud-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 // Definición base de documentos
 const documentos_definicion = [
@@ -78,8 +78,8 @@ export class CuestionarioService {
     idSolicitud: number,
     corr: number,
     usuario: string
-  ): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrlConsumer}/eliminarDocumentos`, {
+  ): Observable<IResponse> {
+    return this.http.post<IResponse>(`${environment.apiUrlConsumer}/eliminarDocumentos`, {
       p_id_solicitud: idSolicitud,
       p_corr_documento: corr,
       p_fecha_modificacion: new Date().toISOString(),

@@ -125,24 +125,20 @@ export class AseguradoComponent {
 
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     console.log('entro a asegurado ngAfterViewInit', this.idSolicitud());
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
-  async ngOnInit() {
+  async OnInit() {
     console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataListaAsegurados(p_id_solicitud: number) {
-    const estructura_listaAsegurados = {
-      p_id_solicitud: p_id_solicitud,
-    };
-
     this.aseguradoService
-      .postListadoAsegurado(estructura_listaAsegurados)
+      .postListadoAsegurado(p_id_solicitud)
       .subscribe({
         next: (dato: DatosAseguradosInterface) => {
           if (dato.codigo === 200) {
@@ -150,8 +146,8 @@ export class AseguradoComponent {
             this.hayAsegurados.set(dato.p_cursor.length > 0);
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de asegurados.');
         },
       });
   }
@@ -215,7 +211,7 @@ export class AseguradoComponent {
       .afterClosed();
   }
 
-  eliminaAsegurado(datoAseguradoPar: any) {
+  eliminaAsegurado(datoAseguradoPar: IAseguradoLista) {
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),

@@ -103,8 +103,8 @@ constructor() {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   solicitudService = inject(DetalleSolicitudService);
@@ -130,7 +130,7 @@ constructor() {
 
   flagSoloCerrar = false;
 
-  async ngOnInit() {
+  async OnInit() {
     this.cargarSolicitud(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
@@ -223,8 +223,8 @@ constructor() {
           /* Fin BackEnd */
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el detalle de la solicitud.');
       },
     });
   }
@@ -233,19 +233,20 @@ constructor() {
     return !(this.verEjec && !this.flagCoordinador);
   }
 
-  cargarCompanias(idSolicitud: any) {
+  cargarCompanias(idSolicitud: number) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          if(this.companias()?.length! < this.minimo){
+          const dimension = this.companias()?.length ?? 0;
+          if(dimension < this.minimo){
             this.puedeEnviar = true;
           }else{
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
@@ -255,22 +256,21 @@ constructor() {
     this.companiasService.postMinimo(idSolicitud).subscribe({
       next: (dato: IMinimoResponse) => {
         if (dato.codigo === 200) {
+          const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
-          if (this.companias()?.length! < this.minimo) {
+          if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible obtener  el mínimo de compañías a contactar.');
       },
     });
   }
-
-  solicitudId: any;
-  DetalleSolicitudComponent: any;
 
   devolverSolicitud(): void {
     if (this.flagSoloCerrar) return;
@@ -299,8 +299,8 @@ constructor() {
     if (this.flagSoloCerrar) return;
     const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
@@ -324,7 +324,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible aprobar la solicitud.');
         },
       });
@@ -335,8 +335,8 @@ constructor() {
     if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -357,8 +357,8 @@ constructor() {
     if (this.flagSoloCerrar) return;
     const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
@@ -381,7 +381,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
         },
       });
@@ -396,8 +396,8 @@ constructor() {
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -421,8 +421,8 @@ constructor() {
     if (this.flagSoloCerrar) return;
     const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
@@ -444,7 +444,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
         },
       });
@@ -454,15 +454,15 @@ constructor() {
 
   crearPropuesta(): void {
     if (this.flagSoloCerrar) return;
-    console.log('flagPropuesta',this.flagPropuesta);
-    console.log('verCoord',this.verCoord);
-    const dato = {
+    /* console.log('flagPropuesta',this.flagPropuesta);
+    console.log('verCoord',this.verCoord); */
+/*     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante,
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
+    }; */
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -489,8 +489,8 @@ constructor() {
     const request = {
       p_id_solicitud: this.idSolicitud,
       p_id_compania_seguro: this.cotizacionSeleccionada!,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const cia = this.companias()?.find(c => c.p_id_compania_seguro === this.cotizacionSeleccionada);
@@ -516,7 +516,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible aprobar la cotización.');
         },
       });

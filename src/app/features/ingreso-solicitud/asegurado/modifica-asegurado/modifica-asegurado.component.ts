@@ -67,7 +67,7 @@ export class ModificaAseguradoComponent {
     this.data.datoAseguradoPar.nombreRazonSocialAsegurado,
     [Validators.required]
   );
-  correoAsegurado = new FormControl(this.data.datoAseguradoPar.mailAsegurado, [
+  correoAsegurado = new FormControl(this.data.datoAseguradoPar.correoAsegurado, [
     Validators.required,
   ]);
   telefonoAsegurado = new FormControl(
@@ -203,9 +203,9 @@ export class ModificaAseguradoComponent {
     }
   } */
 
-  async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
-
+  async onBlurRutAsegurado(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const rut = input.value;
     if (validateRut(rut) === true) {
       //Mostrar en el input con puntos y guion
       await this.modificaAsegurado()
@@ -213,7 +213,6 @@ export class ModificaAseguradoComponent {
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
         });
-
       //Guardar en BD sin puntos y con guion
       formatRut(cleanRut(rut), RutFormat.DASH);
     }
@@ -221,14 +220,13 @@ export class ModificaAseguradoComponent {
 
   modificar() {
     const rutVisual = this.modificaAsegurado().get('rutAsegurado')!.value;
-
     //Convertir a formato BD (sin puntos, con guion)
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     this.asegurado = {
       p_id_solicitud: Number(this.data.idSolicitud),
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       //p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_rut_asegurado: rutParaBD,
       p_nombre_razon_social_asegurado:
@@ -253,16 +251,16 @@ export class ModificaAseguradoComponent {
       p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value,
     };
 
-    console.log('Asegurado Modificado:', this.asegurado);
+    //console.log('Asegurado Modificado:', this.asegurado);
     this.aseguradoService.postModificaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
-        console.log('dato:', dato);
+        //console.log('dato:', dato);
         if (dato.codigo === 200) {
           this.dialogRef.close('modificado');
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible modificar al asegurado.');
       },
     });
   }

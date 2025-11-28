@@ -1,5 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UsuarioRoles } from '@features/auth/auth-Interface';

@@ -19,9 +19,7 @@ export interface IIngresoSolicitud {
   id_rubro: number;
   id_tipo_seguro: number;
   contratante: ISolicitudContratante;
-  // asegurados: IAsegurado[];
-  // beneficiarios: IBeneficiario[];
-}{}
+}
 
 export interface IIngresoSolicitud_Recibe {
   codigo: number;
@@ -58,7 +56,7 @@ export interface IAsegurado {
 export interface IAseguradoLista {
   rutAsegurado: string;
   nombreRazonSocialAsegurado: string;
-  mailAsegurado: string;
+  correoAsegurado: string;
   telefonoAsegurado: string;
   regionAsegurado: string;
   ciudadAsegurado: string;

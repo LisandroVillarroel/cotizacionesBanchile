@@ -5,39 +5,39 @@
       <mat-card style="width: 49%;">
         <mat-card-content>
           <div class="info-gral">
-            <label class="destacado">ID Solicitud</label>
-            <label>{{ infoSolicitud()?.id_solicitud }}</label>
+            <span class="destacado">ID Solicitud</span>
+            <span>{{ infoSolicitud()?.id_solicitud }}</span>
           </div>
           <div class="info-gral">
-            <label class="destacado">RUT Contratante</label>
-            <label>{{ infoSolicitud()?.rut_contratante }}</label>
+            <span class="destacado">RUT Contratante</span>
+            <span>{{ infoSolicitud()?.rut_contratante }}</span>
           </div>
           <div class="info-gral">
-            <label class="destacado">Nombre / Razón Social</label>
-            <label>{{ infoSolicitud()?.nombre_razon_social_contratante }}</label>
+            <span class="destacado">Nombre / Razón Social</span>
+            <span>{{ infoSolicitud()?.nombre_razon_social_contratante }}</span>
           </div>
           <div style="display: flex; justify-content: space-between; width: 100%;">
-            <label class="destacado">Estado Solicitud</label>
-            <label >{{ infoSolicitud()?.nombre_estado }}</label>
+            <span class="destacado">Estado Solicitud</span>
+            <span >{{ infoSolicitud()?.nombre_estado }}</span>
           </div>
         </mat-card-content>
       </mat-card>
       <mat-card style="width: 49%;">
         <mat-card-content>
           <div class="info-gral">
-            <label class="destacado">Rubro </label>
-            <label>{{ infoSolicitud()?.nombre_rubro }}</label>
+            <span class="destacado">Rubro </span>
+            <span>{{ infoSolicitud()?.nombre_rubro }}</span>
           </div>
           <div class="info-gral">
-            <label class="destacado">Tipo de Seguro</label>
-            <label>{{ infoSolicitud()?.nombre_tipo_seguro }}</label>
+            <span class="destacado">Tipo de Seguro</span>
+            <span>{{ infoSolicitud()?.nombre_tipo_seguro }}</span>
           </div>
           <div class="info-gral">
-            <label class="destacado">Fecha Creación Solicitud</label>
-            <label>{{ infoSolicitud()?.fecha_creacion_solicitud }}</label>
+            <span class="destacado">Fecha Creación Solicitud</span>
+            <span>{{ infoSolicitud()?.fecha_creacion_solicitud }}</span>
           </div>
           <div style="display: flex; justify-content: space-between; width: 100%;">
-            <label class="destacado">SLA</label>
+            <span class="destacado">SLA</span>
             <div [ngClass]="getCellClass(infoSolicitud()?.sla!)">
               {{ getText(infoSolicitud()?.sla!) }}</div>
           </div>

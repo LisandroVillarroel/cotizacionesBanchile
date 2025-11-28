@@ -68,21 +68,21 @@ export class CreacionPropuestaComponent {
           });
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el detalle de la solicitud.');
       }
     });
   }
 
-  async ngOnInit() {
+  async OnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 
   crearPpta(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario,
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario
     };
     const dialogConfig = new MatDialogConfig();
 

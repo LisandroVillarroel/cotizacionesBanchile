@@ -39,4 +39,10 @@ export interface DatosUsuarioLista {
 export interface IUsuarioListaParametro  {
   datoUsuarioPar: IUsuario,
   tipoUsuario: string,
-};
+}
+
+export interface IUsuarioRequest{
+  p_id_usuario: string,
+  p_tipo_usuario: string,
+  p_tipo_consulta: string
+}

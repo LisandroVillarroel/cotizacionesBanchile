@@ -65,7 +65,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
 
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
@@ -117,7 +117,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   dataSourceSolicitud = computed(() => {
     // console.log('Grilla', this.datosSolicitud());
-    var tabla = new MatTableDataSource<IListadoSolicitudes>();
+    const tabla = new MatTableDataSource<IListadoSolicitudes>();
     // if(this.tipoUsuario === "C"){
     //   tabla.data = this.solicitudesCoord()!;
     // }else{
@@ -130,7 +130,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
@@ -148,7 +148,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const estado = this.filtroFormulario().value.estado ?? '';
-    let fechaInicio_Inicial = this.filtroFormulario().value.fecha;
+    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
@@ -174,7 +174,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
       }
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
-  };
+  }
 
   limpiaFiltros() {
     this.filtroFormulario().reset();
@@ -215,8 +215,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
           this.datoRubros.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Rubros.');
       },
     });
   }
@@ -228,8 +228,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
           this.datosEstados.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Estados');
       },
     });
   }
@@ -243,8 +243,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Tipos de Seguro');
       },
     });
   }

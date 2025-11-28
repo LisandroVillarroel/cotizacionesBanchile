@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, OnInit, inject, signal, ViewChild, output } from '@angular/core';
+import { Component, input, OnInit, inject, signal, ViewChild, output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -64,8 +64,8 @@ export class CotizacionesComponent implements OnInit {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
 //flags
   registradas = signal<boolean>(false);
@@ -116,14 +116,14 @@ export class CotizacionesComponent implements OnInit {
 
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
     });
-  };
+  }
 
   datosPaginados() {
     const start = this.pagina() * this.pageSize;
     return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
-  onPage(event: any) {
+  onPage(event: PageEvent) {
     this.pagina.set(event.pageIndex);
   }
 
@@ -184,7 +184,7 @@ export class CotizacionesComponent implements OnInit {
   }
 
   getCellClass(value: string): string {
-    var salida = 'gris';
+    let salida = 'gris';
     if (value !== null) {
       switch (value.toLowerCase()) {
         case 'v':
@@ -236,6 +236,7 @@ export class CotizacionesComponent implements OnInit {
   }
 
   verPropuesta(IdSolicitud: number) {
+    return IdSolicitud;
     /*     const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
@@ -278,11 +279,13 @@ export class CotizacionesComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         if (result) {
+          return result;
         }
       });
   }
 
     verFirmada(IdSolicitud: number) {
+      return IdSolicitud;
     /*     const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
