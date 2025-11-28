@@ -40,21 +40,21 @@ export class ConsultaCompaniaComponent implements OnInit {
 
   displayedColumns: string[] = [
     'index',
-    'id_rubro',
-    'id_tipo_seguro',
-    'estado_tipo_seguro',
-    'fecha_creacion',
-    'usuario_creacion',
-    'fecha_modificacion',
-    'usuario_modificacion',
+    'p_nombre_rubro',
+    'p_nombre_tipo_seguro',
+    'p_estado_tipo_seguro',
+    'p_fecha_creacion',
+    'p_usuario_creacion',
+    'p_fecha_modificacion',
+    'p_usuario_modificacion',
     'opciones',
   ];
 
   ngOnInit() {
     const payload = {
-      p_id_usuario: 'ADM042', // temporal, igual que en grabar()
+      p_id_usuario: 'ADM042', // temporal
       p_tipo_usuario: 'A',
-      p_id_compania_seguro: this.data?.id_compania_seguro ?? 0, // validación por si viene undefined
+      p_id_compania_seguro: this.data?.id_compania_seguro ?? 0,
     };
 
     console.log('Payload enviado:', payload);
@@ -62,7 +62,7 @@ export class ConsultaCompaniaComponent implements OnInit {
     this.companiaService.postListadoTipoSeguroCompania(payload).subscribe({
       next: (resp) => {
         if (resp.codigo === 200) {
-          this.listaTiposSeguros.set(resp.c_TipoSeguroCompania);
+          this.listaTiposSeguros.set(resp.p_cursor);
         } else {
           this.notificacioAlertnService.error('ERROR', resp.mensaje);
         }
@@ -72,6 +72,25 @@ export class ConsultaCompaniaComponent implements OnInit {
       },
     });
   }
+
+  agregarTipoSeguroCompania(): void {
+    // TODO: Implementar lógica para crear tipo seguro compañía
+    console.log('Agregar Tipo Seguro Compañía');
+  }
+
+  modificarTipoSeguroCompania(row: ITipoSeguroCompania): void {
+    // TODO: Implementar lógica para modificar tipo seguro compañía
+    console.log('Modificar Tipo Seguro Compañía:', row);
+  }
+
+  consultarTipoSeguroCompania(row: ITipoSeguroCompania): void {
+    // TODO: Implementar lógica para consultar tipo seguro compañía
+    console.log('Consultar Tipo Seguro Compañía:', row);
+  }
+
+  // Futuro: eliminarTipoSeguroCompania(row: ITipoSeguroCompania): void {
+  //   console.log('Eliminar Tipo Seguro Compañía:', row);
+  // }
 
   getRowIndex(i: number): number {
     if (!this.myPaginator) return i + 1;

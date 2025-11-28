@@ -175,11 +175,9 @@ export default class CompaniasComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-
-    // Pasar solo el ID al modal
-    dialogConfig.data = { id_compania_seguro: datoCompania.p_id_compania_seguro };
-
-    console.log('ID compañía seleccionado:', datoCompania.p_id_compania_seguro);
+    dialogConfig.data = {
+      id_compania_seguro: datoCompania.p_id_compania_seguro,
+    };
 
     this.dialog.open(ConsultaCompaniaComponent, dialogConfig);
   }
