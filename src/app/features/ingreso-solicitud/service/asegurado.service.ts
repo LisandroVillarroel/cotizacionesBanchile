@@ -67,9 +67,13 @@ export class AseguradoService {
   }
 
   //Servicio para traer datos del mock a asegurado
-  getDatosAsegurado(rut: string): Observable<any> {
-    return this.http.get(
-      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
+  getDatosAsegurado(rut: string): Observable<DatosAseguradosInterface> {
+    return this.http.get<DatosAseguradosInterface>(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
+      { headers: this.headers }
     );
+/*     return this.http.get(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
+    ); */
   }
 }

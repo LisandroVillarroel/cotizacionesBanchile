@@ -194,7 +194,7 @@ export class ModificaBeneficiarioComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: true };
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión

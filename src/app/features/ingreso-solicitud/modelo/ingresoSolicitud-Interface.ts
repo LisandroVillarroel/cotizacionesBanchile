@@ -71,6 +71,102 @@ export interface IAseguradoLista {
   usuarioModificacion?: string;
 }
 
+export interface IAseguradoQms {
+    codigoRetorno: string,
+    rutCliente: string,
+    nombre: string,
+    apellidoPaterno: string,
+    apellidoMaterno: string,
+    oficinaEjecutivo: string,
+    codigoEjecutivo: string,
+    nombreEjecutivo: string,
+    apellidoPaternoEjecutivo: string,
+    apellidoMaternoEjecutivo: string,
+    emailEjecutivo: string,
+    codigoPaisEjecutivo: string,
+    codigoCiudadEjecutivo: string,
+    telefono: string,
+    segmento: string,
+    marca: string,
+    banca: string,
+    clasificacionRiesgo: string,
+    actividadEconomica: string,
+    categoria: string,
+    codigoSegmento: string,
+    codigoMarca: string,
+    codigoBanca: string,
+    codigoActividadEconomica: string,
+    fechaNacimiento: string,
+    nombreOficina: string,
+    tipoCliente: string,
+    sexo: string,
+    direccion: string,
+    numeroDireccion: string,
+    complementoDireccion: string,
+    comuna: string,
+    ciudad: string,
+    region: string,
+    pais: string,
+    tipoDespacho: string,
+    cui: string,
+    codigoCategoria: string,
+    rowIdDireccion: string,
+    codigoPaisFonoPartCliente: string,
+    codigoCiudadPartCliente: string,
+    fonoParticularCliente: string,
+    codigoPaisCelularCliente: string,
+    codigoCiudadCelularCliente: string,
+    celularParticularCliente: string,
+    emailParticularCliente: string,
+    codigoPaisFonoComCliente: string,
+    codigoCiudadFonoComCliente: string,
+    fonoComercialCliente: string,
+    emailComercialCliente: string,
+    emailAlternativoEjecutivo: string,
+    rutEjecutivo: string,
+    inhabilidad: string,
+    nacionalidad: string,
+    paisOrigen: string,
+    estadoCivil: string,
+    regimenMatrimonial: string,
+    tipoFATCA: string,
+    tinNumSeguroSocial: string,
+    rutContacto: string,
+    nombreContacto: string,
+    apellidoPaternoContacto: string,
+    apellidoMaternoContacto: string,
+    tipoRelacionContato: string,
+    rutConyuge: string,
+    tipoVivienda: string,
+    nroDependencia: string,
+    anoResidencia: string,
+    marcaFuncionario: string,
+    nivelEstudios: string,
+    profesion: string,
+    rutEmpleador: string,
+    nombreEmpleador: string,
+    cargo: string,
+    tipoContrato: string,
+    fechaContrato: string,
+    tipoRenta: string,
+    tipoPagoPension: string,
+    fondoPension: string,
+    usoBancoMonto: string,
+    tipoIngrLiquido: string,
+    montoIngreso: string,
+    fechaActualizacionIngreso: string,
+    marcaComparteBcaPrivada: string,
+    idioma: string,
+    flagEnviaCorreo: string,
+    desSexo: string,
+    desCui: string,
+    comportamiento: string,
+    fechaDefuncion: string,
+    composicionInstitucional: string,
+    evaluacionRiesgo: string,
+    tipoClienteNor: string
+}
+
 export interface IAseguradoListaParametro {
   datoAseguradoPar: IAseguradoLista;
   idSolicitud: number;
@@ -97,9 +193,9 @@ export interface IAseguradoListaParametro {
 export interface DatosAseguradosInterface {
   codigo: number;
   mensaje: string;
-  p_cursor: IAseguradoLista[];
-  vcEstado: string;
-  vcEstadoCreacion: string;
+  data: IAseguradoQms;
+/*   vcEstado: string;
+  vcEstadoCreacion: string; */
 }
 
 export interface IBeneficiario {

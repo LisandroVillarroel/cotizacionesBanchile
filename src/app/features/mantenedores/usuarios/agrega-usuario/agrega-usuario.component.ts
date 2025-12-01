@@ -164,7 +164,7 @@ export class AgregaUsuarioComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: false };
   }
 
   grabar() {
