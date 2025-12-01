@@ -6,6 +6,7 @@ import {
   IAsegurado,
   DatosAseguradosInterface,
 } from '../modelo/ingresoSolicitud-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,8 @@ export class AseguradoService {
   });
 
   constructor() {}
-  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
-    return this.http.post<any>(
+  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/ingresarAsegurado`,
       agregaAsegurado,
       {
@@ -29,8 +30,8 @@ export class AseguradoService {
     );
   }
 
-  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
-    return this.http.post<any>(
+  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarAsegurado`,
       modificaAsegurado,
       {
@@ -42,12 +43,12 @@ export class AseguradoService {
   postEliminaAsegurado(
     isolicitud: number,
     rutAsegurado: string
-  ): Observable<any> {
+  ): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_asegurado: rutAsegurado,
     };
-    return this.http.post<any>(
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/eliminarAsegurado`,
       parametro,
       {
@@ -56,7 +57,8 @@ export class AseguradoService {
     );
   }
 
-  postListadoAsegurado(filtro: any): Observable<DatosAseguradosInterface> {
+  postListadoAsegurado(idSolicitud: number): Observable<DatosAseguradosInterface> {
+    const filtro = { p_id_solicitud: idSolicitud };
     return this.http.post<DatosAseguradosInterface>(
       `${environment.apiUrlConsumer}/listarAsegurados`,
       filtro,

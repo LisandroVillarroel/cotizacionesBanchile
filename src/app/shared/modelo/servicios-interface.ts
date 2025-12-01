@@ -4,6 +4,17 @@ export interface IRequest {
     p_tipo_usuario: string
 }
 
+export interface IRequestFecha {
+    p_fecha: string,
+    p_id_usuario: string,
+    p_tipo_usuario: string
+}
+
+export interface IRequestSm {
+    p_id_usuario: string,
+    p_tipo_usuario: string
+}
+
 export interface IResponse {
   codigo: number,
   mensaje: string,

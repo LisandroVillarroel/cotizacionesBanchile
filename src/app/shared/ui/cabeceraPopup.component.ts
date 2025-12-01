@@ -22,6 +22,6 @@ import { MatIconButton } from '@angular/material/button';
 
     `,
   })
-  export default class CabeceraPopupComponente {
+  export default class CabeceraPopupComponent {
     titulo = input.required<string>();
   }

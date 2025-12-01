@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-Cargando',
+  selector: 'app-cargando',
   standalone: true,
   imports: [MatProgressSpinner],
   template: `
@@ -23,7 +23,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     }
   `,
 })
-export default class CargandoComponente {
+export default class CargandoComponent {
   loading = input<boolean>(false);
   size = input<number>(40);
 }

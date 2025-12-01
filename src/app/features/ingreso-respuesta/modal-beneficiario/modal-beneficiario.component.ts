@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
 
@@ -13,6 +13,5 @@ import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/
 })
 export class ModalBeneficiarioComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-
   idSol = computed(() => this.idSolicitud);
 }

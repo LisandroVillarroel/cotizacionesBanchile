@@ -3,7 +3,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +12,11 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from "@angular/material/divider";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DevolverSolicitudService } from './devolver-solicitud.service';
-import { IDevuelveRequest } from './devolver-interface';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { DetalleSolicitudService } from '../service/detalle-solicitud.service';
+import { RequestInterface } from '../modelo/request-interface';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 export interface DevolverConObservacionesData {
   solicitudId: number;
@@ -54,8 +54,8 @@ export interface DevolverConObservacionesData {
 
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  devolverService = inject(DevolverSolicitudService);
-  devolverRequest!: IDevuelveRequest;
+  devolverService = inject(DetalleSolicitudService);
+  devolverRequest!: RequestInterface;
   motivo = new FormControl('', [Validators.required, Validators.maxLength(500)]);
   devolverSolicitud= signal<FormGroup>(
     new FormGroup({
@@ -84,23 +84,19 @@ export interface DevolverConObservacionesData {
     this.devolverService
       .postDevuelveSolicitud(this.devolverRequest)
       .subscribe({
-        next: (dato) => {
+        next: async (dato) => {
           if (dato.codigo === 200) {
-            this.confirmar();
+            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+                      "La solicitud ha sido devuelta exitosamente.");
+            if (result) {
+              this.dialogRef.close(true);
+            }
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible devolver la solicitud.');
         },
       });
-  }
-
-  async confirmar(){
-    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              "La solicitud ha sido devuelta exitosamente.");
-    if (result) {
-      this.dialogRef.close(true);
-    }
   }
 
   getErrorMessage() {

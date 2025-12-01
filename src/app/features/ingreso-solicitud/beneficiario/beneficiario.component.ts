@@ -113,30 +113,28 @@ export class BeneficiarioComponent {
     return tabla;
   });
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSourceBeneficiario().paginator = this.paginatorBeneficiario;
     this.dataSourceBeneficiario().sort = this.sortBeneficiario;
   }
 
-  async ngOnInit() {
+  async OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
 
   }
 
   rescataListaBeneficiarios(idSolicitud: number) {
-    const estructura_listaBeneficiarios = {
-      p_id_solicitud: idSolicitud,
-    };
+
     this.beneficiarioService
-      .postListadoBeneficiario(estructura_listaBeneficiarios)
+      .postListadoBeneficiario(idSolicitud)
       .subscribe({
         next: (dato: DatosBeneficiariosInterface) => {
           if (dato.codigo === 200) {
             this.datoBeneficiarios.set(dato.p_cursor);
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de beneficiarios.');
         },
       });
   }
@@ -179,7 +177,7 @@ export class BeneficiarioComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
-          console.log('Modificación Confirmada:', data);
+          //console.log('Modificación Confirmada:', data);
           this.rescataListaBeneficiarios(this.idSolicitud());
         }
       });
@@ -200,9 +198,9 @@ export class BeneficiarioComponent {
       .afterClosed();
   }
 
-  eliminaBeneficiario(datoBeneficiarioPar: any) {
+  eliminaBeneficiario(datoBeneficiarioPar: IBeneficiarioLista) {
     const dialogConfig = new MatDialogConfig();
- const parametro:IBeneficiarioListaParametro={
+    const parametro:IBeneficiarioListaParametro={
       datoBeneficiarioPar: datoBeneficiarioPar,
       idSolicitud: this.idSolicitud(),
     };

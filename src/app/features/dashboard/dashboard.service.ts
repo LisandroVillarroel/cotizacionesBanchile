@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { DatosSolicitudesInterface } from './datosSolicitud-Interface';
+import { IRequestFecha } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class DashboardService {
       });
   constructor() { }
 
-   postListadoSolicitudes(filtro: any): Observable<DatosSolicitudesInterface> {
+   postListadoSolicitudes(filtro: IRequestFecha): Observable<DatosSolicitudesInterface> {
       return this.http
         .post<DatosSolicitudesInterface>(`${environment.apiUrlConsumer}/listarSolicitudes`,
           filtro,

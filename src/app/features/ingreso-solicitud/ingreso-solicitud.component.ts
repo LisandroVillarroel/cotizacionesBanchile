@@ -21,7 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -61,7 +61,8 @@ import { AseguradoService } from './service/asegurado.service';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { EnviarCoordinadorComponent } from '@features/detalle-solicitud/enviar-coordinador/enviar-coordinador.component';
+import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
+
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -125,6 +126,7 @@ export default class IngresoSolicitudComponent {
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   ingresoSolicitudService = inject(IngresoSolicitudService);
+  solicitudService = inject(DetalleSolicitudService);
 
   esIgualAlAsegurado: boolean = false;
 
@@ -210,7 +212,7 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-  ngOnInit() {
+  OnInit() {
     this.cargaRubro();
   }
 
@@ -221,22 +223,22 @@ export default class IngresoSolicitudComponent {
           this.datoRubros.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Rubros.');
       },
     });
   }
 
   async seleccionaRubro(_codigoRubro: number) {
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    //const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Tipos de Seguros.');
       },
     });
   }
@@ -262,7 +264,7 @@ export default class IngresoSolicitudComponent {
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
 
-    console.log('RUT enviado al servicio:', rutIngresado);
+    //console.log('RUT enviado al servicio:', rutIngresado);
 
     this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
@@ -323,14 +325,14 @@ export default class IngresoSolicitudComponent {
   grabaContratanteAux() {}
 
   async grabaContratante() {
-    console.log('form contratante:', this.agregaSolicitudContratante().value);
+    /* console.log('form contratante:', this.agregaSolicitudContratante().value);
     console.log(
       'aseguradeCheck:',
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-    );
+    ); */
     this.ingresoSolicitud = {
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       contratante: {
         rut_contratante:
           this.agregaSolicitudContratante().get('rutCliente')!.value,
@@ -376,8 +378,8 @@ export default class IngresoSolicitudComponent {
             this.idSolicitud = dato.p_id_solicitud;
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR', 'No fue posible crear la solicitud.');
         },
       });
   }
@@ -393,8 +395,8 @@ export default class IngresoSolicitudComponent {
 
     this.asegurado = {
       p_id_solicitud: Number(this.contratanteInfo().id),
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       p_rut_asegurado: rutParaBD,
       p_nombre_razon_social_asegurado:
         this.ingresoSolicitud.contratante.nombre_razon_social_contratante,
@@ -420,14 +422,15 @@ export default class IngresoSolicitudComponent {
           this.idSolicitud = this.contratanteInfo().id;
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al asegurado.');
       },
     });
   }
 
-  async onBlurRutCliente(event: any) {
-    const rut = event.target.value;
+  async onBlurRutCliente(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const rut = input.value;
 
     if (validateRut(rut) === true) {
       await this.agregaSolicitudContratante()
@@ -441,7 +444,7 @@ export default class IngresoSolicitudComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: false };
   }
 
   validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
@@ -476,29 +479,38 @@ export default class IngresoSolicitudComponent {
     }
   }
 
-  enviarCoordinador(): void {
-    const dato = {
+  async enviarCoordinador(): Promise<void> {
+    const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada al coordinador. \n\n'+
+      'Una vez enviada, puedes seguir su estado \n '+
+      'desde el Menú de Gestión de Cotizaciones. \n' +
+      'El coordinador responsable será notificado y revisará \n '+
+      'que la información esté completa y correcta. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarCoordinadorComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => {
-        this.router.navigate(['/principal/cotizaciones']);
+    if(enviada)
+    {
+      this.solicitudService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.salir();
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud al coordinador.');
+        },
       });
+    }
   }
 
   salir() {

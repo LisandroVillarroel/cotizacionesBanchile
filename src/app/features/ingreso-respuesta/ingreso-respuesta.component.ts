@@ -25,25 +25,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
-import {
-  ICompania,
-  ISolicitud,
-} from '@features/detalle-solicitud/modelo/detalle-interface';
-
-import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
-import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
-import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
-import CabeceraPopupComponente from '../../shared/ui/cabeceraPopup.component';
-//import InformacionPrincipalComponent from "./informacion-principal/informacion-principal.component";
-import { MonedaService } from '@shared/service/moneda.service';
-import { MedioPagoService } from '@shared/service/medio-pago.service';
-import { BancoService } from '@shared/service/banco.service';
-import { TipoCuentaService } from '@shared/service/tipo-cuenta.service';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { StorageService } from '@shared/service/storage.service';
-import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
-import { ModificarRespuestaService } from '@shared/service/modificar-respuesta.service';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelect } from '@angular/material/select';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IMoneda } from '@shared/modelo/moneda-interface';
@@ -53,19 +41,21 @@ import { ITipoCuenta } from '@shared/modelo/tipo-cuenta-interface';
 import { IDatosArchivo } from '@shared/modelo/archivos-interface';
 import { IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 import { IModificarRespuesta } from '@shared/modelo/modificar-respuesta-interface';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatSelect } from '@angular/material/select';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 
-export interface IRespuesta {
-  infoGral: ISolicitud;
-  compania: ICompania;
-  flagAccion: boolean;
-}
+import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
+import ModalAseguradoComponent from './modal-asegurado/modal-asegurado.component';
+import { ModalBeneficiarioComponent } from './modal-beneficiario/modal-beneficiario.component';
+import CabeceraPopupComponente from '../../shared/ui/cabeceraPopup.component';
+
+import { MonedaService } from '@shared/service/moneda.service';
+import { MedioPagoService } from '@shared/service/medio-pago.service';
+import { BancoService } from '@shared/service/banco.service';
+import { TipoCuentaService } from '@shared/service/tipo-cuenta.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { StorageService } from '@shared/service/storage.service';
+import { RegistrarRespuestaService } from '@shared/service/registrar-respuesta.service';
+import { ModificarRespuestaService } from '@shared/service/modificar-respuesta.service';
+import { IRespuesta } from '@features/gestion-cotizaciones/gestionCotizacion-interface';
 
 @Component({
   selector: 'app-ingreso-respuesta',
@@ -75,7 +65,6 @@ export interface IRespuesta {
     InformacionGeneralComponent,
     CabeceraPopupComponente,
     MatDialogContent,
-    //InformacionPrincipalComponent,
     MatCardHeader,
     CommonModule,
     ReactiveFormsModule,
@@ -93,18 +82,14 @@ export interface IRespuesta {
     MatNativeDateModule,
   ],
   templateUrl: './ingreso-respuesta.component.html',
-  styleUrl: './ingreso-respuesta.component.css',
 })
 export class IngresoRespuestaComponent {
   public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
   public readonly modoEdicion = !this.datos.flagAccion; // false = edición
+  public titulo: string = '';
 
-  /*   infoPrincipalComponent!: InformacionPrincipalComponent;
-  @ViewChild(InformacionPrincipalComponent)
-  panelOpenState = false;
- */
   verDetalleAse() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -201,7 +186,7 @@ export class IngresoRespuestaComponent {
     private dialogRef: MatDialogRef<IngresoRespuestaComponent>
   ) {
     const sesion = this._storage();
-    this.tipoUsuario = sesion?.usuarioLogin.tipoUsuario!;
+    this.tipoUsuario = sesion?.usuarioLogin?.tipoUsuario ?? "";
   }
 
   cargaMoneda() {
@@ -211,8 +196,8 @@ export class IngresoRespuestaComponent {
           this.datosMoneda.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener las monedas.');
       },
     });
   }
@@ -224,8 +209,8 @@ export class IngresoRespuestaComponent {
           this.datosMedioPago.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los medios de pago.');
       },
     });
   }
@@ -237,8 +222,8 @@ export class IngresoRespuestaComponent {
           this.datosBanco.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los bancos.');
       },
     });
   }
@@ -250,14 +235,19 @@ export class IngresoRespuestaComponent {
           this.datosTipoCuenta.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los tipos de cuenta.');
       },
     });
   }
 
-  async ngOnInit() {
+  async OnInit() {
     // Deshabilitar pTermino y pVencimiento inicialmente
+    if(this.datos.flagAccion){
+      this.titulo ="Ingresar";
+    } else {
+      this.titulo = "Modificar";
+    }
     this.pTermino.disable();
     this.pVencimiento.disable();
 
@@ -328,17 +318,19 @@ export class IngresoRespuestaComponent {
     this.fileInputCompania.nativeElement.click();
   }
 
-  onFileSelectedPropuesta(event: any) {
-    const filePpta: File = event.target.files[0];
-    if (filePpta) {
+  onFileSelectedPropuesta(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const filePpta: File = input.files[0];
       this.selectedPropuestaFile = filePpta;
       this.nombreArchivoPropuesta = filePpta.name;
     }
   }
 
-  onFileSelectedCompania(event: any) {
-    const fileCia: File = event.target.files[0];
-    if (fileCia) {
+  onFileSelectedCompania(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const fileCia: File = input.files[0];
       this.selectedCompaniaFile = fileCia;
       this.nombreArchivoCompania = fileCia.name;
     }
@@ -359,7 +351,7 @@ export class IngresoRespuestaComponent {
   registraRespuesta() {
     const datos: IRegistrarRespuesta = {
       p_id_solicitud: this.idSolicitud,
-      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro!, //
+      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro ?? "", //
       p_id_moneda: this.formRespuesta().get('moneda')!.value,
       p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
       p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,
@@ -388,29 +380,30 @@ export class IngresoRespuestaComponent {
       //archivoCompania: this.selectedCompaniaFile,
       //archivoPropuesta: this.selectedPropuestaFile,
 
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
     };
     this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
       next: async (res) => {
         if (res.codigo === 200) {
-          const result = await this.notificacioAlertnService.confirmacion(
+          await this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
             'La respuesta se ha registrado exitosamente.'
           );
           this.dialogRef.close(true);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible registrar la respuesta de la compañía.');
       },
     });
   }
 
   modificaRespuesta() {
     const datos: IModificarRespuesta = {
-      p_id_usuario: String(this._storage()?.usuarioLogin.usuario!),
-      p_tipo_usuario: String(this._storage()?.usuarioLogin.tipoUsuario!),
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       p_id_solicitud: Number(this.idSolicitud),
       p_id_compania_seguro: Number(this.datos.compania?.p_id_compania_seguro),
       p_id_moneda: Number(this.formRespuesta().get('moneda')!.value),
@@ -458,9 +451,10 @@ export class IngresoRespuestaComponent {
           this.dialogRef.close(true);
         }
       },
-      error: (error) => {
-        console.error('Error en modificarRespuesta:', error);
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        //console.error('Error en modificarRespuesta:', error);
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible modificar la respuesta de la compañía.');
       },
     });
   }
@@ -473,7 +467,7 @@ export class IngresoRespuestaComponent {
   }
 
   // Método para formato DD/MM/YYYY para modificar
-  formatFechaDDMMYYYY(fecha: any): string {
+  formatFechaDDMMYYYY(fecha: Date): string {
     if (!fecha) return '';
     const dateObj = fecha instanceof Date ? fecha : new Date(fecha);
     const dia = String(dateObj.getDate()).padStart(2, '0');

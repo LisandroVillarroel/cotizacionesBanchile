@@ -16,16 +16,16 @@ export class UsuarioService {
   });
 
   constructor() {}
-  postAgregaUsuario(agregaUsuario: IUsuario): Observable<any> {
+  postAgregaUsuario(agregaUsuario: IUsuario): Observable<IResponse> {
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/crearUsuario`, agregaUsuario, {
+      .post<IResponse>(`${environment.apiUrlConsumer}/crearUsuario`, agregaUsuario, {
         headers: this.headers,
       })
   }
 
-  postModificaUsuario(modificaUsuario: IUsuario): Observable<any> {
+  postModificaUsuario(modificaUsuario: IUsuario): Observable<IResponse> {
     return this.http
-      .post<any>(
+      .post<IResponse>(
         `${environment.apiUrlConsumer}/modificarUsuario`,
         modificaUsuario,
         {
@@ -37,18 +37,18 @@ export class UsuarioService {
   postEliminaUsuario(
     isolicitud: number,
     rutUsuario: string
-  ): Observable<any> {
+  ): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_usuario: rutUsuario,
     };
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/eliminarUsuario`, parametro, {
+      .post<IResponse>(`${environment.apiUrlConsumer}/eliminarUsuario`, parametro, {
         headers: this.headers,
       })
   }
 
-  postListadoUsuario(filtro: any): Observable<DatosUsuarioLista> {
+  postListadoUsuario(filtro: IUsuarioRequest): Observable<DatosUsuarioLista> {
     return this.http
       .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, filtro, { headers: this.headers } )
   }

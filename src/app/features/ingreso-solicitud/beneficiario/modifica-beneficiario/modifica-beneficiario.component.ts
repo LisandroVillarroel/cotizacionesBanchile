@@ -29,6 +29,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
+
 @Component({
   selector: 'app-modifica-beneficiario',
   standalone: true,
@@ -207,8 +208,9 @@ export class ModificaBeneficiarioComponent {
     }
   } */
 
-  async onBlurRutBeneficiario(event: any) {
-    const rut = event.target.value;
+  async onBlurRutBeneficiario(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const rut = input.value;
 
     if (validateRut(rut) === true) {
       //Mostrar en el input con puntos y guion
@@ -231,8 +233,8 @@ export class ModificaBeneficiarioComponent {
 
     this.beneficiario = {
       p_id_solicitud: Number(this.data.idSolicitud),
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       //p_rut_beneficiario: this.modificaBeneficiario().get('rutBeneficiario')!.value,
       p_rut_beneficiario: rutParaBD,
       p_nombre_razon_social_beneficiario:
@@ -260,18 +262,18 @@ export class ModificaBeneficiarioComponent {
       p_casa_beneficiario:
         this.modificaBeneficiario().get('casaBeneficiario')!.value,
     };
-    console.log('Beneficiario Modificado:', this.beneficiario);
+    //console.log('Beneficiario Modificado:', this.beneficiario);
     this.beneficiarioService
       .postModificaBeneficiario(this.beneficiario)
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
+          //console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.dialogRef.close('modificado');
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService = inject(NotificacioAlertnService);
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible modificar al beneficiario.');
         },
       });
   }

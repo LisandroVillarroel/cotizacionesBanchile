@@ -1,6 +1,8 @@
+import { ICompania, ISolicitud } from "@features/detalle-solicitud/modelo/detalle-interface"
+
 export interface IResumenCotizaciones{
   recibidas: number,
-  pendientes: number,
+  aceptadas: number,
   emitidas: number,
   firmadas: number,
   por_firmar: number
@@ -33,7 +35,7 @@ export interface IGestionResponse{
   ps_cursorPen: IGestionCotizacion[],
   ps_cursorProGen: IGestionCotizacion[],
   ps_cursorProFir: IGestionCotizacion[],
-  ps_cursorPorFir: IGestionCotizacion[],
+  ps_cursorFirPen: IGestionCotizacion[],
   p_nro_cotiz_reg: number,
   p_nro_prop_pend: number,
   p_nro_prop_gene: number,
@@ -41,4 +43,17 @@ export interface IGestionResponse{
   p_nro_prop_firm_pend: number
   vcEstado: string,
   vcEstadoCreacion: string
+}
+
+export interface IApruebaCotRequest {
+    p_id_solicitud: number,
+    p_id_compania_seguro: number,
+    p_id_usuario: string,
+    p_tipo_usuario: string
+}
+
+export interface IRespuesta {
+  infoGral: ISolicitud;
+  compania: ICompania;
+  flagAccion: boolean;
 }

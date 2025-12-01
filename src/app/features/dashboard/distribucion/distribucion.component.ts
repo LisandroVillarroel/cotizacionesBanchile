@@ -1,12 +1,11 @@
 import { IListadoSolicitudes } from './../datosSolicitud-Interface';
-import { IResumenSolicitudes } from '@features/dashboard/datosSolicitud-Interface';
 import { Component, computed, input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 
 // Angular Material
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -81,7 +80,7 @@ export default class DistribucionComponent {
     this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
   }
 
-  async ngOnInit() {
+  async OnInit() {
     this.resumenGeneral_Rubro.set(this.resumenGeneral());
     this.cargaRubros();
   }

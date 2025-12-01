@@ -9,6 +9,7 @@ import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { RubroService } from '@shared/service/rubro.service';
 import { EstadoService } from '@shared/service/estado.service';
+import { IRubro } from '@shared/modelo/rubro-interface';
 
 @Component({
   selector: 'app-grafico-pie',
@@ -52,7 +53,7 @@ export class GraficoPieComponent implements OnInit {
     }
   });
   // Preparar datos para el gráfico
-  Array.from(conteoPorTipoSeguro.entries()).forEach(([id, { nombre, cantidad }], index) => {
+  Array.from(conteoPorTipoSeguro.entries()).forEach(([index, { nombre, cantidad }]) => {
     labels.push(nombre);
     dataValues.push(cantidad);
     backgroundColors.push(this.getColor(index));
@@ -72,7 +73,7 @@ export class GraficoPieComponent implements OnInit {
 
   seguro = new FormControl();
   rubro = new FormControl();
-  datoRubros = signal<any[]>([]);
+  datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
   listadoSolicitudes = signal<IListadoSolicitudes[] | undefined>(undefined);
   ngOnInit() {

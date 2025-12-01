@@ -1,8 +1,6 @@
 import {
   Component,
-  computed,
   inject,
-  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -22,6 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 //interfaces
 import {
   DetalleSolicitudInterface,
@@ -30,32 +30,31 @@ import {
   IObservacion,
   ISolicitud,
 } from './modelo/detalle-interface';
+import { IMinimoResponse } from './modelo/compania';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { CompaniasContactadasService } from './service/companias-contactadas.service';
+import { GestionCotizacionesService } from '@features/gestion-cotizaciones/gestion-cotizaciones.service';
 //Componentes reutilizados
 import { InformacionGeneralComponent } from './informacion-general/informacion-general.component';
 import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
 import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
 import { CuestionarioComponent } from '@features/ingreso-solicitud/cuestionario/cuestionario.component';
 import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 //Componentes nuevos
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
-
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
-import { EnviarCoordinadorComponent } from './enviar-coordinador/enviar-coordinador.component';
-import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { CompaniasContactadasService } from './service/companias-contactadas.service';
-import { AprobarSolicitudComponent } from './aprobar-solicitud/aprobar-solicitud.component';
-import { EnviarACompaniaComponent } from './companias-contactadas/enviar-a-compania/enviar-a-compania.component';
-import { IMinimoResponse } from './modelo/compania';
-import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprobar-cotizacion/aprobar-cotizacion.component';
 
+export interface seleccionada{
+  id_compania_seguro: number;
+  nombre_compania: string;
+}
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -85,44 +84,39 @@ import { AprobarCotizacionComponent } from '@features/gestion-cotizaciones/aprob
   encapsulation: ViewEncapsulation.None,
 })
 export default class DetalleSolicitudComponent {
+
   cotizacionSeleccionada: number | null = null;
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
-
-
 
 constructor() {
     const data = inject(MAT_DIALOG_DATA) as { idSolicitud: number; flagSoloCerrar?: boolean };
     this.idSolicitud = data.idSolicitud;
     this.flagSoloCerrar = data.flagSoloCerrar ?? false;
-    console.log('flagSoloCerrar en Compañias Contactadas:', this.flagSoloCerrar);
   }
-
 
   panelOpenState = false;
   panelOpenState2 = false;
 
-//  idSol = computed(() => this.idSolicitud.toString());
   minimo = 0;
   puedeEnviar = false;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
+  solicitudService = inject(DetalleSolicitudService);
+  gestionCotService = inject(GestionCotizacionesService);
 
   verEjec = true;
   verCoord = true;
 
-  detalleService = inject(DetalleSolicitudService);
   infoGral = signal<ISolicitud | undefined>(undefined);
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
-
-
 
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
@@ -136,7 +130,7 @@ constructor() {
 
   flagSoloCerrar = false;
 
-  async ngOnInit() {
+  async OnInit() {
     this.cargarSolicitud(this.idSolicitud);
     this.obtenerMinimo(this.idSolicitud);
     this.cargarCompanias(this.idSolicitud);
@@ -169,8 +163,9 @@ constructor() {
     this.flagCoordinador = true;
     this.flagPropuesta = true;
     this.flagCotizacion = true;
+    this.flagAprobarCot = true;
 
-    this.detalleService.postDetalle(idSolicitud).subscribe({
+    this.solicitudService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
@@ -178,7 +173,7 @@ constructor() {
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
             nombre_razon_social_contratante:
-              dato.p_nombre_razon_social_contratante,
+            dato.p_nombre_razon_social_contratante,
             id_rubro: dato.p_id_rubro,
             nombre_rubro: dato.p_nombre_rubro,
             id_tipo_seguro: dato.p_id_tipo_seguro,
@@ -222,15 +217,14 @@ constructor() {
             }
           }
           if (this.edoSolicitud()! === 'Propuesta Pendiente') {
-            console.log('edoSolicitud',this.edoSolicitud());
-
+            //console.log('edoSolicitud',this.edoSolicitud());
             this.flagPropuesta = false;
           }
           /* Fin BackEnd */
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el detalle de la solicitud.');
       },
     });
   }
@@ -238,19 +232,21 @@ constructor() {
   soloConsulta(){
     return !(this.verEjec && !this.flagCoordinador);
   }
-  cargarCompanias(idSolicitud: any) {
+
+  cargarCompanias(idSolicitud: number) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          if(this.companias()?.length! < this.minimo){
+          const dimension = this.companias()?.length ?? 0;
+          if(dimension < this.minimo){
             this.puedeEnviar = true;
           }else{
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
@@ -260,22 +256,21 @@ constructor() {
     this.companiasService.postMinimo(idSolicitud).subscribe({
       next: (dato: IMinimoResponse) => {
         if (dato.codigo === 200) {
+          const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
-          if (this.companias()?.length! < this.minimo) {
+          if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible obtener  el mínimo de compañías a contactar.');
       },
     });
   }
-
-  solicitudId: any;
-  DetalleSolicitudComponent: any;
 
   devolverSolicitud(): void {
     if (this.flagSoloCerrar) return;
@@ -300,34 +295,48 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  aprobarSolicitud(): void {
+  async aprobarSolicitud(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
-    const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
+    const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Aprobar solicitud',
+      'La solicitud nro. '+ this.idSolicitud +' será aprobada. \n\n'+
+      'Una vez aprobada estará disponible para \n '+
+      'ser enviada a las compañías de seguros. \n' +
+      'Puedes revisar su status ingresando al \n '+
+      'detalle de la solicitud desde el menú de \n'+
+      'Gestión de Solicitudes.\n\n ¿Deseas continuar?',
+      'Aprobar solicitud', 'Cancelar'
+    );
 
-    this.dialog
-      .open(AprobarSolicitudComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
+    if(aprobada)
+    {
+      this.solicitudService.postApruebaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido aprobada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible aprobar la solicitud.');
+        },
+      });
+    }
   }
 
   anularSolicitud(): void {
     if (this.flagSoloCerrar) return;
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -344,28 +353,39 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  enviarCoordinador(): void {
+  async enviarCoordinador(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada al coordinador. \n\n'+
+      'Una vez enviada, puedes seguir su estado \n '+
+      'desde el Menú de Gestión de Cotizaciones. \n' +
+      'El coordinador responsable será notificado y revisará \n '+
+      'que la información esté completa y correcta. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarCoordinadorComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
+    if(enviada)
+    {
+      this.solicitudService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
+        },
+      });
+    }
   }
 
   agregarCompania(): void {
@@ -376,8 +396,8 @@ constructor() {
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -397,42 +417,52 @@ constructor() {
       .subscribe(() => { this.recargar(); });
   }
 
-  enviarCia(): void {
+  async enviarCia(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Enviar solicitud a Coordinador',
+      'La solicitud nro. '+ this.idSolicitud +' será enviada a las compañías seleccionadas. \n\n'+
+      'Si deseas enviarla a otras compañías, puedes \n '+
+      'hacerlo desde el detalle de la solicitud \n' +
+      'en el menú de Gestión de solicitudes. \n\n ¿Deseas continuar?',
+      'Enviar solicitud', 'Cancelar'
+    );
 
-    //Ajustes clave para evitar espacio en blanco
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
-
-    this.dialog
-      .open(EnviarACompaniaComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(() => { this.recargar(); });
-
+    if(enviada)
+    {
+      this.companiasService.postEnviaSolicitud(request).subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido enviada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
+        },
+      });
+    }
   }
+
 
   crearPropuesta(): void {
     if (this.flagSoloCerrar) return;
-    console.log('flagPropuesta',this.flagPropuesta);
-    console.log('verCoord',this.verCoord);
-    const dato = {
+    /* console.log('flagPropuesta',this.flagPropuesta);
+    console.log('verCoord',this.verCoord); */
+/*     const dato = {
       solicitudId: this.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante,
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
+    }; */
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -454,33 +484,42 @@ constructor() {
         this.obtenerMinimo(this.idSolicitud);
   }
 
-
-   aprobarCotizacion(): void {
+  async aprobarCotizacion(): Promise<void> {
     if (this.flagSoloCerrar) return;
-    console.log('Cotización seleccionada: ', this.cotizacionSeleccionada);
-    const dato = {
+    const request = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_id_cotizacion: this.cotizacionSeleccionada
+      p_id_compania_seguro: this.cotizacionSeleccionada!,
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
-    //console.log('p_id_solicitud,p_id_usuario', dato.p_id_solicitud, dato.p_id_usuario);
-    const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '600px'; // Tamaño fijo y controlado
-    dialogConfig.maxHeight = '90vh'; // Altura máxima visible
-    dialogConfig.panelClass = 'custom-dialog-container'; // Clase para estilos personalizados
-    dialogConfig.data = dato;
+    const cia = this.companias()?.find(c => c.p_id_compania_seguro === this.cotizacionSeleccionada);
+    const companiaSeleccionada = cia ? cia.p_nombre_compania_seguro : 'Desconocida';
+    const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
+      'Aprobar cotización',
+      'Estás por aprobar la cotización presentada por \n' + companiaSeleccionada +
+      ' para la solicitud '+ this.idSolicitud +'\n\n'+
+      'Una vez aprobada, las demás cotizaciones se rechazarán automáticamente.'+
+      '\n\n¿Deseas continuar?',
+      'Aprobar cotización', 'Cancelar'
+    );
 
-    this.dialog
-      .open(AprobarCotizacionComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((dato) => {
-        this.cargarSolicitud(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cotizacionSeleccionada = null;
+    if(aprobada)
+    {
+    this.gestionCotService
+      .postApruebaCotizacion(request)
+      .subscribe({
+        next: async (dato) => {
+          if (dato.codigo === 200) {
+            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La cotización ha sido aprobada exitosamente.");
+            this.recargar();
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible aprobar la cotización.');
+        },
       });
+    }
   }
 }

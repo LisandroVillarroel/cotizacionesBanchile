@@ -1,9 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
-import { GestionCotizacionesComponent } from './gestion-cotizaciones.component';
+import GestionCotizacionesComponent from './gestion-cotizaciones.component';
 
 describe('GestionCotizacionesComponent', () => {
   let component: GestionCotizacionesComponent;

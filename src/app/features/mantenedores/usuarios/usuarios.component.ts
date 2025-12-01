@@ -47,7 +47,6 @@ export default class UsuariosComponent {
  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  tipoUsuario = signal<string>('');
   datoUsuarios = signal<IUsuarioLista[]>([]);
   datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
   usuarioService = inject(UsuarioService);
@@ -121,13 +120,21 @@ export default class UsuariosComponent {
    p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
    p_tipo_consulta:p_tipo_consulta_
     };
+    let tipo ="E";
+    if(consulta=="E"){
+      tipo ="Ejecutivos";
+    }else if(consulta=="C"){
+      tipo = "Coordinadores";
+    }else { //if(consulta=="S")
+      tipo = "Ejecutivos y Coordinadores";
+    }
 
     this.usuarioService
       .postListadoUsuario(estructura_lista)
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
-            console.log('Lista de Usuarios:', dato.p_cursor);
+            //console.log('Lista de Usuarios:', dato.p_cursor);
             this.datoUsuarios.set(dato.p_cursor);
           }
         },
@@ -161,14 +168,14 @@ export default class UsuariosComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.tipoUsuario();
+    dialogConfig.data = this.tipoUsuario;
 
     this.dialog
       .open(AgregaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataLista(this.tipoUsuario()!);
+          this.rescataLista(this.tipoUsuario);
         }
       });
   }
@@ -193,8 +200,8 @@ export default class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
-          console.log('Modificación Confirmada:', data);
-          this.rescataLista(this.tipoUsuario()!);
+          //console.log('Modificación Confirmada:', data);
+          this.rescataLista(this.tipoUsuario);
         }
       });
   }
@@ -216,7 +223,7 @@ export default class UsuariosComponent {
   eliminaUsuario(datoUsuarioPar: IUsuario) {
      const parametro: IUsuarioListaParametro = {
       datoUsuarioPar: datoUsuarioPar,
-      tipoUsuario: this.tipoUsuario(),
+      tipoUsuario: this.tipoUsuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -232,7 +239,7 @@ export default class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataLista(this.tipoUsuario()!);
+          this.rescataLista(this.tipoUsuario);
         }
       });
   }
