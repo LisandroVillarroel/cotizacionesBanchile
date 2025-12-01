@@ -79,8 +79,8 @@ import { IAuth } from './auth-Interface';
                 accessToken: '=)((//&%$#"!$&/((',
               }
             }
-            const datos = JSON.stringify(this.sesion);
-            this.storage.set('sesion', datos);
+           // const datos = JSON.stringify(this.sesion);
+            this.storage.set('sesion', this.sesion);
             this.router.navigate(['inicio']);
           }
         },
