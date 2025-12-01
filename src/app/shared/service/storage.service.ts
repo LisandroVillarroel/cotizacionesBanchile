@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { decrypt, encrypt } from '@shared/utils/encriptador';
 
 @Injectable({
@@ -18,7 +17,7 @@ export class StorageService {
     return null;
   }
 
-  set(key: string, value: ISesionInterface): void {
+  set(key: string, value: string): void {
     // if (this.chequeaPlataformaService.chequeaSiBrowser()) {
     let data = JSON.stringify(value);
     //console.log('environment.production:', environment.production);
