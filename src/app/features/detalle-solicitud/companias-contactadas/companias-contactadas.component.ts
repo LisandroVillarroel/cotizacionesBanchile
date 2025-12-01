@@ -23,6 +23,7 @@ import { MatDivider } from '@angular/material/divider';
 import { ICompania, ISolicitud } from '../modelo/detalle-interface';
 import { VerCompaniaComponent } from './ver-compania/ver-compania.component';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
+import { IEliminaCompania } from '../modelo/compania';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -151,12 +152,14 @@ export class CompaniasContactadasComponent {
   }
 
   async borrarCompania(idCompania: number) {
-    const request = {
-      p_id_solicitud: this.infoGral()?.id_solicitud,
+    const request:IEliminaCompania = {
+      p_id_solicitud: this.infoGral()!.id_solicitud,
       p_id_compania_seguro: idCompania,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario,
+      p_id_usuario: this.id_usuario!,
+      p_tipo_usuario: this.tipoUsuario!,
     };
+
+
 
     const eliminada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Eliminar Compañía',
@@ -200,7 +203,7 @@ export class CompaniasContactadasComponent {
 
       p_id_compania_seguro: companiaSeleccionada?.p_id_compania_seguro,
       nombre_compania_seguro: companiaSeleccionada?.p_nombre_compania_seguro,
-      correo: companiaSeleccionada?.correo_compania_seguro,
+      correo: companiaSeleccionada.correo_compania_seguro,
       p_detalle_solicitud_cotizacion:
         companiaSeleccionada?.p_detalle_solicitud_cotizacion || '',
       p_id_detalle_solicitud_cotizacion:
