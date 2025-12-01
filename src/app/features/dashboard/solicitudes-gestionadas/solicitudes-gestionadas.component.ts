@@ -110,19 +110,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
     "accion"
   ];
 
-  // solicitudesCoord(){
-  //   return this.datosSolicitud()?.filter(item =>{
-  //     return !item.descripcion_estado?.toLowerCase().includes("edicion")})
-  // }
-
   dataSourceSolicitud = computed(() => {
-    // console.log('Grilla', this.datosSolicitud());
     const tabla = new MatTableDataSource<IListadoSolicitudes>();
-    // if(this.tipoUsuario === "C"){
-    //   tabla.data = this.solicitudesCoord()!;
-    // }else{
     tabla.data = this.datosSolicitud()!;
-    // }
     this.setSortingAndPagination(tabla);
     return tabla;
   });
@@ -142,7 +132,6 @@ export class SolicitudesGestionadasComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  // Señal computada para los datos filtrados
   datosFiltrados() {
     const contratante = this.filtroFormulario().value.contratante ?? '';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
@@ -216,7 +205,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Rubros.');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Rubros.');
       },
     });
   }
@@ -229,13 +218,12 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Estados');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Estados');
       },
     });
   }
 
   async seleccionaRubro(datos: IRubro) {
-
     this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -243,7 +231,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Tipos de Seguro');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Tipos de Seguro');
       },
     });
   }
@@ -281,7 +269,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
       'color': estado?.color_estado,
       'background-color': estado?.background_estado,
       'border': '1px solid' + estado?.color_estado,
-      'width': '141px',//'fit-content',
+      'width': '141px',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'

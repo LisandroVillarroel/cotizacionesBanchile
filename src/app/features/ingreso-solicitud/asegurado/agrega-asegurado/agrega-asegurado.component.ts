@@ -21,7 +21,7 @@ import {
 } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
-import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IDatosPersona } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -214,7 +214,7 @@ export class AgregaAseguradoComponent {
 
       if (rutParaBD === '11898216-9') {
         this.aseguradoService.getDatosAsegurado(rutParaBD).subscribe({
-          next: (response: any) => {
+          next: (response: IDatosPersona) => {
             if (response.codigo === 200 && response.data) {
               const data = response.data;
 
@@ -260,7 +260,7 @@ export class AgregaAseguradoComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: false };
   }
 
   grabar() {

@@ -21,7 +21,7 @@ import {
 } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
-import { IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IBeneficiario, IDatosPersona } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -170,7 +170,7 @@ export class AgregaBeneficiarioComponent {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return { rutInvalido: false };
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión
@@ -219,7 +219,7 @@ export class AgregaBeneficiarioComponent {
 
       if (rutParaBD === '11898216-9') {
         this.beneficiarioService.getDatosBenficiario(rutParaBD).subscribe({
-          next: (response: any) => {
+          next: (response: IDatosPersona) => {
             if (response.codigo === 200 && response.data) {
               const data = response.data;
 

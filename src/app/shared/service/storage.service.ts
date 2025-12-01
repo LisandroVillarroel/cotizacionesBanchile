@@ -8,9 +8,6 @@ import { decrypt, encrypt } from '@shared/utils/encriptador';
 })
 export class StorageService {
 
-
-  //loading = signal(false);
-
   get<T>(key: string): T | null {
     const value = localStorage.getItem(key);
     if (value !== null) {
@@ -18,7 +15,6 @@ export class StorageService {
 
       return JSON.parse(value) as T;
     }
-    //}
     return null;
   }
 
@@ -30,7 +26,6 @@ export class StorageService {
       data = encrypt(data);
     }
     localStorage.setItem(key, data);
-    //}
   }
 
   remueve(key: string): void {
