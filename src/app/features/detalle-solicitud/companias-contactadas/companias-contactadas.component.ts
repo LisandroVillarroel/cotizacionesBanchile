@@ -200,9 +200,9 @@ export class CompaniasContactadasComponent {
 
       p_id_compania_seguro: companiaSeleccionada?.p_id_compania_seguro,
       nombre_compania_seguro: companiaSeleccionada?.p_nombre_compania_seguro,
-      correo: companiaSeleccionada.correo_compania_seguro,
-      p_detalle_solicitud_cotizacion:
-        companiaSeleccionada?.p_detalle_solicitud_cotizacion || '',
+      //correo: companiaSeleccionada?.correo_compania_seguro,
+      /* p_detalle_solicitud_cotizacion:
+        companiaSeleccionada?.p_detalle_solicitud_cotizacion || '', */
       p_id_detalle_solicitud_cotizacion:
         companiaSeleccionada?.p_id_detalle_solicitud_cotizacion || '',
     };
