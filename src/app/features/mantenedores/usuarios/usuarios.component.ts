@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import {  DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro, IUsuarioListaPerfiles, IUsuarioPerfile } from './usuario-Interface';
+import { DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro, IUsuarioListaPerfiles, IUsuarioPerfile } from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
 import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.component';
 import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
@@ -91,10 +91,6 @@ export default class UsuariosComponent {
     tabla.sort = this.sort;
     return tabla;
   });
-
-  constructor() {
-
-  }
 
 
   tipoUsuarioSelect = new FormControl('', Validators.required);
