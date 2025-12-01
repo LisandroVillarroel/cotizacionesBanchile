@@ -21,7 +21,7 @@ import {
 } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
-import { DatosAseguradosInterface, IBeneficiario } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IBeneficiario, IDatosPersona } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -219,7 +219,7 @@ export class AgregaBeneficiarioComponent {
 
       if (rutParaBD === '11898216-9') {
         this.beneficiarioService.getDatosBenficiario(rutParaBD).subscribe({
-          next: (response: DatosAseguradosInterface) => {
+          next: (response: IDatosPersona) => {
             if (response.codigo === 200 && response.data) {
               const data = response.data;
 

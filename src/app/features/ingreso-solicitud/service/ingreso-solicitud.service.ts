@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import {
-  DatosAseguradosInterface,
+  IDatosPersona,
   IIngresoSolicitud,
   IIngresoSolicitud_Recibe,
 } from '../modelo/ingresoSolicitud-Interface';
@@ -38,8 +38,8 @@ export class IngresoSolicitudService {
   }
 
   //Este es el servicio que llama a URL de prueba que está en el servidor local para cliente Banco
-  getDatosContratante(rut: string): Observable<DatosAseguradosInterface> {
-    return this.http.get<DatosAseguradosInterface>(
+  getDatosContratante(rut: string): Observable<IDatosPersona> {
+    return this.http.get<IDatosPersona>(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
       { headers: this.headers }
     );

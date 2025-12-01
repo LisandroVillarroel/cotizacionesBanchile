@@ -71,7 +71,7 @@ export interface IAseguradoLista {
   usuarioModificacion?: string;
 }
 
-export interface IAseguradoQms {
+export interface IPersona {
     codigoRetorno: string,
     rutCliente: string,
     nombre: string,
@@ -193,9 +193,15 @@ export interface IAseguradoListaParametro {
 export interface DatosAseguradosInterface {
   codigo: number;
   mensaje: string;
-  data: IAseguradoQms;
-/*   vcEstado: string;
-  vcEstadoCreacion: string; */
+  p_cursor: IAseguradoLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}
+
+export interface IDatosPersona {
+  codigo: number;
+  mensaje: string;
+  data: IPersona;
 }
 
 export interface IBeneficiario {

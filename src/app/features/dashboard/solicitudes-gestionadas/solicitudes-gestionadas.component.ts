@@ -236,8 +236,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   async seleccionaRubro(datos: IRubro) {
     const _codigoRubro = datos.p_id_rubro
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    //const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
+    this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
