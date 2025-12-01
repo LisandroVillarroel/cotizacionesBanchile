@@ -39,7 +39,7 @@ export interface DatosUsuarioLista {
 export interface IUsuarioListaParametro  {
   datoUsuarioPar: IUsuario;
   tipoUsuario: string;
-};
+}
 
 export interface IUsuarioPerfile  {
   p_id_perfil: string;

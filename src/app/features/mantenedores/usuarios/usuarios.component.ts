@@ -106,21 +106,13 @@ export default class UsuariosComponent {
 
   async ngOnInit() {
     this.LitaPerfiles();
-    this.rescataLista('A');
+    this.rescataLista();
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataLista(p_tipo_consulta_: string) {
-    const estructura_lista = {
-   // p_id_usuario: "sup002",
-   // p_tipo_usuario: "S",
-   // p_tipo_consulta:"E"
+  rescataLista() {
 
-   p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-   p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-   p_tipo_consulta:p_tipo_consulta_
-    };
-    let tipo ="E";
+ /*   let tipo ="E";
     if(consulta=="E"){
       tipo ="Ejecutivos";
     }else if(consulta=="C"){
@@ -128,9 +120,9 @@ export default class UsuariosComponent {
     }else { //if(consulta=="S")
       tipo = "Ejecutivos y Coordinadores";
     }
-
+*/
     this.usuarioService
-      .postListadoUsuario(estructura_lista)
+      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, 'E')
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
@@ -138,7 +130,7 @@ export default class UsuariosComponent {
             this.datoUsuarios.set(dato.p_cursor);
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
@@ -146,15 +138,15 @@ export default class UsuariosComponent {
 
  LitaPerfiles() {
   this.usuarioService
-      .postListaPerfiles(this._storage()?.usuarioLogin.usuario!,
-   this._storage()?.usuarioLogin.tipoUsuario!)
+      .postListaPerfiles(this._storage()!.usuarioLogin.usuario!,
+   this._storage()!.usuarioLogin.tipoUsuario!)
       .subscribe({
         next: (dato: IUsuarioListaPerfiles) => {
           if (dato.codigo === 200) {
             this.datoPerfilesUsuarios.set(dato.perfiles);
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
@@ -168,14 +160,14 @@ export default class UsuariosComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.tipoUsuario;
+    dialogConfig.data = this._storage()!.usuarioLogin.tipoUsuario;
 
     this.dialog
       .open(AgregaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataLista(this.tipoUsuario);
+          this.rescataLista();
         }
       });
   }
@@ -201,7 +193,7 @@ export default class UsuariosComponent {
       .subscribe((data) => {
         if (data === 'modificado') {
           //console.log('Modificación Confirmada:', data);
-          this.rescataLista(this.tipoUsuario);
+          this.rescataLista();
         }
       });
   }
@@ -223,7 +215,7 @@ export default class UsuariosComponent {
   eliminaUsuario(datoUsuarioPar: IUsuario) {
      const parametro: IUsuarioListaParametro = {
       datoUsuarioPar: datoUsuarioPar,
-      tipoUsuario: this.tipoUsuario,
+      tipoUsuario: this._storage()!.usuarioLogin.tipoUsuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -239,13 +231,13 @@ export default class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataLista(this.tipoUsuario);
+          this.rescataLista();
         }
       });
   }
 
-  seleccionaTipoUsuario(event: any) {
-    console.log(event.value);
+  seleccionaTipoUsuario(event: Event) {
+    console.log(event);
 
   }
 }

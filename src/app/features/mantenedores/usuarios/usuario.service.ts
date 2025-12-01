@@ -2,7 +2,8 @@ import {HttpClient,  HttpHeaders,} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaPerfiles } from './usuario-Interface';
+import { DatosUsuarioLista, IUsuario, IUsuarioListaPerfiles } from './usuario-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -48,9 +49,14 @@ export class UsuarioService {
       })
   }
 
-  postListadoUsuario(filtro: IUsuarioRequest): Observable<DatosUsuarioLista> {
+  postListadoUsuario(p_id_usuario: string, p_tipo_usuario: string, tipoConsulta:string): Observable<DatosUsuarioLista> {
+     const estructura_lista = {
+      p_id_usuario: p_id_usuario, //"sup002",
+      p_tipo_usuario: p_tipo_usuario,//"S",
+      p_tipo_consulta: tipoConsulta//"E"
+    };
     return this.http
-      .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, filtro, { headers: this.headers } )
+      .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, estructura_lista, { headers: this.headers } )
   }
 
    postListaPerfiles(p_id_usuario: string, p_tipo_usuario: string): Observable<IUsuarioListaPerfiles> {
