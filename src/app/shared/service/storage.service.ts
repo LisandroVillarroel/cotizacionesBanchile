@@ -7,9 +7,6 @@ import { decrypt, encrypt } from '@shared/utils/encriptador';
 })
 export class StorageService {
 
-
-  //loading = signal(false);
-
   get<T>(key: string): T | null {
     const value = localStorage.getItem(key);
     if (value !== null) {
@@ -17,19 +14,14 @@ export class StorageService {
 
       return JSON.parse(value) as T;
     }
-    //}
     return null;
   }
 
   set(key: string, data: string): void {
-    // if (this.chequeaPlataformaService.chequeaSiBrowser()) {
-    //let data = JSON.stringify(value);
-    //console.log('environment.production:', environment.production);
     if (!environment.production) {
       data = encrypt(data);
     }
     localStorage.setItem(key, data);
-    //}
   }
 
   remueve(key: string): void {

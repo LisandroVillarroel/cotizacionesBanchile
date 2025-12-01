@@ -111,9 +111,6 @@ export class CompaniasContactadasComponent {
   verCotiPropuesta(idCompania: number): void {
     this.compania.set(this.companias()?.find(
       (c) => c.p_id_compania_seguro === idCompania));
-    /* this.compania = computed(() =>
-      this.companias()!.filter((c) => c.p_id_compania_seguro === idCompania)
-    ); */
 
     const dato = {
       infoGral: this.infoGral()!,
