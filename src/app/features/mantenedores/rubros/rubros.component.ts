@@ -160,13 +160,13 @@ export default class RubrosComponent {
 
     this.dialog
       .open(ModificaRubroComponent, dialogConfig)
-    //     .afterClosed()
-    //     .subscribe((data) => {
-    //       if (data === 'modificado') {
-    //         console.log('Modificación Confirmada:', data);
-    //         this.rescataLista(this.tipoUsuario()!);
-    //       }
-    //     });
+        .afterClosed()
+        .subscribe((data) => {
+          if (data === 'modificado') {
+            console.log('Modificación Confirmada:', data);
+            this.rescataLista();
+          }
+        });
   }
 
   consultaRubro(datoRubros: IRubroLista) {

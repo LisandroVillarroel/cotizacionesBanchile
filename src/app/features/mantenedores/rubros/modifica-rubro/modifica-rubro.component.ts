@@ -67,6 +67,7 @@ export class ModificaRubroComponent implements OnInit {
 
 ngOnInit(): void {
    this.id_rubro.setValue(String(this.data.p_id_rubro)); // Convertimos a string
+   this.id_rubro.disable(); // ✅ Deshabilita el control en el FormGroup
   this.nombre_rubro.setValue(this.data.p_nombre_rubro);
   this.estado_rubro.setValue(this.data.p_estado_rubro)
 
