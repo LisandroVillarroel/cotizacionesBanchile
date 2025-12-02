@@ -138,8 +138,8 @@ export default class UsuariosComponent {
 
  LitaPerfiles() {
   this.usuarioService
-      .postListaPerfiles(this._storage()!.usuarioLogin.usuario!,
-   this._storage()!.usuarioLogin.tipoUsuario!)
+      .postListaPerfiles(/*this._storage()!.usuarioLogin.usuario!,
+   this._storage()!.usuarioLogin.tipoUsuario!*/'ADM042','A')
       .subscribe({
         next: (dato: IUsuarioListaPerfiles) => {
           if (dato.codigo === 200) {
