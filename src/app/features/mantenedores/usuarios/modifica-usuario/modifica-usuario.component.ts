@@ -151,8 +151,8 @@ export class ModificaUsuarioComponent implements OnInit {
 
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutUsuarioNuevo(event: any) {
-    const rut = event.target.value;
+  async onBlurRutUsuarioNuevo(event: Event) {
+    const rut = (event.target as HTMLInputElement).value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
@@ -163,15 +163,16 @@ export class ModificaUsuarioComponent implements OnInit {
         });
 
       // Formato para BD
-      const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+     // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 
-  validaRut(control: FormControl): { [s: string]: boolean } {
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return null;
+
   }
 
   grabar() {
@@ -188,17 +189,17 @@ export class ModificaUsuarioComponent implements OnInit {
       p_mail_usuario_nuevo: this.modificaUsuario().get('mailUsuarioNuevo')!.value,
       p_telefono_usuario_nuevo: this.modificaUsuario().get('telefonoUsuarioNuevo')!.value,
       p_id_dependencia_usuario_nuevo: this.modificaUsuario().get('dependenciaUsuarioNuevo')!.value,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_id_usuario: this._storage()?.usuarioLogin.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario ?? ""
     };
 
 
     this.usuarioService.postAgregaUsuario(this.usuario).subscribe({
-      next: (dato:any) => {
+      next: (dato) => {
         console.log('dato:', dato);
         if (dato.codigo === 200) {
           //alert('Grabó Usuario Bien');
-          this.dialogRef.close('agregado');
+          this.dialogRef.close('modificado');
         }
       },
       error: () => {

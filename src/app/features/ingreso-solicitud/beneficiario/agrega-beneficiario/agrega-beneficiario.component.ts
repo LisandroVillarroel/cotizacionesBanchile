@@ -166,11 +166,12 @@ export class AgregaBeneficiarioComponent {
     return '';
   }
 
-  validaRut(control: FormControl): { [s: string]: boolean } {
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return { rutInvalido: false };
+    return null;
+
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión
