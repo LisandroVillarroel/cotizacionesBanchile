@@ -47,8 +47,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <a class="nav-link" routerLink="crt">Generación de Informes</a>
             </li>
              }
+             @if(hasRole(['adm_corr'])){
             <li class="nav-item dropdown" [routerLinkActive]="['active']">
-              <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" routerLink="mantenedores" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Mantenedores
               </a>
               <ul class="dropdown-menu">
@@ -58,6 +59,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
                 <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
               </ul>
             </li>
+            }
           </ul>
         </div>
       </div>

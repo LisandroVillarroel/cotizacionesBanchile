@@ -54,6 +54,6 @@ export const publicoGuard = (): CanActivateFn => {
     if (!sesion) return true;
     // router.navigateByUrl('auth/login');
     //  router.parseUrl('/portada');
-    return router.navigate(['inicio']);
+    return router.navigate(['portada']);
   };
 };

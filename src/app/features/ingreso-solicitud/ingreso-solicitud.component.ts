@@ -514,7 +514,7 @@ export default class IngresoSolicitudComponent {
   }
 
   salir() {
-    this.router.navigate(['/principal/inicio']);
+    this.router.navigate(['inicio']);
   }
 
   get mostrarDatosAsegurado(): boolean {

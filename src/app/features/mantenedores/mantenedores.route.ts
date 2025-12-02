@@ -5,7 +5,7 @@ import { guardRoles } from '@core/auth/guards/guard.service';
 export default [
   {
     path: 'usuarios',
-    canActivate: [guardRoles(['coord_corr','sup_corr'])],
+    canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/usuarios/usuarios.component'),
   },
