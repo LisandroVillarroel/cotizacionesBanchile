@@ -1,4 +1,3 @@
-// Para listar compañías
 export interface ICompaniaSeguroLista {
   p_id_compania_seguro: number;
   p_rut_compania_seguro: string;
@@ -17,6 +16,26 @@ export interface DatosCompaniaSeguroLista {
   codigo: number;
   mensaje: string;
   p_cursor: ICompaniaSeguroLista[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}
+
+export interface IContactoCompania {
+  p_id_ejecutivo_cia: number;
+  p_nombre_ejecutivo_cia: string;
+  p_correo_ejecutivo_cia: string;
+  p_id_compania_seguro: number;
+  p_estado_ejecutivo_cia: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_fecha_modificacion: string | null;
+  p_usuario_modificacion: string | null;
+}
+
+export interface DatosContactoCompania {
+  codigo: number;
+  mensaje: string;
+  p_cursor: IContactoCompania[];
   vcEstado: string;
   vcEstadoCreacion: string;
 }

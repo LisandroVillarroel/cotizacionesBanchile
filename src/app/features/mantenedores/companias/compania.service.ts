@@ -3,12 +3,11 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import {
-  // DatosCompaniaSeguroEliminar,
   DatosCompaniaSeguroLista,
   DatosCompaniaSeguroModificar,
-  // ICompaniaSeguroEliminar,
   ICompaniaSeguroModificar,
   DatosTipoSeguroCompania,
+  DatosContactoCompania,
 } from './compania-Interface';
 
 @Injectable({
@@ -50,15 +49,13 @@ export class CompaniaService {
     );
   }
 
-  /* postEliminarCompania(
-    payload: ICompaniaSeguroEliminar
-  ): Observable<DatosCompaniaSeguroEliminar> {
-    return this.http.post<DatosCompaniaSeguroEliminar>(
-      `${environment.apiUrlConsumer}/eliminarCompaniaSeguro`,
+  postListadoContactos(payload: any): Observable<DatosContactoCompania> {
+    return this.http.post<DatosContactoCompania>(
+      `${environment.apiUrlConsumer}/listarContactosCompania`,
       payload,
       { headers: this.headers }
     );
-  } */
+  }
 
   postListadoTipoSeguroCompania(
     payload: any

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import RubrosComponent from './rubros.component';
 
+import { ListarCompaniaComponent } from './listar-compania.component';
 
-describe('RubrosComponent', () => {
-  let component: RubrosComponent;
-  let fixture: ComponentFixture<RubrosComponent>;
+describe('ListarCompaniaComponent', () => {
+  let component: ListarCompaniaComponent;
+  let fixture: ComponentFixture<ListarCompaniaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RubrosComponent]
+      imports: [ListarCompaniaComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(RubrosComponent);
+    
+    fixture = TestBed.createComponent(ListarCompaniaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

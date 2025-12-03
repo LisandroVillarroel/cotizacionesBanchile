@@ -1,181 +1,30 @@
-<div
-  class="table-con-titulo mat-elevation-z6"
-  data-titulo="Compañías de Seguros"
-  style="margin-top: 32px"
->
-  <table mat-table [dataSource]="dataSource()" multiTemplateDataRows matSort>
-    <!-- N° -->
-    <ng-container matColumnDef="index">
-      <th
-        id="indexI"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 3%"
-      >
-        N°
-      </th>
-      <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 3%">
-        {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}
-      </td>
-    </ng-container>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <app-listar-compania
+        [dataSource]="dataSource()"
+        [displayedColumns]="displayedColumns"
+        [datoCompanias]="datoCompanias()"
+        (companiaSeleccionada)="cargarContactos($event)"
+      ></app-listar-compania>
+    </div>
 
-    <!-- Rut Compañía -->
-    <ng-container matColumnDef="p_rut_compania_seguro">
-      <th
-        id="_p_rut_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 11%"
-      >
-        Rut
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.p_rut_compania_seguro }}
-      </td>
-    </ng-container>
+    <div class="col-md-6">
+      <app-listar-contacto
+        [dataSource]="dataSourceContactos()"
+        [displayedColumns]="displayedColumnsContactos"
+        [contactos]="datoContactos()"
+      ></app-listar-contacto>
+    </div>
+  </div>
 
-    <!-- Nombre Compañía -->
-    <ng-container matColumnDef="p_nombre_compania_seguro">
-      <th
-        id="_p_nombre_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 15%"
-      >
-        Nombre
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 15%">
-        {{ row.p_nombre_compania_seguro }}
-      </td>
-    </ng-container>
-
-    <!-- Dirección -->
-    <ng-container matColumnDef="p_direccion_compania_seguro">
-      <th
-        id="_p_direccion_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 15%"
-      >
-        Dirección
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 15%">
-        {{ row.p_direccion_compania_seguro }}
-      </td>
-    </ng-container>
-
-    <!-- Teléfono -->
-    <ng-container matColumnDef="p_telefono_compania_seguro">
-      <th
-        id="_p_telefono_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 10%"
-      >
-        Teléfono
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 10%">
-        {{ row.p_telefono_compania_seguro }}
-      </td>
-    </ng-container>
-
-    <!-- Estado -->
-    <ng-container matColumnDef="p_estado_compania_seguro">
-      <th
-        id="_p_estado_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 8%"
-      >
-        Estado
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 8%">
-        {{ row.p_estado_compania_seguro }}
-      </td>
-    </ng-container>
-
-    <!-- Correo -->
-    <ng-container matColumnDef="p_correo_compania_seguro">
-      <th
-        id="_p_correo_compania_seguro"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 15%"
-      >
-        Correo
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 15%">
-        {{ row.p_correo_compania_seguro }}
-      </td>
-    </ng-container>
-
-    <!-- Acciones -->
-    <ng-container matColumnDef="opciones">
-      <th
-        id="opcionesI"
-        mat-header-cell
-        *matHeaderCellDef
-        style="width: 15%; text-align: center"
-      >
-        <span
-          class="agregar-texto"
-          matTooltip="Agregar nueva Compañía"
-          matTooltipPosition="above"
-          (click)="agregaNuevaCompania()"
-        >
-          <mat-icon style="vertical-align: middle">add</mat-icon>
-          Agregar
-        </span>
-      </th>
-      <td mat-cell *matCellDef="let row" style="width: 15%; text-align: center">
-        <button
-          matTooltip="Modificar"
-          mat-icon-button
-          class="tabla"
-          (click)="modificaCompania(row)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          matTooltip="Consultar"
-          mat-icon-button
-          class="tabla"
-          (click)="consultaCompania(row)"
-        >
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <!-- <button
-          matTooltip="Eliminar"
-          mat-icon-button
-          class="tabla"
-          (click)="eliminaCompania(row)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button> -->
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      class="example-element-row"
-    ></tr>
-  </table>
-
-  @if(this.datoCompanias().length === 0 ){
-  <div class="info SinInfoTabla">No hay compañías para mostrar</div>
-  }
+  <div class="row mt-3">
+    <div class="col-12">
+      <app-listar-tiposeguro
+        [dataSource]="dataSourceTiposSeguro()"
+        [displayedColumns]="displayedColumnsTiposSeguro"
+        [tiposSeguro]="datoTiposSeguro()"
+      ></app-listar-tiposeguro>
+    </div>
+  </div>
 </div>
-
-<mat-paginator
-  #myPaginator
-  [pageSizeOptions]="[10, 20, 30, 100]"
-></mat-paginator>
