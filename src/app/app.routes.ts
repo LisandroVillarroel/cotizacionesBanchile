@@ -5,7 +5,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'inicio',
+    redirectTo: 'portada',
   },
     {
       path: 'login',
@@ -17,6 +17,12 @@ export const routes: Routes = [
     loadComponent: () => import('@core/layout/principal.component'),
      canMatch: [privadoGuardMatch],
     children: [
+       {
+        path: 'portada',
+        canActivate: [guardRoles(['adm_corr','ejec_bco', 'coord_corr', 'sup_corr'])],
+
+        loadComponent: () => import('@core/layout/portada.component'),
+      },
       {
         path: 'inicio',
         canActivate: [guardRoles(['ejec_bco', 'coord_corr', 'sup_corr'])],
@@ -45,7 +51,7 @@ export const routes: Routes = [
       },
        {
         path: 'mantenedores',
-        canActivate: [guardRoles(['coord_corr','sup_corr'])],
+        canActivate: [guardRoles(['adm_corr'])],
         loadChildren: () => import('@features/mantenedores/mantenedores.route'),
       },
     ],

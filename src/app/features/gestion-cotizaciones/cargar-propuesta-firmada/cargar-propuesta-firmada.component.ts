@@ -64,7 +64,7 @@ export class CargarPropuestaFirmadaComponent {
     habilitarModificar = false;
     //tipoUsuario: string;
 
-    habilitarCards: boolean = false; // bandera para habilitar/deshabilitar los otros mat-cards
+    habilitarCards: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -99,7 +99,7 @@ export class CargarPropuestaFirmadaComponent {
       const filePptaFirmada: File = input.files[0];
       this.selectedPptaFirmadaFile = filePptaFirmada;
       this.nombrePptaFirmada = filePptaFirmada.name;
-      this.habilitarCards = true; // habilita los otros mat-card
+      this.habilitarCards = true;
     }
   }
 
@@ -125,7 +125,7 @@ export class CargarPropuestaFirmadaComponent {
     this.archivoPptaFirmada = null;
     this.nombrePptaFirmada = '';
     this.fileInputPptaFirmada.nativeElement.value = '';
-    this.habilitarCards = false; // deshabilita los otros mat-card
+    this.habilitarCards = false;
     this.eliminarArchivoFactura();
     this.eliminarArchivoDocuAdicional();
   }

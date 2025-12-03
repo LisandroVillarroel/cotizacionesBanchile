@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
-import { IUsuario, IUsuarioLista } from '../usuario-Interface';
+import { DatosUsuarioLista, IUsuario, IUsuarioLista } from '../usuario-Interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { cleanRut, formatRut, RutFormat, validateRut } from '@fdograph/rut-utilities';
 import { UsuarioService } from '../usuario.service';
@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { MatSelectModule } from '@angular/material/select';
 import { IResponse } from '@shared/modelo/servicios-interface';
+import { Jerarquia } from '@shared/utils/jerarquia';
 
 @Component({
   selector: 'app-agrega-usuario',
@@ -36,14 +37,16 @@ import { IResponse } from '@shared/modelo/servicios-interface';
   `
 
 })
-export class AgregaUsuarioComponent {
+export class AgregaUsuarioComponent implements OnInit {
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
+  jerarquia = inject(Jerarquia);
+
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  public readonly data = inject<string>(MAT_DIALOG_DATA);
+  public readonly data = inject(MAT_DIALOG_DATA);
 
   usuarioService = inject(UsuarioService);
 
@@ -53,6 +56,15 @@ export class AgregaUsuarioComponent {
   private readonly dialogRef = inject(
     MatDialogRef<AgregaUsuarioComponent>
   );
+
+
+  ngOnInit() {
+   const tipoConsulta=this.jerarquia.jerarquiaAnterior(this.data.tipoConsulta);
+
+    this.rescataLista(tipoConsulta!.p_codigo_perfil);
+
+  }
+
 
 
   idUsuarioNuevo = new FormControl('', [Validators.required]);
@@ -86,6 +98,7 @@ export class AgregaUsuarioComponent {
 
     })
   );
+
 
   getErrorMessage(campo: string) {
      if (campo === 'idUsuarioNuevo') {
@@ -167,12 +180,39 @@ export class AgregaUsuarioComponent {
     }
   }
 
-  validaRut(control: FormControl): { [s: string]: boolean } {
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return { rutInvalido: false };
+    return null;
+
   }
+
+    rescataLista(tipoConsulta:string) {
+
+   /*   let tipo ="E";
+      if(consulta=="E"){
+        tipo ="Ejecutivos";
+      }else if(consulta=="C"){
+        tipo = "Coordinadores";
+      }else { //if(consulta=="S")
+        tipo = "Ejecutivos y Coordinadores";
+      }
+  */
+      this.usuarioService
+        .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
+        .subscribe({
+          next: (dato: DatosUsuarioLista) => {
+            if (dato.codigo === 200) {
+              console.log('Lista de Usuarios:', dato.p_cursor);
+              this.dependencia.set(dato.p_cursor);
+            }
+          },
+          error: () => {
+            this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          },
+        });
+    }
 
   grabar() {
     //Convertir a formato BD (sin puntos, con guion)

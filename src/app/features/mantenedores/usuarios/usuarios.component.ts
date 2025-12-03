@@ -47,6 +47,7 @@ export default class UsuariosComponent {
  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
+  tipoConsulta:string = 'E';
   datoUsuarios = signal<IUsuarioLista[]>([]);
   datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
   usuarioService = inject(UsuarioService);
@@ -106,11 +107,11 @@ export default class UsuariosComponent {
 
   async OnInit() {
     this.LitaPerfiles();
-    this.rescataLista();
+    this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataLista() {
+  rescataLista(tipoConsulta:string) {
 
  /*   let tipo ="E";
     if(consulta=="E"){
@@ -122,7 +123,7 @@ export default class UsuariosComponent {
     }
 */
     this.usuarioService
-      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, 'E')
+      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
@@ -138,8 +139,7 @@ export default class UsuariosComponent {
 
  LitaPerfiles() {
   this.usuarioService
-      .postListaPerfiles(/*this._storage()!.usuarioLogin.usuario!,
-   this._storage()!.usuarioLogin.tipoUsuario!*/'ADM042','A')
+      .postListaPerfiles(this._storage()!.usuarioLogin.usuario!, this._storage()!.usuarioLogin.tipoUsuario!)
       .subscribe({
         next: (dato: IUsuarioListaPerfiles) => {
           if (dato.codigo === 200) {
@@ -154,20 +154,23 @@ export default class UsuariosComponent {
 
 
   agregaNuevo() {
+    const datoUsuarioPar={
+      tipoConsulta:this.tipoConsulta
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this._storage()!.usuarioLogin.tipoUsuario;
+    dialogConfig.data = datoUsuarioPar;
 
     this.dialog
       .open(AgregaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataLista();
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
@@ -193,7 +196,7 @@ export default class UsuariosComponent {
       .subscribe((data) => {
         if (data === 'modificado') {
           //console.log('Modificación Confirmada:', data);
-          this.rescataLista();
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
@@ -231,13 +234,13 @@ export default class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataLista();
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
 
-  seleccionaTipoUsuario(event: Event) {
-    console.log(event);
-
+  seleccionaTipoUsuario(_tipoConsulta: string) {
+    this.tipoConsulta = _tipoConsulta;
+    this.rescataLista(this.tipoConsulta);
   }
 }

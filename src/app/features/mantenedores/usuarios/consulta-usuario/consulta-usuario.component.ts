@@ -149,8 +149,7 @@ export class ConsultaUsuarioComponent {
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
   async onBlurRutUsuarioNuevo(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const rut = input.value;
+    const rut = (event.target as HTMLInputElement).value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
@@ -161,15 +160,16 @@ export class ConsultaUsuarioComponent {
         });
 
       // Formato para BD
-      //const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+     // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 
-  validaRut(control: FormControl):{ [s: string]: boolean } | null {
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
     return null;
+
   }
 
 

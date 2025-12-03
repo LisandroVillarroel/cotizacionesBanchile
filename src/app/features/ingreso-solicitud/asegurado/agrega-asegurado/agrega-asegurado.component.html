@@ -183,8 +183,7 @@
       mat-raised-button
       (click)="grabar()"
       [disabled]="agregaAsegurado().invalid"
-      [ngClass]="{
-        colorFondoBotonGrabar: !agregaAsegurado().invalid
+      [ngClass]="{ colorFondoBotonGrabar: !agregaAsegurado().invalid
       }"
     >
       Grabar

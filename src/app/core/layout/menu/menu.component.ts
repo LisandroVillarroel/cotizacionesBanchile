@@ -15,7 +15,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatProgressBarModule,
     RouterLink,
     RouterModule
-],
+  ],
   template: `
        <nav class="navbar navbar-expand-lg bg-body-tertiary" >
       <div class="container-fluid">
@@ -47,17 +47,20 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
               <a class="nav-link" routerLink="crt">Generación de Informes</a>
             </li>
              }
+             @if(hasRole(['adm_corr'])){
             <li class="nav-item dropdown" [routerLinkActive]="['active']">
-              <a class="nav-link dropdown-toggle" routerLink="mant" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" routerLink="mantenedores" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Mantenedores
               </a>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
-                <li><a class="dropdown-item" href="#">Mantenedor 2</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/rubros">Rubros</a></li>
+                <li><a class="dropdown-item" routerLink="/mantenedores/tipo-seguro">Tipo Seguro</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
               </ul>
             </li>
+            }
           </ul>
         </div>
       </div>
@@ -82,11 +85,11 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   `,
 })
 export default class MenuComponent {
-   storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   ///  readonly progreso = inject(Progreso);
-   hasRole( roles:UsuarioRoles[]) {
-    const rolUsduasrio=this._storage()?.usuarioLogin.perfilUsuario;
-   return roles.some(rol=> rol.includes(rolUsduasrio!))
+  hasRole(roles: UsuarioRoles[]) {
+    const rolUsduasrio = this._storage()?.usuarioLogin.perfilUsuario;
+    return roles.some(rol => rol.includes(rolUsduasrio!))
   }
 }

@@ -63,10 +63,10 @@
 
     <mat-form-field class="inputSelect">
       <mat-label class="cursiva gris-claro">Selecciona Dependencia</mat-label>
-      <mat-select [formControl]="dependenciaUsuarioNuevo">
+      <mat-select [formControl]="dependenciaUsuarioNuevo" >
         @for(_dependencia of dependencia(); track _dependencia){
         <mat-option [value]="_dependencia">
-          {{ _dependencia.p_nombre_usuario || '' || _dependencia.p_apellido_paterno_usuario || '' ||
+          {{ _dependencia.p_nombre_usuario + ' ' + _dependencia.p_apellido_paterno_usuario + ' ' +
           _dependencia.p_apellido_materno_usuario}}
         </mat-option>
         }

@@ -1,16 +1,12 @@
 import { CommonModule } from '@angular/common';
+
 import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
@@ -25,6 +21,11 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import {  MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @Component({
@@ -33,23 +34,21 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
   providers: [provideNativeDateAdapter()],
   imports: [
     MatPaginatorModule,
-    MatIconModule,
     MatSortModule,
-    MatDialogModule,
-    MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
     MatTooltipModule,
     MatExpansionModule,
     MatDividerModule,
     MatTabsModule,
-    MatCardModule,
+  MatIconModule,
+  MatCardModule,
     MatGridListModule,
+    CommonModule,
+    MatFormFieldModule,
     FormsModule,
-    CommonModule
+    ReactiveFormsModule
   ],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css'
@@ -75,6 +74,7 @@ export class SolicitudesComponent {
   rubro = new FormControl();
   seguro = new FormControl();
   fecha = new FormControl<Date | null>(null);
+
 
   filtroFormulario = signal<FormGroup>(new FormGroup({
     contratante : this.contratante,
@@ -180,6 +180,7 @@ export class SolicitudesComponent {
   }
 
   retorno = output<boolean>();
+
   verDetalle(IdSolicitud: number) {
     const dialogConfig = new MatDialogConfig();
 
@@ -188,6 +189,10 @@ export class SolicitudesComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
+      idSolicitud: IdSolicitud,
+      flagSoloCerrar: false
+    };
     dialogConfig.data = {
       idSolicitud: IdSolicitud,
       flagSoloCerrar: false

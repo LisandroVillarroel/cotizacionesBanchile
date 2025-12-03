@@ -49,6 +49,7 @@
           </mat-form-field>
         </div>
 
+
     <div>
       <button mat-stroked-button color="primary" class="button-link"
         (click)="limpiaFiltros()"> Limpiar filtros
@@ -56,6 +57,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="mat-elevation-z8 mt-1" style="padding-bottom: 50px;" >
     @for(item of datosPaginados(); track $index){
@@ -68,29 +70,36 @@
           <div class ="p-2" style="width: 8%;">
             <p class="fontSmall destacado" matColumnDef="ID">ID solicitud</p>
             <p class="fontLarge">{{item.id_solicitud}}</p>
+            <p class="fontLarge">{{item.id_solicitud}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 9%;">
             <p class="fontSmall destacado" matColumnDef="Rut">RUT contratante</p>
+            <p class="fontLarge">{{item.rut_contratante}}</p>
             <p class="fontLarge">{{item.rut_contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 25%;">
             <p class="fontSmall destacado" matColumnDef="Contratante">Nombre o Razón social</p>
             <p class="fontLarge">{{item.nombre_contratante}}</p>
+            <p class="fontLarge">{{item.nombre_contratante}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 12%;">
             <p class="fontSmall destacado" matColumnDef="Rubro">Rubro</p>
+            <p class="fontLarge">{{item.nombre_rubro}}</p>
             <p class="fontLarge">{{item.nombre_rubro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 23%;">
             <p class="fontSmall destacado" matColumnDef="TipoSeguro">Tipo de Seguro</p>
             <p class="fontLarge">{{item.descripcion_tipo_seguro}}</p>
+            <p class="fontLarge">{{item.descripcion_tipo_seguro}}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
           <div class ="p-2" style="width: 10%;">
+            <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de solicitud</p>
+            <p class="fontLarge">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</p>
             <p class="fontSmall destacado" matColumnDef="Fecha">Fecha de solicitud</p>
             <p class="fontLarge">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</p>
           </div>
@@ -103,6 +112,7 @@
               >
                 <mat-icon class="destacado">visibility</mat-icon>
               </button>
+
           </div>
         </mat-card-content>
       </mat-card>
