@@ -63,7 +63,9 @@
                   "maximumError": "5kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true
             },
             "dev": {
               "optimization": false,
