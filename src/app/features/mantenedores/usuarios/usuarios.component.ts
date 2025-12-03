@@ -100,12 +100,12 @@ export default class UsuariosComponent {
     })
   );
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
 
-  async ngOnInit() {
+  async OnInit() {
     this.LitaPerfiles();
     this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';

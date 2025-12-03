@@ -10,7 +10,7 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input matInput autofocus id="rutUsuarioNuevo" aria-label="Rut" class="input-rut rut"
+        <input matInput id="rutUsuarioNuevo" aria-label="Rut" class="input-rut rut"
           [formControl]="rutUsuarioNuevo" oninput="this.value = this.value.toUpperCase()"
           (blur)="onBlurRutUsuarioNuevo($event)" validaRut required />
 

@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Component({
   selector: 'app-modifica-usuario',
@@ -167,6 +168,7 @@ export class ModificaUsuarioComponent implements OnInit {
     }
   }
 
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
   validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };

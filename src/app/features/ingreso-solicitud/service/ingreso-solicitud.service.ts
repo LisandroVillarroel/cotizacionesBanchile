@@ -39,6 +39,7 @@ export class IngresoSolicitudService {
 
   //Este es el servicio que llama a URL de prueba que está en el servidor local para cliente Banco
   getDatosContratante(rut: string): Observable<IDatosPersona> {
+    rut = '11898216-9';
     return this.http.get<IDatosPersona>(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
       { headers: this.headers }
