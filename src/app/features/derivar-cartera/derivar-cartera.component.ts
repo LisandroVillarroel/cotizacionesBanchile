@@ -66,8 +66,8 @@ export default class DerivarCarteraComponent{
   notificacioAlertnService = inject(NotificacioAlertnService);
   carteraService = inject(CarteraService);
   request = {
-    p_id_usuario: this._storage()?.usuarioLogin?.usuario,
-    p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario
+    p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+    p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
   };
 
   rubroService = inject(RubroService);
@@ -255,9 +255,7 @@ export default class DerivarCarteraComponent{
   }
 
   async seleccionaRubro(datos: IRubro) {
-    const _codigoRubro = datos.p_id_rubro
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);

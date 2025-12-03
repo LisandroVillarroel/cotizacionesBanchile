@@ -1,10 +1,4 @@
-import {
-  Component,
-  input,
-  inject,
-  signal,
-  Input,
-} from '@angular/core';
+import { Component, input, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -20,10 +14,10 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { ICompania, ISolicitud } from '../modelo/detalle-interface';
+import { ICompania } from '../modelo/detalle-interface';
 import { VerCompaniaComponent } from './ver-compania/ver-compania.component';
 import { IngresoRespuestaComponent } from '@features/ingreso-respuesta/ingreso-respuesta.component';
-import { IEliminaCompania } from '../modelo/compania';
+import { IDatosCompania, IEliminaCompania } from '../modelo/compania';
 
 @Component({
   selector: 'app-companias-contactadas',
@@ -45,18 +39,19 @@ import { IEliminaCompania } from '../modelo/compania';
   ],
 })
 export class CompaniasContactadasComponent {
-  @Input() verEjec: boolean = true;
+/*   @Input() verEjec: boolean = true;
   @Input() minimo: number = 0;
-  @Input() idSolicitud!: number;
-  @Input() cotizacionSeleccionada: number | null = null;
-  @Input() flagSoloCerrar: boolean = false;
+  @Input() flagSoloCerrar: boolean = false; */
+  //@Input() cotizacionSeleccionada: number | null = null;
+  datosCompanias = input.required<IDatosCompania | undefined>();
 
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() actualizarDatos = new EventEmitter<void>();
 
   panelOpenState = false;
-  infoGral = input.required<ISolicitud | undefined>();
-  companias = input.required<ICompania[] | undefined>();
+/*   infoGral = input.required<ISolicitud | undefined>();
+  companias = input.required<ICompania[] | undefined>(); */
+
   idCompania = 0;
   compania = signal<ICompania | undefined>(undefined);
 
@@ -110,11 +105,14 @@ export class CompaniasContactadasComponent {
   }
 
   verCotiPropuesta(idCompania: number): void {
-    this.compania.set(this.companias()?.find(
+/*     this.compania.set(this.companias()?.find(
+      (c) => c.p_id_compania_seguro === idCompania));
+ */
+    this.compania.set(this.datosCompanias()?.companias!.find(
       (c) => c.p_id_compania_seguro === idCompania));
 
     const dato = {
-      infoGral: this.infoGral()!,
+      infoGral: this.datosCompanias()?.infoGral, //this.infoGral()!,
       compania: this.compania()!,
       flagAccion: false, // false indica modo edición
       modo: 'modificar', // opcional para diferenciar
@@ -137,12 +135,12 @@ export class CompaniasContactadasComponent {
   }
 
   verCotizacion(id: number) {
-    const companiaSeleccionada = this.companias()?.find(
+    const ciaSeleccionada = this.datosCompanias()?.companias!.find(
       (c) => c.p_id_compania_seguro === id
     );
 
-    if (companiaSeleccionada) {
-      this.verCompania(companiaSeleccionada);
+    if (ciaSeleccionada) {
+      this.verCompania(ciaSeleccionada!);
     } else {
       this.notificacioAlertnService.error('error','No se encontró la compañía con el ID: '+ id);
     }
@@ -150,13 +148,11 @@ export class CompaniasContactadasComponent {
 
   async borrarCompania(idCompania: number) {
     const request:IEliminaCompania = {
-      p_id_solicitud: this.infoGral()!.id_solicitud,
+      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud ?? 0,//this.infoGral()!.id_solicitud,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario!,
       p_tipo_usuario: this.tipoUsuario!,
     };
-
-
 
     const eliminada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Eliminar Compañía',
@@ -183,18 +179,18 @@ export class CompaniasContactadasComponent {
   }
 
   seleccionarCotizacion(id: number) {
-    this.cotizacionSeleccionada = id;
+    //this.cotizacionSeleccionada = id;
     //console.log('Cotización seleccionada:', id);
     this.cotizacionSeleccionadaEvent.emit(id);
   }
 
   verCompania(companiaSeleccionada: ICompania): void {
     const dato = {
-      p_id_solicitud: this.infoGral()?.id_solicitud,
-      fecha: this.infoGral()?.fecha_creacion_solicitud,
-      ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
-      id_rubro: this.infoGral()?.id_rubro,
-      id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
+      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud,//this.infoGral()?.id_solicitud,
+      fecha: this.datosCompanias()?.infoGral.fecha_creacion_solicitud,//this.infoGral()?.fecha_creacion_solicitud,
+      ejecutivo: this.datosCompanias()?.infoGral.nombre_ejecutivo_banco,//this.infoGral()?.nombre_ejecutivo_banco,
+      id_rubro: this.datosCompanias()?.infoGral.id_rubro,//this.infoGral()?.id_rubro,
+      id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro,//this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
 
@@ -231,25 +227,28 @@ export class CompaniasContactadasComponent {
   }
 
   pendiente(estado: string){
-    if(estado.toLowerCase()==='pendiente' && !this.verEjec){
+    if(estado.toLowerCase()==='pendiente' && !this.datosCompanias()?.verEjec){
+    //if(estado.toLowerCase()==='pendiente' && !this.verEjec){
       return false;
     }
     return true;
   }
 
   enviada(estado: string){
-    if(estado.toLowerCase()==='enviada' && !this.verEjec){
+    if(estado.toLowerCase()==='enviada' && !this.datosCompanias()?.verEjec){
+
+//    if(estado.toLowerCase()==='enviada' && !this.verEjec){
       return false;
     }
     return true;
   }
 
   cotizar(idCompania: number, accion: boolean): void {
-    this.compania.set(this.companias()?.find(
+    this.compania.set(this.datosCompanias()?.companias!.find(
       (c) => c.p_id_compania_seguro === idCompania));
 
     const dato = {
-      infoGral: this.infoGral()!,
+      infoGral: !this.datosCompanias()?.infoGral,//this.infoGral()!,
       compania: this.compania()!,
       flagAccion: accion
     };
