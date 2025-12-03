@@ -186,7 +186,7 @@ export class IngresoRespuestaComponent {
     private dialogRef: MatDialogRef<IngresoRespuestaComponent>
   ) {
     const sesion = this._storage();
-    this.tipoUsuario = sesion?.usuarioLogin.tipoUsuario!;
+    this.tipoUsuario = sesion?.usuarioLogin?.tipoUsuario ?? "";
   }
 
   cargaMoneda() {
@@ -196,8 +196,8 @@ export class IngresoRespuestaComponent {
           this.datosMoneda.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar las monedas.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener las monedas.');
       },
     });
   }
@@ -209,8 +209,8 @@ export class IngresoRespuestaComponent {
           this.datosMedioPago.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los medios de pago.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los medios de pago.');
       },
     });
   }
@@ -222,8 +222,8 @@ export class IngresoRespuestaComponent {
           this.datosBanco.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los bancos.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los bancos.');
       },
     });
   }
@@ -235,13 +235,13 @@ export class IngresoRespuestaComponent {
           this.datosTipoCuenta.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible cargar los tipos de cuenta.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los tipos de cuenta.');
       },
     });
   }
 
-  async ngOnInit() {
+  async OnInit() {
     // Deshabilitar pTermino y pVencimiento inicialmente
     if(this.datos.flagAccion){
       this.titulo ="Ingresar";
@@ -318,17 +318,19 @@ export class IngresoRespuestaComponent {
     this.fileInputCompania.nativeElement.click();
   }
 
-  onFileSelectedPropuesta(event: any) {
-    const filePpta: File = event.target.files[0];
-    if (filePpta) {
+  onFileSelectedPropuesta(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const filePpta: File = input.files[0];
       this.selectedPropuestaFile = filePpta;
       this.nombreArchivoPropuesta = filePpta.name;
     }
   }
 
-  onFileSelectedCompania(event: any) {
-    const fileCia: File = event.target.files[0];
-    if (fileCia) {
+  onFileSelectedCompania(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const fileCia: File = input.files[0];
       this.selectedCompaniaFile = fileCia;
       this.nombreArchivoCompania = fileCia.name;
     }
@@ -349,7 +351,7 @@ export class IngresoRespuestaComponent {
   registraRespuesta() {
     const datos: IRegistrarRespuesta = {
       p_id_solicitud: this.idSolicitud,
-      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro!, //
+      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro ?? "", //
       p_id_moneda: this.formRespuesta().get('moneda')!.value,
       p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
       p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,
@@ -378,29 +380,30 @@ export class IngresoRespuestaComponent {
       //archivoCompania: this.selectedCompaniaFile,
       //archivoPropuesta: this.selectedPropuestaFile,
 
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
     };
     this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
       next: async (res) => {
         if (res.codigo === 200) {
-          const result = await this.notificacioAlertnService.confirmacion(
+          await this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
             'La respuesta se ha registrado exitosamente.'
           );
           this.dialogRef.close(true);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible registrar la respuesta de la compañía.');
       },
     });
   }
 
   modificaRespuesta() {
     const datos: IModificarRespuesta = {
-      p_id_usuario: String(this._storage()?.usuarioLogin.usuario!),
-      p_tipo_usuario: String(this._storage()?.usuarioLogin.tipoUsuario!),
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       p_id_solicitud: Number(this.idSolicitud),
       p_id_compania_seguro: Number(this.datos.compania?.p_id_compania_seguro),
       p_id_moneda: Number(this.formRespuesta().get('moneda')!.value),
@@ -448,9 +451,10 @@ export class IngresoRespuestaComponent {
           this.dialogRef.close(true);
         }
       },
-      error: (error) => {
-        console.error('Error en modificarRespuesta:', error);
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        //console.error('Error en modificarRespuesta:', error);
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible modificar la respuesta de la compañía.');
       },
     });
   }
@@ -463,7 +467,7 @@ export class IngresoRespuestaComponent {
   }
 
   // Método para formato DD/MM/YYYY para modificar
-  formatFechaDDMMYYYY(fecha: any): string {
+  formatFechaDDMMYYYY(fecha: Date): string {
     if (!fecha) return '';
     const dateObj = fecha instanceof Date ? fecha : new Date(fecha);
     const dia = String(dateObj.getDate()).padStart(2, '0');

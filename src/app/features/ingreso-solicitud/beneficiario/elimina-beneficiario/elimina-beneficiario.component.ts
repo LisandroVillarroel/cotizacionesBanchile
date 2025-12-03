@@ -57,13 +57,13 @@ export class EliminaBeneficiarioComponent {
       )
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
+          //console.log('dato:', dato);
           if (dato.codigo === 200) {
             this.dialogRef.close('eliminado');
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible eliminar al beneficiario.');
         },
       });
   }

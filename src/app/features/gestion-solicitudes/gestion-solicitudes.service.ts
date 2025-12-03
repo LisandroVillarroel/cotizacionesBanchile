@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { IGestionResponse } from './gestionSolicitud-interface';
+import { IRequestSm } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class GestionSolicitudesService {
       });
   constructor() { }
 
-  postListaGestion(filtro: any): Observable<IGestionResponse> {
+  postListaGestion(filtro: IRequestSm): Observable<IGestionResponse> {
     return this.http
       .post<IGestionResponse>(`${environment.apiUrlConsumer}/listarGestionSolicitudes`, filtro,{headers: this.headers})
     }

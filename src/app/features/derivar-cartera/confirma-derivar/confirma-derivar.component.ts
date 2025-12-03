@@ -58,8 +58,8 @@ export class ConfirmaDerivarComponent {
             }
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible derivar la cartera de solicitudes.');
         },
       });
   }

@@ -3,7 +3,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
-  MatDialog,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -85,23 +84,19 @@ export interface DevolverConObservacionesData {
     this.devolverService
       .postDevuelveSolicitud(this.devolverRequest)
       .subscribe({
-        next: (dato) => {
+        next: async (dato) => {
           if (dato.codigo === 200) {
-            this.confirmar();
+            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+                      "La solicitud ha sido devuelta exitosamente.");
+            if (result) {
+              this.dialogRef.close(true);
+            }
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible devolver la solicitud.');
         },
       });
-  }
-
-  async confirmar(){
-    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              "La solicitud ha sido devuelta exitosamente.");
-    if (result) {
-      this.dialogRef.close(true);
-    }
   }
 
   getErrorMessage() {

@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { catchError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IMateriaEnvia, IMateriaResultado, IMateriaTiene } from '../modelo/materia-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,6 @@ export class MateriaService {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   });
-
 
   postListadoMatetria(idRubro: number,idSeguro:number): Observable<IMateriaResultado> {
         const filtro = {
@@ -44,13 +44,10 @@ export class MateriaService {
       )
   }
 
-    postAgregaAsegurado(agregaMateria: IMateriaEnvia): Observable<any> {
-      console.log('datos de envio materia',agregaMateria)
-      return this.http
-        .post<any>(`${environment.apiUrlConsumer}/ingresarMateriaAsegurada`, agregaMateria, {
-          headers: this.headers,
-        })
-    }
-
-
+  postAgregaMateria(agregaMateria: IMateriaEnvia): Observable<IResponse> {
+    //console.log('datos de envio materia',agregaMateria)
+    return this.http
+      .post<IResponse>(`${environment.apiUrlConsumer}/ingresarMateriaAsegurada`,
+        agregaMateria, { headers: this.headers })
+  }
 }

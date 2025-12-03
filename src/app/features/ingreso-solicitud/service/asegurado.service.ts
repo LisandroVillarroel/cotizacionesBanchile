@@ -5,7 +5,9 @@ import { Observable } from 'rxjs';
 import {
   IAsegurado,
   DatosAseguradosInterface,
+  IDatosPersona,
 } from '../modelo/ingresoSolicitud-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +21,8 @@ export class AseguradoService {
   });
 
   constructor() {}
-  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<any> {
-    return this.http.post<any>(
+  postAgregaAsegurado(agregaAsegurado: IAsegurado): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/ingresarAsegurado`,
       agregaAsegurado,
       {
@@ -29,8 +31,8 @@ export class AseguradoService {
     );
   }
 
-  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<any> {
-    return this.http.post<any>(
+  postModificaAsegurado(modificaAsegurado: IAsegurado): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarAsegurado`,
       modificaAsegurado,
       {
@@ -42,12 +44,12 @@ export class AseguradoService {
   postEliminaAsegurado(
     isolicitud: number,
     rutAsegurado: string
-  ): Observable<any> {
+  ): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_asegurado: rutAsegurado,
     };
-    return this.http.post<any>(
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/eliminarAsegurado`,
       parametro,
       {
@@ -56,7 +58,8 @@ export class AseguradoService {
     );
   }
 
-  postListadoAsegurado(filtro: any): Observable<DatosAseguradosInterface> {
+  postListadoAsegurado(idSolicitud: number): Observable<DatosAseguradosInterface> {
+    const filtro = { p_id_solicitud: idSolicitud };
     return this.http.post<DatosAseguradosInterface>(
       `${environment.apiUrlConsumer}/listarAsegurados`,
       filtro,
@@ -65,9 +68,13 @@ export class AseguradoService {
   }
 
   //Servicio para traer datos del mock a asegurado
-  getDatosAsegurado(rut: string): Observable<any> {
-    return this.http.get(
-      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
+  getDatosAsegurado(rut: string): Observable<IDatosPersona> {
+    return this.http.get<IDatosPersona>(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
+      { headers: this.headers }
     );
+/*     return this.http.get(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
+    ); */
   }
 }

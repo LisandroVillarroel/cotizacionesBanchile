@@ -71,23 +71,19 @@ export class AnularSolicitudComponent {
     };
     this.anularService.postAnulaSolicitud(this.anulaRequest)
       .subscribe({
-        next: (dato) => {
+        next: async (dato) => {
           if (dato.codigo === 200) {
-            this.confirmar();
+            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+              "La solicitud ha sido anulada exitosamente.");
+            if (result) {
+              this.dialogRef.close(true);
+            }
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible anular la solicitud.');
         },
       });
-  }
-
-  async confirmar(){
-    const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              "La solicitud ha sido anulada exitosamente.");
-    if (result) {
-      this.dialogRef.close(true);
-    }
   }
 
   getErrorMessage() {

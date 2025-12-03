@@ -7,15 +7,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -92,8 +84,7 @@ export class SolicitudesComponent {
     const contratante = this.filtroFormulario().value.contratante??'';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
-
-    let fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+    const fechaInicio_Inicial=this.filtroFormulario().value.fecha;
 
     let fechaInicio=new Date();
     if (fechaInicio_Inicial!=null){
@@ -117,14 +108,14 @@ export class SolicitudesComponent {
     }
     return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
     });
-  };
+  }
 
   datosPaginados(){
       const start = this.pagina() * this.pageSize;
       return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
-  onPage(event: any) {
+  onPage(event: PageEvent) {
     this.pagina.set(event.pageIndex);
   }
 
@@ -133,7 +124,7 @@ export class SolicitudesComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  async ngOnInit() {
+  async OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();
@@ -155,9 +146,7 @@ export class SolicitudesComponent {
   }
 
   seleccionaRubro(datos: IRubro) {
-    const _codigoRubro = datos.p_id_rubro;
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
         next: (dato) => {
           if (dato.codigo === 200) {
             this.rescatadoSeguro.set(dato.c_TipoSeguros);
@@ -171,7 +160,7 @@ export class SolicitudesComponent {
   }
 
   getCellClass(value: string): string {
-    var salida = 'gris';
+    let salida = 'gris';
     if(value !== null){
       switch(value.toLowerCase()){
         case 'v':

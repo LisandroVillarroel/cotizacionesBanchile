@@ -14,12 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { IIngresarDocumento } from '../modelo/ingresoSolicitud-Interface';
 import { MatDivider } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { CuestionarioService } from '../service/cuestionario.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -50,8 +48,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 })
 export class CuestionarioComponent {
   idSolicitud = input.required<number>();
-
-
+  documentosFiltrados = signal<IDocumentoLista[]>([]);
   notificacioAlertnService= inject(NotificacioAlertnService);
 
   documentForm = signal(inject(FormBuilder).group({}));
@@ -62,7 +59,7 @@ export class CuestionarioComponent {
   private cuestionarioService = inject(CuestionarioService);
   private storage = inject(StorageService);
 
-  ngOnInit() {
+  OnInit() {
     const base = this.cuestionarioService.getDocumentosBase();
     const id = Number(this.idSolicitud());
 
@@ -115,8 +112,8 @@ export class CuestionarioComponent {
             this.bloquearSeccion2.set(false);
           }
         },
-        error: (err) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible agregar el documento.');
         },
       });
 
@@ -140,37 +137,39 @@ export class CuestionarioComponent {
 
   consultarDocumentos() {
     const idSolicitud = Number(this.idSolicitud());
-    console.log('ID de solicitud enviado al backend:', idSolicitud);
+    //console.log('ID de solicitud enviado al backend:', idSolicitud);
 
-    const filtro = { p_id_solicitud: idSolicitud };
-    console.log('Filtro enviado al backend:', filtro);
+    //const filtro = { p_id_solicitud: idSolicitud };
+    //console.log('Filtro enviado al backend:', filtro);
 
-    this.cuestionarioService.postListadoDocumento(filtro).subscribe({
+    this.cuestionarioService.postListadoDocumento(idSolicitud).subscribe({
       next: (res: DatosDocumentoInterface) => {
         if (res.codigo === 200) {
-          const documentosFiltrados: IIngresarDocumento[] = res.p_cursor
-            .filter(
-              (doc) => doc.id_documento_adjunto && doc.ruta_documento_origen
-            )
-            .map((doc: IDocumentoLista) => ({
-              p_id_solicitud: idSolicitud,
-              p_id_documento_adjunto: doc.id_documento_adjunto,
-              p_documento_principal: doc.documento_principal,
-              p_ruta_documento_origen: doc.ruta_documento_origen,
-              p_ruta_documento_destino: doc.ruta_documento_destino,
-              p_fecha_creacion: doc.fecha_creacion,
-              p_usuario_creacion: doc.usuario_creacion,
-              p_corr_documento: doc.corr_documento,
-            }));
+          this.documentosFiltrados.set(res.p_cursor);
+          /* this.documentosFiltrados() = computed(()=>
+            { return res.p_cursor.filter(
+                (doc) => doc.id_documento_adjunto && doc.ruta_documento_origen
+              ).map((doc: IDocumentoLista) => ({
+                p_id_solicitud: idSolicitud,
+                p_id_documento_adjunto: doc.id_documento_adjunto,
+                p_documento_principal: doc.documento_principal,
+                p_ruta_documento_origen: doc.ruta_documento_origen,
+                p_ruta_documento_destino: doc.ruta_documento_destino,
+                p_fecha_creacion: doc.fecha_creacion,
+                p_usuario_creacion: doc.usuario_creacion,
+                p_corr_documento: doc.corr_documento,
+              })
+            )}
+          )  */
 
-          console.log(
+/*           console.log(
             `Documentos para solicitud ${idSolicitud}:`,
             documentosFiltrados
           );
-        }
+ */        }
       },
-      error: (err: HttpErrorResponse) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de docuemtnos asociados.');
       },
     });
   }
@@ -219,8 +218,8 @@ export class CuestionarioComponent {
             this.bloquearSeccion2.set(true);
           }
         },
-        error: (err) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible eliminar el documento.');
         },
       });
   }

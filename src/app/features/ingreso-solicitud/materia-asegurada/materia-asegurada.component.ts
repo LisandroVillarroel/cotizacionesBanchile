@@ -1,6 +1,6 @@
 import { Component, input, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaResultado, IMateriaTiene } from '../modelo/materia-Interface';
+import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaTiene } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -81,8 +81,9 @@ export class MateriaAseguradaComponent {
             this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro)
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.
+            error('ERROR','No fue posible cargar la plantilla de registro de la materia a asegurar.');
         },
       });
   }
@@ -98,8 +99,9 @@ export class MateriaAseguradaComponent {
             this.creaEstructura()
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.
+            error('ERROR','No fue posible obtener información de la materia asegurada.');
         },
       });
   }
@@ -186,8 +188,7 @@ export class MateriaAseguradaComponent {
               valoresFila[b].p_id_posicion;
             this.agregaFormControl(
               nombreCampo,
-              valoresFila[b].p_valor_dato !==null ? valoresFila[b].p_valor_dato: '',
-              false
+              valoresFila[b].p_valor_dato !==null ? valoresFila[b].p_valor_dato: ''
             );
           }
           valoresFila[b].estiloClass = valorClass;
@@ -206,7 +207,7 @@ export class MateriaAseguradaComponent {
     this.datoMateriaEstructura.set(this.datoMateriaEstructura_arr);
   }
 
-  agregaFormControl(nombreCampo: string, ValorInicial: any, requerido: boolean): void {
+  agregaFormControl(nombreCampo: string, ValorInicial: string): void {
     this.materiaForm().addControl(nombreCampo, new FormControl(ValorInicial.trim()));
   }
 
@@ -242,7 +243,7 @@ export class MateriaAseguradaComponent {
           p_largo_dato: columna.p_largo_dato,
           p_decimales_dato: columna.p_decimales_dato,
           p_id_listapadre: columna.p_id_listapadre,
-          p_usuario_creacion: this._storage()?.usuarioLogin.usuario!
+          p_usuario_creacion: this._storage()?.usuarioLogin?.usuario ?? ""
         })
       }
     }
@@ -254,19 +255,19 @@ export class MateriaAseguradaComponent {
       items: this.materiaIngresa
     }
 
-    this.materiaService.postAgregaAsegurado(envioMateria).subscribe({
+    this.materiaService.postAgregaMateria(envioMateria).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.notificacioAlertnService.success('MATERIA','Se guardó de forma Exitosa');
+           this.notificacioAlertnService.success('MATERIA','La materia a asegurar se registró forma Exitosa');
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible registrar la materia a asegurar.');
       },
     });
   }
 
-comparavalorLista(v1: any, v2: any): boolean {
+comparavalorLista(v1: number, v2: number): boolean {
     return Number(v1) === Number(v2);
   }
 }
