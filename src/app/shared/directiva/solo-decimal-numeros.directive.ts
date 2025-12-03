@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, input, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[directivaSoloDecimalNumeros]',
+  selector: '[appDirectivaSoloDecimalNumeros]',
   standalone: true
 })
 export class SoloDecimalNumerosDirective {

@@ -8,7 +8,7 @@
       <mat-label class="cursiva gris-claro">Selecciona Tipo Usuario</mat-label>
       <mat-select [formControl]="tipoUsuarioSelect" (selectionChange)="seleccionaTipoUsuario($event.value)">
         @for(_tipoUsuario of datoPerfilesUsuarios(); track _tipoUsuario){
-        <mat-option [value]="_tipoUsuario">
+        <mat-option [value]="_tipoUsuario.p_codigo_perfil">
           {{ _tipoUsuario.p_nombre_perfil }}
         </mat-option>|
         }
