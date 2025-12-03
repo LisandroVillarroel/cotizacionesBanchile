@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 
 import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
 
@@ -20,6 +21,11 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { RubroService } from '@shared/service/rubro.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import {  MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @Component({
@@ -28,23 +34,21 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
   providers: [provideNativeDateAdapter()],
   imports: [
     MatPaginatorModule,
-    MatIconModule,
     MatSortModule,
-    MatDialogModule,
-    MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
     MatTooltipModule,
     MatExpansionModule,
     MatDividerModule,
     MatTabsModule,
-    MatCardModule,
+  MatIconModule,
+  MatCardModule,
     MatGridListModule,
+    CommonModule,
+    MatFormFieldModule,
     FormsModule,
-    CommonModule
+    ReactiveFormsModule
   ],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css'
