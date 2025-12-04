@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
 import { CompaniaService } from '../compania.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-import { ICompaniaSeguroLista } from '../compania-Interface';
+import { ICompaniaSeguro } from '../compania-Interface';
 import {
   validateRut,
   cleanRut,
@@ -46,7 +46,7 @@ export class ModificaCompaniaComponent {
   private companiaService = inject(CompaniaService);
   private notificacioAlertnService = inject(NotificacioAlertnService);
   private dialogRef = inject(MatDialogRef<ModificaCompaniaComponent>);
-  readonly data = inject<ICompaniaSeguroLista>(MAT_DIALOG_DATA);
+  readonly data = inject<ICompaniaSeguro>(MAT_DIALOG_DATA);
 
   rutCompania = new FormControl(this.data.p_rut_compania_seguro, [
     Validators.required,

@@ -3,12 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import {
-  DatosCompaniaSeguroLista,
+  DatosCompaniaSeguro,
   DatosCompaniaSeguroModificar,
   ICompaniaSeguroModificar,
   DatosTipoSeguroCompania,
   DatosContactoCompania,
 } from './compania-Interface';
+import { InterfazRubro } from '@shared/modelo/rubro-interface';
+import { InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +25,8 @@ export class CompaniaService {
 
   constructor() {}
 
-  postListadoCompania(filtro: any): Observable<DatosCompaniaSeguroLista> {
-    return this.http.post<DatosCompaniaSeguroLista>(
+  postListadoCompania(filtro: any): Observable<DatosCompaniaSeguro> {
+    return this.http.post<DatosCompaniaSeguro>(
       `${environment.apiUrlConsumer}/listarCompaniasSeguros`,
       filtro,
       { headers: this.headers }
@@ -57,11 +59,42 @@ export class CompaniaService {
     );
   }
 
+  postAgregaContacto(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/crearContactoCompania`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
   postListadoTipoSeguroCompania(
     payload: any
   ): Observable<DatosTipoSeguroCompania> {
     return this.http.post<DatosTipoSeguroCompania>(
       `${environment.apiUrlConsumer}/listarTipoSeguroCompania`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+  postAgregaTipoSeguro(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${environment.apiUrlConsumer}/crearTipoSeguroCompania`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+  postRubro(): Observable<InterfazRubro> {
+    return this.http.get<InterfazRubro>(
+      `${environment.apiUrlConsumer}/listarRubros`,
+      { headers: this.headers }
+    );
+  }
+
+  postTipoSeguro(payload: any): Observable<InterfazTipoSeguro> {
+    return this.http.post<InterfazTipoSeguro>(
+      `${environment.apiUrlConsumer}/listarProductos`,
       payload,
       { headers: this.headers }
     );

@@ -6,7 +6,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ICompaniaSeguroLista } from '../compania-Interface';
+import { ICompaniaSeguro } from '../compania-Interface';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 
@@ -30,13 +30,19 @@ import { FormsModule } from '@angular/forms';
 export class ListarCompaniaComponent {
   @Input() dataSource!: MatTableDataSource<any>;
   @Input() displayedColumns: string[] = [];
-  @Input() datoCompanias: ICompaniaSeguroLista[] = [];
+  @Input() datoCompanias: ICompaniaSeguro[] = [];
 
   @Output() companiaSeleccionada = new EventEmitter<number>();
   selectedCompaniaId: number | null = null;
 
+  @Output() agregarCompania = new EventEmitter<void>();
+
   onCompaniaChange(idCompania: number) {
     this.selectedCompaniaId = idCompania;
     this.companiaSeleccionada.emit(idCompania);
+  }
+
+  onAgregarCompania() {
+    this.agregarCompania.emit();
   }
 }

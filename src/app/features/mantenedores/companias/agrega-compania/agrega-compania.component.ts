@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+
 import { CompaniaService } from '../compania.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
@@ -46,7 +47,6 @@ export class AgregaCompaniaComponent {
   private companiaService = inject(CompaniaService);
   private notificacioAlertnService = inject(NotificacioAlertnService);
   private dialogRef = inject(MatDialogRef<AgregaCompaniaComponent>);
-
 
   rutCompania = new FormControl('', [Validators.required, this.validaRut]);
   nombreCompania = new FormControl('', [Validators.required]);
@@ -143,7 +143,7 @@ export class AgregaCompaniaComponent {
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     const payload = {
-      p_id_usuario: 'ADM042', // temporal
+      p_id_usuario: 'adm001', // temporal
       p_tipo_usuario: 'A',
       p_rut_compania_seguro: rutParaBD,
       p_nombre_compania_seguro:
@@ -154,6 +154,7 @@ export class AgregaCompaniaComponent {
         this.agregaCompania().get('telefonoCompania')!.value,
       p_correo_compania_seguro:
         this.agregaCompania().get('correoCompania')!.value,
+      p_estado_compania_seguro: 'ACTIVO',
     };
 
     this.companiaService.postAgregaCompania(payload).subscribe({

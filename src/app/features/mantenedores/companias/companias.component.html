@@ -1,19 +1,23 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
       <app-listar-compania
         [dataSource]="dataSource()"
         [displayedColumns]="displayedColumns"
         [datoCompanias]="datoCompanias()"
-        (companiaSeleccionada)="cargarContactos($event)"
+        (companiaSeleccionada)="
+          selectedCompaniaId = $event; cargarContactos($event)
+        "
+        (agregarCompania)="agregaNuevaCompania()"
       ></app-listar-compania>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-5">
       <app-listar-contacto
         [dataSource]="dataSourceContactos()"
         [displayedColumns]="displayedColumnsContactos"
         [contactos]="datoContactos()"
+        (agregarContacto)="agregaNuevoContacto()"
       ></app-listar-contacto>
     </div>
   </div>
@@ -24,6 +28,7 @@
         [dataSource]="dataSourceTiposSeguro()"
         [displayedColumns]="displayedColumnsTiposSeguro"
         [tiposSeguro]="datoTiposSeguro()"
+        (agregarTipoSeguro)="agregaNuevoTipoSeguro()"
       ></app-listar-tiposeguro>
     </div>
   </div>

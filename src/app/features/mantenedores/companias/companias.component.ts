@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -7,19 +7,24 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder } from '@angular/forms';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { ListarCompaniaComponent } from './listar-compania/listar-compania.component';
 import { ListarContactoComponent } from './listar-contacto/listar-contacto.component';
+import { ListarTiposeguroComponent } from './listar-tiposeguro/listar-tiposeguro.component';
 import {
-  ICompaniaSeguroLista,
-  DatosCompaniaSeguroLista,
+  ICompaniaSeguro,
+  DatosCompaniaSeguro,
   IContactoCompania,
   DatosContactoCompania,
   ITipoSeguroCompania,
   DatosTipoSeguroCompania,
 } from './compania-Interface';
 import { CompaniaService } from './compania.service';
-import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { ListarTiposeguroComponent } from "./listar-tiposeguro/listar-tiposeguro.component";
+import { AgregaCompaniaComponent } from './agrega-compania/agrega-compania.component';
+import { AgregaContactoComponent } from './agrega-contacto/agrega-contacto.component';
+import { AgregaTiposeguroComponent } from './agrega-tiposeguro/agrega-tiposeguro.component';
 
 @Component({
   selector: 'app-companias',
@@ -35,16 +40,20 @@ import { ListarTiposeguroComponent } from "./listar-tiposeguro/listar-tiposeguro
     MatInputModule,
     ListarCompaniaComponent,
     ListarContactoComponent,
-    ListarTiposeguroComponent
-],
+    ListarTiposeguroComponent,
+  ],
   templateUrl: './companias.component.html',
   styleUrls: ['./companias.component.css'],
 })
 export default class CompaniasComponent {
   private companiaService = inject(CompaniaService);
   private notificacioAlertnService = inject(NotificacioAlertnService);
+  private dialog = inject(MatDialog);
+  private fb = inject(FormBuilder);
 
-  datoCompanias = signal<ICompaniaSeguroLista[]>([]);
+  selectedCompaniaId: number | null = null;
+
+  datoCompanias = signal<ICompaniaSeguro[]>([]);
   displayedColumns: string[] = [
     'seleccion',
     // 'index',
@@ -54,7 +63,7 @@ export default class CompaniasComponent {
     'p_telefono_compania_seguro',
     'p_estado_compania_seguro',
     'p_correo_compania_seguro',
-    // 'opciones',
+    'opciones',
   ];
 
   datoContactos = signal<IContactoCompania[]>([]);
@@ -63,6 +72,7 @@ export default class CompaniasComponent {
     'p_nombre_ejecutivo_cia',
     'p_correo_ejecutivo_cia',
     'p_estado_ejecutivo_cia',
+    'opciones',
   ];
 
   datoTiposSeguro = signal<ITipoSeguroCompania[]>([]);
@@ -71,15 +81,14 @@ export default class CompaniasComponent {
     'p_nombre_rubro',
     'p_nombre_tipo_seguro',
     'p_estado_tipo_seguro',
+    'opciones',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   dataSource = computed(() => {
-    const tabla = new MatTableDataSource<ICompaniaSeguroLista>(
-      this.datoCompanias()
-    );
+    const tabla = new MatTableDataSource<ICompaniaSeguro>(this.datoCompanias());
     tabla.paginator = this.paginator;
     tabla.sort = this.sort;
     return tabla;
@@ -103,7 +112,7 @@ export default class CompaniasComponent {
   rescataLista() {
     const filtro = { p_id_usuario: 'adm001', p_tipo_usuario: 'A' };
     this.companiaService.postListadoCompania(filtro).subscribe({
-      next: (dato: DatosCompaniaSeguroLista) => {
+      next: (dato: DatosCompaniaSeguro) => {
         if (dato.codigo === 200) {
           this.datoCompanias.set(dato.p_cursor);
         } else {
@@ -158,5 +167,80 @@ export default class CompaniasComponent {
         this.notificacioAlertnService.error('ERROR', 'Error inesperado');
       },
     });
+  }
+
+  agregaNuevaCompania() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {};
+
+    this.dialog
+      .open(AgregaCompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data === 'agregado') {
+          this.rescataLista();
+        }
+      });
+  }
+
+  agregaNuevoContacto() {
+    if (!this.selectedCompaniaId) {
+      this.notificacioAlertnService.error(
+        'ERROR',
+        'Debe seleccionar una compañía antes de agregar un contacto'
+      );
+      return;
+    }
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
+      idCompania: this.selectedCompaniaId,
+    };
+
+    this.dialog
+      .open(AgregaContactoComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data === 'agregado' && this.selectedCompaniaId !== null) {
+          this.cargarContactos(this.selectedCompaniaId);
+        }
+      });
+  }
+
+  agregaNuevoTipoSeguro() {
+    if (!this.selectedCompaniaId) {
+      this.notificacioAlertnService.error(
+        'ERROR',
+        'Debe seleccionar una compañía antes de agregar tipo de seguro'
+      );
+      return;
+    }
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = { idCompania: this.selectedCompaniaId };
+
+    this.dialog
+      .open(AgregaTiposeguroComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data === 'agregado' && this.selectedCompaniaId !== null) {
+          this.cargarTiposSeguro(this.selectedCompaniaId);
+        }
+      });
   }
 }

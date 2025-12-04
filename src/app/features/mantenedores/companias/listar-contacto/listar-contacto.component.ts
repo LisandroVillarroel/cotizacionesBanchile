@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -25,4 +25,10 @@ export class ListarContactoComponent {
   @Input() dataSource!: MatTableDataSource<IContactoCompania>;
   @Input() displayedColumns: string[] = [];
   @Input() contactos: IContactoCompania[] = [];
+
+  @Output() agregarContacto = new EventEmitter<void>();
+
+  onAgregarContacto() {
+    this.agregarContacto.emit();
+  }
 }
