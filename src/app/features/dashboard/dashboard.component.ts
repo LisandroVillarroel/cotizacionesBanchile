@@ -15,7 +15,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
+import { DatosSolicitudesInterface, IListadoSolicitudes, IResumenSolicitudes } from './datosSolicitud-Interface';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -55,9 +55,9 @@ export default class DashboardComponent {
   });
   listadoSolicitudes = signal<IListadoSolicitudes[]>([]);
 
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
-  async ngOnInit() {
+  async OnInit() {
     this.seleccionaFecha();
   }
 
@@ -65,7 +65,7 @@ export default class DashboardComponent {
     let fechaFiltrar: string | undefined;
     const fechaValue = this.fechaActual.value;
     // Forzar conversión a Date
-    const fechaDate = new Date(fechaValue as any);
+    const fechaDate = new Date(fechaValue as Date);
     if (!isNaN(fechaDate.getTime())) {
       fechaFiltrar = fechaDate.toLocaleDateString('es-BO');
     } else {
@@ -75,12 +75,12 @@ export default class DashboardComponent {
     console.log('fechaValue:', fechaValue);
     console.log('fechaFiltrar:', fechaFiltrar);
     const estructura_listaSolicitudes = {
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      "p_fecha": fechaFiltrar,
-      "p_tipo_usuario": this._storage()?.usuarioLogin.tipoUsuario!
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_fecha: fechaFiltrar ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
     }
     this.dashboardService.postListadoSolicitudes(estructura_listaSolicitudes).subscribe({
-      next: (dato: any) => {
+      next: (dato: DatosSolicitudesInterface) => {
         if (dato.codigo === 200) {
           this.resumenGeneral.set({
             p_EnProceso: dato.p_EnProceso,
@@ -90,7 +90,7 @@ export default class DashboardComponent {
           });
           if (this.tipoUsuario === "C") {
             const listadoFiltrado = dato.p_cursor.filter((item: IListadoSolicitudes) => {
-              console.log('Listado Solicitudes Coor', item);
+              //console.log('Listado Solicitudes Coor', item);
               return !item.descripcion_estado?.toLowerCase().includes("edicion");
             });
             this.listadoSolicitudes.set(listadoFiltrado);
@@ -99,7 +99,7 @@ export default class DashboardComponent {
           }
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });

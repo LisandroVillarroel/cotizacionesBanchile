@@ -1,10 +1,10 @@
 import {  HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ProgresoCarga } from '../progesoCarga';
-import { delayWhen, finalize, of, tap, timer } from 'rxjs';
+import { delayWhen, finalize, of, timer } from 'rxjs';
 
 export const cargaProgresoInterceptor: HttpInterceptorFn = (req, next) => {
-   const progresoCarga = inject(ProgresoCarga);
+  const progresoCarga = inject(ProgresoCarga);
   const minDelayMs = 500; // 2 segundos
   const startTime = Date.now();
 progresoCarga.parar();
@@ -20,7 +20,6 @@ progresoCarga.parar();
        setTimeout(() => {
             progresoCarga.parar(); // Ocultar la barra de progreso
           }, 1000);
-
     })
   );
 };

@@ -41,7 +41,7 @@ export class DetalleSolicitudService {
       )
   }
 
-  postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
+  postEnviaSolicitud(enviaSolicitud: IRequest): Observable<IResponse> {
     return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/enviarSolicitudCoordinador`,
         enviaSolicitud, { headers: this.headers, }

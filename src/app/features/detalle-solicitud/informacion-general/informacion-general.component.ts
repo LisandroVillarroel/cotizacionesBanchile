@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { MatCard, MatCardHeader, MatCardContent } from "@angular/material/card";
+import { MatCard, MatCardContent } from "@angular/material/card";
 import { ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { CommonModule } from '@angular/common';
 
@@ -20,7 +20,7 @@ export class InformacionGeneralComponent {
 
   //getCellStyleSla(value: string) {
   getCellClass(value: string): string {
-    var salida = 'gris';
+    let salida = 'gris';
     if(value !== null){
       switch(value.toLowerCase()){
         case 'v':
@@ -36,7 +36,7 @@ export class InformacionGeneralComponent {
   }
 
   getText(value: string): string {
-    var salida = 'Desconocido';
+    let salida = 'Desconocido';
     if(value !== null){
       switch(value.toLowerCase()){
         case 'v':

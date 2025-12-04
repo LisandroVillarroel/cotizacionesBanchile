@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionSolicitudesComponent } from './gestion-solicitudes.component';
+import GestionSolicitudesComponent from './gestion-solicitudes.component';
 
 describe('GestionSolicitudesComponent', () => {
   let component: GestionSolicitudesComponent;
@@ -11,7 +11,7 @@ describe('GestionSolicitudesComponent', () => {
       imports: [GestionSolicitudesComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(GestionSolicitudesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

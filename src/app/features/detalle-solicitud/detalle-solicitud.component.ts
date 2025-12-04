@@ -1,5 +1,6 @@
 import {
   Component,
+  Inject,
   inject,
   signal,
   ViewEncapsulation,
@@ -13,6 +14,7 @@ import {
   MatDialog,
   MatDialogConfig,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -30,7 +32,7 @@ import {
   IObservacion,
   ISolicitud,
 } from './modelo/detalle-interface';
-import { IMinimoResponse } from './modelo/compania';
+import { IDatosCompania, IMinimoResponse } from './modelo/compania';
 //Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -45,16 +47,19 @@ import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-a
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 //Componentes nuevos
 import { ObservacionesComponent } from './observaciones/observaciones.component';
-import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { AnularSolicitudComponent } from './anular-solicitud/anular-solicitud.component';
 import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solicitud.component';
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
+import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 
 export interface seleccionada{
   id_compania_seguro: number;
   nombre_compania: string;
 }
+
+export interface DetalleSolicitudData
+{ idSolicitud: number; flagSoloCerrar?: boolean }
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -84,27 +89,25 @@ export interface seleccionada{
   encapsulation: ViewEncapsulation.None,
 })
 export default class DetalleSolicitudComponent {
+  datosCompanias = signal<IDatosCompania | undefined>(undefined);
 
   cotizacionSeleccionada: number | null = null;
-  public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
 
-constructor() {
-    const data = inject(MAT_DIALOG_DATA) as { idSolicitud: number; flagSoloCerrar?: boolean };
-    this.idSolicitud = data.idSolicitud;
-    this.flagSoloCerrar = data.flagSoloCerrar ?? false;
-  }
+  constructor(
+    public dialogRef: MatDialogRef<DetalleSolicitudComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DetalleSolicitudData
+  ) {}
 
   panelOpenState = false;
   panelOpenState2 = false;
-
   minimo = 0;
   puedeEnviar = false;
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
   notificacioAlertnService = inject(NotificacioAlertnService);
   companiasService = inject(CompaniasContactadasService);
   solicitudService = inject(DetalleSolicitudService);
@@ -130,10 +133,10 @@ constructor() {
 
   flagSoloCerrar = false;
 
-  async ngOnInit() {
-    this.cargarSolicitud(this.idSolicitud);
-    this.obtenerMinimo(this.idSolicitud);
-    this.cargarCompanias(this.idSolicitud);
+  async OnInit() {
+    this.cargarSolicitud(this.data.idSolicitud);
+    this.obtenerMinimo(this.data.idSolicitud);
+    this.cargarCompanias(this.data.idSolicitud);
 
     switch (this.tipoUsuario) {
       case 'E':
@@ -145,7 +148,7 @@ constructor() {
         this.verCoord = true;
         break;
       case 'S':
-        this.verEjec = true;
+        this.verEjec = false;
         this.verCoord = true;
         break;
       case 'A':
@@ -153,6 +156,7 @@ constructor() {
         this.verCoord = false;
         break;
     }
+
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -169,7 +173,7 @@ constructor() {
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
-            id_solicitud: this.idSolicitud,
+            id_solicitud: this.data.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
             nombre_razon_social_contratante:
@@ -186,6 +190,7 @@ constructor() {
           });
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
+          this.datosCompanias()!.infoGral = this.infoGral()!;
 
           /* Inicio BackEnd */
           if (
@@ -223,8 +228,8 @@ constructor() {
           /* Fin BackEnd */
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el detalle de la solicitud.');
       },
     });
   }
@@ -233,19 +238,21 @@ constructor() {
     return !(this.verEjec && !this.flagCoordinador);
   }
 
-  cargarCompanias(idSolicitud: any) {
+  cargarCompanias(idSolicitud: number) {
     this.companiasService.postCompanias(idSolicitud).subscribe({
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          if(this.companias()?.length! < this.minimo){
+          this.datosCompanias()!.companias = this.companias()!;
+          const dimension = this.companias()?.length ?? 0;
+          if(dimension < this.minimo){
             this.puedeEnviar = true;
           }else{
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
@@ -255,27 +262,27 @@ constructor() {
     this.companiasService.postMinimo(idSolicitud).subscribe({
       next: (dato: IMinimoResponse) => {
         if (dato.codigo === 200) {
+          const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
-          if (this.companias()?.length! < this.minimo) {
+          this.datosCompanias()!.minimo = this.minimo;
+          if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {
             this.puedeEnviar = false;
           }
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.
+          error('ERROR', 'No fue posible obtener  el mínimo de compañías a contactar.');
       },
     });
   }
 
-  solicitudId: any;
-  DetalleSolicitudComponent: any;
-
   devolverSolicitud(): void {
     if (this.flagSoloCerrar) return;
     const dato = {
-      solicitudId: this.idSolicitud, //'ID123456789',
+      solicitudId: this.data.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud,
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco,
       id_usuario: this.id_usuario,
@@ -298,14 +305,14 @@ constructor() {
   async aprobarSolicitud(): Promise<void> {
     if (this.flagSoloCerrar) return;
     const request = {
-      p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_solicitud: this.data.idSolicitud,
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Aprobar solicitud',
-      'La solicitud nro. '+ this.idSolicitud +' será aprobada. \n\n'+
+      'La solicitud nro. '+ this.data.idSolicitud +' será aprobada. \n\n'+
       'Una vez aprobada estará disponible para \n '+
       'ser enviada a las compañías de seguros. \n' +
       'Puedes revisar su status ingresando al \n '+
@@ -324,7 +331,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible aprobar la solicitud.');
         },
       });
@@ -334,9 +341,9 @@ constructor() {
   anularSolicitud(): void {
     if (this.flagSoloCerrar) return;
     const dato = {
-      p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_solicitud: this.data.idSolicitud,
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -356,14 +363,14 @@ constructor() {
   async enviarCoordinador(): Promise<void> {
     if (this.flagSoloCerrar) return;
     const request = {
-      p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_solicitud: this.data.idSolicitud,
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Enviar solicitud a Coordinador',
-      'La solicitud nro. '+ this.idSolicitud +' será enviada al coordinador. \n\n'+
+      'La solicitud nro. '+ this.data.idSolicitud +' será enviada al coordinador. \n\n'+
       'Una vez enviada, puedes seguir su estado \n '+
       'desde el Menú de Gestión de Cotizaciones. \n' +
       'El coordinador responsable será notificado y revisará \n '+
@@ -381,7 +388,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
         },
       });
@@ -391,13 +398,13 @@ constructor() {
   agregarCompania(): void {
     if (this.flagSoloCerrar) return;
     const dato = {
-      p_id_solicitud: this.idSolicitud, //'ID123456789',
+      p_id_solicitud: this.data.idSolicitud, //'ID123456789',
       fecha: this.infoGral()?.fecha_creacion_solicitud, //'00-00-0000',
       ejecutivo: this.infoGral()?.nombre_ejecutivo_banco, //'Enviar a Compañia',
       id_rubro: this.infoGral()?.id_rubro,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -420,14 +427,14 @@ constructor() {
   async enviarCia(): Promise<void> {
     if (this.flagSoloCerrar) return;
     const request = {
-      p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_solicitud: this.data.idSolicitud,
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const enviada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Enviar solicitud a Coordinador',
-      'La solicitud nro. '+ this.idSolicitud +' será enviada a las compañías seleccionadas. \n\n'+
+      'La solicitud nro. '+ this.data.idSolicitud +' será enviada a las compañías seleccionadas. \n\n'+
       'Si deseas enviarla a otras compañías, puedes \n '+
       'hacerlo desde el detalle de la solicitud \n' +
       'en el menú de Gestión de solicitudes. \n\n ¿Deseas continuar?',
@@ -444,7 +451,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible enviar la solicitud.');
         },
       });
@@ -454,15 +461,15 @@ constructor() {
 
   crearPropuesta(): void {
     if (this.flagSoloCerrar) return;
-    console.log('flagPropuesta',this.flagPropuesta);
-    console.log('verCoord',this.verCoord);
-    const dato = {
-      solicitudId: this.idSolicitud,
+    /* console.log('flagPropuesta',this.flagPropuesta);
+    console.log('verCoord',this.verCoord); */
+/*     const dato = {
+      solicitudId: this.data.idSolicitud,
       rutContratante: this.infoGral()?.rut_contratante,
       nomContratante: this.infoGral()?.nombre_razon_social_contratante,
       rubro: this.infoGral()?.nombre_rubro,
       tipoSeguro: this.infoGral()?.nombre_tipo_seguro,
-    };
+    }; */
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -470,7 +477,7 @@ constructor() {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud;
+    dialogConfig.data = this.data.idSolicitud;
     this.dialog
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
@@ -478,19 +485,19 @@ constructor() {
   }
 
   recargar(){
-        this.cargarSolicitud(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
-        this.cargarCompanias(this.idSolicitud);
-        this.obtenerMinimo(this.idSolicitud);
+        this.cargarSolicitud(this.data.idSolicitud);
+        this.obtenerMinimo(this.data.idSolicitud);
+        this.cargarCompanias(this.data.idSolicitud);
+        this.obtenerMinimo(this.data.idSolicitud);
   }
 
   async aprobarCotizacion(): Promise<void> {
     if (this.flagSoloCerrar) return;
     const request = {
-      p_id_solicitud: this.idSolicitud,
+      p_id_solicitud: this.data.idSolicitud,
       p_id_compania_seguro: this.cotizacionSeleccionada!,
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipoUsuario
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipoUsuario ?? ""
     };
 
     const cia = this.companias()?.find(c => c.p_id_compania_seguro === this.cotizacionSeleccionada);
@@ -498,7 +505,7 @@ constructor() {
     const aprobada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Aprobar cotización',
       'Estás por aprobar la cotización presentada por \n' + companiaSeleccionada +
-      ' para la solicitud '+ this.idSolicitud +'\n\n'+
+      ' para la solicitud '+ this.data.idSolicitud +'\n\n'+
       'Una vez aprobada, las demás cotizaciones se rechazarán automáticamente.'+
       '\n\n¿Deseas continuar?',
       'Aprobar cotización', 'Cancelar'
@@ -516,7 +523,7 @@ constructor() {
             this.recargar();
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','No fue posible aprobar la cotización.');
         },
       });

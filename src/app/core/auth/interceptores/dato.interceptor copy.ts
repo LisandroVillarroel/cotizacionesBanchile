@@ -1,4 +1,4 @@
-import { HttpEventType, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { HttpEventType, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { tap } from 'rxjs';
@@ -31,17 +31,11 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
 
         }, tiempoRealDeCarga);
 
-
-
         const responseBody = event.body as ApiResponse;
 
-
         if (isResponseWithCodigo(responseBody)) {
-
-          console.log('responseBody', isResponseWithCodigo(responseBody))
-
+          //console.log('responseBody', isResponseWithCodigo(responseBody))
           if (responseBody && responseBody.codigo) {
-
             if (responseBody.codigo != 200) {
               notificacioAlertnService.error('ERROR', responseBody.mensaje);
             }
@@ -51,6 +45,7 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 }
+
 interface ApiResponse {
   codigo: number;
   mensaje: string;

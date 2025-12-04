@@ -1,10 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -14,10 +9,8 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { formatRut, RutFormat, validateRut } from '@fdograph/rut-utilities';
 import {
   IAsegurado,
-  IAseguradoLista,
   IAseguradoListaParametro,
 } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
@@ -64,15 +57,14 @@ export class EliminaAseguradoComponent {
       )
       .subscribe({
         next: (dato) => {
-          console.log('dato:', dato);
+          //console.log('dato:', dato);
           if (dato.codigo === 200) {
             //alert('Eliminó Asegurado Bien');
             this.dialogRef.close('eliminado');
           }
-
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible eliminar al asegurado.');
         },
       });
   }

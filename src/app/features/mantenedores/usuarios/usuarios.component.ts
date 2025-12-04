@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import {  DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro } from './usuario-Interface';
+import { DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro, IUsuarioListaPerfiles, IUsuarioPerfile } from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
 import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.component';
 import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
@@ -47,18 +47,13 @@ export default class UsuariosComponent {
  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  tipoUsuario = signal<string>('');
+  tipoConsulta:string = 'E';
   datoUsuarios = signal<IUsuarioLista[]>([]);
+  datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
   usuarioService = inject(UsuarioService);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
-
-  datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
-  { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
-{ p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
-{ p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
 
 
   displayedColumns: string[] = [
@@ -97,10 +92,6 @@ export default class UsuariosComponent {
     return tabla;
   });
 
-  constructor() {
-
-  }
-
 
   tipoUsuarioSelect = new FormControl('', Validators.required);
   agregaSolicitudContratante = signal<FormGroup>(
@@ -109,67 +100,87 @@ export default class UsuariosComponent {
     })
   );
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
 
-  async ngOnInit() {
-    this.rescataLista('A');
+  async OnInit() {
+    this.LitaPerfiles();
+    this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataLista(p_tipo_consulta_: string) {
-    const estructura_lista = {
-   // p_id_usuario: "sup002",
-   // p_tipo_usuario: "S",
-   // p_tipo_consulta:"E"
+  rescataLista(tipoConsulta:string) {
 
-   p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-   p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-   p_tipo_consulta:p_tipo_consulta_
-    };
-
+ /*   let tipo ="E";
+    if(consulta=="E"){
+      tipo ="Ejecutivos";
+    }else if(consulta=="C"){
+      tipo = "Coordinadores";
+    }else { //if(consulta=="S")
+      tipo = "Ejecutivos y Coordinadores";
+    }
+*/
     this.usuarioService
-      .postListadoUsuario(estructura_lista)
+      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
-            console.log('Lista de Usuarios:', dato.p_cursor);
+            //console.log('Lista de Usuarios:', dato.p_cursor);
             this.datoUsuarios.set(dato.p_cursor);
           }
         },
-        error: (error) => {
+        error: () => {
           this.notificacioAlertnService.error('ERROR','Error Inesperado');
         },
       });
   }
 
+ LitaPerfiles() {
+  this.usuarioService
+      .postListaPerfiles(this._storage()!.usuarioLogin.usuario!, this._storage()!.usuarioLogin.tipoUsuario!)
+      .subscribe({
+        next: (dato: IUsuarioListaPerfiles) => {
+          if (dato.codigo === 200) {
+            this.datoPerfilesUsuarios.set(dato.perfiles);
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        },
+      });
+  }
+
+
   agregaNuevo() {
+    const datoUsuarioPar={
+      tipoConsulta:this.tipoConsulta
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.tipoUsuario();
+    dialogConfig.data = datoUsuarioPar;
 
     this.dialog
       .open(AgregaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataLista(this.tipoUsuario()!);
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
 
   modificaUsuario(datoUsuarioPar: IUsuario): void {
     console.log('Dato Modificar:', datoUsuarioPar);
-    const parametro: IUsuarioListaParametro = {
-      datoUsuarioPar: datoUsuarioPar,
-      tipoUsuario: this.tipoUsuario(),
-    };
+  //  const parametro: IUsuarioListaParametro = {
+   //   datoUsuarioPar: datoUsuarioPar,
+ //     tipoUsuario: this.tipoUsuario(),
+ //   };
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -177,15 +188,15 @@ export default class UsuariosComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = parametro;
+    dialogConfig.data = datoUsuarioPar;
 
     this.dialog
       .open(ModificaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
-          console.log('Modificación Confirmada:', data);
-          this.rescataLista(this.tipoUsuario()!);
+          //console.log('Modificación Confirmada:', data);
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
@@ -207,7 +218,7 @@ export default class UsuariosComponent {
   eliminaUsuario(datoUsuarioPar: IUsuario) {
      const parametro: IUsuarioListaParametro = {
       datoUsuarioPar: datoUsuarioPar,
-      tipoUsuario: this.tipoUsuario(),
+      tipoUsuario: this._storage()!.usuarioLogin.tipoUsuario,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -223,13 +234,13 @@ export default class UsuariosComponent {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataLista(this.tipoUsuario()!);
+          this.rescataLista(this.tipoConsulta);
         }
       });
   }
 
-  seleccionaTipoUsuario(event: any) {
-    console.log(event.value);
-
+  seleccionaTipoUsuario(_tipoConsulta: string) {
+    this.tipoConsulta = _tipoConsulta;
+    this.rescataLista(this.tipoConsulta);
   }
 }

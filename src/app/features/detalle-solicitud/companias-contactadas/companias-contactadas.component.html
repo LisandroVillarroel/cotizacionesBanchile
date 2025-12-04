@@ -1,13 +1,13 @@
 <div class="msj-warning">
   <h3>
     <mat-icon>info</mat-icon>
-    Se requiere contactar un mínimo de {{ minimo }} compañías para esta solicitud.
+    Se requiere contactar un mínimo de {{ datosCompanias()!.minimo }} compañías para esta solicitud.
   </h3>
 </div>
 
 <div class="container-fluid fondoGris p-2 mt-3" style="padding: 10px 10px 10px">
-  <mat-radio-group [value]="cotizacionSeleccionada" (change)="seleccionarCotizacion($event.value)">
-    @for (obj of companias(); track obj; let i = $index) {
+  <mat-radio-group [value]="cotizacionSeleccionadaEvent" (change)="seleccionarCotizacion($event.value)">
+    @for (obj of datosCompanias()!.companias; track obj; let i = $index) {
       <mat-card class="alinea-card-gestion">
         <mat-card-content class="d-flex p-0">
           <div class="p-2" style="width: 20%">
@@ -24,16 +24,16 @@
 
           <mat-divider [vertical]="true"></mat-divider>
 
-          <div class="p-2" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
+          <div class="p-2" [ngStyle]="{ width: datosCompanias()!.flagSoloCerrar ? '20%' : '15%' }">
             <p class="fontSmall">Estado cotización</p>
             <p class="fontLarge" [ngStyle]="getCellStyle(obj.p_id_estado_cotizacion)">
               {{ obj.p_id_nombre_estado_cotizacion }}
             </p>
           </div>
-          @if (!flagSoloCerrar) {
+          @if (!datosCompanias()!.flagSoloCerrar) {
             <mat-divider [vertical]="true"></mat-divider>
 
-            <div class="p-2" style="text-align: center;" [ngStyle]="{ width: flagSoloCerrar ? '20%' : '15%' }">
+            <div class="p-2" style="text-align: center;" [ngStyle]="{ width: datosCompanias()!.flagSoloCerrar ? '20%' : '15%' }">
               <p class="fontSmall">Acciones</p>
               <div class="gap-2 d-flex" style="border-radius: 0px;">
                   <button class="button-link" matTooltip='Ver cotipropuesta' mat-icon-button

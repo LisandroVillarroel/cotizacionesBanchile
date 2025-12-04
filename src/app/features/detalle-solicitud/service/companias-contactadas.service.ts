@@ -12,7 +12,7 @@ import {
   IEliminaCompania,
   IMinimoResponse,
 } from '@features/detalle-solicitud/modelo/compania';
-import { IResponse } from '@shared/modelo/servicios-interface';
+import { IRequest, IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,11 @@ export class CompaniasContactadasService {
     );
   }
 
-  postCompaniasTipoSeguro(filtro: any): Observable<ICompaniasResponse> {
+  postCompaniasTipoSeguro(idRubro: number, idTipoSeguro: number): Observable<ICompaniasResponse> {
+    const filtro = {
+      p_rubro: idRubro,
+      p_tipo_seguro:idTipoSeguro,
+    };
     return this.http.post<ICompaniasResponse>(
       `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
       filtro,
@@ -46,8 +50,8 @@ export class CompaniasContactadasService {
 
   postAgregaCompania(
     agregarCompaniasSolicitud: IAgregaCompania
-  ): Observable<any> {
-    return this.http.post<any>(
+  ): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/agregarCompaniasSolicitud`,
       agregarCompaniasSolicitud,
       {
@@ -58,8 +62,8 @@ export class CompaniasContactadasService {
 
   postModificaCompania(
     modificarCompaniasSolicitud: IModificaCompania
-  ): Observable<any> {
-    return this.http.post<any>(
+  ): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarCompaniasSolicitud`,
       modificarCompaniasSolicitud,
       {
@@ -70,8 +74,8 @@ export class CompaniasContactadasService {
 
   postEliminaCompania(
     eliminarCompaniasSolicitud: IEliminaCompania
-  ): Observable<any> {
-    return this.http.post<any>(
+  ): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/eliminarCompaniasSolicitud`,
       eliminarCompaniasSolicitud,
       {
@@ -89,7 +93,7 @@ export class CompaniasContactadasService {
     );
   }
 
-  postEnviaSolicitud(enviaSolicitud: any): Observable<IResponse> {
+  postEnviaSolicitud(enviaSolicitud: IRequest): Observable<IResponse> {
     return this.http.post<IResponse>(
         `${environment.apiUrlConsumer}/enviarSolicitudCompanias`,
         enviaSolicitud, { headers: this.headers, }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild,computed,inject, input, output, signal } from '@angular/core';
+import { Component, ViewChild,computed,inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,9 +28,8 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { RubroService } from '@shared/service/rubro.service';
 import { StorageService } from '@shared/service/storage.service';
 import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
-import { ICoordinador, IEjecutivo, ISolicitudCartera, IRequestDeriva } from './cartera-interface';
+import { ICoordinador, IEjecutivo, ISolicitudCartera } from './cartera-interface';
 import { CarteraService } from './cartera.service';
-import { IRequest } from '@shared/modelo/servicios-interface';
 
 @Component({
   selector: 'app-derivar-cartera',
@@ -67,8 +66,8 @@ export default class DerivarCarteraComponent{
   notificacioAlertnService = inject(NotificacioAlertnService);
   carteraService = inject(CarteraService);
   request = {
-    p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-    p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+    p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+    p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
   };
 
   rubroService = inject(RubroService);
@@ -123,7 +122,7 @@ export default class DerivarCarteraComponent{
   ];
 
   dataSourceSolicitud = computed(() => {
-    var tabla = new MatTableDataSource<ISolicitudCartera>();
+    const tabla = new MatTableDataSource<ISolicitudCartera>();
     tabla.data = this.solicitudes()!;
     this.setSortingAndPagination(tabla);
     return tabla;
@@ -132,7 +131,7 @@ export default class DerivarCarteraComponent{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
@@ -150,7 +149,7 @@ export default class DerivarCarteraComponent{
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const estado = this.filtroFormulario().value.estado ?? '';
-    let fechaInicio_Inicial = this.filtroFormulario().value.fecha;
+    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
@@ -177,7 +176,7 @@ export default class DerivarCarteraComponent{
       }
       return cumpleCoordinador && cumpleEjecutivo && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
-  };
+  }
 
   private updateTableData(): void {
     this.dataSourceSolicitud().data = this.datosFiltrados();
@@ -187,7 +186,7 @@ export default class DerivarCarteraComponent{
     this.filtroFormulario().reset();
   }
 
-  async ngOnInit() {
+  async OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaCoordinadores();
     this.cargaEjecutivos();
@@ -210,8 +209,8 @@ export default class DerivarCarteraComponent{
           this.coordinadores.set(dato.p_cursor) ;
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Coordinadores.');
       },
     });
   }
@@ -223,8 +222,8 @@ export default class DerivarCarteraComponent{
           this.ejecutivos.set(dato.p_cursor) ;
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Ejecutivos.');
       },
     });
   }
@@ -236,8 +235,8 @@ export default class DerivarCarteraComponent{
           this.datoRubros.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Rubros.');
       },
     });
   }
@@ -249,23 +248,21 @@ export default class DerivarCarteraComponent{
           this.datosEstados.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Estados.');
       },
     });
   }
 
   async seleccionaRubro(datos: IRubro) {
-    const _codigoRubro = datos.p_id_rubro
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Tipos de Seguro.');
       },
     });
   }
@@ -274,7 +271,7 @@ export default class DerivarCarteraComponent{
     this.carteraService.postlistarCartera(this.request).subscribe({
       next: async (dato) => {
         if (dato.codigo === 200) {
-          let res = dato.ps_cursor;
+          const res = dato.ps_cursor;
           res.map((valor: ISolicitudCartera)=> {
             return {
               ...valor, // Copiamos las propiedades originales
@@ -284,8 +281,8 @@ export default class DerivarCarteraComponent{
           this.solicitudes.set(res) ;
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Solicitudes.');
       },
     });
   }

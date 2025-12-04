@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, input, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[directivaSoloDecimalNumeros]',
+  selector: '[appDirectivaSoloDecimalNumeros]',
   standalone: true
 })
 export class SoloDecimalNumerosDirective {
@@ -11,7 +11,7 @@ export class SoloDecimalNumerosDirective {
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  @HostListener('input', ['$event']) onInput(event: Event): void {
+  @HostListener('input') onInput(): void {
     const inputElement = this.el.nativeElement as HTMLInputElement;
     let value = inputElement.value;
 
