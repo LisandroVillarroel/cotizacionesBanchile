@@ -8,6 +8,8 @@ import {
   ICompaniaSeguroModificar,
   DatosTipoSeguroCompania,
   DatosContactoCompania,
+  DatosContactoCompaniaModificar,
+  IContactoCompaniaModificar,
 } from './compania-Interface';
 import { InterfazRubro } from '@shared/modelo/rubro-interface';
 import { InterfazTipoSeguro } from '@shared/modelo/tipoSeguro-interface';
@@ -59,9 +61,19 @@ export class CompaniaService {
     );
   }
 
-  postAgregaContacto(payload: any): Observable<any> {
+  postAgregaContactoCompania(payload: any): Observable<any> {
     return this.http.post<any>(
       `${environment.apiUrlConsumer}/crearContactoCompania`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+    postModificarContactoCompania(
+    payload: IContactoCompaniaModificar
+  ): Observable<DatosContactoCompaniaModificar> {
+    return this.http.post<DatosContactoCompaniaModificar>(
+      `${environment.apiUrlConsumer}/modificarContactoCompania`,
       payload,
       { headers: this.headers }
     );

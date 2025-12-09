@@ -25,6 +25,8 @@ import { CompaniaService } from './compania.service';
 import { AgregaCompaniaComponent } from './agrega-compania/agrega-compania.component';
 import { AgregaContactoComponent } from './agrega-contacto/agrega-contacto.component';
 import { AgregaTiposeguroComponent } from './agrega-tiposeguro/agrega-tiposeguro.component';
+import { ModificaCompaniaComponent } from './modifica-compania/modifica-compania.component';
+import { ModificaContactoComponent } from './modifica-contacto/modifica-contacto.component';
 
 @Component({
   selector: 'app-companias',
@@ -240,6 +242,47 @@ export default class CompaniasComponent {
       .subscribe((data) => {
         if (data === 'agregado' && this.selectedCompaniaId !== null) {
           this.cargarTiposSeguro(this.selectedCompaniaId);
+        }
+      });
+  }
+
+  modificaCompania(data: ICompaniaSeguro) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = data;
+
+    this.dialog
+      .open(ModificaCompaniaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp === 'modificado') {
+          this.rescataLista();
+        }
+      });
+  }
+
+  modificaContacto(data: IContactoCompania) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
+      ...data,
+      idCompania: this.selectedCompaniaId,
+    };
+
+    this.dialog
+      .open(ModificaContactoComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp === 'modificado' && this.selectedCompaniaId !== null) {
+          this.cargarContactos(this.selectedCompaniaId);
         }
       });
   }

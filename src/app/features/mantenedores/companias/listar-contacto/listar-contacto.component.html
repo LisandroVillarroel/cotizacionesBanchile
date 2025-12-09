@@ -47,15 +47,18 @@
       </th>
       <td mat-cell *matCellDef="let row" style="width: 20%; text-align: center">
         <!-- Botones de acción (comentados) -->
-        <!--
-        <button matTooltip="Modificar" mat-icon-button class="tabla" (click)="modificaContacto(row)">
+
+        <button
+          matTooltip="Modificar"
+          mat-icon-button
+          class="tabla"
+          (click)="onModificarContacto(row)"
+        >
           <mat-icon>edit</mat-icon>
         </button>
+        <!--
         <button matTooltip="Consultar" mat-icon-button class="tabla" (click)="consultaContacto(row)">
           <mat-icon>visibility</mat-icon>
-        </button>
-        <button matTooltip="Eliminar" mat-icon-button class="tabla" (click)="eliminaContacto(row)">
-          <mat-icon>delete</mat-icon>
         </button>
         -->
       </td>

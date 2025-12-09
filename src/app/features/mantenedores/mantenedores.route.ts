@@ -22,7 +22,7 @@ export default [
   },
   {
     path: 'companias',
-    canActivate: [guardRoles(['ejec_bco', 'sup_corr'])],
+    canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/companias/companias.component'),
   },

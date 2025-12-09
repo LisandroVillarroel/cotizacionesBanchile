@@ -127,10 +127,33 @@ export interface DatosCompaniaSeguroModificar {
   vcEstadoCreacion: string;
 }
 
-export interface ITipoSeguroCompaniaCrear {
+export interface IContactoCompaniaModificar {
+  p_id_usuario: string;
+  p_tipo_usuario: string;
+  p_id_compania_seguro: number;
+  p_id_ejecutivo_cia: number;
+  p_nombre_ejecutivo_cia: string;
+  p_correo_ejecutivo_cia: string;
+}
+
+export interface DatosContactoCompaniaModificar {
+  codigo: number;
+  mensaje: string;
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}
+
+export interface ITipoSeguroCompaniaModificar {
   p_id_usuario: string;
   p_tipo_usuario: string;
   p_id_compania_seguro: number;
   p_id_rubro: number;
   p_id_tipo_seguro: number;
+}
+
+export interface DatosTipoSeguroCompaniaModificar {
+  codigo: number;
+  mensaje: string;
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }

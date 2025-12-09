@@ -27,8 +27,13 @@ export class ListarContactoComponent {
   @Input() contactos: IContactoCompania[] = [];
 
   @Output() agregarContacto = new EventEmitter<void>();
+  @Output() modificarContacto = new EventEmitter<IContactoCompania>();
 
   onAgregarContacto() {
     this.agregarContacto.emit();
+  }
+
+  onModificarContacto(row: IContactoCompania) {
+    this.modificarContacto.emit(row);
   }
 }

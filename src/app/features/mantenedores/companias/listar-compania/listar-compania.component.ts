@@ -34,8 +34,8 @@ export class ListarCompaniaComponent {
 
   @Output() companiaSeleccionada = new EventEmitter<number>();
   selectedCompaniaId: number | null = null;
-
   @Output() agregarCompania = new EventEmitter<void>();
+  @Output() modificarCompania = new EventEmitter<ICompaniaSeguro>();
 
   onCompaniaChange(idCompania: number) {
     this.selectedCompaniaId = idCompania;
@@ -45,4 +45,8 @@ export class ListarCompaniaComponent {
   onAgregarCompania() {
     this.agregarCompania.emit();
   }
+
+  onModificarCompania(row: ICompaniaSeguro) {
+  this.modificarCompania.emit(row);
+}
 }

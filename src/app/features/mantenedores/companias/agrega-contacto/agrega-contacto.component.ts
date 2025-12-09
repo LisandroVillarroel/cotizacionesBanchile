@@ -84,7 +84,7 @@ export class AgregaContactoComponent {
         this.agregaContacto().get('correoContacto')!.value,
     };
 
-    this.companiaService.postAgregaContacto(payload).subscribe({
+    this.companiaService.postAgregaContactoCompania(payload).subscribe({
       next: (resp) => {
         if (resp.codigo === 200) {
           this.notificacioAlertnService.success(

@@ -1,0 +1,67 @@
+<app-cabecera-popup [titulo]="'Modificar Contacto de Compañía'" />
+
+<mat-dialog-content
+  [formGroup]="modificaContacto()"
+  name="modificaContacto"
+  class="modifica-container"
+>
+  <div
+    class="row form-con-titulo contenido-form mat-elevation-z6"
+    data-titulo="Modificar Datos del Contacto"
+  >
+    <div class="col-md-6">
+      <!-- Nombre Ejecutivo -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Ejecutivo</mat-label>
+        <input
+          matInput
+          [formControl]="nombreEjecutivo"
+          required
+          oninput="this.value = this.value.toUpperCase()"
+        />
+        @if (nombreEjecutivo.invalid) {
+        <mat-error>{{ getErrorMessage("nombreEjecutivo") }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Correo Ejecutivo -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Correo Ejecutivo</mat-label>
+        <input matInput [formControl]="correoEjecutivo" required />
+        @if (correoEjecutivo.invalid) {
+        <mat-error>{{ getErrorMessage("correoEjecutivo") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Columna reservada para diseño (mantiene simetría) -->
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="colorFondoBotonCerrar"
+    >
+      Cerrar
+    </button>
+  </div>
+
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="guardar()"
+      class="colorFondoBotonGrabar"
+      [disabled]="modificaContacto().invalid"
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>
+

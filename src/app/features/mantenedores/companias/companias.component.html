@@ -9,6 +9,7 @@
           selectedCompaniaId = $event; cargarContactos($event)
         "
         (agregarCompania)="agregaNuevaCompania()"
+        (modificarCompania)="modificaCompania($event)"
       ></app-listar-compania>
     </div>
 
@@ -18,6 +19,7 @@
         [displayedColumns]="displayedColumnsContactos"
         [contactos]="datoContactos()"
         (agregarContacto)="agregaNuevoContacto()"
+        (modificarContacto)="modificaContacto($event)"
       ></app-listar-contacto>
     </div>
   </div>

@@ -159,7 +159,7 @@ export class ModificaCompaniaComponent {
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     const payload = {
-      p_id_usuario: 'ADM042', // parametrizable
+      p_id_usuario: 'adm001', // temporal
       p_tipo_usuario: 'A',
       p_id_compania_seguro: this.data.p_id_compania_seguro,
       p_rut_compania_seguro: rutParaBD,
