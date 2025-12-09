@@ -44,6 +44,12 @@ export class AgregaAseguradoComponent {
   asegurado!: IAsegurado;
   private readonly dialogRef = inject(MatDialogRef<AgregaAseguradoComponent>);
 
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutAsegurado = new FormControl('', [Validators.required, this.validaRut]);
   nombreAsegurado = new FormControl('', [Validators.required]);
   correoAsegurado = new FormControl('', [
@@ -230,12 +236,12 @@ export class AgregaAseguradoComponent {
     }
   }
 
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
+  /*   validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value as string) === false) {
       return { rutInvalido: true };
     }
     return null;
-  }
+  } */
 
   grabar() {
     const rutVisual = this.agregaAsegurado().get('rutAsegurado')!.value as string;

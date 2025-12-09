@@ -43,6 +43,12 @@ export class AgregaBeneficiarioComponent {
 
   private readonly dialogRef = inject(MatDialogRef<AgregaBeneficiarioComponent>);
 
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);
   nombreBeneficiario = new FormControl('', [Validators.required]);
   correoBeneficiario = new FormControl('', [
@@ -140,14 +146,6 @@ export class AgregaBeneficiarioComponent {
 
     return '';
   }
-
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value as string) === false) {
-      return { rutInvalido: true };
-    }
-    return null;
-  }
-
   //Éste es el método antiguo para formatear rut con puntos y guión
   /* async onBlurRutBeneficiario(event: any) {
     const rut = event.target.value;

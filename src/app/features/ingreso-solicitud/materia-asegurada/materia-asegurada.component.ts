@@ -1,7 +1,8 @@
-import { Component, input, signal, inject, effect, Input, Signal } from '@angular/core';
+import { Component, input, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
 import {
   IMateria,
+  IMateriaData,
   IMateriaEnvia,
   IMateriaEstructura,
   IMateriaIngresa,
@@ -41,11 +42,12 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './materia-asegurada.component.css',
 })
 export class MateriaAseguradaComponent {
-  idSolicitud = input.required<number>();
+  materiaData = input.required<IMateriaData | undefined>();
+  /*idSolicitud = input.required<number>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
-  //muestraConsulta = input<boolean>();
-  @Input({ required: true }) muestraConsulta!: Signal<boolean>;
+  muestraConsulta = input.required<boolean>(); */
+  // @Input({ required: true }) muestraConsulta!: Signal<boolean>;
 
   //mostrarSoloConsulta = input.required<boolean>();
 
@@ -68,14 +70,17 @@ export class MateriaAseguradaComponent {
       () => {
         // Llamar al método cada vez que el valor cambie
         this.datoMateriaEstructura_arr = [];
-        this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta());
+        this.materiaForm().get('flagSinInfo')?.setValue(this.materiaData()!.muestraConsulta);
         if (
-          this.idRubro() != null &&
-          this.idSeguro() != null &&
-          this.idRubro() != 0 &&
-          this.idSeguro() != 0
+          this.materiaData()!.id_rubro != null &&
+          this.materiaData()!.id_tipo_seguro != null &&
+          this.materiaData()!.id_rubro != 0 &&
+          this.materiaData()!.id_tipo_seguro != 0
         ) {
-          this.rescataListaMaterias(this.idRubro(), this.idSeguro());
+          this.rescataListaMaterias(
+            this.materiaData()!.id_rubro,
+            this.materiaData()!.id_tipo_seguro,
+          );
         }
       },
       { allowSignalWrites: true },
@@ -91,10 +96,11 @@ export class MateriaAseguradaComponent {
   materiaForm = signal<FormGroup>(
     new FormGroup({
       // lee el signal (¡sin envolver en una función!)
-      flagSinInfo: new FormControl<boolean>(this.muestraConsulta(), {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
+      // flagSinInfo: new FormControl<boolean>(this.materiaData()!.muestraConsulta, {
+      flagSinInfo: new FormControl(
+        () => this.materiaData()!.muestraConsulta,
+        [Validators.required],
+      ),
     }),
   );
 
@@ -103,7 +109,7 @@ export class MateriaAseguradaComponent {
       next: (dato) => {
         if (dato.codigo === 200) {
           this.datoMateria.set(dato.p_cursor);
-          this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro);
+          this.rescataTieneMateria(this.materiaData()!.id_solicitud, idRubro, idSeguro);
         }
       },
       error: () => {
@@ -260,7 +266,6 @@ export class MateriaAseguradaComponent {
     this.materiaIngresa = [];
     for (const fila of this.datoMateriaEstructura()) {
       for (const columna of fila.datos) {
-        nombreCampo = '';
         if (columna.p_tipo_dato != 'TITULO')
           nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value as string;
 
@@ -269,9 +274,11 @@ export class MateriaAseguradaComponent {
           this.materiaForm().get(columna.nombreCampo!)!.value != '' &&
           this.materiaForm().get(columna.nombreCampo!)!.value != null
         )
-          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value.format('DD/MM/YYYY');
+          nombreCampo = this.materiaForm()
+            .get(columna.nombreCampo!)!
+            .value.format('DD/MM/YYYY') as string;
 
-        if (nombreCampo == null) nombreCampo = '';
+        if (nombreCampo === null) nombreCampo = '';
         if (columna.p_tipo_dato === 'TITULO') nombreCampo = columna.p_valor_dato;
 
         this.materiaIngresa.push({
@@ -289,9 +296,9 @@ export class MateriaAseguradaComponent {
     }
 
     const envioMateria: IMateriaEnvia = {
-      p_id_solicitud: this.idSolicitud(),
-      p_id_rubro: this.idRubro(),
-      p_id_tipo_seguro: this.idSeguro(),
+      p_id_solicitud: this.materiaData()!.id_solicitud,
+      p_id_rubro: this.materiaData()!.id_rubro,
+      p_id_tipo_seguro: this.materiaData()!.id_tipo_seguro,
       items: this.materiaIngresa,
     };
 

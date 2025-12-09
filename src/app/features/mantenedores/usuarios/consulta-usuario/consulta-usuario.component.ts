@@ -52,6 +52,13 @@ export class ConsultaUsuarioComponent {
   private readonly dialogRef = inject(MatDialogRef<ConsultaUsuarioComponent>);
 
   idUsuarioNuevo = new FormControl(this.data.p_id_usuario_nuevo, [Validators.required]);
+
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutUsuarioNuevo = new FormControl(this.data.p_rut_usuario_nuevo, [
     Validators.required,
     this.validaRut,
@@ -157,12 +164,5 @@ export class ConsultaUsuarioComponent {
       // Formato para BD
       // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
-  }
-
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value as string) === false) {
-      return { rutInvalido: true };
-    }
-    return null;
   }
 }

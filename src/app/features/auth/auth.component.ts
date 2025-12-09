@@ -9,7 +9,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { AuthService } from './auth.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { IAuth } from './auth-Interface';
+import { IAuth, IAuthRespuesta, ITipoUsuarioRespuesta } from './auth-Interface';
 
 @Component({
   selector: 'app-auth',
@@ -57,7 +57,7 @@ export default class AuthComponent {
           this.rescataTipoUsuario(dato.p_cursor![0]);
         }
       },
-      error: (error) => {
+      error: (error: IAuthRespuesta) => {
         void this.notificacioAlertnService.error('ERROR', error.mensaje);
       },
     });
@@ -89,7 +89,7 @@ export default class AuthComponent {
           void this.router.navigate(['portada']);
         }
       },
-      error: (error) => {
+      error: (error: ITipoUsuarioRespuesta) => {
         void this.notificacioAlertnService.error('ERROR', error.mensaje);
       },
     });

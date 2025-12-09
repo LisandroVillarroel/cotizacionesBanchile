@@ -48,6 +48,7 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
+import { IMateriaData } from './modelo/materia-Interface';
 
 @Component({
   selector: 'app-ingreso-solicitud',
@@ -115,6 +116,8 @@ export default class IngresoSolicitudComponent {
 
   esIgualAlAsegurado: boolean = false;
 
+  materiaData = signal<IMateriaData | undefined>(undefined);
+
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
 
@@ -126,10 +129,23 @@ export default class IngresoSolicitudComponent {
   //mostrarAnular: boolean = true;
   pasoActivoLabel: string = '';
 
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutCliente = new FormControl('', [Validators.required, this.validaRut]);
   rubro = new FormControl('', [Validators.required]);
   seguro = new FormControl('', [Validators.required]);
   aseguradeCheck = new FormControl(false, [Validators.required]);
+
+  validaQueSeaVerdadero = (control: AbstractControl): ValidationErrors | null => {
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
+    }
+    return null;
+  };
 
   flagAsegurado = new FormControl(false, [Validators.required, this.validaQueSeaVerdadero]);
   flagBeneficiario = new FormControl(true, [Validators.required, this.validaQueSeaVerdadero]);
@@ -191,6 +207,12 @@ export default class IngresoSolicitudComponent {
 
   OnInit() {
     this.cargaRubro();
+    this.materiaData.set({
+      id_solicitud: 0,
+      id_rubro: 0,
+      id_tipo_seguro: 0,
+      muestraConsulta: false,
+    });
   }
 
   cargaRubro() {
@@ -345,6 +367,12 @@ export default class IngresoSolicitudComponent {
           }
           //this.idSolicitud.set(dato.p_id_solicitud);
           this.idSolicitud = dato.p_id_solicitud;
+          this.materiaData.set({
+            id_solicitud: this.idSolicitud,
+            id_rubro: this.agregaSolicitudContratante().get('rubro')!.value as number,
+            id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value as number,
+            muestraConsulta: false,
+          });
         }
       },
       error: () => {
@@ -404,20 +432,6 @@ export default class IngresoSolicitudComponent {
         .setValue(formatRut(rut, RutFormat.DOTS_DASH));
       this.nombreRazonSocial.set('Nombre de Prueba');
     }
-  }
-
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value as string) === false) {
-      return { rutInvalido: true };
-    }
-    return null;
-  }
-
-  validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-    if (control.value !== true) {
-      return { isTrue: true }; // La clave del error es 'isTrue'
-    }
-    return null;
   }
 
   puedeEnviar(): boolean {

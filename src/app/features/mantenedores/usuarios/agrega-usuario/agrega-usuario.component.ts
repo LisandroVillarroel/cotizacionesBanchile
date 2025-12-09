@@ -62,6 +62,13 @@ export class AgregaUsuarioComponent implements OnInit {
   }
 
   idUsuarioNuevo = new FormControl('', [Validators.required]);
+
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutUsuarioNuevo = new FormControl('', [Validators.required, this.validaRut]);
   nombreUsuarioNuevo = new FormControl('', [Validators.required]);
   apePaternoUsuarioNuevo = new FormControl('', [Validators.required]);
@@ -159,13 +166,6 @@ export class AgregaUsuarioComponent implements OnInit {
       // Formato para BD
       //const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
-  }
-
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value as string) === false) {
-      return { rutInvalido: true };
-    }
-    return null;
   }
 
   rescataLista(tipoConsulta: string) {

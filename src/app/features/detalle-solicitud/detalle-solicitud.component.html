@@ -69,12 +69,13 @@
           </div>
         </mat-tab>
         <mat-tab label="Materia Asegurada">
-          <app-materia-asegurada
+          <!-- <app-materia-asegurada
             [idSolicitud]="data.idSolicitud"
             [idRubro]="infoGral()?.id_rubro!"
             [idSeguro]="infoGral()?.id_tipo_seguro!"
             [muestraConsulta]="soloConsulta()"
-          />
+          /> -->
+          <app-materia-asegurada [materiaData]="materiaData()" />
         </mat-tab>
         <mat-tab label="Documentos Asociados">
           <div class="container-fluid">

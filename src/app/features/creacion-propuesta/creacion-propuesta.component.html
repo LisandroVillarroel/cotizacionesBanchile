@@ -15,12 +15,13 @@
       data-titulo="Datos Materia Asegurada"
       style="margin-top: 32px"
     >
-      <app-materia-asegurada
+      <!--<app-materia-asegurada
         [idSolicitud]="idSolicitud"
         [idRubro]="infoGral()?.id_rubro!"
         [idSeguro]="infoGral()?.id_tipo_seguro!"
-        [muestraConsulta]="true"
-      />
+        [muestraConsulta]="true "
+      /> -->
+      <app-materia-asegurada [materiaData]="materiaData()" />
     </div>
   </div>
   <div class="container-fluid mt-3">

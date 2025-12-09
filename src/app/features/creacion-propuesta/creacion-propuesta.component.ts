@@ -24,6 +24,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { GenerarPropuestaService } from './generar-propuesta.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interface';
 
 @Component({
   selector: 'app-creacion-propuesta',
@@ -55,6 +56,8 @@ export class CreacionPropuestaComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+
+  materiaData = signal<IMateriaData | undefined>(undefined);
 
   cargarSolicitud(idSolicitud: number) {
     this.detalleService.postDetalle(idSolicitud).subscribe({
@@ -88,6 +91,12 @@ export class CreacionPropuestaComponent {
 
   OnInit() {
     this.cargarSolicitud(this.idSolicitud);
+    this.materiaData.set({
+      id_solicitud: this.idSolicitud,
+      id_rubro: this.infoGral()?.id_rubro as number,
+      id_tipo_seguro: this.infoGral()?.id_tipo_seguro as number,
+      muestraConsulta: true,
+    });
   }
 
   crearPpta(): void {

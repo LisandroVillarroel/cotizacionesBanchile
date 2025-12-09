@@ -46,6 +46,7 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
+import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interface';
 
 export interface seleccionada {
   id_compania_seguro: number;
@@ -86,6 +87,7 @@ export interface DetalleSolicitudData {
 })
 export default class DetalleSolicitudComponent {
   datosCompanias = signal<IDatosCompania | undefined>(undefined);
+  materiaData = signal<IMateriaData | undefined>(undefined);
 
   cotizacionSeleccionada: number | null = null;
   private readonly dialog = inject(MatDialog);
@@ -133,6 +135,13 @@ export default class DetalleSolicitudComponent {
     this.cargarSolicitud(this.data.idSolicitud);
     this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);
+
+    this.materiaData.set({
+      id_solicitud: this.data.idSolicitud,
+      id_rubro: this.infoGral()?.id_rubro as number,
+      id_tipo_seguro: this.infoGral()?.id_tipo_seguro as number,
+      muestraConsulta: this.data.flagSoloCerrar as boolean,
+    });
 
     switch (this.tipoUsuario) {
       case 'E':

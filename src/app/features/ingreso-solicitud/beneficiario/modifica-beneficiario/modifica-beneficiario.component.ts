@@ -41,6 +41,12 @@ export class ModificaBeneficiarioComponent {
 
   readonly data = inject<IBeneficiarioListaParametro>(MAT_DIALOG_DATA);
 
+  validaRut = (control: FormControl): { [s: string]: boolean } | null => {
+    if (validateRut(control.value as string) === false) {
+      return { rutInvalido: true };
+    }
+    return null;
+  };
   rutBeneficiario = new FormControl(this.data.datoBeneficiarioPar.rut_beneficiario, [
     Validators.required,
     this.validaRut,
@@ -145,13 +151,6 @@ export class ModificaBeneficiarioComponent {
     }
 
     return '';
-  }
-
-  validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value) === false) {
-      return { rutInvalido: true };
-    }
-    return null;
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión
