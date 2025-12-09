@@ -8,9 +8,8 @@ describe('EliminaAseguradoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EliminaAseguradoComponent]
-    })
-    .compileComponents();
+      imports: [EliminaAseguradoComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EliminaAseguradoComponent);
     component = fixture.componentInstance;

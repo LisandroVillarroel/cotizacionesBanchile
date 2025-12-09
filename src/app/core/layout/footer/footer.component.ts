@@ -8,20 +8,10 @@ import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatProgressBarModule,
-    MatIcon,
-    MatTooltip,
-    MatDividerModule,
-  ],
+  imports: [MatButtonModule, MatProgressBarModule, MatIcon, MatTooltip, MatDividerModule],
   template: `
     <div class="container-fluid">
-      <img
-        src="./../../../../assets/logo/logofooter.png"
-        alt="Logo"
-        class="logo-img"
-      />
+      <img src="./../../../../assets/logo/logofooter.png" alt="Logo" class="logo-img" />
       <div class="footer-center">
         <span class="footer-text">
           © 2025 Banchile Inversiones. Todos los derechos reservados.

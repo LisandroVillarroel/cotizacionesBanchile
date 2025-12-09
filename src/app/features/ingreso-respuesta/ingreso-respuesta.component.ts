@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  inject,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -141,7 +135,7 @@ export class IngresoRespuestaComponent {
       pInicio: this.pInicio,
       pTermino: this.pTermino,
       pVencimiento: this.pVencimiento,
-    })
+    }),
   );
 
   monedaService = inject(MonedaService);
@@ -183,10 +177,10 @@ export class IngresoRespuestaComponent {
   constructor(
     private registrarRespuestaService: RegistrarRespuestaService,
     private modificarRespuestaService: ModificarRespuestaService,
-    private dialogRef: MatDialogRef<IngresoRespuestaComponent>
+    private dialogRef: MatDialogRef<IngresoRespuestaComponent>,
   ) {
     const sesion = this._storage();
-    this.tipoUsuario = sesion?.usuarioLogin?.tipoUsuario ?? "";
+    this.tipoUsuario = sesion?.usuarioLogin?.tipoUsuario ?? '';
   }
 
   cargaMoneda() {
@@ -197,7 +191,7 @@ export class IngresoRespuestaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener las monedas.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible obtener las monedas.');
       },
     });
   }
@@ -210,7 +204,10 @@ export class IngresoRespuestaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los medios de pago.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener los medios de pago.',
+        );
       },
     });
   }
@@ -223,7 +220,7 @@ export class IngresoRespuestaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los bancos.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los bancos.');
       },
     });
   }
@@ -236,17 +233,20 @@ export class IngresoRespuestaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener los tipos de cuenta.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener los tipos de cuenta.',
+        );
       },
     });
   }
 
-  async OnInit() {
+  OnInit() {
     // Deshabilitar pTermino y pVencimiento inicialmente
-    if(this.datos.flagAccion){
-      this.titulo ="Ingresar";
+    if (this.datos.flagAccion) {
+      this.titulo = 'Ingresar';
     } else {
-      this.titulo = "Modificar";
+      this.titulo = 'Modificar';
     }
     this.pTermino.disable();
     this.pVencimiento.disable();
@@ -351,69 +351,63 @@ export class IngresoRespuestaComponent {
   registraRespuesta() {
     const datos: IRegistrarRespuesta = {
       p_id_solicitud: this.idSolicitud,
-      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro ?? "", //
-      p_id_moneda: this.formRespuesta().get('moneda')!.value,
-      p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value,
-      p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value,
-      p_valor_prima_bruta: this.formRespuesta().get('primaBruta')!.value,
-      p_id_medio_de_pago: this.formRespuesta().get('mPago')!.value,
-      p_id_banco: this.formRespuesta().get('banco')!.value,
-      p_id_tipo_cuenta: this.formRespuesta().get('tipoCuenta')!.value,
-      p_nro_cuenta: this.formRespuesta().get('nroCuenta')!.value,
-      p_cantidad_cuotas: this.formRespuesta().get('nroCuotas')!.value,
-      p_fecha_inicio_vigencia: this.formatFecha(
-        this.formRespuesta().get('pInicio')!.value
-      ),
+      p_id_compania_seguro: this.datos.compania?.p_id_compania_seguro ?? '', //
+      p_id_moneda: this.formRespuesta().get('moneda')!.value as number,
+      p_valor_prima_neta: this.formRespuesta().get('primaNeta')!.value as number,
+      p_valor_prima_afecta: this.formRespuesta().get('primaAfecta')!.value as number,
+      p_valor_prima_bruta: this.formRespuesta().get('primaBruta')!.value as number,
+      p_id_medio_de_pago: this.formRespuesta().get('mPago')!.value as number,
+      p_id_banco: this.formRespuesta().get('banco')!.value as number,
+      p_id_tipo_cuenta: this.formRespuesta().get('tipoCuenta')!.value as number,
+      p_nro_cuenta: this.formRespuesta().get('nroCuenta')!.value as number,
+      p_cantidad_cuotas: this.formRespuesta().get('nroCuotas')!.value as number,
+      p_fecha_inicio_vigencia: this.formatFecha(this.formRespuesta().get('pInicio')!.value as Date),
       p_fecha_termino_vigencia: this.formatFecha(
-        this.formRespuesta().get('pTermino')!.value
+        this.formRespuesta().get('pTermino')!.value as Date,
       ),
       p_dia_vencimiento_primera_cuota: this.formatFecha(
-        this.formRespuesta().get('pVencimiento')!.value
+        this.formRespuesta().get('pVencimiento')!.value as Date,
       ),
       p_id_cotizacion_compania: this.nombreArchivoCompania,
-      p_ruta_cotizacion_compania:
-        'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS', //
+      p_ruta_cotizacion_compania: 'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_CIAS', //
       p_id_cotizacion_propuesta: this.nombreArchivoPropuesta,
-      p_ruta_cotizacion_propuesta:
-        'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS', //
+      p_ruta_cotizacion_propuesta: 'C:\\DOCUMENTOS\\COTIZACIONES\\ASEGURADORAS\\COTI_PPTAS', //
 
       //archivoCompania: this.selectedCompaniaFile,
       //archivoPropuesta: this.selectedPropuestaFile,
 
-      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario as string,
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario as string,
     };
     this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
-      next: async (res) => {
+      next: (res) => {
         if (res.codigo === 200) {
-          await this.notificacioAlertnService.confirmacion(
+          void this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
-            'La respuesta se ha registrado exitosamente.'
+            'La respuesta se ha registrado exitosamente.',
           );
           this.dialogRef.close(true);
         }
       },
       error: () => {
-        this.notificacioAlertnService.
-          error('ERROR', 'No fue posible registrar la respuesta de la compañía.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible registrar la respuesta de la compañía.',
+        );
       },
     });
   }
 
   modificaRespuesta() {
     const datos: IModificarRespuesta = {
-      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? '',
       p_id_solicitud: Number(this.idSolicitud),
       p_id_compania_seguro: Number(this.datos.compania?.p_id_compania_seguro),
       p_id_moneda: Number(this.formRespuesta().get('moneda')!.value),
       p_valor_prima_neta: Number(this.formRespuesta().get('primaNeta')!.value),
-      p_valor_prima_afecta: Number(
-        this.formRespuesta().get('primaAfecta')!.value
-      ),
-      p_valor_prima_bruta: Number(
-        this.formRespuesta().get('primaBruta')!.value
-      ),
+      p_valor_prima_afecta: Number(this.formRespuesta().get('primaAfecta')!.value),
+      p_valor_prima_bruta: Number(this.formRespuesta().get('primaBruta')!.value),
       p_id_medio_de_pago: Number(this.formRespuesta().get('mPago')!.value),
       p_id_banco: Number(this.formRespuesta().get('banco')!.value),
       p_id_tipo_cuenta: Number(this.formRespuesta().get('tipoCuenta')!.value),
@@ -422,39 +416,37 @@ export class IngresoRespuestaComponent {
 
       // Fechas en formato DD/MM/YYYY
       p_fecha_inicio_vigencia: this.formatFechaDDMMYYYY(
-        this.formRespuesta().get('pInicio')!.value
+        this.formRespuesta().get('pInicio')!.value as Date,
       ),
       p_fecha_termino_vigencia: this.formatFechaDDMMYYYY(
-        this.formRespuesta().get('pTermino')!.value
+        this.formRespuesta().get('pTermino')!.value as Date,
       ),
       p_dia_vencimiento_primera_cuota: this.formatFechaDDMMYYYY(
-        this.formRespuesta().get('pVencimiento')!.value
+        this.formRespuesta().get('pVencimiento')!.value as Date,
       ),
-
-      p_id_cotizacion_compania:
-        this.datos.compania?.p_id_cotizacion_compania ?? '',
+      p_id_cotizacion_compania: this.datos.compania?.p_id_cotizacion_compania,
       p_ruta_cotizacion_compania: '/docs/cotizaciones/COT-2025-001-UPD5.pdf',
-      p_id_cotizacion_propuesta:
-        this.datos.compania?.p_id_cotizacion_propuesta ?? '',
+      p_id_cotizacion_propuesta: this.datos.compania?.p_id_cotizacion_propuesta,
       p_ruta_cotizacion_propuesta: '/docs/propuestas/PROP-2025-005-UPD.pdf',
-
       p_detalle_solicitud_cotizacion: 'Modificación realizada',
     };
 
     this.modificarRespuestaService.modificarRespuesta(datos).subscribe({
-      next: async (res) => {
+      next: (res) => {
         if (res.codigo === 200) {
-          await this.notificacioAlertnService.confirmacion(
+          void this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
-            'La respuesta se ha modificado exitosamente.'
+            'La respuesta se ha modificado exitosamente.',
           );
           this.dialogRef.close(true);
         }
       },
       error: () => {
         //console.error('Error en modificarRespuesta:', error);
-        this.notificacioAlertnService.
-          error('ERROR', 'No fue posible modificar la respuesta de la compañía.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible modificar la respuesta de la compañía.',
+        );
       },
     });
   }
@@ -482,54 +474,34 @@ export class IngresoRespuestaComponent {
 
   getErrorMessage(campo: string) {
     if (campo === 'moneda') {
-      return this.moneda.hasError('required')
-        ? 'Debe seleccionar una moneda'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe seleccionar una moneda' : '';
     }
     if (campo === 'mPago') {
-      return this.moneda.hasError('required')
-        ? 'Debe seleccionar un medio de pago'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe seleccionar un medio de pago' : '';
     }
     if (campo === 'banco') {
-      return this.moneda.hasError('required')
-        ? 'Debe seleccionar un banco'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe seleccionar un banco' : '';
     }
     if (campo === 'tipoCuenta') {
-      return this.moneda.hasError('required')
-        ? 'Debe seleccionar un tipo de cuenta'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe seleccionar un tipo de cuenta' : '';
     }
     if (campo === 'nroCuotas') {
-      return this.moneda.hasError('required')
-        ? 'Debe seleccionar un nro. de cuotas'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe seleccionar un nro. de cuotas' : '';
     }
     if (campo === 'primaNeta') {
-      return this.moneda.hasError('required')
-        ? 'Debe indicar la prima neta'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe indicar la prima neta' : '';
     }
     if (campo === 'primaAfecta') {
-      return this.moneda.hasError('required')
-        ? 'Debe indicar la prima afecta'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe indicar la prima afecta' : '';
     }
     if (campo === 'primaBruta') {
-      return this.moneda.hasError('required')
-        ? 'Debe indicar la prima bruta'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe indicar la prima bruta' : '';
     }
     if (campo === 'nroCuenta') {
-      return this.moneda.hasError('required')
-        ? 'Debe indicar el nro. de cuenta'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe indicar el nro. de cuenta' : '';
     }
     if (campo === 'pInicio') {
-      return this.moneda.hasError('required')
-        ? 'Debe indicar la fecha de inicio'
-        : '';
+      return this.moneda.hasError('required') ? 'Debe indicar la fecha de inicio' : '';
     }
     return '';
   }

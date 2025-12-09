@@ -21,10 +21,7 @@ import { CommonModule } from '@angular/common';
 import { CuestionarioService } from '../service/cuestionario.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import {
-  IDocumentoLista,
-  DatosDocumentoInterface,
-} from '../modelo/ingresoSolicitud-Interface';
+import { IDocumentoLista, DatosDocumentoInterface } from '../modelo/ingresoSolicitud-Interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
@@ -49,7 +46,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 export class CuestionarioComponent {
   idSolicitud = input.required<number>();
   documentosFiltrados = signal<IDocumentoLista[]>([]);
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   documentForm = signal(inject(FormBuilder).group({}));
   documentos = signal<IIngresarDocumento[]>([]);
@@ -89,8 +86,7 @@ export class CuestionarioComponent {
       const file = input.files[0];
 
       const sesion = this.storage.get('sesion') as ISesionInterface;
-      const usuarioLogueado =
-        sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
+      const usuarioLogueado = sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
 
       doc.p_id_solicitud = Number(this.idSolicitud());
       doc.p_ruta_documento_origen = this.generarRuta('origen', file.name);
@@ -113,7 +109,7 @@ export class CuestionarioComponent {
           }
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible agregar el documento.');
+          void this.notificacioAlertnService.error('ERROR', 'No fue posible agregar el documento.');
         },
       });
 
@@ -130,7 +126,7 @@ export class CuestionarioComponent {
 
   archivoObligatorioCargado(): boolean {
     const doc = this.documentos().find(
-      (d) => d.p_id_documento_adjunto === 'Cuestionario de cotización'
+      (d) => d.p_id_documento_adjunto === 'Cuestionario de cotización',
     );
     return !!doc?.p_ruta_documento_origen;
   }
@@ -162,14 +158,18 @@ export class CuestionarioComponent {
             )}
           )  */
 
-/*           console.log(
+          /*           console.log(
             `Documentos para solicitud ${idSolicitud}:`,
             documentosFiltrados
           );
- */        }
+ */
+        }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de docuemtnos asociados.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de docuemtnos asociados.',
+        );
       },
     });
   }
@@ -178,49 +178,50 @@ export class CuestionarioComponent {
     const idSolicitud = Number(this.idSolicitud());
 
     if (doc.p_corr_documento == null) {
-      this.notificacioAlertnService.warning('CUESTIONARIO', 'No se puede eliminar el documento porque no tiene correlativo asignado.');
+      void this.notificacioAlertnService.warning(
+        'CUESTIONARIO',
+        'No se puede eliminar el documento porque no tiene correlativo asignado.',
+      );
       return;
     }
 
     // Verificar si es el documento obligatorio
-    const esObligatorio =
-      doc.p_id_documento_adjunto === 'Cuestionario de cotización';
+    const esObligatorio = doc.p_id_documento_adjunto === 'Cuestionario de cotización';
 
     if (esObligatorio) {
       // Verificar si hay documentos opcionales cargados
       const documentosOpcionales = this.documentos().filter(
         (d) =>
-          d.p_id_documento_adjunto !== 'Cuestionario de cotización' &&
-          d.p_ruta_documento_origen
+          d.p_id_documento_adjunto !== 'Cuestionario de cotización' && d.p_ruta_documento_origen,
       );
 
       if (documentosOpcionales.length > 0) {
-        this.notificacioAlertnService.warning('CUESTIONARIO','Primero debe eliminar los documentos opcionales antes de eliminar el documento obligatorio.');
+        void this.notificacioAlertnService.warning(
+          'CUESTIONARIO',
+          'Primero debe eliminar los documentos opcionales antes de eliminar el documento obligatorio.',
+        );
         return;
       }
     }
 
     const corr = doc.p_corr_documento;
     const sesion = this.storage.get('sesion') as ISesionInterface;
-    const usuarioLogueado =
-      sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
+    const usuarioLogueado = sesion?.usuarioLogin?.usuario ?? 'UsuarioDesconocido';
 
-    this.cuestionarioService
-      .postEliminaDocumento(idSolicitud, corr, usuarioLogueado)
-      .subscribe({
-        next: () => {
-          doc.p_ruta_documento_origen = '';
-          doc.p_ruta_documento_destino = '';
-          doc.p_fecha_creacion = '';
-          doc.p_usuario_creacion = '';
+    this.cuestionarioService.postEliminaDocumento(idSolicitud, corr, usuarioLogueado).subscribe({
+      next: () => {
+        doc.p_ruta_documento_origen = '';
+        doc.p_ruta_documento_destino = '';
+        doc.p_fecha_creacion = '';
+        doc.p_usuario_creacion = '';
 
-          if (esObligatorio) {
-            this.bloquearSeccion2.set(true);
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible eliminar el documento.');
-        },
-      });
+        if (esObligatorio) {
+          this.bloquearSeccion2.set(true);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible eliminar el documento.');
+      },
+    });
   }
 }

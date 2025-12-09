@@ -1,5 +1,5 @@
-<mat-card class="alinea-card-gestion" >
-  <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px;">
+<mat-card class="alinea-card-gestion">
+  <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px">
     <h2 mat-dialog-title class="destacado">Resumen general de cotizaciones</h2>
   </mat-card-title>
 
@@ -7,30 +7,29 @@
     <mat-card class="mat-card">
       <div class="mat-card-content">
         <div class="mat-card-column_1">Registradas:</div>
-        <div class="mat-card-column_2">{{resumenGestion()?.recibidas}}</div>
+        <div class="mat-card-column_2">{{ resumenGestion()?.recibidas }}</div>
       </div>
     </mat-card>
 
     <mat-card class="mat-card">
       <div class="mat-card-content">
         <div class="mat-card-column_1">Propuestas Pendientes</div>
-        <div class="mat-card-column_2">{{resumenGestion()?.aceptadas}}</div>
+        <div class="mat-card-column_2">{{ resumenGestion()?.aceptadas }}</div>
       </div>
     </mat-card>
 
     <mat-card class="mat-card">
       <div class="mat-card-content">
         <div class="mat-card-column_1">Propuestas Emitidas</div>
-        <div class="mat-card-column_2">{{resumenGestion()?.emitidas}}</div>
+        <div class="mat-card-column_2">{{ resumenGestion()?.emitidas }}</div>
       </div>
     </mat-card>
 
     <mat-card class="mat-card">
       <div class="mat-card-content">
         <div class="mat-card-column_1">Propuestas Firmadas</div>
-        <div class="mat-card-column_2">{{resumenGestion()?.firmadas}}</div>
+        <div class="mat-card-column_2">{{ resumenGestion()?.firmadas }}</div>
       </div>
     </mat-card>
-
   </div>
 </mat-card>

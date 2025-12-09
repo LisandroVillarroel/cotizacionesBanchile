@@ -1,7 +1,5 @@
 export const environment = {
   production: false,
-  apiUrlConsumer:'',
+  apiUrlConsumer: '',
   keyEcrypt: '',
-
-
 };

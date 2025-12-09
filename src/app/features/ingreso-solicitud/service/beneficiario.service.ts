@@ -27,26 +27,21 @@ export class BeneficiarioService {
       agregaBeneficiario,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
-  postModificaBeneficiario(
-    modificaBeneficiario: IBeneficiario
-  ): Observable<IResponse> {
+  postModificaBeneficiario(modificaBeneficiario: IBeneficiario): Observable<IResponse> {
     return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarBeneficiario`,
       modificaBeneficiario,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
-  postEliminaBeneficiario(
-    isolicitud: number,
-    rutBeneficiario: string
-  ): Observable<IResponse> {
+  postEliminaBeneficiario(isolicitud: number, rutBeneficiario: string): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_beneficiario: rutBeneficiario,
@@ -57,7 +52,7 @@ export class BeneficiarioService {
       parametro,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
@@ -66,15 +61,15 @@ export class BeneficiarioService {
     return this.http.post<DatosBeneficiariosInterface>(
       `${environment.apiUrlConsumer}/listarBeneficiarios`,
       filtro,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
   //Servicio para traer datos del mock a beneficiario
   getDatosBenficiario(rut: string): Observable<IDatosPersona> {
-      return this.http.get<IDatosPersona>(
-        `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
-        { headers: this.headers }
-      );
-    }
+    return this.http.get<IDatosPersona>(
+      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
+      { headers: this.headers },
+    );
+  }
 }

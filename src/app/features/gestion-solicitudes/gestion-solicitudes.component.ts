@@ -2,11 +2,11 @@ import { Component, signal, inject, computed } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from "@angular/material/card";
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { IGestionResponse, ISolicitudG } from './gestionSolicitud-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -28,10 +28,10 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatTabsModule,
     MatCardModule,
     CommonModule,
-    SolicitudesComponent
+    SolicitudesComponent,
   ],
   templateUrl: './gestion-solicitudes.component.html',
-  styleUrl: './gestion-solicitudes.component.css'
+  styleUrl: './gestion-solicitudes.component.css',
 })
 export default class GestionSolicitudesComponent {
   fechaActual: Date = new Date();
@@ -44,26 +44,34 @@ export default class GestionSolicitudesComponent {
   ejec = signal<boolean>(false);
   gestionService = inject(GestionSolicitudesService);
 
-  nuevas = computed(() => { return this.datosSolicitud().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("edicion"))
+  nuevas = computed(() => {
+    return this.datosSolicitud().filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('edicion'),
+    );
   });
 
-  revisadas = computed(() => { return this.datosSolicitud().filter( r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("revision"))
+  revisadas = computed(() => {
+    return this.datosSolicitud().filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('revision'),
+    );
   });
 
-  devueltas = computed(() => { return this.datosSolicitud()!.filter(r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("devuelta"))
+  devueltas = computed(() => {
+    return this.datosSolicitud()!.filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('devuelta'),
+    );
   });
 
-  cotizadas = computed(() => { return this.datosSolicitud()!.filter(r =>
-    r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
+  cotizadas = computed(() => {
+    return this.datosSolicitud()!.filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('cotizacion'),
+    );
   });
 
-  async OnInit(){
-    if(this.perfil === "E"){
+  OnInit() {
+    if (this.perfil === 'E') {
       this.ejec.set(true);
-    }else{
+    } else {
       this.ejec.set(false);
     }
     this.cargarSolicitudes();
@@ -71,34 +79,38 @@ export default class GestionSolicitudesComponent {
 
   cargarSolicitudes() {
     const request = {
-      p_id_usuario:  this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this.perfil ?? ""
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
+      p_tipo_usuario: this.perfil ?? '',
     };
     this.gestionService.postListaGestion(request).subscribe({
       next: (dato: IGestionResponse) => {
         if (dato.codigo === 200) {
           const res = dato.ps_cursor;
-          res.map((valor: ISolicitudG)=> {
+          res.map((valor: ISolicitudG) => {
             return {
               ...valor, // Copiamos las propiedades originales
-              nombre_contratante: (valor.nombre_contratante === null ||
-                valor.nombre_contratante ==="") ? "-" : valor.nombre_contratante
-            }
-          })
+              nombre_contratante:
+                valor.nombre_contratante === null || valor.nombre_contratante === ''
+                  ? '-'
+                  : valor.nombre_contratante,
+            };
+          });
           this.datosSolicitud.set(res);
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de solicitudes.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener listado de solicitudes.',
+        );
       },
     });
   }
 
   msj = false;
-  recibido(msj: boolean){
-    if(msj){
+  recibido(msj: boolean) {
+    if (msj) {
       this.cargarSolicitudes();
     }
   }
-
 }

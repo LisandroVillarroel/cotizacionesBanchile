@@ -31,51 +31,57 @@ export class GraficoBarraComponent implements OnInit {
   options = signal({});
 
   constructor() {
-    effect((): void => {
-      const resumen = this.resumenGeneral();
-     // console.log('grafico BArra', this.resumenGeneral());
-      if (!resumen) return;
-      const arrTotales = [];
-      for (let i = 0; i < this.datoEstadoNombre().length; i++) {
-        arrTotales[i] = this.resumenGeneral()!.filter(item => item.descripcion_estado.toString() === this.datoEstadoNombre()[i])
-          .reduce((contador) => contador = contador + 1, 0);
-      }
-      this.arrTotalesSignal.set(arrTotales)
-
-      this.data.set({
-        labels: this.datoEstadoNombre(),
-        datasets: [{
-          //backgroundColor: ['#666668', '#149DC9', '#FFC725', '#234E85', '#0c70f1ff', '#bbec07ff', '#d31721ff', '#8021ceff', '#12a4e7ff'],
-          backgroundColor: this.colores(),
-          data: this.arrTotalesSignal() //this.arrTotalesSignal()  //10,20,30,40,50,60,70,80,90,100
-        }]
-      });
-
-      this.options.set({
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: { display: false }
+    effect(
+      (): void => {
+        const resumen = this.resumenGeneral();
+        // console.log('grafico BArra', this.resumenGeneral());
+        if (!resumen) return;
+        const arrTotales = [];
+        for (let i = 0; i < this.datoEstadoNombre().length; i++) {
+          arrTotales[i] = this.resumenGeneral()!
+            .filter((item) => item.descripcion_estado.toString() === this.datoEstadoNombre()[i])
+            .reduce((contador) => (contador = contador + 1), 0);
         }
-      });
-    }, { allowSignalWrites: true });
+        this.arrTotalesSignal.set(arrTotales);
+
+        this.data.set({
+          labels: this.datoEstadoNombre(),
+          datasets: [
+            {
+              //backgroundColor: ['#666668', '#149DC9', '#FFC725', '#234E85', '#0c70f1ff', '#bbec07ff', '#d31721ff', '#8021ceff', '#12a4e7ff'],
+              backgroundColor: this.colores(),
+              data: this.arrTotalesSignal(), //this.arrTotalesSignal()  //10,20,30,40,50,60,70,80,90,100
+            },
+          ],
+        });
+
+        this.options.set({
+          indexAxis: 'y',
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: false },
+          },
+        });
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   ngOnInit() {
-    this.cargaEstado()
+    this.cargaEstado();
   }
 
   cargaEstado() {
     this.estadoService.getEstado().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-          this.colores.set(dato.p_cursor.map(x=>x.color_estado))
-          this.datoEstadoNombre.set(dato.p_cursor.map(x => x.nombre_estado))
+          this.colores.set(dato.p_cursor.map((x) => x.color_estado));
+          this.datoEstadoNombre.set(dato.p_cursor.map((x) => x.nombre_estado));
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
   }

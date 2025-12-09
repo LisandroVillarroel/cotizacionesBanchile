@@ -27,7 +27,7 @@ export class AseguradoService {
       agregaAsegurado,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
@@ -37,25 +37,18 @@ export class AseguradoService {
       modificaAsegurado,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
-  postEliminaAsegurado(
-    isolicitud: number,
-    rutAsegurado: string
-  ): Observable<IResponse> {
+  postEliminaAsegurado(isolicitud: number, rutAsegurado: string): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_asegurado: rutAsegurado,
     };
-    return this.http.post<IResponse>(
-      `${environment.apiUrlConsumer}/eliminarAsegurado`,
-      parametro,
-      {
-        headers: this.headers,
-      }
-    );
+    return this.http.post<IResponse>(`${environment.apiUrlConsumer}/eliminarAsegurado`, parametro, {
+      headers: this.headers,
+    });
   }
 
   postListadoAsegurado(idSolicitud: number): Observable<DatosAseguradosInterface> {
@@ -63,7 +56,7 @@ export class AseguradoService {
     return this.http.post<DatosAseguradosInterface>(
       `${environment.apiUrlConsumer}/listarAsegurados`,
       filtro,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
@@ -71,9 +64,9 @@ export class AseguradoService {
   getDatosAsegurado(rut: string): Observable<IDatosPersona> {
     return this.http.get<IDatosPersona>(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
-      { headers: this.headers }
+      { headers: this.headers },
     );
-/*     return this.http.get(
+    /*     return this.http.get(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
     ); */
   }

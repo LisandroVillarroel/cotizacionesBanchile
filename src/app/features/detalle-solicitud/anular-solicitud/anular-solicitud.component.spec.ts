@@ -8,10 +8,9 @@ describe('AnularSolicitudComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnularSolicitudComponent]
-    })
-    .compileComponents();
-    
+      imports: [AnularSolicitudComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AnularSolicitudComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

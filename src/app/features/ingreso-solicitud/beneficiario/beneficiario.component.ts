@@ -1,27 +1,11 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, effect, inject, input, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatPaginator,
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   DatosBeneficiariosInterface,
@@ -58,19 +42,22 @@ export class BeneficiarioComponent {
   idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();
 
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   beneficiarioService = inject(BeneficiarioService);
   datoBeneficiarios = signal<IBeneficiarioLista[]>([]);
 
   constructor() {
-      effect(() => {
+    effect(
+      () => {
         // Llamar al método cada vez que el valor cambie
-        if (this.idSolicitud() !== 0){
+        if (this.idSolicitud() !== 0) {
           this.rescataListaBeneficiarios(this.idSolicitud()!);
         }
-      }, { allowSignalWrites: true });
-    }
+      },
+      { allowSignalWrites: true },
+    );
+  }
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
@@ -105,9 +92,7 @@ export class BeneficiarioComponent {
   }
 
   dataSourceBeneficiario = computed(() => {
-    const tabla = new MatTableDataSource<IBeneficiarioLista>(
-      this.datoBeneficiarios()
-    );
+    const tabla = new MatTableDataSource<IBeneficiarioLista>(this.datoBeneficiarios());
     tabla.paginator = this.paginatorBeneficiario;
     tabla.sort = this.sortBeneficiario;
     return tabla;
@@ -118,25 +103,24 @@ export class BeneficiarioComponent {
     this.dataSourceBeneficiario().sort = this.sortBeneficiario;
   }
 
-  async OnInit() {
+  OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-
   }
 
   rescataListaBeneficiarios(idSolicitud: number) {
-
-    this.beneficiarioService
-      .postListadoBeneficiario(idSolicitud)
-      .subscribe({
-        next: (dato: DatosBeneficiariosInterface) => {
-          if (dato.codigo === 200) {
-            this.datoBeneficiarios.set(dato.p_cursor);
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de beneficiarios.');
-        },
-      });
+    this.beneficiarioService.postListadoBeneficiario(idSolicitud).subscribe({
+      next: (dato: DatosBeneficiariosInterface) => {
+        if (dato.codigo === 200) {
+          this.datoBeneficiarios.set(dato.p_cursor);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de beneficiarios.',
+        );
+      },
+    });
   }
 
   agregaNuevoBeneficiario() {
@@ -162,7 +146,7 @@ export class BeneficiarioComponent {
   modificaBeneficiario(datoBeneficiarioPar: IBeneficiarioLista): void {
     console.log('Dato Modificar;', datoBeneficiarioPar);
     const dialogConfig = new MatDialogConfig();
- const parametro:IBeneficiarioListaParametro={
+    const parametro: IBeneficiarioListaParametro = {
       datoBeneficiarioPar: datoBeneficiarioPar,
       idSolicitud: this.idSolicitud(),
     };
@@ -193,14 +177,12 @@ export class BeneficiarioComponent {
     dialogConfig.position = { top: '3%' };
 
     dialogConfig.data = datoBeneficiarioPar;
-    this.dialog
-      .open(ConsultaBeneficiarioComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConsultaBeneficiarioComponent, dialogConfig).afterClosed();
   }
 
   eliminaBeneficiario(datoBeneficiarioPar: IBeneficiarioLista) {
     const dialogConfig = new MatDialogConfig();
-    const parametro:IBeneficiarioListaParametro={
+    const parametro: IBeneficiarioListaParametro = {
       datoBeneficiarioPar: datoBeneficiarioPar,
       idSolicitud: this.idSolicitud(),
     };

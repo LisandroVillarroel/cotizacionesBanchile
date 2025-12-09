@@ -1,5 +1,5 @@
 export interface IMoneda {
-  id_moneda: number,
+  id_moneda: number;
   nombre_moneda: string;
   fecha_creacion: string;
   usuario_creacion: string;

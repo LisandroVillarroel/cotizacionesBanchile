@@ -1,14 +1,14 @@
-.fondoGestion{
-  background-color: #E8E8EA;
+.fondoGestion {
+  background-color: #e8e8ea;
   color: #666668;
   padding: 5px 10px;
 }
 
-.alinea-card-gestion{
+.alinea-card-gestion {
   margin-bottom: 0.5rem;
   padding-bottom: 0px;
 }
 
 .mat-mdc-form-field {
-  flex-direction:initial;
+  flex-direction: initial;
 }

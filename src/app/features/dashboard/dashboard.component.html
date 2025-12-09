@@ -1,16 +1,20 @@
-  <div class="container-fluid d-flex justify-around p-0 mb-2">
-    <h1 mat-dialog-title class="titulo centraVertical">Te damos la bienvenida</h1>
-    <mat-form-field class="inputFecha p-0">
-      <mat-label class="gris">Actualizado el:</mat-label>
-      <input matInput [matDatepicker]="picker" [formControl]="fechaActual" (dateChange)="seleccionaFecha()">
-      <mat-datepicker-toggle matIconSuffix [for]="picker" class="fontSmall"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <app-resumen-general [datoResumenGeneral]="resumenGeneral()"/>
-  <app-solicitudes-gestionadas [datosSolicitud]="listadoSolicitudes()"
-   (retorno)="recibido($event)" />
+<div class="container-fluid d-flex justify-around p-0 mb-2">
+  <h1 mat-dialog-title class="titulo centraVertical">Te damos la bienvenida</h1>
+  <mat-form-field class="inputFecha p-0">
+    <mat-label class="gris">Actualizado el:</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [formControl]="fechaActual"
+      (dateChange)="seleccionaFecha()"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker" class="fontSmall"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+<app-resumen-general [datoResumenGeneral]="resumenGeneral()" />
+<app-solicitudes-gestionadas [datosSolicitud]="listadoSolicitudes()" (retorno)="recibido($event)" />
 
-  <div class="container-fluid fondoGris flex">
-    <app-distribucion [listadoSolicitudesGrafiico]="listadoSolicitudes()"/>
-  </div>
+<div class="container-fluid fondoGris flex">
+  <app-distribucion [listadoSolicitudesGrafiico]="listadoSolicitudes()" />
+</div>

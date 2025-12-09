@@ -7,9 +7,8 @@ describe('AgregaBeneficiarioComponent', () => {
   let fixture: ComponentFixture<AgregaBeneficiarioComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AgregaBeneficiarioComponent]
-    })
-    .compileComponents();
+      imports: [AgregaBeneficiarioComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AgregaBeneficiarioComponent);
     component = fixture.componentInstance;

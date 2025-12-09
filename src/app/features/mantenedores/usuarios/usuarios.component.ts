@@ -8,7 +8,14 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioListaParametro, IUsuarioListaPerfiles, IUsuarioPerfile } from './usuario-Interface';
+import {
+  DatosUsuarioLista,
+  IUsuario,
+  IUsuarioLista,
+  IUsuarioListaParametro,
+  IUsuarioListaPerfiles,
+  IUsuarioPerfile,
+} from './usuario-Interface';
 import { UsuarioService } from './usuario.service';
 import { AgregaUsuarioComponent } from './agrega-usuario/agrega-usuario.component';
 import { ModificaUsuarioComponent } from './modifica-usuario/modifica-usuario.component';
@@ -22,9 +29,18 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
-      MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule,
-      MatSelectModule,ReactiveFormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './usuarios.component.html',
   styles: `
     table {
@@ -38,23 +54,20 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
       align-items: center;
       gap: 16px;
     }
-  `
+  `,
 })
-
-
 export default class UsuariosComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
- storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-  tipoConsulta:string = 'E';
+  tipoConsulta: string = 'E';
   datoUsuarios = signal<IUsuarioLista[]>([]);
   datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
   usuarioService = inject(UsuarioService);
 
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
-
 
   displayedColumns: string[] = [
     'index',
@@ -84,20 +97,17 @@ export default class UsuariosComponent {
   }
 
   dataSource = computed(() => {
-    const tabla = new MatTableDataSource<IUsuarioLista>(
-      this.datoUsuarios()
-    );
+    const tabla = new MatTableDataSource<IUsuarioLista>(this.datoUsuarios());
     tabla.paginator = this.paginator;
     tabla.sort = this.sort;
     return tabla;
   });
 
-
-  tipoUsuarioSelect = new FormControl('', Validators.required);
+  tipoUsuarioSelect = new FormControl('', void Validators.required);
   agregaSolicitudContratante = signal<FormGroup>(
     new FormGroup({
       tipoUsuario: this.tipoUsuarioSelect,
-    })
+    }),
   );
 
   AfterViewInit(): void {
@@ -105,15 +115,14 @@ export default class UsuariosComponent {
     this.dataSource().sort = this.sort;
   }
 
-  async OnInit() {
+  OnInit() {
     this.LitaPerfiles();
     this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
-  rescataLista(tipoConsulta:string) {
-
- /*   let tipo ="E";
+  rescataLista(tipoConsulta: string) {
+    /*   let tipo ="E";
     if(consulta=="E"){
       tipo ="Ejecutivos";
     }else if(consulta=="C"){
@@ -123,7 +132,11 @@ export default class UsuariosComponent {
     }
 */
     this.usuarioService
-      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
+      .postListadoUsuario(
+        this._storage()!.usuarioLogin.usuario,
+        this._storage()!.usuarioLogin.tipoUsuario,
+        tipoConsulta,
+      )
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
           if (dato.codigo === 200) {
@@ -132,14 +145,17 @@ export default class UsuariosComponent {
           }
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
         },
       });
   }
 
- LitaPerfiles() {
-  this.usuarioService
-      .postListaPerfiles(this._storage()!.usuarioLogin.usuario!, this._storage()!.usuarioLogin.tipoUsuario!)
+  LitaPerfiles() {
+    this.usuarioService
+      .postListaPerfiles(
+        this._storage()!.usuarioLogin.usuario,
+        this._storage()!.usuarioLogin.tipoUsuario,
+      )
       .subscribe({
         next: (dato: IUsuarioListaPerfiles) => {
           if (dato.codigo === 200) {
@@ -147,16 +163,15 @@ export default class UsuariosComponent {
           }
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
         },
       });
   }
 
-
   agregaNuevo() {
-    const datoUsuarioPar={
-      tipoConsulta:this.tipoConsulta
-    }
+    const datoUsuarioPar = {
+      tipoConsulta: this.tipoConsulta,
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -177,10 +192,10 @@ export default class UsuariosComponent {
 
   modificaUsuario(datoUsuarioPar: IUsuario): void {
     console.log('Dato Modificar:', datoUsuarioPar);
-  //  const parametro: IUsuarioListaParametro = {
-   //   datoUsuarioPar: datoUsuarioPar,
- //     tipoUsuario: this.tipoUsuario(),
- //   };
+    //  const parametro: IUsuarioListaParametro = {
+    //   datoUsuarioPar: datoUsuarioPar,
+    //     tipoUsuario: this.tipoUsuario(),
+    //   };
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -210,13 +225,11 @@ export default class UsuariosComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoUsuarioPar;
 
-    this.dialog
-      .open(ConsultaUsuarioComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConsultaUsuarioComponent, dialogConfig).afterClosed();
   }
 
   eliminaUsuario(datoUsuarioPar: IUsuario) {
-     const parametro: IUsuarioListaParametro = {
+    const parametro: IUsuarioListaParametro = {
       datoUsuarioPar: datoUsuarioPar,
       tipoUsuario: this._storage()!.usuarioLogin.tipoUsuario,
     };

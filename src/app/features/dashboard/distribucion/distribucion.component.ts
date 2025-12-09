@@ -1,7 +1,7 @@
 import { IListadoSolicitudes } from './../datosSolicitud-Interface';
 import { Component, computed, input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 
 // Angular Material
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
@@ -38,16 +38,16 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     GraficoBarraComponent,
     MatLabel,
     MatSelectModule,
-    MatSelect,ReactiveFormsModule
-],
+    MatSelect,
+    ReactiveFormsModule,
+  ],
   templateUrl: './distribucion.component.html',
-  styleUrls: ['./distribucion.component.css'] // ✅ Corrección: debe ser "styleUrls" (plural)
+  styleUrls: ['./distribucion.component.css'], // ✅ Corrección: debe ser "styleUrls" (plural)
 })
-
 export default class DistribucionComponent {
   listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
-  resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
-  resumenGeneral_Rubro =signal<IListadoSolicitudes[]>([]);
+  resumenGeneral = computed(() => this.listadoSolicitudesGrafiico());
+  resumenGeneral_Rubro = signal<IListadoSolicitudes[]>([]);
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   rubroService = inject(RubroService);
@@ -60,8 +60,7 @@ export default class DistribucionComponent {
   rubro = new FormControl();
   seguro = new FormControl();
 
-  constructor(){
-  }
+  constructor() {}
 
   cargaRubros() {
     this.rubroService.postRubro().subscribe({
@@ -71,18 +70,19 @@ export default class DistribucionComponent {
         }
       },
       error: (error) => {
-        this.notificacioAlertnService.error("ERROR",'Error inesperado. '+ error);
+        void this.notificacioAlertnService.error('ERROR', 'Error inesperado. ' + error);
       },
     });
   }
 
   seleccionaRubro(_codigoRubro: number) {
-    this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
+    this.resumenGeneral_Rubro.set(
+      this.resumenGeneral()?.filter((valor) => valor.id_rubro == _codigoRubro),
+    );
   }
 
-  async OnInit() {
+  OnInit() {
     this.resumenGeneral_Rubro.set(this.resumenGeneral());
     this.cargaRubros();
   }
-
 }

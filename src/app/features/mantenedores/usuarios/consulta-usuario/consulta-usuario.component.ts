@@ -17,25 +17,26 @@ import { cleanRut, formatRut, RutFormat, validateRut } from '@fdograph/rut-utili
 @Component({
   selector: 'app-consulta-usuario',
   standalone: true,
-  imports: [CommonModule,
-          MatFormFieldModule,
-          ReactiveFormsModule,
-          MatInputModule,
-          MatDialogModule,
-          MatButtonModule,
-          MatSelectModule,
-          CabeceraPopupComponente],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatSelectModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './consulta-usuario.component.html',
-   styles: `
+  styles: `
     .mat-mdc-form-field {
     width: 50% !important;
     padding-bottom: 25px;
     padding-right: 10px;
   }
-  `
+  `,
 })
 export class ConsultaUsuarioComponent {
-
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
@@ -48,16 +49,20 @@ export class ConsultaUsuarioComponent {
   dependencia = signal<IUsuarioLista[]>([]);
 
   usuario!: IUsuario;
-  private readonly dialogRef = inject(
-    MatDialogRef<ConsultaUsuarioComponent>
-  );
-
+  private readonly dialogRef = inject(MatDialogRef<ConsultaUsuarioComponent>);
 
   idUsuarioNuevo = new FormControl(this.data.p_id_usuario_nuevo, [Validators.required]);
-  rutUsuarioNuevo = new FormControl(this.data.p_rut_usuario_nuevo, [Validators.required, this.validaRut]);
+  rutUsuarioNuevo = new FormControl(this.data.p_rut_usuario_nuevo, [
+    Validators.required,
+    this.validaRut,
+  ]);
   nombreUsuarioNuevo = new FormControl(this.data.p_nombre_usuario_nuevo, [Validators.required]);
-  apePaternoUsuarioNuevo = new FormControl(this.data.p_apellido_paterno_usuario_nuevo, [Validators.required]);
-  apeMaternoUsuarioNuevo = new FormControl(this.data.p_apellido_materno_usuario_nuevo, [Validators.required]);
+  apePaternoUsuarioNuevo = new FormControl(this.data.p_apellido_paterno_usuario_nuevo, [
+    Validators.required,
+  ]);
+  apeMaternoUsuarioNuevo = new FormControl(this.data.p_apellido_materno_usuario_nuevo, [
+    Validators.required,
+  ]);
   mailUsuarioNuevo = new FormControl(this.data.p_mail_usuario_nuevo, [
     Validators.required,
     Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
@@ -67,8 +72,9 @@ export class ConsultaUsuarioComponent {
     Validators.pattern(/^(9\d{8}|22\d{7})$/),
   ]);
   tipoUsuarioNuevo = new FormControl(this.data.p_tipo_usuario_nuevo, [Validators.required]);
-  dependenciaUsuarioNuevo = new FormControl(this.data.p_id_dependencia_usuario_nuevo, [Validators.required]);
-
+  dependenciaUsuarioNuevo = new FormControl(this.data.p_id_dependencia_usuario_nuevo, [
+    Validators.required,
+  ]);
 
   consultaUsuario = signal<FormGroup>(
     new FormGroup({
@@ -81,32 +87,25 @@ export class ConsultaUsuarioComponent {
       telefonoUsuarioNuevo: this.telefonoUsuarioNuevo,
       dependenciaUsuarioNuevo: this.dependenciaUsuarioNuevo,
       tipoUsuarioNuevo: this.tipoUsuarioNuevo,
-
-    })
+    }),
   );
 
   getErrorMessage(campo: string) {
-     if (campo === 'idUsuarioNuevo') {
-      return this.idUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Id Usuario'
-        : '';
+    if (campo === 'idUsuarioNuevo') {
+      return this.idUsuarioNuevo.hasError('required') ? 'Debes ingresar Id Usuario' : '';
     }
-     if (campo === 'rutUsuarioNuevo') {
-      return this.rutUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Rut Usuario '
-        : '';
+    if (campo === 'rutUsuarioNuevo') {
+      return this.rutUsuarioNuevo.hasError('required') ? 'Debes ingresar Rut Usuario ' : '';
     }
-     if (campo === 'nombreUsuarioNuevo') {
-      return this.nombreUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Nombre Usuario'
-        : '';
+    if (campo === 'nombreUsuarioNuevo') {
+      return this.nombreUsuarioNuevo.hasError('required') ? 'Debes ingresar Nombre Usuario' : '';
     }
-     if (campo === 'apePaternoUsuarioNuevo') {
+    if (campo === 'apePaternoUsuarioNuevo') {
       return this.apePaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Paterno'
         : '';
     }
-     if (campo === 'apeMaternoUsuarioNuevo') {
+    if (campo === 'apeMaternoUsuarioNuevo') {
       return this.apeMaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Materno'
         : '';
@@ -137,40 +136,33 @@ export class ConsultaUsuarioComponent {
     }
 
     if (campo === 'tipoUsuarioNuevo') {
-      return this.tipoUsuarioNuevo.hasError('required')
-        ? 'Debes seleccionar Tipo de Usuario'
-        : '';
+      return this.tipoUsuarioNuevo.hasError('required') ? 'Debes seleccionar Tipo de Usuario' : '';
     }
 
     return '';
   }
 
-
-
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutUsuarioNuevo(event: Event) {
+  onBlurRutUsuarioNuevo(event: Event) {
     const rut = (event.target as HTMLInputElement).value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
-      await this.consultaUsuario()
+      this.consultaUsuario()
         .get('rutUsuarioNuevo')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
         });
 
       // Formato para BD
-     // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
+      // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 
   validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value) === false) {
+    if (validateRut(control.value as string) === false) {
       return { rutInvalido: true };
     }
     return null;
-
   }
-
-
 }

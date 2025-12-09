@@ -1,16 +1,18 @@
 import { Component, Inject, inject, signal } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormField } from "@angular/material/form-field";
+import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDivider } from "@angular/material/divider";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDivider } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
@@ -40,27 +42,27 @@ export interface DevolverConObservacionesData {
     MatDivider,
     MatTooltipModule,
     ReactiveFormsModule,
-    CabeceraPopupComponente
+    CabeceraPopupComponente,
   ],
   templateUrl: './devolver-solicitud.component.html',
-  styleUrl: './devolver-solicitud.component.css'
+  styleUrl: './devolver-solicitud.component.css',
 })
-
-  export class DevolverSolicitudComponent {
-    constructor(
+export class DevolverSolicitudComponent {
+  constructor(
     public dialogRef: MatDialogRef<DevolverSolicitudComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: DevolverConObservacionesData,
+  ) {}
 
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   devolverService = inject(DetalleSolicitudService);
   devolverRequest!: RequestInterface;
   motivo = new FormControl('', [Validators.required, Validators.maxLength(500)]);
-  devolverSolicitud= signal<FormGroup>(
+  devolverSolicitud = signal<FormGroup>(
     new FormGroup({
-        motivo: this.motivo
-  }));
+      motivo: this.motivo,
+    }),
+  );
 
   cerrar(): void {
     this.dialogRef.close();
@@ -71,36 +73,33 @@ export interface DevolverConObservacionesData {
   }
 
   devolver(motive: string): void {
-    if(motive === '' || motive === null){
-      return
+    if (motive === '' || motive === null) {
+      return;
     }
 
     this.devolverRequest = {
       p_id_solicitud: this.data.solicitudId,
       p_id_usuario: this.data.id_usuario,
       p_tipo_usuario: this.data.id_tipo_usuario,
-      p_observacion: motive
+      p_observacion: motive,
     };
-    this.devolverService
-      .postDevuelveSolicitud(this.devolverRequest)
-      .subscribe({
-        next: async (dato) => {
-          if (dato.codigo === 200) {
-            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-                      "La solicitud ha sido devuelta exitosamente.");
-            if (result) {
-              this.dialogRef.close(true);
-            }
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible devolver la solicitud.');
-        },
-      });
+    this.devolverService.postDevuelveSolicitud(this.devolverRequest).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          void this.notificacioAlertnService.confirmacion(
+            'CONFIRMACIÓN',
+            'La solicitud ha sido devuelta exitosamente.',
+          );
+          this.dialogRef.close(true);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible devolver la solicitud.');
+      },
+    });
   }
 
   getErrorMessage() {
-    return this.motivo.hasError('required')
-    ? 'Debe ingresar el motivo de devolución.' : '';
+    return this.motivo.hasError('required') ? 'Debe ingresar el motivo de devolución.' : '';
   }
 }

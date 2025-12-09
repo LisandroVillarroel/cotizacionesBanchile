@@ -2,8 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -36,10 +34,6 @@ export class EstadoService {
 
   private _isvalidSesion(maybeSesion: unknown): boolean {
     console.log('maybeSesion:', maybeSesion);
-    return (
-      typeof maybeSesion === 'object' &&
-      maybeSesion !== null &&
-      'usuarioLogin' in maybeSesion
-    );
+    return typeof maybeSesion === 'object' && maybeSesion !== null && 'usuarioLogin' in maybeSesion;
   }
 }

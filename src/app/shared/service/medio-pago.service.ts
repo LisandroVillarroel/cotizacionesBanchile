@@ -5,21 +5,20 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MedioPagoService {
-private http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-    headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
+
+  postMedioPago(): Observable<InterfazMedioPago> {
+    return this.http.get<InterfazMedioPago>(`${environment.apiUrlConsumer}/listarMedioPago`, {
+      headers: this.headers,
     });
-    constructor() { }
-
-    postMedioPago(): Observable<InterfazMedioPago> {
-      return this.http
-        .get<InterfazMedioPago>(`${environment.apiUrlConsumer}/listarMedioPago`,{headers: this.headers})
-    }
-
-
   }
+}

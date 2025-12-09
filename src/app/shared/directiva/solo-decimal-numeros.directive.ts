@@ -2,14 +2,16 @@ import { Directive, ElementRef, HostListener, input, Renderer2 } from '@angular/
 
 @Directive({
   selector: '[appDirectivaSoloDecimalNumeros]',
-  standalone: true
+  standalone: true,
 })
 export class SoloDecimalNumerosDirective {
-
-    // InputSignal para los decimales permitidos, con un valor por defecto.
+  // InputSignal para los decimales permitidos, con un valor por defecto.
   decimales = input(2);
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+  ) {}
 
   @HostListener('input') onInput(): void {
     const inputElement = this.el.nativeElement as HTMLInputElement;
@@ -60,11 +62,13 @@ export class SoloDecimalNumerosDirective {
     const inputElement = this.el.nativeElement as HTMLInputElement;
     const start = inputElement.selectionStart || 0;
     const end = inputElement.selectionEnd || 0;
-    const newValue = inputElement.value.substring(0, start) + sanitizedPastedText + inputElement.value.substring(end);
+    const newValue =
+      inputElement.value.substring(0, start) +
+      sanitizedPastedText +
+      inputElement.value.substring(end);
 
     this.renderer.setProperty(inputElement, 'value', newValue);
     // Disparar el evento de input para que se ejecute el formato.
     inputElement.dispatchEvent(new Event('input'));
   }
-
 }

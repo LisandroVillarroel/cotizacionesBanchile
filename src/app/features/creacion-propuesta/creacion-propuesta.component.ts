@@ -1,17 +1,25 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
-import { DetalleSolicitudInterface, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
-import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogConfig,
+  MatDialogContent,
+} from '@angular/material/dialog';
+import {
+  DetalleSolicitudInterface,
+  ISolicitud,
+} from '@features/detalle-solicitud/modelo/detalle-interface';
+import { InformacionGeneralComponent } from '@features/detalle-solicitud/informacion-general/informacion-general.component';
 import { MatDialogClose } from '@angular/material/dialog';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
-import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegurado.component";
-import { MateriaAseguradaComponent } from "@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component";
-import { MatCardActions } from "@angular/material/card";
+import { AseguradoComponent } from '@features/ingreso-solicitud/asegurado/asegurado.component';
+import { MateriaAseguradaComponent } from '@features/ingreso-solicitud/materia-asegurada/materia-asegurada.component';
+import { MatCardActions } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import { DocAsociadosComponent } from "./doc-asociados/doc-asociados.component";
+import { DocAsociadosComponent } from './doc-asociados/doc-asociados.component';
 import { ConfirmacionPptaComponent } from './confirmacion-ppta/confirmacion-ppta.component';
-import CabeceraPopupComponente from "../../shared/ui/cabeceraPopup.component";
-import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
+import CabeceraPopupComponente from '../../shared/ui/cabeceraPopup.component';
+import { BeneficiarioComponent } from '@features/ingreso-solicitud/beneficiario/beneficiario.component';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { GenerarPropuestaService } from './generar-propuesta.service';
 import { StorageService } from '@shared/service/storage.service';
@@ -20,7 +28,8 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 @Component({
   selector: 'app-creacion-propuesta',
   standalone: true,
-  imports: [MatDialogContent,
+  imports: [
+    MatDialogContent,
     InformacionGeneralComponent,
     AseguradoComponent,
     BeneficiarioComponent,
@@ -30,9 +39,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
     MatDialogClose,
     MatCardActions,
     MatButton,
-    ],
+  ],
   templateUrl: './creacion-propuesta.component.html',
-  styleUrl: './creacion-propuesta.component.css'
+  styleUrl: './creacion-propuesta.component.css',
 })
 export class CreacionPropuestaComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
@@ -64,17 +73,20 @@ export class CreacionPropuestaComponent {
             id_estado_solicitud: dato.p_id_estado_solicitud,
             nombre_estado: dato.p_nombre_estado,
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
-            id_ejecutivo_banco: dato.p_id_ejecutivo_banco
+            id_ejecutivo_banco: dato.p_id_ejecutivo_banco,
           });
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el detalle de la solicitud.');
-      }
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el detalle de la solicitud.',
+        );
+      },
     });
   }
 
-  async OnInit() {
+  OnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 
@@ -82,7 +94,7 @@ export class CreacionPropuestaComponent {
     const dato = {
       p_id_solicitud: this.idSolicitud,
       p_id_usuario: this._storage()?.usuarioLogin?.usuario,
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario,
     };
     const dialogConfig = new MatDialogConfig();
 
@@ -94,10 +106,10 @@ export class CreacionPropuestaComponent {
     dialogConfig.data = dato;
 
     this.dialog
-     .open(ConfirmacionPptaComponent, dialogConfig)
-     .afterClosed()
-     .subscribe(() => {
-       this.cargarSolicitud(this.idSolicitud);
-     });
+      .open(ConfirmacionPptaComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => {
+        this.cargarSolicitud(this.idSolicitud);
+      });
   }
 }

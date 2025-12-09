@@ -6,7 +6,7 @@ import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 describe('Service: GestionCotizaciones', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GestionCotizacionesService]
+      providers: [GestionCotizacionesService],
     });
   });
 

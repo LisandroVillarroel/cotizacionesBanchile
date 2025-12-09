@@ -1,10 +1,6 @@
 <app-cabecera-popup [titulo]="'Ver Compañía'" />
 
-<mat-dialog-content
-  name="enviarSolicitud"
-  class="container-fluid p-0"
-  [formGroup]="verCompania()"
->
+<mat-dialog-content name="enviarSolicitud" class="container-fluid p-0" [formGroup]="verCompania()">
   <mat-card>
     <mat-card-header class="fondoGris d-flex justify-around">
       <div [ngStyle]="{ width: '20%' }">
@@ -31,37 +27,23 @@
       <section>
         <div class="col-md-12">
           <mat-form-field class="inputInput">
-            <input
-              matInput
-              disabled
-              aria-label="Compañía"
-              [value]="data.nombre_compania_seguro"
-            />
+            <input matInput disabled aria-label="Compañía" [value]="data.nombre_compania_seguro" />
           </mat-form-field>
         </div>
       </section>
 
       <section class="example-section">
         <div class="checkbox-input-pair">
-          <mat-label class="margenLabel">
-            Correo de compañía seleccionada:
-          </mat-label>
+          <mat-label class="margenLabel"> Correo de compañía seleccionada: </mat-label>
           <div class="col-md-12">
             <mat-form-field class="inputInput">
-              <input
-                matInput
-                disabled
-                aria-label="Correo de compañía"
-                [value]="correoCompania()"
-              />
+              <input matInput disabled aria-label="Correo de compañía" [value]="correoCompania()" />
             </mat-form-field>
           </div>
         </div>
       </section>
       <section>
-        <mat-label class="margenLabel">
-          3. Modificar detalle del ingreso de compañía*
-        </mat-label>
+        <mat-label class="margenLabel"> 3. Modificar detalle del ingreso de compañía* </mat-label>
 
         <mat-form-field class="textarea-grande inputInput col-md-12">
           <textarea
@@ -71,9 +53,7 @@
             rows="6"
             aria-label="Ingrese detalles"
           ></textarea>
-          <mat-hint align="end"
-            >{{ detalleControl.value?.length || 0 }} / 500</mat-hint
-          >
+          <mat-hint align="end">{{ detalleControl.value?.length || 0 }} / 500</mat-hint>
         </mat-form-field>
       </section>
     </mat-card-content>

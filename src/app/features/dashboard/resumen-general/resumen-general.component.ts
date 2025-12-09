@@ -8,16 +8,11 @@ import { IResumenSolicitudes } from '../datosSolicitud-Interface';
 @Component({
   selector: 'app-resumen-general',
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatCardModule
-  ],
+  imports: [MatFormFieldModule, MatInputModule, MatDatepickerModule, MatCardModule],
   templateUrl: './resumen-general.component.html',
-  styleUrl: './resumen-general.component.css'
+  styleUrl: './resumen-general.component.css',
 })
 export class ResumenGeneralComponent {
-  datoResumenGeneral =  input.required<IResumenSolicitudes | undefined>();
-  resumenGeneral=computed(()=> this.datoResumenGeneral());
+  datoResumenGeneral = input.required<IResumenSolicitudes | undefined>();
+  resumenGeneral = computed(() => this.datoResumenGeneral());
 }

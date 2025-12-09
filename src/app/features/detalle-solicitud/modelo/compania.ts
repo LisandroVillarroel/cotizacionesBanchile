@@ -1,4 +1,4 @@
-import { ISolicitud, ICompania } from "./detalle-interface";
+import { ISolicitud, ICompania } from './detalle-interface';
 
 export interface IAgregaCompania {
   p_id_solicitud: number;
@@ -23,25 +23,26 @@ export interface IEliminaCompania {
   p_tipo_usuario: string;
 }
 
-export interface IMinimoResponse{
-  codigo: number,
-  mensaje: string,
-  p_minimo_cotizaciones: number,
-  vcEstado: string,
-  vcEstadoCreacion: string
+export interface IMinimoResponse {
+  codigo: number;
+  mensaje: string;
+  p_minimo_cotizaciones: number;
+  vcEstado: string;
+  vcEstadoCreacion: string;
 }
 
-export interface botonCompania{
-  icon: string,
-  tooltip: string,
+export interface botonCompania {
+  icon: string;
+  tooltip: string;
   // mostrar: boolean,
-  accion: (id: number) => void,
-}[]
+  accion: (id: number) => void;
+}
+[];
 
-export interface IDatosCompania{
-  infoGral: ISolicitud,
-  companias: ICompania[],
-  verEjec: boolean,
-  minimo: number,
-  flagSoloCerrar: boolean
+export interface IDatosCompania {
+  infoGral: ISolicitud;
+  companias: ICompania[];
+  verEjec: boolean;
+  minimo: number;
+  flagSoloCerrar: boolean;
 }

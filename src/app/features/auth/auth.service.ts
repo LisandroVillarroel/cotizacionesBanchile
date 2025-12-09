@@ -5,10 +5,9 @@ import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
@@ -17,18 +16,21 @@ export class AuthService {
   });
 
   postLogin(usuario: string): Observable<IAuthRespuesta> {
-    const parametro = {p_id_usuario: usuario }
-      //console.log('Ingreso Solicitud Service:', usuario);
-    return this.http
-      .post<IAuthRespuesta>(`http://192.168.1.36:8080/ms-pseg-cotizaciones-login/cotizaciones/loginUsuario`,
-        parametro, { headers: this.headers })
+    const parametro = { p_id_usuario: usuario };
+    //console.log('Ingreso Solicitud Service:', usuario);
+    return this.http.post<IAuthRespuesta>(
+      `http://192.168.1.36:8080/ms-pseg-cotizaciones-login/cotizaciones/loginUsuario`,
+      parametro,
+      { headers: this.headers },
+    );
   }
 
   postTipoUsuario(id_perfil: string): Observable<ITipoUsuarioRespuesta> {
-    const parametro={p_id_perfil: id_perfil}
-      return this.http
-        .post<ITipoUsuarioRespuesta>(`${environment.apiUrlConsumer}/obtieneTipoUsuario`,
-          parametro, { headers: this.headers })
+    const parametro = { p_id_perfil: id_perfil };
+    return this.http.post<ITipoUsuarioRespuesta>(
+      `${environment.apiUrlConsumer}/obtieneTipoUsuario`,
+      parametro,
+      { headers: this.headers },
+    );
   }
-
 }

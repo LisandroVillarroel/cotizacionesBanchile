@@ -12,5 +12,3 @@ export interface InterfazDatosArchivo {
   vcEstadoCreacion: string;
   p_cursor: IDatosArchivo[];
 }
-
-

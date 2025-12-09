@@ -5,21 +5,20 @@ import { InterfazRubro } from '@shared/modelo/rubro-interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RubroService {
-
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json',
   });
-  constructor() { }
+  constructor() {}
 
   postRubro(): Observable<InterfazRubro> {
-    return this.http
-      .get<InterfazRubro>(`${environment.apiUrlConsumer}/listarRubros`,{headers: this.headers})
+    return this.http.get<InterfazRubro>(`${environment.apiUrlConsumer}/listarRubros`, {
+      headers: this.headers,
+    });
   }
-
 }

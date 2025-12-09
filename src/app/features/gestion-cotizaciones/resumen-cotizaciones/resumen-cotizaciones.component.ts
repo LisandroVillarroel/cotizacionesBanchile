@@ -7,15 +7,11 @@ import { IResumenCotizaciones } from '../gestionCotizacion-interface';
 @Component({
   selector: 'app-resumen-cotizaciones',
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule
-  ],
+  imports: [MatFormFieldModule, MatInputModule, MatCardModule],
   templateUrl: './resumen-cotizaciones.component.html',
-  styleUrls: ['./resumen-cotizaciones.component.css']
+  styleUrls: ['./resumen-cotizaciones.component.css'],
 })
-export class ResumenCotizacionesComponent{
+export class ResumenCotizacionesComponent {
   inResumen = input.required<IResumenCotizaciones | undefined>();
-  resumenGestion = computed(()=> this.inResumen());
+  resumenGestion = computed(() => this.inResumen());
 }

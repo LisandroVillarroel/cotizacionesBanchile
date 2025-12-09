@@ -8,10 +8,9 @@ describe('EliminaUsuarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EliminaUsuarioComponent]
-    })
-    .compileComponents();
-    
+      imports: [EliminaUsuarioComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(EliminaUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

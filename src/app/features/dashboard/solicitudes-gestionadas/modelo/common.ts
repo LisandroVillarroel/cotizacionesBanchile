@@ -10,7 +10,6 @@ export interface ISolicitud {
 }
 */
 
-
 export interface IEstado {
   codigoEstado: number;
   descripcionEstado: string;

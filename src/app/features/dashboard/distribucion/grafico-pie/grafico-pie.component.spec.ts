@@ -9,7 +9,7 @@ describe('GraficoPieComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GraficoPieComponent],
-      imports: [ChartModule]
+      imports: [ChartModule],
     }).compileComponents();
   });
 
@@ -22,5 +22,4 @@ describe('GraficoPieComponent', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
-
 });

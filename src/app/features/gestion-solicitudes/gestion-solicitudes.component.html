@@ -2,34 +2,33 @@
   <h1 mat-dialog-title class="titulo centraVertical">Gestión de solicitudes</h1>
 </div>
 
-<div  class="container-fluid fondoGris p-0 ">
+<div class="container-fluid fondoGris p-0">
   <mat-tab-group>
-    @if(ejec()){
+    @if (ejec()) {
       <mat-tab label="Solicitudes en Edición">
         <div class="container-fluid">
           <app-solicitudes [solicitudes]="nuevas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes Con Observaciones">
-        <div class="container-fluid ">
-          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)"/>
+        <div class="container-fluid">
+          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
-    }
-    @else{
+    } @else {
       <mat-tab label="Solicitudes Nuevas">
         <div class="container-fluid">
           <app-solicitudes [solicitudes]="revisadas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes Con Observaciones">
-        <div class="container-fluid ">
-          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)"/>
+        <div class="container-fluid">
+          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes en Cotización">
-        <div class="container-fluid ">
-          <app-solicitudes [solicitudes]="cotizadas()" (retorno)="recibido($event)"/>
+        <div class="container-fluid">
+          <app-solicitudes [solicitudes]="cotizadas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
     }

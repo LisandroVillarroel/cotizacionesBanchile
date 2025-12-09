@@ -1,26 +1,20 @@
 import { Component, inject, Inject, signal } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { ICompanias, ICompaniasResponse } from '@features/detalle-solicitud/modelo/detalle-interface';
+import {
+  ICompanias,
+  ICompaniasResponse,
+} from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IAgregaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
@@ -76,23 +70,20 @@ export class AgregarCompaniaComponent {
   correoCompania = signal<string>('');
 
   compania = new FormControl<number | null>(null, Validators.required);
-  detalleControl = new FormControl('', [
-    Validators.maxLength(500),
-    Validators.required,
-  ]);
+  detalleControl = new FormControl('', [Validators.maxLength(500), Validators.required]);
 
   agregaCompania = signal<FormGroup>(
     new FormGroup({
       compania: this.compania,
       detalleControl: this.detalleControl,
-    })
+    }),
   );
 
   CompaniasContactadasService = inject(CompaniasContactadasService);
 
   constructor(
     public dialogRef: MatDialogRef<AgregarCompaniaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData
+    @Inject(MAT_DIALOG_DATA) public data: AgregarCompaniaData,
   ) {}
 
   observaciones: string = '';
@@ -102,22 +93,24 @@ export class AgregarCompaniaComponent {
   }
 
   cargarCompanias(): void {
-    this.CompaniasContactadasService.
-    postCompaniasTipoSeguro(this.data.id_rubro, this.data.id_tipo_seguro).
-      subscribe({
-        next: (dato: ICompaniasResponse) => {
-          if (dato.codigo === 200) {
-            //console.log("Dato: ",dato);
-            this.datoCompanias.set(dato.p_cursor);
-            //console.log("Compañías",this.datoCompanias());
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.
-            error('ERROR', 'No fue posible carga el listado de Compañías Contactadas.');
-        },
-      }
-    );
+    this.CompaniasContactadasService.postCompaniasTipoSeguro(
+      this.data.id_rubro,
+      this.data.id_tipo_seguro,
+    ).subscribe({
+      next: (dato: ICompaniasResponse) => {
+        if (dato.codigo === 200) {
+          //console.log("Dato: ",dato);
+          this.datoCompanias.set(dato.p_cursor);
+          //console.log("Compañías",this.datoCompanias());
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible carga el listado de Compañías Contactadas.',
+        );
+      },
+    });
   }
 
   getErrorMessage(control: FormControl): string {
@@ -129,12 +122,9 @@ export class AgregarCompaniaComponent {
 
   actualizarCorreo(companiaSeleccionada: number): void {
     const cia = this.datoCompanias()?.filter((item) => {
-      return item.id_compania_seguro
-        ?.toString()
-        .includes(companiaSeleccionada.toString());
+      return item.id_compania_seguro?.toString().includes(companiaSeleccionada.toString());
     });
-    const correoLimpio =
-      cia[0].correo_compania_seguro?.replace(/&nbsp;/g, '').trim() || '';
+    const correoLimpio = cia[0].correo_compania_seguro?.replace(/&nbsp;/g, '').trim() || '';
 
     this.correoCompania.set(correoLimpio);
     //this.data.id_compania_seguro = companiaSeleccionada.id_compania_seguro; // si necesitas guardar el ID
@@ -146,9 +136,8 @@ export class AgregarCompaniaComponent {
     }
     const payload: IAgregaCompania = {
       p_id_solicitud: Number(this.data.p_id_solicitud),
-      p_id_compania_seguro: this.agregaCompania().get('compania')!.value,
-      p_detalle_solicitud_cotizacion:
-        this.agregaCompania().get('detalleControl')!.value,
+      p_id_compania_seguro: this.agregaCompania().get('compania')!.value as number,
+      p_detalle_solicitud_cotizacion: this.agregaCompania().get('detalleControl')!.value as string,
       p_id_usuario: this.data.p_id_usuario, //'EJ002',
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
@@ -156,11 +145,11 @@ export class AgregarCompaniaComponent {
     this.CompaniasContactadasService.postAgregaCompania(payload).subscribe({
       next: (res) => {
         if (res.codigo === 200) {
-          this.confirmar();
+          void this.confirmar();
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar la compañía.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible agregar la compañía.');
       },
     });
   }
@@ -172,7 +161,7 @@ export class AgregarCompaniaComponent {
   async confirmar() {
     const result = await this.notificacioAlertnService.confirmacion(
       'CONFIRMACIÓN',
-      'La compañía ha sido agregada exitosamente.'
+      'La compañía ha sido agregada exitosamente.',
     );
     if (result) {
       this.dialogRef.close(true);

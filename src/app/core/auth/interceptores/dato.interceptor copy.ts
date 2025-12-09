@@ -12,7 +12,7 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
   progresoCarga.ejecutar();
   return next(req).pipe(
     // Utiliza 'tap' para examinar el flujo de la respuesta
-    tap(event => {
+    tap((event) => {
       // El flujo de eventos contiene varios tipos de eventos HTTP
       // Nos interesa específicamente el evento de respuesta final
       if (event.type === HttpEventType.Response) {
@@ -28,7 +28,6 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
           setTimeout(() => {
             progresoCarga.parar(); // Ocultar la barra de progreso
           }, tiempoRestante);
-
         }, tiempoRealDeCarga);
 
         const responseBody = event.body as ApiResponse;
@@ -37,14 +36,14 @@ export const datoInterceptor: HttpInterceptorFn = (req, next) => {
           //console.log('responseBody', isResponseWithCodigo(responseBody))
           if (responseBody && responseBody.codigo) {
             if (responseBody.codigo != 200) {
-              notificacioAlertnService.error('ERROR', responseBody.mensaje);
+              void notificacioAlertnService.error('ERROR', responseBody.mensaje);
             }
           }
         }
       }
-    })
+    }),
   );
-}
+};
 
 interface ApiResponse {
   codigo: number;

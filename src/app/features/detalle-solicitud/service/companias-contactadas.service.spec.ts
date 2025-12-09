@@ -6,7 +6,7 @@ import { CompaniasContactadasService } from './companias-contactadas.service';
 describe('Service: CompaniasContactadas', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CompaniasContactadasService]
+      providers: [CompaniasContactadasService],
     });
   });
 

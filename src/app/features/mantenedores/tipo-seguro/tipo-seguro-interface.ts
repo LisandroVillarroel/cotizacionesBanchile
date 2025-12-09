@@ -17,4 +17,3 @@ export interface InterfazRubro {
   vcEstadoCreacion: string;
   p_cursor: IRubro[];
 }
-

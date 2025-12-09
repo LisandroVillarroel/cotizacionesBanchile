@@ -1,7 +1,4 @@
-import {
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -24,16 +21,14 @@ export class IngresoSolicitudService {
 
   constructor() {}
 
-  postIngresoSolicitud(
-    ingresoSolicitud: IIngresoSolicitud
-  ): Observable<IIngresoSolicitud_Recibe> {
+  postIngresoSolicitud(ingresoSolicitud: IIngresoSolicitud): Observable<IIngresoSolicitud_Recibe> {
     //console.log('Ingreso Solicitud Service:', ingresoSolicitud);
     return this.http.post<IIngresoSolicitud_Recibe>(
       `${environment.apiUrlConsumer}/ingresoSolicitud`,
       ingresoSolicitud,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
@@ -42,7 +37,7 @@ export class IngresoSolicitudService {
     rut = '11898216-9';
     return this.http.get<IDatosPersona>(
       `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 }

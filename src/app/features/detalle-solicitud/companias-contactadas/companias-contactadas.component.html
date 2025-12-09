@@ -6,7 +6,10 @@
 </div>
 
 <div class="container-fluid fondoGris p-2 mt-3" style="padding: 10px 10px 10px">
-  <mat-radio-group [value]="cotizacionSeleccionadaEvent" (change)="seleccionarCotizacion($event.value)">
+  <mat-radio-group
+    [value]="cotizacionSeleccionadaEvent"
+    (change)="seleccionarCotizacion($event.value)"
+  >
     @for (obj of datosCompanias()!.companias; track obj; let i = $index) {
       <mat-card class="alinea-card-gestion">
         <mat-card-content class="d-flex p-0">
@@ -33,36 +36,59 @@
           @if (!datosCompanias()!.flagSoloCerrar) {
             <mat-divider [vertical]="true"></mat-divider>
 
-            <div class="p-2" style="text-align: center;" [ngStyle]="{ width: datosCompanias()!.flagSoloCerrar ? '20%' : '15%' }">
+            <div
+              class="p-2"
+              style="text-align: center"
+              [ngStyle]="{ width: datosCompanias()!.flagSoloCerrar ? '20%' : '15%' }"
+            >
               <p class="fontSmall">Acciones</p>
-              <div class="gap-2 d-flex" style="border-radius: 0px;">
-                  <button class="button-link" matTooltip='Ver cotipropuesta' mat-icon-button
-                          [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)"
-                          (click)="verCotiPropuesta(obj.p_id_compania_seguro)">
-                          <mat-icon class="destacado">preview</mat-icon>
-                  </button>
+              <div class="gap-2 d-flex" style="border-radius: 0px">
+                <button
+                  class="button-link"
+                  matTooltip="Ver cotipropuesta"
+                  mat-icon-button
+                  [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)"
+                  (click)="verCotiPropuesta(obj.p_id_compania_seguro)"
+                >
+                  <mat-icon class="destacado">preview</mat-icon>
+                </button>
 
-                  <button class="button-link" matTooltip='Ver cotización' mat-icon-button
-                          [hidden]="pendiente(obj.p_id_nombre_estado_cotizacion)"
-                          (click)="verCotizacion(obj.p_id_compania_seguro)">
-                          <mat-icon class="destacado">visibility</mat-icon>
-                  </button>
+                <button
+                  class="button-link"
+                  matTooltip="Ver cotización"
+                  mat-icon-button
+                  [hidden]="pendiente(obj.p_id_nombre_estado_cotizacion)"
+                  (click)="verCotizacion(obj.p_id_compania_seguro)"
+                >
+                  <mat-icon class="destacado">visibility</mat-icon>
+                </button>
 
-                  <button class="button-link" matTooltip='Registrar respuesta' mat-icon-button
-                          [hidden]="enviada(obj.p_id_nombre_estado_cotizacion)"
-                          (click)="cotizar(obj.p_id_compania_seguro,true)">
-                          <mat-icon class="destacado">edit_square</mat-icon>
-                  </button>
-                  <button class="button-link" matTooltip='Eliminar cotización' mat-icon-button
-                          [hidden]="enviada(obj.p_id_nombre_estado_cotizacion)"
-                          (click)="borrarCompania(obj.p_id_compania_seguro)">
-                          <mat-icon class="destacado">delete</mat-icon>
-                  </button>
-                  <button mat-stroked-button class="btn-info"
-                          (click)="cotizar(obj.p_id_compania_seguro,false)"
-                          [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)">
-                    Ver Detalle
-                  </button>
+                <button
+                  class="button-link"
+                  matTooltip="Registrar respuesta"
+                  mat-icon-button
+                  [hidden]="enviada(obj.p_id_nombre_estado_cotizacion)"
+                  (click)="cotizar(obj.p_id_compania_seguro, true)"
+                >
+                  <mat-icon class="destacado">edit_square</mat-icon>
+                </button>
+                <button
+                  class="button-link"
+                  matTooltip="Eliminar cotización"
+                  mat-icon-button
+                  [hidden]="enviada(obj.p_id_nombre_estado_cotizacion)"
+                  (click)="borrarCompania(obj.p_id_compania_seguro)"
+                >
+                  <mat-icon class="destacado">delete</mat-icon>
+                </button>
+                <button
+                  mat-stroked-button
+                  class="btn-info"
+                  (click)="cotizar(obj.p_id_compania_seguro, false)"
+                  [hidden]="recibida(obj.p_id_nombre_estado_cotizacion)"
+                >
+                  Ver Detalle
+                </button>
               </div>
             </div>
 

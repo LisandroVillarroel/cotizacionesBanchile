@@ -1,26 +1,20 @@
 import { Component, inject, Inject, signal } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { ICompanias, ICompaniasResponse } from '@features/detalle-solicitud/modelo/detalle-interface';
+import {
+  ICompanias,
+  ICompaniasResponse,
+} from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IModificaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
@@ -69,23 +63,20 @@ export class VerCompaniaComponent {
   correoCompania = signal<string>('');
 
   compania = new FormControl<number | null>(null, Validators.required);
-  detalleControl = new FormControl('', [
-    Validators.maxLength(500),
-    Validators.required,
-  ]);
+  detalleControl = new FormControl('', [Validators.maxLength(500), Validators.required]);
 
   verCompania = signal<FormGroup>(
     new FormGroup({
       compania: this.compania,
       detalleControl: this.detalleControl,
-    })
+    }),
   );
 
   CompaniasContactadasService = inject(CompaniasContactadasService);
 
   constructor(
     public dialogRef: MatDialogRef<VerCompaniaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: VerCompaniaData
+    @Inject(MAT_DIALOG_DATA) public data: VerCompaniaData,
   ) {
     console.log('Data en constructor:', data);
   }
@@ -93,12 +84,10 @@ export class VerCompaniaComponent {
   observaciones: string = '';
 
   OnInit() {
-   /*  console.log('Data completa en ngOnInit:', this.data);
+    /*  console.log('Data completa en ngOnInit:', this.data);
     console.log('Detalle recibido:', this.data.p_id_detalle_solicitud_cotizacion);
  */
-    this.detalleControl.setValue(
-      this.data.p_id_detalle_solicitud_cotizacion || ''
-    );
+    this.detalleControl.setValue(this.data.p_id_detalle_solicitud_cotizacion || '');
     /* console.log(
       'Valor en detalleControl después de setValue:',
       this.detalleControl.value
@@ -109,7 +98,9 @@ export class VerCompaniaComponent {
 
   cargarCompanias(): void {
     this.CompaniasContactadasService.postCompaniasTipoSeguro(
-      this.data.id_rubro, this.data.id_tipo_seguro).subscribe({
+      this.data.id_rubro,
+      this.data.id_tipo_seguro,
+    ).subscribe({
       next: (dato: ICompaniasResponse) => {
         if (dato.codigo === 200) {
           this.datoCompanias.set(dato.p_cursor);
@@ -118,7 +109,10 @@ export class VerCompaniaComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de compañías.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de compañías.',
+        );
       },
     });
   }
@@ -129,13 +123,12 @@ export class VerCompaniaComponent {
     if (this.data.p_id_compania_seguro) {
       // Buscar por ID
       cia = this.datoCompanias()?.find(
-        (item) => item.id_compania_seguro === this.data.p_id_compania_seguro
+        (item) => item.id_compania_seguro === this.data.p_id_compania_seguro,
       );
     } else if (this.data.nombre_compania_seguro) {
       // Si no hay ID, buscar por nombre
       cia = this.datoCompanias()?.find(
-        (item) =>
-          item.nombre_compania_seguro === this.data.nombre_compania_seguro
+        (item) => item.nombre_compania_seguro === this.data.nombre_compania_seguro,
       );
     }
 
@@ -148,11 +141,11 @@ export class VerCompaniaComponent {
   }
 
   actualizarCorreo(companiaSeleccionada: number): void {
-/*     console.log('ID seleccionado:', companiaSeleccionada);
+    /*     console.log('ID seleccionado:', companiaSeleccionada);
     console.log('Lista compañías:', this.datoCompanias()); */
 
     const cia = this.datoCompanias()?.find(
-      (item) => item.id_compania_seguro === companiaSeleccionada
+      (item) => item.id_compania_seguro === companiaSeleccionada,
     );
 
     console.log('Compañía encontrada:', cia);
@@ -161,7 +154,7 @@ export class VerCompaniaComponent {
       ? cia.correo_compania_seguro.replace(/&nbsp;/g, '').trim()
       : '';
 
-   // console.log('Correo encontrado:', correoLimpio);
+    // console.log('Correo encontrado:', correoLimpio);
     this.correoCompania.set(correoLimpio);
   }
 
@@ -188,11 +181,11 @@ export class VerCompaniaComponent {
     this.CompaniasContactadasService.postModificaCompania(payload).subscribe({
       next: (res) => {
         if (res.codigo === 200) {
-          this.confirmar();
+          void this.confirmar();
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible modificar la compañía.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible modificar la compañía.');
       },
     });
   }
@@ -204,7 +197,7 @@ export class VerCompaniaComponent {
   async confirmar() {
     const result = await this.notificacioAlertnService.confirmacion(
       'CONFIRMACIÓN',
-      'El detalle ha sido modificado exitosamente.'
+      'El detalle ha sido modificado exitosamente.',
     );
     if (result) {
       this.dialogRef.close({

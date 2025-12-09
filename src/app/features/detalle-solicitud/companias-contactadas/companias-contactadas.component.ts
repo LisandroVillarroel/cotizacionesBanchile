@@ -39,7 +39,7 @@ import { IDatosCompania, IEliminaCompania } from '../modelo/compania';
   ],
 })
 export class CompaniasContactadasComponent {
-/*   @Input() verEjec: boolean = true;
+  /*   @Input() verEjec: boolean = true;
   @Input() minimo: number = 0;
   @Input() flagSoloCerrar: boolean = false; */
   //@Input() cotizacionSeleccionada: number | null = null;
@@ -49,7 +49,7 @@ export class CompaniasContactadasComponent {
   @Output() actualizarDatos = new EventEmitter<void>();
 
   panelOpenState = false;
-/*   infoGral = input.required<ISolicitud | undefined>();
+  /*   infoGral = input.required<ISolicitud | undefined>();
   companias = input.required<ICompania[] | undefined>(); */
 
   idCompania = 0;
@@ -63,8 +63,7 @@ export class CompaniasContactadasComponent {
   companiasService = inject(CompaniasContactadasService);
   dialog = inject(MatDialog);
 
-  constructor() {
-   }
+  constructor() {}
 
   getCellStyle(estado: number) {
     let color: string;
@@ -105,11 +104,12 @@ export class CompaniasContactadasComponent {
   }
 
   verCotiPropuesta(idCompania: number): void {
-/*     this.compania.set(this.companias()?.find(
+    /*     this.compania.set(this.companias()?.find(
       (c) => c.p_id_compania_seguro === idCompania));
  */
-    this.compania.set(this.datosCompanias()?.companias!.find(
-      (c) => c.p_id_compania_seguro === idCompania));
+    this.compania.set(
+      this.datosCompanias()?.companias!.find((c) => c.p_id_compania_seguro === idCompania),
+    );
 
     const dato = {
       infoGral: this.datosCompanias()?.infoGral, //this.infoGral()!,
@@ -136,19 +136,22 @@ export class CompaniasContactadasComponent {
 
   verCotizacion(id: number) {
     const ciaSeleccionada = this.datosCompanias()?.companias!.find(
-      (c) => c.p_id_compania_seguro === id
+      (c) => c.p_id_compania_seguro === id,
     );
 
     if (ciaSeleccionada) {
-      this.verCompania(ciaSeleccionada!);
+      this.verCompania(ciaSeleccionada);
     } else {
-      this.notificacioAlertnService.error('error','No se encontró la compañía con el ID: '+ id);
+      void this.notificacioAlertnService.error(
+        'error',
+        'No se encontró la compañía con el ID: ' + id,
+      );
     }
   }
 
   async borrarCompania(idCompania: number) {
-    const request:IEliminaCompania = {
-      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud ?? 0,//this.infoGral()!.id_solicitud,
+    const request: IEliminaCompania = {
+      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud ?? 0, //this.infoGral()!.id_solicitud,
       p_id_compania_seguro: idCompania,
       p_id_usuario: this.id_usuario!,
       p_tipo_usuario: this.tipoUsuario!,
@@ -156,23 +159,27 @@ export class CompaniasContactadasComponent {
 
     const eliminada = await this.notificacioAlertnService.confirmacionSelectiva(
       'Eliminar Compañía',
-      'Esta compañía será desvinculada de la solicitud nro. '+ request.p_id_solicitud +'.'+
-      '\n\n ¿Deseas continuar?',
-      'Eliminar compañía', 'Cancelar'
+      'Esta compañía será desvinculada de la solicitud nro. ' +
+        request.p_id_solicitud +
+        '.' +
+        '\n\n ¿Deseas continuar?',
+      'Eliminar compañía',
+      'Cancelar',
     );
 
-    if(eliminada)
-    {
+    if (eliminada) {
       this.companiasService.postEliminaCompania(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-              "La compañía ha sido eliminada exitosamente.");
+            void this.notificacioAlertnService.confirmacion(
+              'CONFIRMACIÓN',
+              'La compañía ha sido eliminada exitosamente.',
+            );
             this.actualizarDatos.emit();
           }
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible eliminar la compañía.');
+          void this.notificacioAlertnService.error('ERROR', 'No fue posible eliminar la compañía.');
         },
       });
     }
@@ -186,11 +193,11 @@ export class CompaniasContactadasComponent {
 
   verCompania(companiaSeleccionada: ICompania): void {
     const dato = {
-      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud,//this.infoGral()?.id_solicitud,
-      fecha: this.datosCompanias()?.infoGral.fecha_creacion_solicitud,//this.infoGral()?.fecha_creacion_solicitud,
-      ejecutivo: this.datosCompanias()?.infoGral.nombre_ejecutivo_banco,//this.infoGral()?.nombre_ejecutivo_banco,
-      id_rubro: this.datosCompanias()?.infoGral.id_rubro,//this.infoGral()?.id_rubro,
-      id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro,//this.infoGral()?.id_tipo_seguro,
+      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud, //this.infoGral()?.id_solicitud,
+      fecha: this.datosCompanias()?.infoGral.fecha_creacion_solicitud, //this.infoGral()?.fecha_creacion_solicitud,
+      ejecutivo: this.datosCompanias()?.infoGral.nombre_ejecutivo_banco, //this.infoGral()?.nombre_ejecutivo_banco,
+      id_rubro: this.datosCompanias()?.infoGral.id_rubro, //this.infoGral()?.id_rubro,
+      id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro, //this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
 
@@ -215,42 +222,44 @@ export class CompaniasContactadasComponent {
       .open(VerCompaniaComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
-        if (result) { this.actualizarDatos.emit(); }
+        if (result) {
+          this.actualizarDatos.emit();
+        }
       });
   }
 
-  recibida(estado: string){
-    if(estado.toLowerCase() === "recibida"){
+  recibida(estado: string) {
+    if (estado.toLowerCase() === 'recibida') {
       return false;
     }
     return true;
   }
 
-  pendiente(estado: string){
-    if(estado.toLowerCase()==='pendiente' && !this.datosCompanias()?.verEjec){
-    //if(estado.toLowerCase()==='pendiente' && !this.verEjec){
+  pendiente(estado: string) {
+    if (estado.toLowerCase() === 'pendiente' && !this.datosCompanias()?.verEjec) {
+      //if(estado.toLowerCase()==='pendiente' && !this.verEjec){
       return false;
     }
     return true;
   }
 
-  enviada(estado: string){
-    if(estado.toLowerCase()==='enviada' && !this.datosCompanias()?.verEjec){
-
-//    if(estado.toLowerCase()==='enviada' && !this.verEjec){
+  enviada(estado: string) {
+    if (estado.toLowerCase() === 'enviada' && !this.datosCompanias()?.verEjec) {
+      //    if(estado.toLowerCase()==='enviada' && !this.verEjec){
       return false;
     }
     return true;
   }
 
   cotizar(idCompania: number, accion: boolean): void {
-    this.compania.set(this.datosCompanias()?.companias!.find(
-      (c) => c.p_id_compania_seguro === idCompania));
+    this.compania.set(
+      this.datosCompanias()?.companias!.find((c) => c.p_id_compania_seguro === idCompania),
+    );
 
     const dato = {
-      infoGral: !this.datosCompanias()?.infoGral,//this.infoGral()!,
+      infoGral: !this.datosCompanias()?.infoGral, //this.infoGral()!,
       compania: this.compania()!,
-      flagAccion: accion
+      flagAccion: accion,
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -274,5 +283,4 @@ export class CompaniasContactadasComponent {
   habilitaRadioButton(estado: string): boolean {
     return estado?.toLowerCase() === 'recibida';
   }
-
 }

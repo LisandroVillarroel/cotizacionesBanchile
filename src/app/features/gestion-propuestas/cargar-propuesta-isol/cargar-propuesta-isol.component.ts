@@ -1,10 +1,15 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import CabeceraPopupComponente from "../../../shared/ui/cabeceraPopup.component";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef } from "@angular/material/dialog";
-import { MatCard, MatCardHeader, MatCardContent, MatCardActions } from "@angular/material/card";
-import { MatDivider } from "@angular/material/divider";
-import { MatLabel, MatFormField } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
+import CabeceraPopupComponente from '../../../shared/ui/cabeceraPopup.component';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogContent,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatCard, MatCardHeader, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
+import { MatLabel, MatFormField } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
@@ -23,10 +28,23 @@ export interface CargarPptaIsolData {
 @Component({
   selector: 'app-cargar-propuesta-isol',
   standalone: true,
-  imports: [CabeceraPopupComponente, MatDialogContent, MatCard, MatCardHeader,
-    MatDivider, MatCardContent, MatLabel, MatFormField, MatIcon, MatCardActions, MatInput, MatInputModule, MatButton],
+  imports: [
+    CabeceraPopupComponente,
+    MatDialogContent,
+    MatCard,
+    MatCardHeader,
+    MatDivider,
+    MatCardContent,
+    MatLabel,
+    MatFormField,
+    MatIcon,
+    MatCardActions,
+    MatInput,
+    MatInputModule,
+    MatButton,
+  ],
   templateUrl: './cargar-propuesta-isol.component.html',
-  styleUrl: './cargar-propuesta-isol.component.css'
+  styleUrl: './cargar-propuesta-isol.component.css',
 })
 export class CargarPropuestaIsolComponent {
   @ViewChild('fileInputPptaIsol')
@@ -39,28 +57,29 @@ export class CargarPropuestaIsolComponent {
 
   habilitarModificar = false;
 
-
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CargarPropuestaIsolComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CargarPptaIsolData
-  ) { }
-
-
-
+    @Inject(MAT_DIALOG_DATA) public data: CargarPptaIsolData,
+  ) {}
 
   abrirPptaIsol(): void {
     this.fileInputPptaIsol.nativeElement.click();
   }
 
-  onFileSelectedPptaIsol(event: any) {
-    const filePptaIsol: File = event.target.files[0];
-    if (filePptaIsol) {
+  onFileSelectedPptaIsol(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const filePptaIsol = input.files[0];
       this.selectedPptaIsolFile = filePptaIsol;
       this.nombrePptaIsol = filePptaIsol.name;
     }
+    /*  const filePptaIsol: File = input.files[0];
+    if (filePptaIsol) {
+      this.selectedPptaIsolFile = filePptaIsol;
+      this.nombrePptaIsol = filePptaIsol.name;
+    }*/
   }
-
 
   eliminarPptaIsol(): void {
     this.archivoPptaIsol = null;
@@ -68,11 +87,7 @@ export class CargarPropuestaIsolComponent {
     this.fileInputPptaIsol.nativeElement.value = '';
   }
 
-
   cancelar(): void {
     this.dialogRef.close('cancelado');
   }
-
-
-
 }

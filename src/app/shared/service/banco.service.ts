@@ -5,20 +5,20 @@ import { InterfazBanco } from '@shared/modelo/banco-interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BancoService {
+  private http = inject(HttpClient);
 
- private http = inject(HttpClient);
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
 
-     headers: HttpHeaders = new HttpHeaders({
-       'Content-Type': 'application/json',
-       'Accept': 'application/json'
-     });
-     constructor() { }
-
-     postBanco(): Observable<InterfazBanco> {
-       return this.http
-         .get<InterfazBanco>(`${environment.apiUrlConsumer}/listarBanco`,{headers: this.headers})
-     }
-   }
+  postBanco(): Observable<InterfazBanco> {
+    return this.http.get<InterfazBanco>(`${environment.apiUrlConsumer}/listarBanco`, {
+      headers: this.headers,
+    });
+  }
+}

@@ -9,52 +9,44 @@
 
             <!-- Lista observaciones -->
             <div class="container-fluid" style="padding: 0px 0px 12px">
-              @if(observaciones()?.length!==0 && observaciones()!==undefined){
-              <mat-expansion-panel
-                class="mat-elevation-z6"
-                style="
-                  border-radius: 10px;
-                  border: 1px solid;
-                  border-color: #234e85;
-                  padding: 4px;
-                "
-                (opened)="panelOpenState = true"
-                (closed)="panelOpenState = false"
-              >
-                <mat-expansion-panel-header>
-                  <mat-panel-title class="destacado">
-                    Observaciones
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-observaciones [observaciones]="observaciones()" />
-              </mat-expansion-panel>
+              @if (observaciones()?.length !== 0 && observaciones() !== undefined) {
+                <mat-expansion-panel
+                  class="mat-elevation-z6"
+                  style="
+                    border-radius: 10px;
+                    border: 1px solid;
+                    border-color: #234e85;
+                    padding: 4px;
+                  "
+                  (opened)="panelOpenState = true"
+                  (closed)="panelOpenState = false"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="destacado"> Observaciones </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <app-observaciones [observaciones]="observaciones()" />
+                </mat-expansion-panel>
               }
             </div>
 
             <!-- Lista compañías contactadas -->
             <div class="container-fluid" style="padding: 0px 0px 12px">
-              @if(companias()?.length!==0 && companias()!==undefined){
-              <mat-expansion-panel
-                class="mat-elevation-z6"
-                style="
-                  border-radius: 10px;
-                  border: 1px solid;
-                  border-color: #234e85;
-                "
-                (opened)="panelOpenState2 = true"
-                (closed)="panelOpenState2 = false"
-              >
-                <mat-expansion-panel-header>
-                  <mat-panel-title class="destacado">
-                    Compañías Contactadas
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-companias-contactadas [datosCompanias]="datosCompanias()"
-                  (cotizacionSeleccionadaEvent) ="cotizacionSeleccionada = $event"
-                  (actualizarDatos) = "recargar()"
-                />
-              </mat-expansion-panel>
-
+              @if (companias()?.length !== 0 && companias() !== undefined) {
+                <mat-expansion-panel
+                  class="mat-elevation-z6"
+                  style="border-radius: 10px; border: 1px solid; border-color: #234e85"
+                  (opened)="panelOpenState2 = true"
+                  (closed)="panelOpenState2 = false"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="destacado"> Compañías Contactadas </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <app-companias-contactadas
+                    [datosCompanias]="datosCompanias()"
+                    (cotizacionSeleccionadaEvent)="cotizacionSeleccionada = $event"
+                    (actualizarDatos)="recargar()"
+                  />
+                </mat-expansion-panel>
               }
             </div>
           </div>
@@ -107,13 +99,14 @@
       </button>
     </div>
 
-    @if(!flagSoloCerrar){
+    @if (!flagSoloCerrar) {
       <div class="botones-derecha">
         <button
           mat-stroked-button
           class="btn-danger"
           [hidden]="this.flagAnular"
-          (click)="anularSolicitud()">
+          (click)="anularSolicitud()"
+        >
           Anular Solicitud
         </button>
 
@@ -122,7 +115,8 @@
           class="btn-primary"
           [disabled]="this.flagCoordinador"
           [hidden]="this.verCoord || this.flagCoordinador"
-          (click)="enviarCoordinador()">
+          (click)="enviarCoordinador()"
+        >
           Enviar a Coordinador
         </button>
 
@@ -130,7 +124,8 @@
           mat-stroked-button
           class="btn-warning"
           [hidden]="this.flagDevolver || this.verEjec"
-          (click)="devolverSolicitud()">
+          (click)="devolverSolicitud()"
+        >
           Devolver solicitud
         </button>
 
@@ -138,7 +133,8 @@
           mat-stroked-button
           class="btn-success"
           [hidden]="this.flagAprobar || this.verEjec"
-          (click)="aprobarSolicitud()">
+          (click)="aprobarSolicitud()"
+        >
           Aprobar Solicitud
         </button>
 
@@ -147,7 +143,8 @@
           class="btn-info"
           [disabled]="this.flagCompania"
           [hidden]="this.verEjec || this.flagCompania"
-          (click)="agregarCompania()">
+          (click)="agregarCompania()"
+        >
           Agregar Compañía
         </button>
 
@@ -156,7 +153,8 @@
           class="btn-info"
           [hidden]="this.flagCotizacion || this.verEjec"
           [disabled]="this.puedeEnviar"
-          (click)="enviarCia()">
+          (click)="enviarCia()"
+        >
           Enviar a Compañía(s)
         </button>
 
@@ -164,7 +162,8 @@
           mat-stroked-button
           class="btn-primary"
           [hidden]="this.flagPropuesta || this.verCoord"
-          (click)="crearPropuesta()">
+          (click)="crearPropuesta()"
+        >
           Generar Propuesta
         </button>
 
@@ -173,7 +172,8 @@
           class="btn-success"
           [hidden]="flagAprobarCot || verCoord"
           [disabled]="!cotizacionSeleccionada"
-          (click)="aprobarCotizacion()">
+          (click)="aprobarCotizacion()"
+        >
           Aprobar Cotización
         </button>
       </div>

@@ -19,14 +19,16 @@ import { Jerarquia } from '@shared/utils/jerarquia';
 @Component({
   selector: 'app-agrega-usuario',
   standalone: true,
-  imports: [  CommonModule,
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatInputModule,
-      MatDialogModule,
-      MatButtonModule,
-      MatSelectModule,
-      CabeceraPopupComponente,],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatSelectModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './agrega-usuario.component.html',
   styles: `
     .mat-mdc-form-field {
@@ -34,11 +36,9 @@ import { Jerarquia } from '@shared/utils/jerarquia';
     padding-bottom: 25px;
     padding-right: 10px;
   }
-  `
-
+  `,
 })
 export class AgregaUsuarioComponent implements OnInit {
-
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
@@ -53,19 +53,13 @@ export class AgregaUsuarioComponent implements OnInit {
   dependencia = signal<IUsuarioLista[]>([]);
 
   usuario!: IUsuario;
-  private readonly dialogRef = inject(
-    MatDialogRef<AgregaUsuarioComponent>
-  );
-
+  private readonly dialogRef = inject(MatDialogRef<AgregaUsuarioComponent>);
 
   ngOnInit() {
-   const tipoConsulta=this.jerarquia.jerarquiaAnterior(this.data.tipoConsulta);
+    const tipoConsulta = this.jerarquia.jerarquiaAnterior(this.data.tipoConsulta as string);
 
     this.rescataLista(tipoConsulta!.p_codigo_perfil);
-
   }
-
-
 
   idUsuarioNuevo = new FormControl('', [Validators.required]);
   rutUsuarioNuevo = new FormControl('', [Validators.required, this.validaRut]);
@@ -83,7 +77,6 @@ export class AgregaUsuarioComponent implements OnInit {
   tipoUsuarioNuevo = new FormControl('', [Validators.required]);
   dependenciaUsuarioNuevo = new FormControl('', [Validators.required]);
 
-
   agregaUsuario = signal<FormGroup>(
     new FormGroup({
       idUsuarioNuevo: this.idUsuarioNuevo,
@@ -95,33 +88,25 @@ export class AgregaUsuarioComponent implements OnInit {
       telefonoUsuarioNuevo: this.telefonoUsuarioNuevo,
       dependenciaUsuarioNuevo: this.dependenciaUsuarioNuevo,
       tipoUsuarioNuevo: this.tipoUsuarioNuevo,
-
-    })
+    }),
   );
 
-
   getErrorMessage(campo: string) {
-     if (campo === 'idUsuarioNuevo') {
-      return this.idUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Id Usuario'
-        : '';
+    if (campo === 'idUsuarioNuevo') {
+      return this.idUsuarioNuevo.hasError('required') ? 'Debes ingresar Id Usuario' : '';
     }
-     if (campo === 'rutUsuarioNuevo') {
-      return this.rutUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Rut Usuario '
-        : '';
+    if (campo === 'rutUsuarioNuevo') {
+      return this.rutUsuarioNuevo.hasError('required') ? 'Debes ingresar Rut Usuario ' : '';
     }
-     if (campo === 'nombreUsuarioNuevo') {
-      return this.nombreUsuarioNuevo.hasError('required')
-        ? 'Debes ingresar Nombre Usuario'
-        : '';
+    if (campo === 'nombreUsuarioNuevo') {
+      return this.nombreUsuarioNuevo.hasError('required') ? 'Debes ingresar Nombre Usuario' : '';
     }
-     if (campo === 'apePaternoUsuarioNuevo') {
+    if (campo === 'apePaternoUsuarioNuevo') {
       return this.apePaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Paterno'
         : '';
     }
-     if (campo === 'apeMaternoUsuarioNuevo') {
+    if (campo === 'apeMaternoUsuarioNuevo') {
       return this.apeMaternoUsuarioNuevo.hasError('required')
         ? 'Debes ingresar Apellido Materno'
         : '';
@@ -152,24 +137,20 @@ export class AgregaUsuarioComponent implements OnInit {
     }
 
     if (campo === 'tipoUsuarioNuevo') {
-      return this.tipoUsuarioNuevo.hasError('required')
-        ? 'Debes seleccionar Tipo de Usuario'
-        : '';
+      return this.tipoUsuarioNuevo.hasError('required') ? 'Debes seleccionar Tipo de Usuario' : '';
     }
 
     return '';
   }
 
-
-
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutUsuarioNuevo(event: Event) {
+  onBlurRutUsuarioNuevo(event: Event) {
     const input = event.target as HTMLInputElement;
     const rut = input.value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
-      await this.agregaUsuario()
+      this.agregaUsuario()
         .get('rutUsuarioNuevo')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
@@ -181,16 +162,14 @@ export class AgregaUsuarioComponent implements OnInit {
   }
 
   validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value) === false) {
+    if (validateRut(control.value as string) === false) {
       return { rutInvalido: true };
     }
     return null;
-
   }
 
-    rescataLista(tipoConsulta:string) {
-
-   /*   let tipo ="E";
+  rescataLista(tipoConsulta: string) {
+    /*   let tipo ="E";
       if(consulta=="E"){
         tipo ="Ejecutivos";
       }else if(consulta=="C"){
@@ -199,39 +178,48 @@ export class AgregaUsuarioComponent implements OnInit {
         tipo = "Ejecutivos y Coordinadores";
       }
   */
-      this.usuarioService
-        .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
-        .subscribe({
-          next: (dato: DatosUsuarioLista) => {
-            if (dato.codigo === 200) {
-              console.log('Lista de Usuarios:', dato.p_cursor);
-              this.dependencia.set(dato.p_cursor);
-            }
-          },
-          error: () => {
-            this.notificacioAlertnService.error('ERROR','Error Inesperado');
-          },
-        });
-    }
+    this.usuarioService
+      .postListadoUsuario(
+        this._storage()!.usuarioLogin.usuario,
+        this._storage()!.usuarioLogin.tipoUsuario,
+        tipoConsulta,
+      )
+      .subscribe({
+        next: (dato: DatosUsuarioLista) => {
+          if (dato.codigo === 200) {
+            console.log('Lista de Usuarios:', dato.p_cursor);
+            this.dependencia.set(dato.p_cursor);
+          }
+        },
+        error: () => {
+          void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        },
+      });
+  }
 
   grabar() {
     //Convertir a formato BD (sin puntos, con guion)
-    const rutParaBD = formatRut(cleanRut(this.agregaUsuario().get('rutUsuarioNuevo')!.value), RutFormat.DASH);
+    const rutParaBD = formatRut(
+      cleanRut(this.agregaUsuario().get('rutUsuarioNuevo')!.value as string),
+      RutFormat.DASH,
+    );
 
     this.usuario = {
-      p_id_usuario_nuevo: this.agregaUsuario().get('idUsuarioNuevo')!.value,
-      p_tipo_usuario_nuevo: this.agregaUsuario().get('tipoUsuarioNuevo')!.value,
+      p_id_usuario_nuevo: this.agregaUsuario().get('idUsuarioNuevo')!.value as string,
+      p_tipo_usuario_nuevo: this.agregaUsuario().get('tipoUsuarioNuevo')!.value as string,
       p_rut_usuario_nuevo: rutParaBD,
-      p_nombre_usuario_nuevo: this.agregaUsuario().get('nombreUsuarioNuevo')!.value,
-      p_apellido_paterno_usuario_nuevo: this.agregaUsuario().get('apePaternoUsuarioNuevo')!.value,
-      p_apellido_materno_usuario_nuevo: this.agregaUsuario().get('apeMaternoUsuarioNuevo')!.value,
-      p_mail_usuario_nuevo: this.agregaUsuario().get('mailUsuarioNuevo')!.value,
-      p_telefono_usuario_nuevo: this.agregaUsuario().get('telefonoUsuarioNuevo')!.value,
-      p_id_dependencia_usuario_nuevo: this.agregaUsuario().get('dependenciaUsuarioNuevo')!.value,
-      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
+      p_nombre_usuario_nuevo: this.agregaUsuario().get('nombreUsuarioNuevo')!.value as string,
+      p_apellido_paterno_usuario_nuevo: this.agregaUsuario().get('apePaternoUsuarioNuevo')!
+        .value as string,
+      p_apellido_materno_usuario_nuevo: this.agregaUsuario().get('apeMaternoUsuarioNuevo')!
+        .value as string,
+      p_mail_usuario_nuevo: this.agregaUsuario().get('mailUsuarioNuevo')!.value as string,
+      p_telefono_usuario_nuevo: this.agregaUsuario().get('telefonoUsuarioNuevo')!.value as string,
+      p_id_dependencia_usuario_nuevo: this.agregaUsuario().get('dependenciaUsuarioNuevo')!
+        .value as string,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? '',
     };
-
 
     this.usuarioService.postAgregaUsuario(this.usuario).subscribe({
       next: (dato: IResponse) => {
@@ -242,7 +230,7 @@ export class AgregaUsuarioComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al usuario.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al usuario.');
       },
     });
   }

@@ -5,21 +5,20 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EstadoService {
-
   private http = inject(HttpClient);
 
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json',
   });
-  constructor() { }
+  constructor() {}
 
   getEstado(): Observable<EstadoInterface> {
-    return this.http
-      .get<EstadoInterface>(`${environment.apiUrlConsumer}/listarEstado`,{headers: this.headers})
+    return this.http.get<EstadoInterface>(`${environment.apiUrlConsumer}/listarEstado`, {
+      headers: this.headers,
+    });
   }
-
 }

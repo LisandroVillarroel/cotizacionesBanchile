@@ -18,7 +18,7 @@ export interface IMateria {
   p_id_linea: number;
   p_id_posicion: number;
   p_tipo_dato: string;
-  p_lista: ILista[],
+  p_lista: ILista[];
   p_valor_dato: string;
   p_largo_dato: number;
   p_decimales_dato: number;
@@ -26,10 +26,10 @@ export interface IMateria {
   p_descripcion_listapadre: string;
   p_id_listahijo: number;
   p_descripcion_listahijo: string;
-  p_fecha_creacion:string;
-  estiloClass?:string;
-  nombreCampo?:string;
-  nombreLabel?:string;
+  p_fecha_creacion: string;
+  estiloClass?: string;
+  nombreCampo?: string;
+  nombreLabel?: string;
 }
 
 export interface ILista {
@@ -48,20 +48,20 @@ export interface IMateriaResultado {
 export interface IMateriaEstructura {
   filas: number;
   columnas: number;
-  datos:IMateria[];
+  datos: IMateria[];
 }
 
 export interface IMateriaEnvia {
-p_id_solicitud: number;
-    p_id_rubro: number;
-    p_id_tipo_seguro: number;
-    items:IMateriaIngresa[];
+  p_id_solicitud: number;
+  p_id_rubro: number;
+  p_id_tipo_seguro: number;
+  items: IMateriaIngresa[];
 }
 
 export interface IMateriaTiene {
-  codigo: 200,
+  codigo: 200;
   mensaje: string;
-  p_cursor: IMateria[]
-  vcEstado: string
+  p_cursor: IMateria[];
+  vcEstado: string;
   vcEstadoCreacion: string;
 }

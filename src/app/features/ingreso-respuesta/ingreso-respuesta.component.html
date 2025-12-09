@@ -1,6 +1,7 @@
 <app-cabecera-popup
   [titulo]="
-    this.titulo + ' Respuesta de ' +
+    this.titulo +
+    ' Respuesta de ' +
     this.datos.compania.p_nombre_compania_seguro +
     ' - Solicitud ' +
     this.datos.infoGral.id_solicitud
@@ -16,12 +17,7 @@
         <mat-card style="width: 49%">
           <mat-card-header>
             <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-                margin-bottom: 5px;
-              "
+              style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px"
             >
               <span class="destacado">Datos Asegurados</span>
               <button
@@ -39,12 +35,7 @@
         <mat-card style="width: 49%">
           <mat-card-header>
             <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-                margin-bottom: 5px;
-              "
+              style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 5px"
             >
               <span class="destacado">Datos Beneficiarios</span>
               <button
@@ -184,22 +175,18 @@
       </div>
       <div class="fondoGris container-fluid mt-0">
         <div class="container-fluid mt-0 gap-2 d-flex">
-          <mat-form-field
-            appearance="outline"
-            class="inputSelect"
-            style="width: 25%"
-          >
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%">
             <mat-label class="cursiva gris">Moneda</mat-label>
             <mat-select [formControl]="moneda">
-              @for(_monedas of datosMoneda(); track _monedas){
-              <mat-option [value]="_monedas.id_moneda">
-                {{ _monedas.nombre_moneda }}
-              </mat-option>
+              @for (_monedas of datosMoneda(); track _monedas) {
+                <mat-option [value]="_monedas.id_moneda">
+                  {{ _monedas.nombre_moneda }}
+                </mat-option>
               }
               <input matInput />
             </mat-select>
-            @if(moneda.invalid){
-            <mat-error>{{ getErrorMessage("moneda") }}</mat-error>
+            @if (moneda.invalid) {
+              <mat-error>{{ getErrorMessage('moneda') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputBuscar" style="width: 25%">
@@ -214,7 +201,7 @@
               required
             />
             @if (primaNeta.invalid) {
-            <mat-error>{{ getErrorMessage("primaNeta") }}</mat-error>
+              <mat-error>{{ getErrorMessage('primaNeta') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputBuscar" style="width: 25%">
@@ -228,8 +215,8 @@
               class="no-spinner"
               required
             />
-            @if(primaAfecta.invalid){
-            <mat-error>{{ getErrorMessage("primaAfecta") }}</mat-error>
+            @if (primaAfecta.invalid) {
+              <mat-error>{{ getErrorMessage('primaAfecta') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputBuscar" style="width: 25%">
@@ -243,64 +230,52 @@
               class="no-spinner"
               required
             />
-            @if(primaBruta.invalid){
-            <mat-error>{{ getErrorMessage("primaBruta") }}</mat-error>
+            @if (primaBruta.invalid) {
+              <mat-error>{{ getErrorMessage('primaBruta') }}</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="container-fluid mt-0 gap-2 d-flex">
-          <mat-form-field
-            appearance="outline"
-            class="inputSelect"
-            style="width: 25%"
-          >
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%">
             <mat-label class="cursiva gris">Medio de Pago</mat-label>
             <mat-select [formControl]="mPago">
-              @for(_mPago of datosMedioPago(); track _mPago){
-              <mat-option [value]="_mPago.id_medio_de_pago">
-                {{ _mPago.nombre_medio_de_pago }}
-              </mat-option>
+              @for (_mPago of datosMedioPago(); track _mPago) {
+                <mat-option [value]="_mPago.id_medio_de_pago">
+                  {{ _mPago.nombre_medio_de_pago }}
+                </mat-option>
               }
               <input matInput />
             </mat-select>
-            @if(mPago.invalid){
-            <mat-error>{{ getErrorMessage("mPago") }}</mat-error>
+            @if (mPago.invalid) {
+              <mat-error>{{ getErrorMessage('mPago') }}</mat-error>
             }
           </mat-form-field>
-          <mat-form-field
-            appearance="outline"
-            class="inputSelect"
-            style="width: 25%"
-          >
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%">
             <mat-label class="cursiva gris">Banco</mat-label>
             <mat-select [formControl]="banco">
-              @for(_banco of datosBanco(); track _banco){
-              <mat-option [value]="_banco.id_banco">
-                {{ _banco.nombre_banco }}
-              </mat-option>
+              @for (_banco of datosBanco(); track _banco) {
+                <mat-option [value]="_banco.id_banco">
+                  {{ _banco.nombre_banco }}
+                </mat-option>
               }
               <input matInput />
             </mat-select>
-            @if(banco.invalid){
-            <mat-error>{{ getErrorMessage("banco") }}</mat-error>
+            @if (banco.invalid) {
+              <mat-error>{{ getErrorMessage('banco') }}</mat-error>
             }
           </mat-form-field>
-          <mat-form-field
-            appearance="outline"
-            class="inputSelect"
-            style="width: 25%"
-          >
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%">
             <mat-label class="cursiva gris">Tipo de Cuenta</mat-label>
             <mat-select [formControl]="tipoCuenta">
-              @for(_tipoCuenta of datosTipoCuenta(); track _tipoCuenta){
-              <mat-option [value]="_tipoCuenta.id_tipo_cuenta">
-                {{ _tipoCuenta.nombre_tipo_cuenta }}
-              </mat-option>
+              @for (_tipoCuenta of datosTipoCuenta(); track _tipoCuenta) {
+                <mat-option [value]="_tipoCuenta.id_tipo_cuenta">
+                  {{ _tipoCuenta.nombre_tipo_cuenta }}
+                </mat-option>
               }
               <input matInput />
             </mat-select>
-            @if(tipoCuenta.invalid){
-            <mat-error>{{ getErrorMessage("tipoCuenta") }}</mat-error>
+            @if (tipoCuenta.invalid) {
+              <mat-error>{{ getErrorMessage('tipoCuenta') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputBuscar" style="width: 25%">
@@ -313,17 +288,13 @@
               (keypress)="soloNumeros($event)"
               required
             />
-            @if(nroCuenta.invalid){
-            <mat-error>{{ getErrorMessage("nroCuenta") }}</mat-error>
+            @if (nroCuenta.invalid) {
+              <mat-error>{{ getErrorMessage('nroCuenta') }}</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="container-fluid mt-0 gap-2 d-flex">
-          <mat-form-field
-            appearance="outline"
-            class="inputSelect"
-            style="width: 25%"
-          >
+          <mat-form-field appearance="outline" class="inputSelect" style="width: 25%">
             <mat-label class="cursiva gris">Cuotas</mat-label>
             <mat-select formControlName="nroCuotas">
               <mat-option [value]="1">1</mat-option>
@@ -339,18 +310,13 @@
               <mat-option [value]="11">11</mat-option>
               <mat-option [value]="12">12</mat-option>
             </mat-select>
-            @if(formRespuesta().get('nroCuotas')?.invalid){
-            <mat-error>{{ getErrorMessage("nroCuotas") }}</mat-error>
+            @if (formRespuesta().get('nroCuotas')?.invalid) {
+              <mat-error>{{ getErrorMessage('nroCuotas') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputFecha" style="width: 25%">
             <mat-label class="cursiva gris">Fecha Inicio:</mat-label>
-            <input
-              matInput
-              [matDatepicker]="pickerInicio"
-              [formControl]="pInicio"
-              required
-            />
+            <input matInput [matDatepicker]="pickerInicio" [formControl]="pInicio" required />
             <mat-datepicker-toggle
               matIconSuffix
               [for]="pickerInicio"
@@ -358,17 +324,12 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #pickerInicio></mat-datepicker>
             @if (pInicio.invalid) {
-            <mat-error>{{ getErrorMessage("pInicio") }}</mat-error>
+              <mat-error>{{ getErrorMessage('pInicio') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputFecha" style="width: 25%">
             <mat-label class="cursiva gris">Fecha Término:</mat-label>
-            <input
-              matInput
-              [matDatepicker]="pickerTermino"
-              [formControl]="pTermino"
-              required
-            />
+            <input matInput [matDatepicker]="pickerTermino" [formControl]="pTermino" required />
             <mat-datepicker-toggle
               matIconSuffix
               [for]="pickerTermino"
@@ -376,13 +337,11 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #pickerTermino></mat-datepicker>
             @if (pTermino.invalid) {
-            <mat-error>{{ getErrorMessage("pTermino") }}</mat-error>
+              <mat-error>{{ getErrorMessage('pTermino') }}</mat-error>
             }
           </mat-form-field>
           <mat-form-field class="inputFecha" style="width: 25%">
-            <mat-label class="cursiva gris"
-              >Fecha primer vencimiento:</mat-label
-            >
+            <mat-label class="cursiva gris">Fecha primer vencimiento:</mat-label>
             <input
               matInput
               [matDatepicker]="pickerVencimiento"
@@ -396,7 +355,7 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #pickerVencimiento></mat-datepicker>
             @if (pVencimiento.invalid) {
-            <mat-error>{{ getErrorMessage("pVencimiento") }}</mat-error>
+              <mat-error>{{ getErrorMessage('pVencimiento') }}</mat-error>
             }
           </mat-form-field>
         </div>

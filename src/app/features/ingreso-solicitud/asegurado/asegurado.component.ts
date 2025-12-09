@@ -9,20 +9,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatPaginator,
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import {
@@ -56,9 +48,9 @@ import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado
 })
 export class AseguradoComponent {
   idSolicitud = input.required<number>();
-  mostrarSoloConsulta = input.required<boolean>();  //Es llamado de varios componentes ve si es consulta o ingreso
+  mostrarSoloConsulta = input.required<boolean>(); //Es llamado de varios componentes ve si es consulta o ingreso
   datoEmitidoAsegurado = output<boolean>();
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   hayAsegurados = signal<boolean>(false);
 
@@ -99,28 +91,29 @@ export class AseguradoComponent {
     }
   }
 
-  valor=computed(()=>{
-    this.datoEmitidoAsegurado.emit(this.hayAsegurados())
-  })
+  valor = computed(() => {
+    this.datoEmitidoAsegurado.emit(this.hayAsegurados());
+  });
 
   dataSourceAsegurado = computed(() => {
-    const tabla = new MatTableDataSource<IAseguradoLista>(
-      this.datoAsegurados()
-    );
+    const tabla = new MatTableDataSource<IAseguradoLista>(this.datoAsegurados());
     tabla.paginator = this.paginatorAsegurado;
     tabla.sort = this.sortAsegurado;
     return tabla;
   });
 
   constructor() {
-    effect(() => {
-      // Llamar al método cada vez que el valor cambie
-      if (this.idSolicitud() !== 0){
-        this.rescataListaAsegurados(this.idSolicitud() );
-      }
+    effect(
+      () => {
+        // Llamar al método cada vez que el valor cambie
+        if (this.idSolicitud() !== 0) {
+          this.rescataListaAsegurados(this.idSolicitud());
+        }
 
-       this.datoEmitidoAsegurado.emit(this.hayAsegurados())
-    }, { allowSignalWrites: true });
+        this.datoEmitidoAsegurado.emit(this.hayAsegurados());
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
@@ -131,25 +124,26 @@ export class AseguradoComponent {
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
-  async OnInit() {
-    console.log('entro a asegurado', this.idSolicitud());
+  OnInit() {
+    //console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataListaAsegurados(p_id_solicitud: number) {
-    this.aseguradoService
-      .postListadoAsegurado(p_id_solicitud)
-      .subscribe({
-        next: (dato: DatosAseguradosInterface) => {
-          if (dato.codigo === 200) {
-            this.datoAsegurados.set(dato.p_cursor);
-            this.hayAsegurados.set(dato.p_cursor.length > 0);
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de asegurados.');
-        },
-      });
+    this.aseguradoService.postListadoAsegurado(p_id_solicitud).subscribe({
+      next: (dato: DatosAseguradosInterface) => {
+        if (dato.codigo === 200) {
+          this.datoAsegurados.set(dato.p_cursor);
+          this.hayAsegurados.set(dato.p_cursor.length > 0);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de asegurados.',
+        );
+      },
+    });
   }
 
   agregaNuevoAsegurado() {
@@ -206,9 +200,7 @@ export class AseguradoComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoAseguradoPar;
 
-    this.dialog
-      .open(ConsultaAseguradoComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConsultaAseguradoComponent, dialogConfig).afterClosed();
   }
 
   eliminaAsegurado(datoAseguradoPar: IAseguradoLista) {

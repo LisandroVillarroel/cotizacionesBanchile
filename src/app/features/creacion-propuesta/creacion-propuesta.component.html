@@ -1,6 +1,5 @@
-<app-cabecera-popup [titulo]="'Creación Propuesta - '+this.idSolicitud" />
+<app-cabecera-popup [titulo]="'Creación Propuesta - ' + this.idSolicitud" />
 <mat-dialog-content class="container-fluid mat-card-detalle p-0">
-
   <div class="container-fluid mt-3">
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
@@ -11,13 +10,25 @@
     <app-beneficiario [idSolicitud]="idSolicitud" [mostrarSoloConsulta]="true" />
   </div>
   <div class="container-fluid mt-3">
-    <div class="table-con-titulo mat-elevation-z6" data-titulo="Datos Materia Asegurada" style="margin-top: 32px">
-      <app-materia-asegurada [idSolicitud]="idSolicitud" [idRubro]="infoGral()?.id_rubro!"
-        [idSeguro]="infoGral()?.id_tipo_seguro!" [muestraConsulta]="true" />
+    <div
+      class="table-con-titulo mat-elevation-z6"
+      data-titulo="Datos Materia Asegurada"
+      style="margin-top: 32px"
+    >
+      <app-materia-asegurada
+        [idSolicitud]="idSolicitud"
+        [idRubro]="infoGral()?.id_rubro!"
+        [idSeguro]="infoGral()?.id_tipo_seguro!"
+        [muestraConsulta]="true"
+      />
     </div>
   </div>
-    <div class="container-fluid mt-3">
-    <div class="table-con-titulo mat-elevation-z6" data-titulo="Documentos Asociados" style="margin-top: 32px">
+  <div class="container-fluid mt-3">
+    <div
+      class="table-con-titulo mat-elevation-z6"
+      data-titulo="Documentos Asociados"
+      style="margin-top: 32px"
+    >
       <app-doc-asociados />
     </div>
   </div>
@@ -36,10 +47,7 @@
       </button>
     </div>
     <div class="botones-derecha">
-      <button
-        mat-stroked-button
-        class="btn-success"
-        (click)="crearPpta()">
+      <button mat-stroked-button class="btn-success" (click)="crearPpta()">
         Generar Propuesta
       </button>
     </div>

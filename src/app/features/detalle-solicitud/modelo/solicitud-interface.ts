@@ -1,4 +1,4 @@
-export interface IObservacion{
+export interface IObservacion {
   id_observacion: number;
   id_solicitud: string;
   description: string;
@@ -6,7 +6,7 @@ export interface IObservacion{
   id_coordinador: string;
 }
 
-export interface ICompania{
+export interface ICompania {
   id_compania: number;
   id_solicitud: string;
   id_estado_cot: number;
@@ -22,5 +22,3 @@ export interface ICompania{
   archivo: string;
   archivoNombre: string;
 } */
-
-

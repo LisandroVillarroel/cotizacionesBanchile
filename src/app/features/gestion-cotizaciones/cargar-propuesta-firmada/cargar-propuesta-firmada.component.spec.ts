@@ -8,10 +8,9 @@ describe('CargarPropuestaFirmadaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CargarPropuestaFirmadaComponent]
-    })
-    .compileComponents();
-    
+      imports: [CargarPropuestaFirmadaComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CargarPropuestaFirmadaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

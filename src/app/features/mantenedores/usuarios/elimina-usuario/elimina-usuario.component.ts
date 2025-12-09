@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './elimina-usuario.component.html',
-  styleUrl: './elimina-usuario.component.css'
+  styleUrl: './elimina-usuario.component.css',
 })
-export class EliminaUsuarioComponent {
-
-}
+export class EliminaUsuarioComponent {}

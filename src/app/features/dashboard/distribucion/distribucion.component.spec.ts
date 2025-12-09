@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import DistribucionComponent  from 'src/app/features/dashboard/distribucion/distribucion.component';
+import DistribucionComponent from 'src/app/features/dashboard/distribucion/distribucion.component';
 
 describe('DistribucionComponent', () => {
   let component: DistribucionComponent;
@@ -8,9 +8,8 @@ describe('DistribucionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DistribucionComponent]
-    })
-    .compileComponents();
+      imports: [DistribucionComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DistribucionComponent);
     component = fixture.componentInstance;

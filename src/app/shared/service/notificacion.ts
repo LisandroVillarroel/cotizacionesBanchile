@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-
 /**
  * Notificacion sevicio usando Signal
  * Gestiona las notificaciones de brindis de forma reactiva
@@ -11,7 +10,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 })
 export class NotificacionService {
   constructor(private _snackBar: MatSnackBar) {}
-
 
   /**
    * Mostrar una notificación de éxito
@@ -37,26 +35,19 @@ export class NotificacionService {
   /**
    * Mostrar una notificación de información
    */
-    showInfo(mensaje: string, duracion = 5000): void {
+  showInfo(mensaje: string, duracion = 5000): void {
     this.muestraNotificacion('info', mensaje, duracion);
   }
 
-
   private muestraNotificacion(type: string, mensaje: string, duracion: number): void {
-
-
-
     const config: MatSnackBarConfig = {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       duration: duracion,
-      panelClass: type
+      panelClass: type,
     };
 
-    console.log('muetra config:',config)
+    console.log('muetra config:', config);
     this._snackBar.open(mensaje, 'cerrar', config);
-
-
   }
-
 }

@@ -1,26 +1,26 @@
-<div class="container-fluid fondoGris p-2 mt-2" style="padding: 10px 10px 10px;">
-  @for(item of observaciones(); track $index){
+<div class="container-fluid fondoGris p-2 mt-2" style="padding: 10px 10px 10px">
+  @for (item of observaciones(); track $index) {
     <div class="container-fluid mt-2">
       <mat-card class="alinea-card-gestion">
         <mat-card-content class="d-flex p-0">
-          <div class ="p-2" style="width: 25%;">
+          <div class="p-2" style="width: 25%">
             <p class="fontSmall">Fecha creación</p>
-            <p class="fontLarge">{{item.fecha_creacion_observacion}}</p>
+            <p class="fontLarge">{{ item.fecha_creacion_observacion }}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 25%;">
+          <div class="p-2" style="width: 25%">
             <p class="fontSmall">Fecha corrección</p>
-            <p class="fontLarge">{{item.fecha_correccion_observacion}}</p>
+            <p class="fontLarge">{{ item.fecha_correccion_observacion }}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 25%;">
+          <div class="p-2" style="width: 25%">
             <p class="fontSmall">Observación</p>
-            <p class="fontLarge">{{item.observacion}}</p>
+            <p class="fontLarge">{{ item.observacion }}</p>
           </div>
           <mat-divider [vertical]="true"></mat-divider>
-          <div class ="p-2" style="width: 25%;">
+          <div class="p-2" style="width: 25%">
             <p class="fontSmall">Coordinador</p>
-            <p class="fontLarge">{{item.nombre_coordinador}}</p>
+            <p class="fontLarge">{{ item.nombre_coordinador }}</p>
           </div>
         </mat-card-content>
       </mat-card>

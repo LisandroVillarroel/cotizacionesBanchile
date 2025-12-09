@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild,computed,inject, output, signal } from '@angular/core';
+import { Component, ViewChild, computed, inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -56,7 +56,7 @@ import { CarteraService } from './cartera.service';
     CommonModule,
   ],
 })
-export default class DerivarCarteraComponent{
+export default class DerivarCarteraComponent {
   solicitudes = signal<ISolicitudCartera[] | undefined>([]);
   coordinadores = signal<ICoordinador[] | undefined>([]);
   ejecutivos = signal<IEjecutivo[] | undefined>([]);
@@ -66,8 +66,8 @@ export default class DerivarCarteraComponent{
   notificacioAlertnService = inject(NotificacioAlertnService);
   carteraService = inject(CarteraService);
   request = {
-    p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-    p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? ""
+    p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
+    p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? '',
   };
 
   rubroService = inject(RubroService);
@@ -96,14 +96,15 @@ export default class DerivarCarteraComponent{
   estado = new FormControl();
   fecha = new FormControl<Date | null>(null);
 
-  filtroFormulario = signal<FormGroup>(new FormGroup({
-    coordinador: this.coordinador,
-    ejecutivo: this.ejecutivo,
-    rubro: this.rubro,
-    seguro: this.seguro,
-    estado: this.estado,
-    fecha: this.fecha
-  })
+  filtroFormulario = signal<FormGroup>(
+    new FormGroup({
+      coordinador: this.coordinador,
+      ejecutivo: this.ejecutivo,
+      rubro: this.rubro,
+      seguro: this.seguro,
+      estado: this.estado,
+      fecha: this.fecha,
+    }),
   );
 
   displayedColumns: string[] = [
@@ -114,11 +115,11 @@ export default class DerivarCarteraComponent{
     'rut_contratante',
     'nombre_razon_social_contratante',
     'nombre_rubro',
-    "nombre_tipo_seguro",
-    "nombre_ejecutivo_banco",
-    "nombre_coordinador",
-    "id_estado_solicitud",
-    "accion"
+    'nombre_tipo_seguro',
+    'nombre_ejecutivo_banco',
+    'nombre_coordinador',
+    'id_estado_solicitud',
+    'accion',
   ];
 
   dataSourceSolicitud = computed(() => {
@@ -144,23 +145,32 @@ export default class DerivarCarteraComponent{
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
   datosFiltrados() {
-    const coordinador = this.filtroFormulario().value.coordinador ?? '';
-    const ejecutivo = this.filtroFormulario().value.ejecutivo ?? '';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
-    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
-    const estado = this.filtroFormulario().value.estado ?? '';
-    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
+    let aux: string = this.coordinador.value as string;
+    const coordinador = aux;
+    aux = this.ejecutivo.value as string;
+    const ejecutivo = aux;
+    const auxRubro: IRubro = this.rubro.value as IRubro;
+    const rubro = auxRubro.p_nombre_rubro;
+    aux = this.seguro.value as string;
+    const tipoSeguro = aux;
+    aux = this.estado.value as string;
+    const estado = aux;
+    const auxFecha: Date = this.fecha.value as Date;
+    const fechaInicio_Inicial = auxFecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
-      fechaInicio = new Date(this.filtroFormulario().value.fecha);
+      fechaInicio = new Date(auxFecha);
     }
 
     this.formularioModificado();
-    return this.solicitudes()!.filter(item => {
-
-      const cumpleCoordinador = item.nombre_coordinador.toLowerCase().includes(coordinador.toLowerCase());
-      const cumpleEjecutivo = item.nombre_ejecutivo_banco.toLowerCase().includes(ejecutivo.toLowerCase());
+    return this.solicitudes()!.filter((item) => {
+      const cumpleCoordinador = item.nombre_coordinador
+        .toLowerCase()
+        .includes(coordinador.toLowerCase());
+      const cumpleEjecutivo = item.nombre_ejecutivo_banco
+        .toLowerCase()
+        .includes(ejecutivo.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);
@@ -168,13 +178,20 @@ export default class DerivarCarteraComponent{
       const fechaBase = new Date(item.fecha_creacion);
 
       if (fechaInicio_Inicial != null) {
-        cumpleFecha = !fechaInicio || (
-          fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-          fechaBase.getMonth() === fechaInicio.getMonth() &&
-          fechaBase.getDate() === fechaInicio.getDate()
-        );
+        cumpleFecha =
+          !fechaInicio ||
+          (fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+            fechaBase.getMonth() === fechaInicio.getMonth() &&
+            fechaBase.getDate() === fechaInicio.getDate());
       }
-      return cumpleCoordinador && cumpleEjecutivo && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
+      return (
+        cumpleCoordinador &&
+        cumpleEjecutivo &&
+        cumpleRubro &&
+        cumpleTipoSeguro &&
+        cumpleEstado &&
+        cumpleFecha
+      );
     });
   }
 
@@ -186,7 +203,7 @@ export default class DerivarCarteraComponent{
     this.filtroFormulario().reset();
   }
 
-  async OnInit() {
+  OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaCoordinadores();
     this.cargaEjecutivos();
@@ -197,33 +214,39 @@ export default class DerivarCarteraComponent{
 
     this.formularioModificado.set(true);
     this.filtroFormulario().valueChanges.subscribe(() => {
-      this.datosFiltrados()
+      this.datosFiltrados();
       this.updateTableData();
     });
   }
 
-  cargaCoordinadores(){
+  cargaCoordinadores() {
     this.carteraService.postlistarCoordinadores(this.request).subscribe({
-      next: async (dato) => {
+      next: (dato) => {
         if (dato.codigo === 200) {
-          this.coordinadores.set(dato.p_cursor) ;
+          this.coordinadores.set(dato.p_cursor);
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Coordinadores.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Coordinadores.',
+        );
       },
     });
   }
 
-  cargaEjecutivos(){
+  cargaEjecutivos() {
     this.carteraService.postlistarEjecutivos(this.request).subscribe({
-      next: async (dato) => {
+      next: (dato) => {
         if (dato.codigo === 200) {
-          this.ejecutivos.set(dato.p_cursor) ;
+          this.ejecutivos.set(dato.p_cursor);
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Ejecutivos.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Ejecutivos.',
+        );
       },
     });
   }
@@ -236,7 +259,10 @@ export default class DerivarCarteraComponent{
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Rubros.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Rubros.',
+        );
       },
     });
   }
@@ -249,12 +275,15 @@ export default class DerivarCarteraComponent{
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Estados.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Estados.',
+        );
       },
     });
   }
 
-  async seleccionaRubro(datos: IRubro) {
+  seleccionaRubro(datos: IRubro) {
     this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -262,34 +291,39 @@ export default class DerivarCarteraComponent{
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el listado de Tipos de Seguro.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Tipos de Seguro.',
+        );
       },
     });
   }
 
-  cargaSolicitudes(){
+  cargaSolicitudes() {
     this.carteraService.postlistarCartera(this.request).subscribe({
-      next: async (dato) => {
+      next: (dato) => {
         if (dato.codigo === 200) {
           const res = dato.ps_cursor;
-          res.map((valor: ISolicitudCartera)=> {
+          res.map((valor: ISolicitudCartera) => {
             return {
               ...valor, // Copiamos las propiedades originales
-              selected: false
-            }
-          })
-          this.solicitudes.set(res) ;
+              selected: false,
+            };
+          });
+          this.solicitudes.set(res);
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el listado de Solicitudes.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  el listado de Solicitudes.',
+        );
       },
     });
   }
 
   retorno = output<boolean>();
   derivar() {
-
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -300,14 +334,15 @@ export default class DerivarCarteraComponent{
 
     dialogConfig.data = {
       id_solicitud: 3,
-      id_coordinador_anterior: "true",
-      id_coordinador_nuevo: "true"
+      id_coordinador_anterior: 'true',
+      id_coordinador_nuevo: 'true',
     };
 
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })
+      .subscribe(() => {
+        this.retorno.emit(true);
+      });
   }
-
 }

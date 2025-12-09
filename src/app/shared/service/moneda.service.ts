@@ -5,20 +5,20 @@ import { InterfazMoneda } from '@shared/modelo/moneda-interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MonedaService {
-
   private http = inject(HttpClient);
 
-    headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
-    constructor() { }
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
 
-    postMoneda(): Observable<InterfazMoneda> {
-      return this.http
-        .get<InterfazMoneda>(`${environment.apiUrlConsumer}/listarMoneda`,{headers: this.headers})
-    }
+  postMoneda(): Observable<InterfazMoneda> {
+    return this.http.get<InterfazMoneda>(`${environment.apiUrlConsumer}/listarMoneda`, {
+      headers: this.headers,
+    });
   }
+}

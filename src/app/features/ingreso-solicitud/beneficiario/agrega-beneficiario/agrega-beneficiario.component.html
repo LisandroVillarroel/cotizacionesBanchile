@@ -1,4 +1,4 @@
-<app-cabecera-popup [titulo]="'Ingreso Beneficiario'"  />
+<app-cabecera-popup [titulo]="'Ingreso Beneficiario'" />
 <mat-dialog-content
   [formGroup]="agregaBeneficiario()"
   name="agregaBeneficiario"
@@ -13,7 +13,6 @@
         <mat-label class="labelI">Rut</mat-label>
         <input
           matInput
-         
           id="rutBeneficiario"
           aria-label="Rut"
           class="input-rut rut"
@@ -24,46 +23,31 @@
           required
         />
         @if (rutBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("rutBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('rutBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input
-          matInput
-          aria-label="Nombre"
-          [formControl]="nombreBeneficiario"
-          required
-        />
+        <input matInput aria-label="Nombre" [formControl]="nombreBeneficiario" required />
         @if (nombreBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("nombreBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('nombreBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
-        <input
-          matInput
-          aria-label="Correo"
-          [formControl]="correoBeneficiario"
-          required
-        />
+        <input matInput aria-label="Correo" [formControl]="correoBeneficiario" required />
         @if (correoBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("correoBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('correoBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input
-          matInput
-          aria-label="Teléfono"
-          [formControl]="telefonoBeneficiario"
-          required
-        />
+        <input matInput aria-label="Teléfono" [formControl]="telefonoBeneficiario" required />
         @if (telefonoBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("telefonoBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('telefonoBeneficiario') }}</mat-error>
         }
       </mat-form-field>
     </div>
@@ -71,53 +55,33 @@
     <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Región</mat-label>
-        <input
-          matInput
-          aria-label="Región"
-          [formControl]="regionBeneficiario"
-          required
-        />
+        <input matInput aria-label="Región" [formControl]="regionBeneficiario" required />
         @if (regionBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("regionBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('regionBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Ciudad</mat-label>
-        <input
-          matInput
-          aria-label="Ciudad"
-          [formControl]="ciudadBeneficiario"
-          required
-        />
+        <input matInput aria-label="Ciudad" [formControl]="ciudadBeneficiario" required />
         @if (ciudadBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("ciudadBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('ciudadBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Comuna</mat-label>
-        <input
-          matInput
-          aria-label="Comuna"
-          [formControl]="comunaBeneficiario"
-          required
-        />
+        <input matInput aria-label="Comuna" [formControl]="comunaBeneficiario" required />
         @if (comunaBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("comunaBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('comunaBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Dirección</mat-label>
-        <input
-          matInput
-          aria-label="Dirección"
-          [formControl]="direccionBeneficiario"
-          required
-        />
+        <input matInput aria-label="Dirección" [formControl]="direccionBeneficiario" required />
         @if (direccionBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("direccionBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('direccionBeneficiario') }}</mat-error>
         }
       </mat-form-field>
     </div>
@@ -132,9 +96,7 @@
           required
         />
         @if (numeroDireccionBeneficiario.invalid) {
-        <mat-error>{{
-          getErrorMessage("numeroDireccionBeneficiario")
-        }}</mat-error>
+          <mat-error>{{ getErrorMessage('numeroDireccionBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
@@ -146,21 +108,15 @@
           [formControl]="deptoDireccionBeneficiario"
         />
         @if (deptoDireccionBeneficiario.invalid) {
-        <mat-error>{{
-          getErrorMessage("deptoDireccionBeneficiario")
-        }}</mat-error>
+          <mat-error>{{ getErrorMessage('deptoDireccionBeneficiario') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Número Casa</mat-label>
-        <input
-          matInput
-          aria-label="Número Casa"
-          [formControl]="casaBeneficiario"
-        />
+        <input matInput aria-label="Número Casa" [formControl]="casaBeneficiario" />
         @if (casaBeneficiario.invalid) {
-        <mat-error>{{ getErrorMessage("casaBeneficiario") }}</mat-error>
+          <mat-error>{{ getErrorMessage('casaBeneficiario') }}</mat-error>
         }
       </mat-form-field>
     </div>

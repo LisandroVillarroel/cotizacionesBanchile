@@ -1,27 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  validateRut,
-  formatRut,
-  RutFormat,
-  cleanRut,
-} from '@fdograph/rut-utilities';
+import { validateRut, formatRut, RutFormat, cleanRut } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { BeneficiarioService } from '@features/ingreso-solicitud/service/beneficiario.service';
-import { IBeneficiario, IDatosPersona } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import {
+  IBeneficiario,
+  IDatosPersona,
+} from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -52,9 +41,7 @@ export class AgregaBeneficiarioComponent {
 
   beneficiarioService = inject(BeneficiarioService);
 
-  private readonly dialogRef = inject(
-    MatDialogRef<AgregaBeneficiarioComponent>
-  );
+  private readonly dialogRef = inject(MatDialogRef<AgregaBeneficiarioComponent>);
 
   rutBeneficiario = new FormControl('', [Validators.required, this.validaRut]);
   nombreBeneficiario = new FormControl('', [Validators.required]);
@@ -87,7 +74,7 @@ export class AgregaBeneficiarioComponent {
       numeroDireccionBeneficiario: this.numeroDireccionBeneficiario,
       deptoDireccionBeneficiario: this.deptoDireccionBeneficiario,
       casaBeneficiario: this.casaBeneficiario,
-    })
+    }),
   );
 
   getErrorMessage(campo: string) {
@@ -95,13 +82,11 @@ export class AgregaBeneficiarioComponent {
       return this.rutBeneficiario.hasError('required')
         ? 'Debes ingresar rut beneficiario'
         : this.rutBeneficiario.hasError('rutInvalido')
-        ? 'Rut Inválido'
-        : '';
+          ? 'Rut Inválido'
+          : '';
     }
     if (campo === 'nombreBeneficiario') {
-      return this.nombreBeneficiario.hasError('required')
-        ? 'Debes ingresar nombre'
-        : '';
+      return this.nombreBeneficiario.hasError('required') ? 'Debes ingresar nombre' : '';
     }
 
     if (campo === 'correoBeneficiario') {
@@ -123,26 +108,18 @@ export class AgregaBeneficiarioComponent {
     }
 
     if (campo === 'regionBeneficiario') {
-      return this.regionBeneficiario.hasError('required')
-        ? 'Debes ingresar región'
-        : '';
+      return this.regionBeneficiario.hasError('required') ? 'Debes ingresar región' : '';
     }
 
     if (campo === 'ciudadBeneficiario') {
-      return this.ciudadBeneficiario.hasError('required')
-        ? 'Debes ingresar ciudad'
-        : '';
+      return this.ciudadBeneficiario.hasError('required') ? 'Debes ingresar ciudad' : '';
     }
     if (campo === 'comunaBeneficiario') {
-      return this.comunaBeneficiario.hasError('required')
-        ? 'Debes ingresar comuna'
-        : '';
+      return this.comunaBeneficiario.hasError('required') ? 'Debes ingresar comuna' : '';
     }
 
     if (campo === 'direccionBeneficiario') {
-      return this.direccionBeneficiario.hasError('required')
-        ? 'Debes ingresar dirección'
-        : '';
+      return this.direccionBeneficiario.hasError('required') ? 'Debes ingresar dirección' : '';
     }
 
     if (campo === 'numeroDireccionBeneficiario') {
@@ -158,20 +135,17 @@ export class AgregaBeneficiarioComponent {
     }
 
     if (campo === 'casaBeneficiario') {
-      return this.casaBeneficiario.hasError('required')
-        ? 'Debes ingresar casa dirección'
-        : '';
+      return this.casaBeneficiario.hasError('required') ? 'Debes ingresar casa dirección' : '';
     }
 
     return '';
   }
 
   validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value) === false) {
+    if (validateRut(control.value as string) === false) {
       return { rutInvalido: true };
     }
     return null;
-
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión
@@ -203,13 +177,13 @@ export class AgregaBeneficiarioComponent {
   } */
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar beneficiario
-  async onBlurRutBeneficiario(event: Event) {
+  onBlurRutBeneficiario(event: Event) {
     const input = event.target as HTMLInputElement;
     const rut = input.value;
 
     if (validateRut(rut) === true) {
       // Mostrar en el input con puntos y guion
-      await this.agregaBeneficiario()
+      this.agregaBeneficiario()
         .get('rutBeneficiario')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
@@ -239,9 +213,9 @@ export class AgregaBeneficiarioComponent {
             }
           },
           error: () => {
-            this.notificacioAlertnService.error(
+            void this.notificacioAlertnService.error(
               'ERROR',
-              'Error al consultar datos del beneficiario'
+              'Error al consultar datos del beneficiario',
             );
           },
         });
@@ -263,53 +237,46 @@ export class AgregaBeneficiarioComponent {
   }
 
   grabar() {
-    const rutVisual = this.agregaBeneficiario().get('rutBeneficiario')!.value;
+    const rutVisual = this.agregaBeneficiario().get('rutBeneficiario')!.value as string;
     //Convertir a formato BD (sin puntos, con guion)
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
     this.beneficiario = {
       p_id_solicitud: Number(this.data),
-      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? '',
       //p_rut_beneficiario: this.agregaBeneficiario().get('rutBeneficiario')!.value,
       p_rut_beneficiario: rutParaBD,
-      p_nombre_razon_social_beneficiario:
-        this.agregaBeneficiario().get('nombreBeneficiario')!.value,
-      p_mail_beneficiario:
-        this.agregaBeneficiario().get('correoBeneficiario')!.value,
-      p_telefono_beneficiario: this.agregaBeneficiario().get(
-        'telefonoBeneficiario'
-      )!.value,
-      p_region_beneficiario:
-        this.agregaBeneficiario().get('regionBeneficiario')!.value,
-      p_ciudad_beneficiario:
-        this.agregaBeneficiario().get('ciudadBeneficiario')!.value,
-      p_comuna_beneficiario:
-        this.agregaBeneficiario().get('comunaBeneficiario')!.value,
-      p_direccion_beneficiario: this.agregaBeneficiario().get(
-        'direccionBeneficiario'
-      )!.value,
-      p_numero_dir_beneficiario: this.agregaBeneficiario().get(
-        'numeroDireccionBeneficiario'
-      )!.value,
+      p_nombre_razon_social_beneficiario: this.agregaBeneficiario().get('nombreBeneficiario')!
+        .value as string,
+      p_mail_beneficiario: this.agregaBeneficiario().get('correoBeneficiario')!.value as string,
+      p_telefono_beneficiario: this.agregaBeneficiario().get('telefonoBeneficiario')!
+        .value as string,
+      p_region_beneficiario: this.agregaBeneficiario().get('regionBeneficiario')!.value as string,
+      p_ciudad_beneficiario: this.agregaBeneficiario().get('ciudadBeneficiario')!.value as string,
+      p_comuna_beneficiario: this.agregaBeneficiario().get('comunaBeneficiario')!.value as string,
+      p_direccion_beneficiario: this.agregaBeneficiario().get('direccionBeneficiario')!
+        .value as string,
+      p_numero_dir_beneficiario: this.agregaBeneficiario().get('numeroDireccionBeneficiario')!
+        .value as string,
       p_departamento_block_beneficiario: this.agregaBeneficiario().get(
-        'deptoDireccionBeneficiario'
-      )!.value,
-      p_casa_beneficiario:
-        this.agregaBeneficiario().get('casaBeneficiario')!.value,
+        'deptoDireccionBeneficiario',
+      )!.value as string,
+      p_casa_beneficiario: this.agregaBeneficiario().get('casaBeneficiario')!.value as string,
     };
     //console.log('Beneficiario Grabado:', this.beneficiario);
-    this.beneficiarioService
-      .postAgregaBeneficiario(this.beneficiario)
-      .subscribe({
-        next: (dato) => {
-          //console.log('dato:', dato);
-          if (dato.codigo === 200) {
-            this.dialogRef.close('agregado');
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al beneficiario.');
-        },
-      });
+    this.beneficiarioService.postAgregaBeneficiario(this.beneficiario).subscribe({
+      next: (dato) => {
+        //console.log('dato:', dato);
+        if (dato.codigo === 200) {
+          this.dialogRef.close('agregado');
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible agregar al beneficiario.',
+        );
+      },
+    });
   }
 }

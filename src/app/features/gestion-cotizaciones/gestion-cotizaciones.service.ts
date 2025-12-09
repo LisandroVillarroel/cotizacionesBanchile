@@ -5,32 +5,31 @@ import { Observable } from 'rxjs';
 import { IGestionResponse, IApruebaCotRequest } from './gestionCotizacion-interface';
 import { IRequestGestion, IResponse } from '@shared/modelo/servicios-interface';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GestionCotizacionesService {
+  private http = inject(HttpClient);
 
-   private http = inject(HttpClient);
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
 
-     headers: HttpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      });
-  constructor() { }
-
-   postListadoSolicitudes(filtro: IRequestGestion): Observable<IGestionResponse> {
-      return this.http
-        .post<IGestionResponse>(`${environment.apiUrlConsumer}/listarGestionCotizaciones`,
-          filtro,
-          {headers: this.headers}
-        )
-    }
+  postListadoSolicitudes(filtro: IRequestGestion): Observable<IGestionResponse> {
+    return this.http.post<IGestionResponse>(
+      `${environment.apiUrlConsumer}/listarGestionCotizaciones`,
+      filtro,
+      { headers: this.headers },
+    );
+  }
 
   postApruebaCotizacion(apruebaCotizacion: IApruebaCotRequest): Observable<IResponse> {
     return this.http.post<IResponse>(
-        `${environment.apiUrlConsumer}/aprobarCotizacion`,
-        apruebaCotizacion, { headers: this.headers, }
-      )
+      `${environment.apiUrlConsumer}/aprobarCotizacion`,
+      apruebaCotizacion,
+      { headers: this.headers },
+    );
   }
 }

@@ -8,10 +8,9 @@ describe('AgregaRubroComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AgregaRubroComponent]
-    })
-    .compileComponents();
-    
+      imports: [AgregaRubroComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AgregaRubroComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

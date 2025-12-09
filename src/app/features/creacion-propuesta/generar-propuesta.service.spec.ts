@@ -4,7 +4,7 @@ import { GenerarPropuestaService } from './generar-propuesta.service';
 describe('Service: GenerarPropuesta', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GenerarPropuestaService]
+      providers: [GenerarPropuestaService],
     });
   });
 

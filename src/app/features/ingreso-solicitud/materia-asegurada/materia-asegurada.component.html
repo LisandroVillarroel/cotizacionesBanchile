@@ -1,62 +1,85 @@
 <mat-dialog-content [formGroup]="materiaForm()" name="materiaForm" class="agrega-container">
-  @for (fila of datoMateriaEstructura(); track $index){
-  <div class="row">
-    @for (columna of fila.datos; track $index){
-    @if (columna.p_tipo_dato=='TITULO'){
-    <div [ngClass]="columna.estiloClass"><span class="centraSubtitulo">{{columna.p_valor_dato}}</span></div>
-    }@else{
-    @if (columna.p_tipo_dato=='LISTA'){
-    <div [ngClass]="columna.estiloClass">
-      <mat-form-field class="estiloCampo">
-        <mat-select class="estilo-select" placeholder="{{columna.nombreLabel}}"
-          [formControlName]="columna.nombreCampo!"
-          [compareWith]="comparavalorLista">
-          @for(_lista of columna.p_lista; track _lista){
-          <mat-option class="fuenteOption" [value]="_lista.p_id_listahijo">
-            {{ _lista.p_descripcion_listahijo }}
-          </mat-option>
-          }
-        </mat-select>
+  @for (fila of datoMateriaEstructura(); track $index) {
+    <div class="row">
+      @for (columna of fila.datos; track $index) {
+        @if (columna.p_tipo_dato == 'TITULO') {
+          <div [ngClass]="columna.estiloClass">
+            <span class="centraSubtitulo">{{ columna.p_valor_dato }}</span>
+          </div>
+        } @else {
+          @if (columna.p_tipo_dato == 'LISTA') {
+            <div [ngClass]="columna.estiloClass">
+              <mat-form-field class="estiloCampo">
+                <mat-select
+                  class="estilo-select"
+                  placeholder="{{ columna.nombreLabel }}"
+                  [formControlName]="columna.nombreCampo!"
+                  [compareWith]="comparavalorLista"
+                >
+                  @for (_lista of columna.p_lista; track _lista) {
+                    <mat-option class="fuenteOption" [value]="_lista.p_id_listahijo">
+                      {{ _lista.p_descripcion_listahijo }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          } @else {
+            <div [ngClass]="columna.estiloClass">
+              <mat-form-field class="estiloCampo">
+                @if (columna.p_tipo_dato == 'NUMERICO') {
+                  <input
+                    matInput
+                    type="text"
+                    placeholder="{{ columna.nombreLabel }}"
+                    [formControlName]="columna.nombreCampo!"
+                    [maxlength]="columna.p_largo_dato"
+                    appDirectivaSoloDecimalNumeros
+                    [decimales]="columna.p_decimales_dato"
+                  />
+                } @else if (columna.p_tipo_dato == 'FECHA') {
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    mask="00/00/0000"
+                    placeholder="dd/mm/aaaa"
+                    [formControlName]="columna.nombreCampo!"
+                  />
 
-      </mat-form-field>
-    </div>
-    }@else{
-    <div [ngClass]="columna.estiloClass">
-      <mat-form-field class="estiloCampo">
-        @if(columna.p_tipo_dato=='NUMERICO'){
-        <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!"
-          [maxlength]="columna.p_largo_dato" appDirectivaSoloDecimalNumeros [decimales]="columna.p_decimales_dato" />
-        }@else if(columna.p_tipo_dato=='FECHA'){
-            <input matInput [matDatepicker]="picker" mask="00/00/0000" placeholder="dd/mm/aaaa" [formControlName]="columna.nombreCampo!" />
-
-          <mat-datepicker #picker></mat-datepicker>
-        }@else{
-        <input matInput type="text" placeholder="{{columna.nombreLabel}}" [formControlName]="columna.nombreCampo!"
-          [maxlength]="columna.p_largo_dato" />
-        }
-        <!--
+                  <mat-datepicker #picker></mat-datepicker>
+                } @else {
+                  <input
+                    matInput
+                    type="text"
+                    placeholder="{{ columna.nombreLabel }}"
+                    [formControlName]="columna.nombreCampo!"
+                    [maxlength]="columna.p_largo_dato"
+                  />
+                }
+                <!--
                     @if (nombreAsegurado.invalid) {
                     <mat-error>{{ getErrorMessage("nombreAsegurado") }}</mat-error>
                     }
                     -->
-      </mat-form-field>
+              </mat-form-field>
+            </div>
+          }
+        }
+      }
     </div>
-    }
-    }
-    }
-  </div>
   }
-
 </mat-dialog-content>
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
-
   <div class="example-button-row">
-
     <!-- <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()"
     [disabled]="materiaForm().invalid"> -->
 
-    <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()"
-  [hidden]="muestraConsulta()">
+    <button
+      class="btn-primary tamanoBopton mt-3"
+      mat-flat-button
+      (click)="grabarMateria()"
+      [hidden]="muestraConsulta()"
+    >
       Grabar
     </button>
   </div>

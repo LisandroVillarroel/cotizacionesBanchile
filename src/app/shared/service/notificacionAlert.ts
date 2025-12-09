@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 
-
 /**
  * Notificacion sevicio usando Signal
  * Gestiona las notificaciones de brindis de forma reactiva
@@ -10,7 +9,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class NotificacioAlertnService {
- private notificationMixin = Swal.mixin({
+  private notificationMixin = Swal.mixin({
     toast: true,
     position: 'center',
     showConfirmButton: false,
@@ -31,15 +30,15 @@ export class NotificacioAlertnService {
     customClass: {
       popup: 'my-custom-popup',
       confirmButton: 'my-custom-confirm-button',
-      cancelButton: 'my-custom-cancel-button'
-    }
+      cancelButton: 'my-custom-cancel-button',
+    },
   });
 
   /**
    * Mostrar una notificación de éxito
    */
-  success(titulo: string, mensaje: string) {
-    this.notificationMixin.fire({
+  async success(titulo: string, mensaje: string) {
+    await this.notificationMixin.fire({
       icon: 'success',
       title: titulo,
       text: mensaje,
@@ -49,23 +48,23 @@ export class NotificacioAlertnService {
   /**
    * Mostrar una notificación de error
    */
-  error(titulo: string, mensaje: string, mensajeOk:string = 'OK') {
-    this.notificationMixin.fire({
+  async error(titulo: string, mensaje: string, mensajeOk: string = 'OK') {
+    await this.notificationMixin.fire({
       icon: 'error',
       title: titulo,
       text: mensaje,
-      timer:0,
+      timer: 0,
       showConfirmButton: true,
-      confirmButtonColor: "#002464",
-      confirmButtonText: mensajeOk
+      confirmButtonColor: '#002464',
+      confirmButtonText: mensajeOk,
     });
   }
 
   /**
    * Mostrar una notificación de advertencia
    */
-warning(titulo: string, mensaje: string) {
-    this.notificationMixin.fire({
+  async warning(titulo: string, mensaje: string) {
+    await this.notificationMixin.fire({
       icon: 'warning',
       title: titulo,
       text: mensaje,
@@ -75,39 +74,48 @@ warning(titulo: string, mensaje: string) {
   /**
    * Mostrar una notificación de información
    */
-  info(titulo: string, mensaje: string) {
-    this.notificationMixin.fire({
+  async info(titulo: string, mensaje: string) {
+    await this.notificationMixin.fire({
       icon: 'info',
       title: titulo,
       text: mensaje,
     });
   }
 
-async confirmacionSelectiva(titulo:string,mensaje:string,textoAceptar:string='Aceptar', textoCancelar:string='Cancelar'): Promise<boolean>{
- const result = await this.notificationMixinSeleccion.fire({
+  async confirmacionSelectiva(
+    titulo: string,
+    mensaje: string,
+    textoAceptar: string = 'Aceptar',
+    textoCancelar: string = 'Cancelar',
+  ): Promise<boolean> {
+    const result = await this.notificationMixinSeleccion.fire({
       icon: 'warning',
       title: titulo,
       text: mensaje,
       customClass: {
-        htmlContainer: 'swal-text-pre'
+        htmlContainer: 'swal-text-pre',
       },
-      confirmButtonColor: "#002464",
-      cancelButtonColor: "#F45516",
+      confirmButtonColor: '#002464',
+      cancelButtonColor: '#F45516',
       confirmButtonText: textoAceptar,
-      cancelButtonText: textoCancelar
+      cancelButtonText: textoCancelar,
     });
     return result.isConfirmed;
-}
+  }
 
-async confirmacion(titulo:string,mensaje:string,textoAceptar:string='OK'): Promise<boolean>{
- const result = await this.notificationMixinSeleccion.fire({
+  async confirmacion(
+    titulo: string,
+    mensaje: string,
+    textoAceptar: string = 'OK',
+  ): Promise<boolean> {
+    const result = await this.notificationMixinSeleccion.fire({
       icon: 'success',
       title: titulo,
       text: mensaje,
-      confirmButtonColor: "#002464",
+      confirmButtonColor: '#002464',
       confirmButtonText: textoAceptar,
-      showCancelButton:false
+      showCancelButton: false,
     });
     return result.isConfirmed;
-}
+  }
 }

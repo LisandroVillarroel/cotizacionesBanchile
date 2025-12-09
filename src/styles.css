@@ -9,7 +9,7 @@ body {
 
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   color: #333334;
 }
 /* FIN GENERAL */
@@ -174,39 +174,36 @@ h3[mat-dialog-title] {
   padding-top: 6px !important;
   padding-bottom: 5px !important;
   width: 100%;
-
-
-
 }
 /*Esto es general*/
- .mat-mdc-form-field-infix {
+.mat-mdc-form-field-infix {
   min-height: 1px !important;
-    padding-top: var(--mat-form-field-filled-with-label-container-padding-top, 1px);
-    padding-bottom: var(--mat-form-field-filled-with-label-container-padding-bottom, 1px);
-      padding: 0 !important;
- align-items: center !important;
+  padding-top: var(--mat-form-field-filled-with-label-container-padding-top, 1px);
+  padding-bottom: var(--mat-form-field-filled-with-label-container-padding-bottom, 1px);
+  padding: 0 !important;
+  align-items: center !important;
 }
 
 .mat-mdc-select-value-text {
   font-size: 12px !important;
 }
 
-mat-option{
+mat-option {
   font-size: 10px !important;
 }
 
 .mat-mdc-icon-button.mat-mdc-button-base {
-    --mdc-icon-button-state-layer-size: 40px;
+  --mdc-icon-button-state-layer-size: 40px;
 }
 
- .mat-mdc-floating-label.mdc-floating-label {
-    padding-bottom: 20px;
-    font-size: 10px;
+.mat-mdc-floating-label.mdc-floating-label {
+  padding-bottom: 20px;
+  font-size: 10px;
 }
 
 .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label {
-    cursor: inherit;
-    font-size: 12px;
+  cursor: inherit;
+  font-size: 12px;
 }
 /*Fin Esto es general*/
 
@@ -220,7 +217,7 @@ mat-option{
 
 .inputSelect {
   font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   padding: 10px 0px 0px !important;
   width: 100%;
   color: #666668;
@@ -228,7 +225,7 @@ mat-option{
 
 .inputBuscar {
   font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   padding: 10px 0px 0px !important;
   height: 80%;
   width: 100%;
@@ -246,7 +243,7 @@ mat-option{
 
 .inputFechaForm {
   font-size: 12px !important;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
   height: 65px !important;
@@ -254,15 +251,12 @@ mat-option{
   color: #666668;
 }
 
-
 .labelI {
   font-size: 10px !important;
   font-style: italic;
   text-align: left;
   color: #666668;
 }
-
-
 
 /* FIN INPUTS */
 
@@ -329,7 +323,7 @@ tr.mat-header-row {
   padding: 0 10px;
   font-weight: 600;
   font-size: 14px;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   color: #285b9b;
   border-radius: 4px;
 }
@@ -461,8 +455,9 @@ th#opcionesI {
   color: white !important;
 }
 
-.SinInfoTabla{
-  text-align: center; background-color: #ffffff;
+.SinInfoTabla {
+  text-align: center;
+  background-color: #ffffff;
 }
 /* Fin Columna +AGREGAR */
 /* Fin MAT-TABLE */
@@ -536,7 +531,7 @@ th#opcionesI {
     padding: 0 10px;
     font-weight: 600;
     font-size: 14px;
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     color: #285b9b;
     border-radius: 4px;
   }
@@ -636,7 +631,6 @@ mat-card.card-borde {
   /* box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3) !important; */
 }
 
-
 /* Fondo para cards con título */
 .card-con-titulo-principal {
   background-color: white;
@@ -658,7 +652,7 @@ mat-card.card-borde {
   padding: 0 10px;
   font-weight: 600;
   font-size: 16px;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   color: #285b9b;
   border-radius: 12px;
 }
@@ -687,7 +681,7 @@ mat-card.card-con-titulo::before {
   margin-bottom: 0.5rem !important;
   font-weight: 600;
   font-size: 14px;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   color: #285b9b;
   border-radius: 12px;
 }
@@ -904,7 +898,7 @@ input.mat-mdc-input-element::placeholder {
 /* Texto del checkbox */
 mat-checkbox {
   color: #323131 !important;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
 
@@ -1006,15 +1000,15 @@ mat-divider[vertical] {
   color: #6baa1f;
 }
 
-.verde{
+.verde {
   /* color: #008000 !important; */
   color: #6baa1f;
 }
-.amarillo{
+.amarillo {
   /* color: #ffff00 !important; */
-  color: #FFDE21;
+  color: #ffde21;
 }
-.rojo{
+.rojo {
   color: #ff0000 !important;
 }
 
@@ -1026,7 +1020,7 @@ mat-divider[vertical] {
   color: #cfcfd2;
 }
 
-.black{
+.black {
   color: black;
 }
 .info {
@@ -1149,14 +1143,14 @@ mat-divider[vertical] {
   margin-right: 10px;
 }
 
-.alinea-cards{
+.alinea-cards {
   margin-top: 14px;
   align-content: center;
   width: 60%;
   font-size: 16px;
 }
 
-.alinea-cards-2{
+.alinea-cards-2 {
   margin-top: 14px;
   align-content: center;
   width: 15%;
@@ -1179,17 +1173,16 @@ div:where(.swal2-container) div:where(.swal2-actions) {
 .tab-content {
   max-height: 600px; /* Altura máxima del contenido */
   overflow-y: auto; /* Habilitar scroll vertical */
- /* padding: 16px;  Espaciado interno opcional */
+  /* padding: 16px;  Espaciado interno opcional */
   box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
 }
 
-
 .mat-mdc-card-content:first-child {
-    padding-top: 0px !important;
+  padding-top: 0px !important;
 }
 
 .mat-mdc-card-content:first-child {
-    padding-top: 0px !important;
+  padding-top: 0px !important;
 }
 
 .swal-text-pre {

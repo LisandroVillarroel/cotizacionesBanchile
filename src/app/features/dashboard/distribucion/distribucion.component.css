@@ -1,14 +1,12 @@
-.justify-around{
+.justify-around {
   display: flex;
   justify-content: space-between;
 }
-.gris{
+.gris {
   color: #666668;
 }
 
-
-.cambiaTamano{
+.cambiaTamano {
   width: 40%;
-  padding:0px !important;
+  padding: 0px !important;
 }
-

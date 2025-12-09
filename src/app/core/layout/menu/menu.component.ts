@@ -10,56 +10,58 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatProgressBarModule,
-    RouterLink,
-    RouterModule
-  ],
+  imports: [MatButtonModule, MatProgressBarModule, RouterLink, RouterModule],
   template: `
-       <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-              <li class="nav-item border-end" [routerLinkActive]="['active']" >
-                <a class="nav-link "  aria-current="page" routerLink="inicio">Inicio</a>
+            @if (hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])) {
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link " aria-current="page" routerLink="inicio">Inicio</a>
               </li>
             }
-             @if(hasRole(['ejec_bco'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link"  routerLink="ingreso">Ingreso de Solicitud</a>
-            </li>
-             }
-              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
-            </li>
-              }
-              @if(hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
-            </li>
-              }
-             @if(hasRole(['ejec_bco', 'coord_corr'])){
-            <li class="nav-item border-end" [routerLinkActive]="['active']">
-              <a class="nav-link" routerLink="crt">Generación de Informes</a>
-            </li>
-             }
-             @if(hasRole(['adm_corr'])){
-            <li class="nav-item dropdown" [routerLinkActive]="['active']">
-              <a class="nav-link dropdown-toggle" routerLink="mantenedores" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Mantenedores
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
-                <li><a class="dropdown-item" routerLink="/mantenedores/rubros">Rubros</a></li>
-                <li><a class="dropdown-item" routerLink="/mantenedores/tipo-seguro">Tipo Seguro</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
-              </ul>
-            </li>
+            @if (hasRole(['ejec_bco'])) {
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="ingreso">Ingreso de Solicitud</a>
+              </li>
+            }
+            @if (hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])) {
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="gestion">Gestión de Solicitudes</a>
+              </li>
+            }
+            @if (hasRole(['ejec_bco', 'coord_corr', 'sup_corr'])) {
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="cotizaciones">Gestión de Cotizaciones</a>
+              </li>
+            }
+            @if (hasRole(['ejec_bco', 'coord_corr'])) {
+              <li class="nav-item border-end" [routerLinkActive]="['active']">
+                <a class="nav-link" routerLink="crt">Generación de Informes</a>
+              </li>
+            }
+            @if (hasRole(['adm_corr'])) {
+              <li class="nav-item dropdown" [routerLinkActive]="['active']">
+                <a
+                  class="nav-link dropdown-toggle"
+                  routerLink="mantenedores"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Mantenedores
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/mantenedores/usuarios">Usuario</a></li>
+                  <li><a class="dropdown-item" routerLink="/mantenedores/rubros">Rubros</a></li>
+                  <li>
+                    <a class="dropdown-item" routerLink="/mantenedores/tipo-seguro">Tipo Seguro</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a class="dropdown-item" href="#">Mantenedor 3</a></li>
+                </ul>
+              </li>
             }
           </ul>
         </div>
@@ -90,6 +92,6 @@ export default class MenuComponent {
   ///  readonly progreso = inject(Progreso);
   hasRole(roles: UsuarioRoles[]) {
     const rolUsduasrio = this._storage()?.usuarioLogin.perfilUsuario;
-    return roles.some(rol => rol.includes(rolUsduasrio!))
+    return roles.some((rol) => rol.includes(rolUsduasrio!));
   }
 }

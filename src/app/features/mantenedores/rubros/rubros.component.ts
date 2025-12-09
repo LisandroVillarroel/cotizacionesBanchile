@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { InterfazRubro, IRubro } from './rubros-interface';
+import { IRubro } from './rubros-interface';
 import { RubrosService } from './rubros.service';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -17,13 +17,21 @@ import { ModificaRubroComponent } from './modifica-rubro/modifica-rubro.componen
 @Component({
   selector: 'app-rubros',
   standalone: true,
-  imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
-        MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule],
+  imports: [
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatInputModule,
+  ],
   templateUrl: './rubros.component.html',
-  styleUrl: './rubros.component.css'
+  styleUrl: './rubros.component.css',
 })
 export default class RubrosComponent {
-notificacioAlertnService = inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   tipoRubro = signal<string>('');
   datoRubros = signal<IRubro[]>([]);
@@ -57,45 +65,36 @@ notificacioAlertnService = inject(NotificacioAlertnService);
   }
 
   dataSource = computed(() => {
-    const tabla = new MatTableDataSource<IRubro>(
-      this.datoRubros()
-    );
+    const tabla = new MatTableDataSource<IRubro>(this.datoRubros());
     tabla.paginator = this.paginator;
     tabla.sort = this.sort;
     return tabla;
   });
 
-  constructor() {
+  constructor() {}
 
-  }
-
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
 
-  async ngOnInit() {
+  OnInit() {
     this.rescataLista();
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataLista() {
-    const estructura_lista = {
-    };
-
-    this.rubroService
-      .postRubros()
-      .subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            console.log('Lista de Rubros:', dato.p_cursor);
-            this.datoRubros.set(dato.p_cursor);
-          }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
-        },
-      });
+    this.rubroService.postRubros().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          console.log('Lista de Rubros:', dato.p_cursor);
+          this.datoRubros.set(dato.p_cursor);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
+    });
   }
 
   agregaNuevoRubro() {
@@ -117,7 +116,7 @@ notificacioAlertnService = inject(NotificacioAlertnService);
       });
   }
 
-   modificaRubro(datoRubros: IRubro): void {
+  modificaRubro(datoRubros: IRubro): void {
     console.log('Dato Modificar:', datoRubros);
     // const parametro: IUsuarioListaParametro = {
     //   datoUsuarioPar: datoUsuarioPar,
@@ -132,16 +131,15 @@ notificacioAlertnService = inject(NotificacioAlertnService);
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoRubros;
 
-     this.dialog
-       .open(ModificaRubroComponent, dialogConfig)
-  //     .afterClosed()
-  //     .subscribe((data) => {
-  //       if (data === 'modificado') {
-  //         console.log('Modificación Confirmada:', data);
-  //         this.rescataLista(this.tipoUsuario()!);
-  //       }
-  //     });
-   }
+    this.dialog.open(ModificaRubroComponent, dialogConfig);
+    //     .afterClosed()
+    //     .subscribe((data) => {
+    //       if (data === 'modificado') {
+    //         console.log('Modificación Confirmada:', data);
+    //         this.rescataLista(this.tipoUsuario()!);
+    //       }
+    //     });
+  }
 
   consultaRubro(datoRubros: IRubro) {
     const dialogConfig = new MatDialogConfig();
@@ -152,27 +150,25 @@ notificacioAlertnService = inject(NotificacioAlertnService);
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoRubros;
 
-    this.dialog
-      .open(ConsultaRubroComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConsultaRubroComponent, dialogConfig).afterClosed();
   }
 
-   //eliminaRubro(datoRubros: IRubro) {
+  //eliminaRubro(datoRubros: IRubro) {
   //    const parametro: IUsuarioListaParametro = {
   //     datoUsuarioPar: datoUsuarioPar,
   //     tipoUsuario: this.tipoUsuario(),
   //   };
 
-   // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.width = '80%';
-    // dialogConfig.height = '80%';
-    // dialogConfig.position = { top: '3%' };
-    // dialogConfig.data = datoRubros;
+  // const dialogConfig = new MatDialogConfig();
+  // dialogConfig.disableClose = true;
+  // dialogConfig.autoFocus = true;
+  // dialogConfig.width = '80%';
+  // dialogConfig.height = '80%';
+  // dialogConfig.position = { top: '3%' };
+  // dialogConfig.data = datoRubros;
 
-    // this.dialog
-    //   .open(EliminaRubroComponent, dialogConfig)
+  // this.dialog
+  //   .open(EliminaRubroComponent, dialogConfig)
   //     .afterClosed()
   //     .subscribe((data) => {
   //       if (data === 'eliminado') {

@@ -2,10 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import {
-  ICompaniaResponse,
-  ICompaniasResponse,
-} from '../modelo/detalle-interface';
+import { ICompaniaResponse, ICompaniasResponse } from '../modelo/detalle-interface';
 import {
   IAgregaCompania,
   IModificaCompania,
@@ -32,55 +29,49 @@ export class CompaniasContactadasService {
     return this.http.post<ICompaniaResponse>(
       `${environment.apiUrlConsumer}/listarCompaniasContactadas`,
       parametro,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
   postCompaniasTipoSeguro(idRubro: number, idTipoSeguro: number): Observable<ICompaniasResponse> {
     const filtro = {
       p_rubro: idRubro,
-      p_tipo_seguro:idTipoSeguro,
+      p_tipo_seguro: idTipoSeguro,
     };
     return this.http.post<ICompaniasResponse>(
       `${environment.apiUrlConsumer}/listarCompaniasTipoSeguro`,
       filtro,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
-  postAgregaCompania(
-    agregarCompaniasSolicitud: IAgregaCompania
-  ): Observable<IResponse> {
+  postAgregaCompania(agregarCompaniasSolicitud: IAgregaCompania): Observable<IResponse> {
     return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/agregarCompaniasSolicitud`,
       agregarCompaniasSolicitud,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
-  postModificaCompania(
-    modificarCompaniasSolicitud: IModificaCompania
-  ): Observable<IResponse> {
+  postModificaCompania(modificarCompaniasSolicitud: IModificaCompania): Observable<IResponse> {
     return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarCompaniasSolicitud`,
       modificarCompaniasSolicitud,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
-  postEliminaCompania(
-    eliminarCompaniasSolicitud: IEliminaCompania
-  ): Observable<IResponse> {
+  postEliminaCompania(eliminarCompaniasSolicitud: IEliminaCompania): Observable<IResponse> {
     return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/eliminarCompaniasSolicitud`,
       eliminarCompaniasSolicitud,
       {
         headers: this.headers,
-      }
+      },
     );
   }
 
@@ -89,14 +80,15 @@ export class CompaniasContactadasService {
     return this.http.post<IMinimoResponse>(
       `${environment.apiUrlConsumer}/obtenerMinimoCotizaciones`,
       parametro,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
   postEnviaSolicitud(enviaSolicitud: IRequest): Observable<IResponse> {
     return this.http.post<IResponse>(
-        `${environment.apiUrlConsumer}/enviarSolicitudCompanias`,
-        enviaSolicitud, { headers: this.headers, }
-      )
+      `${environment.apiUrlConsumer}/enviarSolicitudCompanias`,
+      enviaSolicitud,
+      { headers: this.headers },
+    );
   }
 }

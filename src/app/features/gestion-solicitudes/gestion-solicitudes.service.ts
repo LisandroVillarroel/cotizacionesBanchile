@@ -6,20 +6,22 @@ import { IGestionResponse } from './gestionSolicitud-interface';
 import { IRequestSm } from '@shared/modelo/servicios-interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GestionSolicitudesService {
-   private http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-     headers: HttpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      });
-  constructor() { }
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
 
   postListaGestion(filtro: IRequestSm): Observable<IGestionResponse> {
-    return this.http
-      .post<IGestionResponse>(`${environment.apiUrlConsumer}/listarGestionSolicitudes`, filtro,{headers: this.headers})
-    }
-
+    return this.http.post<IGestionResponse>(
+      `${environment.apiUrlConsumer}/listarGestionSolicitudes`,
+      filtro,
+      { headers: this.headers },
+    );
+  }
 }

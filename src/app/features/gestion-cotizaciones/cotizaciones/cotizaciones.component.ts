@@ -11,7 +11,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -53,10 +58,9 @@ import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacio
     MatCardModule,
     MatGridListModule,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
 })
-
 export class CotizacionesComponent implements OnInit {
   cotizaciones = input.required<IGestionCotizacion[] | undefined>();
   estado = input.required<string>();
@@ -67,7 +71,7 @@ export class CotizacionesComponent implements OnInit {
   id_usuario = this._storage()?.usuarioLogin?.usuario;
   tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
-//flags
+  //flags
   registradas = signal<boolean>(false);
   aceptadas = signal<boolean>(false);
   emitidas = signal<boolean>(false);
@@ -93,26 +97,36 @@ export class CotizacionesComponent implements OnInit {
   seguro = new FormControl();
   solicitud = new FormControl();
 
-  filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante: this.contratante,
-    rubro: this.rubro,
-    seguro: this.seguro,
-    solicitud: this.solicitud
-  })
+  filtroFormulario = signal<FormGroup>(
+    new FormGroup({
+      contratante: this.contratante,
+      rubro: this.rubro,
+      seguro: this.seguro,
+      solicitud: this.solicitud,
+    }),
   );
 
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante ?? '';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
-    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
-    const solicitud = this.filtroFormulario().value.solicitud ?? '';
+    let aux: string = this.contratante.value as string;
+    const contratante = aux;
+    const auxRubro: IRubro = this.rubro.value as IRubro;
+    const rubro = auxRubro.p_nombre_rubro;
+    aux = this.seguro.value as string;
+    const tipoSeguro = aux;
+    aux = this.solicitud.value as string;
+    const solicitud = aux;
 
     this.formularioModificado();
-    return this.cotizaciones()!.filter(item => {
-      const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
+    return this.cotizaciones()!.filter((item) => {
+      const cumpleContratante = item.p_nombre_contratante
+        ?.toLowerCase()
+        .includes(contratante.toLowerCase());
       const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
-      const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
+      const cumpleSolicitud = item.p_id_Solicitud
+        ?.toString()
+        .toLowerCase()
+        .includes(solicitud.toString().toLowerCase());
 
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
     });
@@ -130,29 +144,29 @@ export class CotizacionesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  async ngOnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();
     this.formularioModificado.set(true);
     this.filtroFormulario().valueChanges.subscribe(() => {
-      this.datosFiltrados()
-      this.datosPaginados()
+      this.datosFiltrados();
+      this.datosPaginados();
     });
 
-    if(this.estado().toLowerCase()==="recibida"){
+    if (this.estado().toLowerCase() === 'recibida') {
       this.registradas.set(true);
     }
-    if(this.estado().toLowerCase()==="pendiente"){
+    if (this.estado().toLowerCase() === 'pendiente') {
       this.aceptadas.set(true);
     }
-    if(this.estado().toLowerCase()==="emitida"){
+    if (this.estado().toLowerCase() === 'emitida') {
       this.emitidas.set(true);
     }
-    if(this.estado().toLowerCase()==="firma"){
+    if (this.estado().toLowerCase() === 'firma') {
       this.pendientes.set(true);
     }
-    if(this.estado().toLowerCase()==="terminada"){
+    if (this.estado().toLowerCase() === 'terminada') {
       this.firmadas.set(true);
     }
   }
@@ -163,7 +177,7 @@ export class CotizacionesComponent implements OnInit {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
         }
-      }
+      },
     });
   }
 
@@ -175,7 +189,7 @@ export class CotizacionesComponent implements OnInit {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
-      }
+      },
     });
   }
 
@@ -188,12 +202,17 @@ export class CotizacionesComponent implements OnInit {
     if (value !== null) {
       switch (value.toLowerCase()) {
         case 'v':
-          salida = 'verde'; break;
+          salida = 'verde';
+          break;
         case 'a':
-          salida = 'amarillo'; break;
+          salida = 'amarillo';
+          break;
         case 'r':
-          salida = 'rojo'; break;
-        default: salida = 'black'; break;
+          salida = 'rojo';
+          break;
+        default:
+          salida = 'black';
+          break;
       }
     }
     return salida;
@@ -202,20 +221,22 @@ export class CotizacionesComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
 
   verDetalle(IdSolicitud: number) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '90%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
       idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
+      flagSoloCerrar: false,
     };
-      this.dialog
-        .open(DetalleSolicitudComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => { this.retorno.emit(true); })
+    this.dialog
+      .open(DetalleSolicitudComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(() => {
+        this.retorno.emit(true);
+      });
   }
 
   emitirPropuesta(IdSolicitud: number) {
@@ -227,12 +248,14 @@ export class CotizacionesComponent implements OnInit {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {
       idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
+      flagSoloCerrar: false,
     };
     this.dialog
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })
+      .subscribe(() => {
+        this.retorno.emit(true);
+      });
   }
 
   verPropuesta(IdSolicitud: number) {
@@ -277,15 +300,13 @@ export class CotizacionesComponent implements OnInit {
     this.dialog
       .open(CargarPropuestaFirmadaComponent, dialogConfig)
       .afterClosed()
-      .subscribe((result) => {
-        if (result) {
-          return result;
-        }
+      .subscribe(() => {
+        return;
       });
   }
 
-    verFirmada(IdSolicitud: number) {
-      return IdSolicitud;
+  verFirmada(IdSolicitud: number) {
+    return IdSolicitud;
     /*     const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
@@ -299,5 +320,4 @@ export class CotizacionesComponent implements OnInit {
           .afterClosed()
           .subscribe(() => { this.retorno.emit(true); })*/
   }
-
 }

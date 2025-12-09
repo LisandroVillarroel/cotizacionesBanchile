@@ -3,35 +3,16 @@
   data-titulo="Datos del Asegurado"
   style="margin-top: 32px"
 >
-  <table
-    mat-table
-    [dataSource]="dataSourceAsegurado()"
-    multiTemplateDataRows
-    matSort
-  >
+  <table mat-table [dataSource]="dataSourceAsegurado()" multiTemplateDataRows matSort>
     <ng-container matColumnDef="index">
-      <th
-        id="indexI"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 3%"
-      >
-        N°
-      </th>
+      <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%">N°</th>
       <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 3%">
         {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="rutAsegurado">
-      <th
-        id="_rutAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 11%"
-      >
+      <th id="_rutAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
         Rut
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
@@ -182,13 +163,7 @@
     </ng-container>
 
     <ng-container matColumnDef="mailAsegurado">
-      <th
-        id="_mailAsegurado"
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        style="width: 27%"
-      >
+      <th id="_mailAsegurado" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 27%">
         Correo
       </th>
       <td mat-cell *matCellDef="let row" style="width: 27%">
@@ -197,12 +172,7 @@
     </ng-container>
 
     <ng-container matColumnDef="opciones">
-      <th
-        id="opcionesI"
-        mat-header-cell
-        *matHeaderCellDef
-        style="width: 15%; text-align: center"
-      >
+      <th id="opcionesI" mat-header-cell *matHeaderCellDef style="width: 15%; text-align: center">
         <button
           class="agregar-texto"
           matTooltip="Agregar nuevo asegurado"
@@ -215,11 +185,7 @@
         </button>
       </th>
 
-      <td
-        mat-cell
-        *matCellDef="let row; let i = index"
-        style="width: 15%; text-align: center"
-      >
+      <td mat-cell *matCellDef="let row; let i = index" style="width: 15%; text-align: center">
         <button
           type="button"
           matTooltip="Modificar"
@@ -261,10 +227,9 @@
       class="example-element-row"
     ></tr>
   </table>
-  @if(this.datoAsegurados().length === 0 ){
-          <div class="info SinInfoTabla">
-            No hay asegurados para mostrar</div>
-        }
+  @if (this.datoAsegurados().length === 0) {
+    <div class="info SinInfoTabla">No hay asegurados para mostrar</div>
+  }
 </div>
 
 <mat-paginator

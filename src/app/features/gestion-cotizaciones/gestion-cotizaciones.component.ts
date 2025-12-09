@@ -13,7 +13,11 @@ import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
+import {
+  IGestionCotizacion,
+  IGestionResponse,
+  IResumenCotizaciones,
+} from './gestionCotizacion-interface';
 
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
@@ -33,10 +37,10 @@ import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
     CommonModule,
     ResumenCotizacionesComponent,
     CotizacionesComponent,
-],
-  styleUrls: ['./gestion-cotizaciones.component.css']
+  ],
+  styleUrls: ['./gestion-cotizaciones.component.css'],
 })
-export default class GestionCotizacionesComponent{
+export default class GestionCotizacionesComponent {
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -44,25 +48,25 @@ export default class GestionCotizacionesComponent{
   tipo_usuario = this._storage()?.usuarioLogin?.tipoUsuario;
   ejec = signal<boolean>(false);
 
-  gestionService = inject(GestionCotizacionesService)
+  gestionService = inject(GestionCotizacionesService);
   resumenGestion = signal<IResumenCotizaciones>({
     recibidas: 0,
     aceptadas: 0,
     emitidas: 0,
     firmadas: 0,
-    por_firmar: 0
+    por_firmar: 0,
   });
-  solicitudes = signal<IGestionCotizacion[] >([]);
-  recibidas = signal<IGestionCotizacion[] >([]);
-  aceptadas = signal<IGestionCotizacion[] >([]);
-  emitidas = signal<IGestionCotizacion[] >([]);
-  firmadas = signal<IGestionCotizacion[] >([]);
-  por_firmar = signal<IGestionCotizacion[] >([]);
+  solicitudes = signal<IGestionCotizacion[]>([]);
+  recibidas = signal<IGestionCotizacion[]>([]);
+  aceptadas = signal<IGestionCotizacion[]>([]);
+  emitidas = signal<IGestionCotizacion[]>([]);
+  firmadas = signal<IGestionCotizacion[]>([]);
+  por_firmar = signal<IGestionCotizacion[]>([]);
 
-  async OnInit(){
-    if(this.tipo_usuario === "E"){
+  OnInit() {
+    if (this.tipo_usuario === 'E') {
       this.ejec.set(true);
-    }else{
+    } else {
       this.ejec.set(false);
     }
     this.cargarSolicitudes();
@@ -70,8 +74,8 @@ export default class GestionCotizacionesComponent{
 
   cargarSolicitudes() {
     const entrada = {
-      p_id_usuario: this.id_usuario ?? "",
-      p_tipo_usuario: this.tipo_usuario ?? ""
+      p_id_usuario: this.id_usuario ?? '',
+      p_tipo_usuario: this.tipo_usuario ?? '',
     };
     this.gestionService.postListadoSolicitudes(entrada).subscribe({
       next: (dato: IGestionResponse) => {
@@ -81,7 +85,7 @@ export default class GestionCotizacionesComponent{
             aceptadas: dato.p_nro_prop_pend,
             emitidas: dato.p_nro_prop_gene,
             firmadas: dato.p_nro_prop_firm,
-            por_firmar: dato.p_nro_prop_firm_pend
+            por_firmar: dato.p_nro_prop_firm_pend,
           });
           this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
           this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
@@ -91,7 +95,10 @@ export default class GestionCotizacionesComponent{
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  listado de cotizaciones.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener  listado de cotizaciones.',
+        );
       },
     });
   }
@@ -100,13 +107,16 @@ export default class GestionCotizacionesComponent{
     if (!Array.isArray(lista)) return [];
     return lista.map((valor: IGestionCotizacion) => ({
       ...valor,
-      nombre_contratante: (valor.p_nombre_contratante === null || valor.p_nombre_contratante === "") ? "-" : valor.p_nombre_contratante
+      nombre_contratante:
+        valor.p_nombre_contratante === null || valor.p_nombre_contratante === ''
+          ? '-'
+          : valor.p_nombre_contratante,
     }));
   }
 
   msj = false;
-  recibido(msj: boolean){
-    if(msj){
+  recibido(msj: boolean) {
+    if (msj) {
       this.cargarSolicitudes();
     }
   }

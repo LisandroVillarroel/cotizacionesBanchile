@@ -7,19 +7,19 @@ export const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'portada',
   },
-    {
-      path: 'login',
-      loadComponent: () => import('@features/auth/auth.component')
+  {
+    path: 'login',
+    loadComponent: () => import('@features/auth/auth.component'),
     //  canActivate: [publicoGuard()],
-    },
+  },
   {
     path: '',
     loadComponent: () => import('@core/layout/principal.component'),
-     canMatch: [privadoGuardMatch],
+    canMatch: [privadoGuardMatch],
     children: [
-       {
+      {
         path: 'portada',
-        canActivate: [guardRoles(['adm_corr','ejec_bco', 'coord_corr', 'sup_corr'])],
+        canActivate: [guardRoles(['adm_corr', 'ejec_bco', 'coord_corr', 'sup_corr'])],
 
         loadComponent: () => import('@core/layout/portada.component'),
       },
@@ -40,16 +40,17 @@ export const routes: Routes = [
         loadComponent: () => import('@features/gestion-solicitudes/gestion-solicitudes.component'),
       },
       {
-        canActivate: [guardRoles(['ejec_bco','coord_corr'])],
+        canActivate: [guardRoles(['ejec_bco', 'coord_corr'])],
         path: 'detalle',
         loadComponent: () => import('@features/detalle-solicitud/detalle-solicitud.component'),
       },
       {
         path: 'cotizaciones',
         canActivate: [guardRoles(['ejec_bco', 'coord_corr', 'sup_corr'])],
-        loadComponent: () => import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
+        loadComponent: () =>
+          import('@features/gestion-cotizaciones/gestion-cotizaciones.component'),
       },
-       {
+      {
         path: 'mantenedores',
         canActivate: [guardRoles(['adm_corr'])],
         loadChildren: () => import('@features/mantenedores/mantenedores.route'),
@@ -75,5 +76,4 @@ export const routes: Routes = [
       //loadComponent: () => import('./componentes/portada/portada.component'),
     },
     */
-
 ];

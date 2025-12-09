@@ -1,6 +1,12 @@
-import { Component, input, signal, inject, effect } from '@angular/core';
+import { Component, input, signal, inject, effect, Input, Signal } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaTiene } from '../modelo/materia-Interface';
+import {
+  IMateria,
+  IMateriaEnvia,
+  IMateriaEstructura,
+  IMateriaIngresa,
+  IMateriaTiene,
+} from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -38,12 +44,14 @@ export class MateriaAseguradaComponent {
   idSolicitud = input.required<number>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
-  muestraConsulta = input<boolean>();
+  //muestraConsulta = input<boolean>();
+  @Input({ required: true }) muestraConsulta!: Signal<boolean>;
+
   //mostrarSoloConsulta = input.required<boolean>();
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  notificacioAlertnService= inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
   materiaService = inject(MateriaService);
 
   datoMateriaTiene = signal<IMateria[]>([]);
@@ -56,64 +64,94 @@ export class MateriaAseguradaComponent {
   materiaIngresa: IMateriaIngresa[] = [];
 
   constructor() {
-
-    effect(() => {
-      // Llamar al método cada vez que el valor cambie
-      this.datoMateriaEstructura_arr = [];
-      this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta())
-      if (this.idRubro()!=null && this.idSeguro()!=null && this.idRubro()!=0 && this.idSeguro()!=0){
-        this.rescataListaMaterias(this.idRubro(), this.idSeguro());
-      }
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        // Llamar al método cada vez que el valor cambie
+        this.datoMateriaEstructura_arr = [];
+        this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta());
+        if (
+          this.idRubro() != null &&
+          this.idSeguro() != null &&
+          this.idRubro() != 0 &&
+          this.idSeguro() != 0
+        ) {
+          this.rescataListaMaterias(this.idRubro(), this.idSeguro());
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
-  materiaForm = signal<FormGroup>(new FormGroup({
-    flagSinInfo:  new FormControl(this.muestraConsulta(), [Validators.required])
-  }));
+  /*   materiaForm = signal<FormGroup>(
+    new FormGroup({
+      flagSinInfo: new FormControl(() => this.muestraConsulta(), [Validators.required]),
+    }),
+  ); */
+
+  materiaForm = signal<FormGroup>(
+    new FormGroup({
+      // lee el signal (¡sin envolver en una función!)
+      flagSinInfo: new FormControl<boolean>(this.muestraConsulta(), {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+    }),
+  );
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
-    this.materiaService
-      .postListadoMatetria(idRubro, idSeguro)
-      .subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            this.datoMateria.set(dato.p_cursor);
-            this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro)
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.
-            error('ERROR','No fue posible cargar la plantilla de registro de la materia a asegurar.');
-        },
-      });
+    this.materiaService.postListadoMatetria(idRubro, idSeguro).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.datoMateria.set(dato.p_cursor);
+          this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible cargar la plantilla de registro de la materia a asegurar.',
+        );
+      },
+    });
   }
 
   rescataTieneMateria(idSolicitud: number, idRubro: number, idSeguro: number) {
-    this.materiaService
-      .postConsultaMatetria(idSolicitud, idRubro, idSeguro)
-      .subscribe({
-        next: (dato: IMateriaTiene) => {
-          if (dato.codigo === 200) {
-            this.datoMateriaTiene.set(dato.p_cursor);
-            this.modificaOriginal(); /// Busca y modifica lo encontrado
-            this.creaEstructura()
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.
-            error('ERROR','No fue posible obtener información de la materia asegurada.');
-        },
-      });
+    this.materiaService.postConsultaMatetria(idSolicitud, idRubro, idSeguro).subscribe({
+      next: (dato: IMateriaTiene) => {
+        if (dato.codigo === 200) {
+          this.datoMateriaTiene.set(dato.p_cursor);
+          this.modificaOriginal(); /// Busca y modifica lo encontrado
+          this.creaEstructura();
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener información de la materia asegurada.',
+        );
+      },
+    });
   }
 
   modificaOriginal() {
     if (this.datoMateriaTiene().length != 0) {
-      const datoMateriaTiene_final = this.datoMateriaTiene().filter((valor) => valor.p_valor_dato != null && valor.p_valor_dato != '' && (valor.p_tipo_dato != 'TITULO'))
-      this.datoMateria.set(this.datoMateria().map(valorOriginal => {
-        const modificadoItem = datoMateriaTiene_final.find(modifica => modifica.p_id_seccion === valorOriginal.p_id_seccion && modifica.p_id_linea === valorOriginal.p_id_linea && modifica.p_id_posicion === valorOriginal.p_id_posicion);
-        return modificadoItem ? { ...valorOriginal, p_valor_dato: modificadoItem.p_valor_dato } : valorOriginal;
-      })
-    )
+      const datoMateriaTiene_final = this.datoMateriaTiene().filter(
+        (valor) =>
+          valor.p_valor_dato != null && valor.p_valor_dato != '' && valor.p_tipo_dato != 'TITULO',
+      );
+      this.datoMateria.set(
+        this.datoMateria().map((valorOriginal) => {
+          const modificadoItem = datoMateriaTiene_final.find(
+            (modifica) =>
+              modifica.p_id_seccion === valorOriginal.p_id_seccion &&
+              modifica.p_id_linea === valorOriginal.p_id_linea &&
+              modifica.p_id_posicion === valorOriginal.p_id_posicion,
+          );
+          return modificadoItem
+            ? { ...valorOriginal, p_valor_dato: modificadoItem.p_valor_dato }
+            : valorOriginal;
+        }),
+      );
     }
   }
 
@@ -127,18 +165,21 @@ export class MateriaAseguradaComponent {
     let valorColumna = 0;
 
     //Cuenta secciones
-    const cuantaSecciones = this.datoMateria().reduce((acumulador, dato) => {
-      const seccion = dato.p_id_seccion;
-      acumulador[seccion] = (acumulador[seccion] || 0) + 1;
-      return acumulador;
-    }, {} as Record<number, number>); // Se usa una aserción de tipo para el acumulador
+    const cuantaSecciones = this.datoMateria().reduce(
+      (acumulador, dato) => {
+        const seccion = dato.p_id_seccion;
+        acumulador[seccion] = (acumulador[seccion] || 0) + 1;
+        return acumulador;
+      },
+      {} as Record<number, number>,
+    ); // Se usa una aserción de tipo para el acumulador
 
     const cuantaSeccionesArreglo: [string, number][] = Object.entries(cuantaSecciones); //Pasa a un arreglo
 
     for (let i = 0; i < cuantaSeccionesArreglo.length; i++) {
       //Recorre Secciones
       this.datoMateria_Recorre = this.datoMateria().filter(
-        (valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0])
+        (valor) => valor.p_id_seccion == Number(cuantaSeccionesArreglo[i][0]),
       ); //Compara la fila i el valor que esta en la fila 0 Numero de seccion
       //Cuenta Columnas por fila
       const cuantaColumnas = this.datoMateria_Recorre.reduce(
@@ -147,7 +188,7 @@ export class MateriaAseguradaComponent {
           acumulador[linea] = (acumulador[linea] || 0) + 1;
           return acumulador;
         },
-        {} as Record<number, number>
+        {} as Record<number, number>,
       ); // Se usa una aserción de tipo para el acumulador
 
       const cuantaColumnasArreglo: [string, number][] = Object.entries(cuantaColumnas); //Pasa a un arreglo
@@ -155,8 +196,11 @@ export class MateriaAseguradaComponent {
       nombreCampo = '';
       nombreLabel = '';
 
-      for (let a = 0; a < cuantaColumnasArreglo.length; a++) { //Recorre file
-        valoresFila = this.datoMateria_Recorre.filter((valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0])) //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
+      for (let a = 0; a < cuantaColumnasArreglo.length; a++) {
+        //Recorre file
+        valoresFila = this.datoMateria_Recorre.filter(
+          (valor) => valor.p_id_linea == Number(cuantaColumnasArreglo[a][0]),
+        ); //Compara de la fila i el valor que esta en la fila 0 Numero de Linea
         valorEntero = Math.trunc(12 / Number(cuantaColumnasArreglo[a][1])); // Toma valor entero sin redondear
         valorInicial = 12 - valorEntero * Number(cuantaColumnasArreglo[a][1]); // resta el total(valor entero de la division*cantidad de columnas)
         for (let b = 0; b < Number(cuantaColumnasArreglo[a][1]); b++) {
@@ -188,7 +232,7 @@ export class MateriaAseguradaComponent {
               valoresFila[b].p_id_posicion;
             this.agregaFormControl(
               nombreCampo,
-              valoresFila[b].p_valor_dato !==null ? valoresFila[b].p_valor_dato: ''
+              valoresFila[b].p_valor_dato !== null ? valoresFila[b].p_valor_dato : '',
             );
           }
           valoresFila[b].estiloClass = valorClass;
@@ -218,21 +262,17 @@ export class MateriaAseguradaComponent {
       for (const columna of fila.datos) {
         nombreCampo = '';
         if (columna.p_tipo_dato != 'TITULO')
-          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value;
+          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value as string;
 
         if (
           columna.p_tipo_dato == 'FECHA' &&
           this.materiaForm().get(columna.nombreCampo!)!.value != '' &&
           this.materiaForm().get(columna.nombreCampo!)!.value != null
         )
-          nombreCampo = this.materiaForm()
-            .get(columna.nombreCampo!)!
-            .value.format('DD/MM/YYYY');
+          nombreCampo = this.materiaForm().get(columna.nombreCampo!)!.value.format('DD/MM/YYYY');
 
-        if (nombreCampo == null)
-          nombreCampo = ''
-        if (columna.p_tipo_dato === 'TITULO')
-          nombreCampo=columna.p_valor_dato;
+        if (nombreCampo == null) nombreCampo = '';
+        if (columna.p_tipo_dato === 'TITULO') nombreCampo = columna.p_valor_dato;
 
         this.materiaIngresa.push({
           p_id_seccion: columna.p_id_seccion,
@@ -243,8 +283,8 @@ export class MateriaAseguradaComponent {
           p_largo_dato: columna.p_largo_dato,
           p_decimales_dato: columna.p_decimales_dato,
           p_id_listapadre: columna.p_id_listapadre,
-          p_usuario_creacion: this._storage()?.usuarioLogin?.usuario ?? ""
-        })
+          p_usuario_creacion: this._storage()?.usuarioLogin?.usuario ?? '',
+        });
       }
     }
 
@@ -252,22 +292,28 @@ export class MateriaAseguradaComponent {
       p_id_solicitud: this.idSolicitud(),
       p_id_rubro: this.idRubro(),
       p_id_tipo_seguro: this.idSeguro(),
-      items: this.materiaIngresa
-    }
+      items: this.materiaIngresa,
+    };
 
     this.materiaService.postAgregaMateria(envioMateria).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
-           this.notificacioAlertnService.success('MATERIA','La materia a asegurar se registró forma Exitosa');
+          void this.notificacioAlertnService.success(
+            'MATERIA',
+            'La materia a asegurar se registró forma Exitosa',
+          );
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible registrar la materia a asegurar.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible registrar la materia a asegurar.',
+        );
       },
     });
   }
 
-comparavalorLista(v1: number, v2: number): boolean {
+  comparavalorLista(v1: number, v2: number): boolean {
     return Number(v1) === Number(v2);
   }
 }

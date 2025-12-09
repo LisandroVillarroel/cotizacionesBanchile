@@ -1,14 +1,14 @@
 <app-cabecera-popup [titulo]="'Confirmación de Derivación de Cartera'" />
 <mat-dialog-content class="container-fluid p-0">
-
   <mat-card>
     <mat-card>
       <mat-card-content>
-        <div class="d-flex" style="margin:auto;">
-          <h3 class="destacado"><mat-icon class="warning mt-3">warning</mat-icon>
+        <div class="d-flex" style="margin: auto">
+          <h3 class="destacado">
+            <mat-icon class="warning mt-3">warning</mat-icon>
             &nbsp; Las solicitudes seleccionadas serán derivadas al coordinador
-            {{this.data.id_coordinador_nuevo}}, quien será notificado del cambio
-            y quedará como responsable de estas solicitudes.
+            {{ this.data.id_coordinador_nuevo }}, quien será notificado del cambio y quedará como
+            responsable de estas solicitudes.
           </h3>
         </div>
         <mat-divider></mat-divider>
@@ -19,8 +19,9 @@
       <div class="container-fluid d-flex p-2">
         <div class="botones-derecha">
           <button mat-stroked-button class="btn-danger" (click)="cancelar()">Cancelar</button>
-          <button mat-stroked-button class="btn-success"
-              (click)="derivar()">Confirmar derivación</button>
+          <button mat-stroked-button class="btn-success" (click)="derivar()">
+            Confirmar derivación
+          </button>
         </div>
       </div>
     </mat-card-actions>

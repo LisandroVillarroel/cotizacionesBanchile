@@ -8,10 +8,9 @@ describe('GraficoBarraComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GraficoBarraComponent]
-    })
-    .compileComponents();
-    
+      imports: [GraficoBarraComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(GraficoBarraComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,33 +1,33 @@
-  <mat-card class="alinea-card-gestion" >
-    <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px;">
-      <h2 mat-dialog-title class="destacado">Resumen general de solicitudes</h2>
-    </mat-card-title>
+<mat-card class="alinea-card-gestion">
+  <mat-card-title style="padding: 0px 10px 0px; margin-top: 0px">
+    <h2 mat-dialog-title class="destacado">Resumen general de solicitudes</h2>
+  </mat-card-title>
 
-    <div class="mat-card-container">
-      <mat-card class="mat-card">
-        <div class="mat-card-content">
-          <div class="mat-card-column_1">En proceso</div>
-          <div class="mat-card-column_2">{{resumenGeneral()?.p_EnProceso}}</div>
-        </div>
-      </mat-card>
+  <div class="mat-card-container">
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">En proceso</div>
+        <div class="mat-card-column_2">{{ resumenGeneral()?.p_EnProceso }}</div>
+      </div>
+    </mat-card>
 
-      <mat-card class="mat-card">
-        <div class="mat-card-content">
-          <div class="mat-card-column_1">Esperando respuesta</div>
-          <div class="mat-card-column_2">{{resumenGeneral()?.p_EsperandoRespuesta}}</div>
-        </div>
-      </mat-card>
-      <mat-card class="mat-card">
-        <div class="mat-card-content">
-          <div class="mat-card-column_1">Aprobadas</div>
-          <div class="mat-card-column_2">{{resumenGeneral()?.p_Aprobadas}}</div>
-        </div>
-      </mat-card>
-      <mat-card class="mat-card">
-        <div class="mat-card-content">
-          <div class="mat-card-column_1">Con observaciones</div>
-          <div class="mat-card-column_2">{{resumenGeneral()?.p_ConObservaciones}}</div>
-        </div>
-      </mat-card>
-    </div>
-  </mat-card>
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Esperando respuesta</div>
+        <div class="mat-card-column_2">{{ resumenGeneral()?.p_EsperandoRespuesta }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Aprobadas</div>
+        <div class="mat-card-column_2">{{ resumenGeneral()?.p_Aprobadas }}</div>
+      </div>
+    </mat-card>
+    <mat-card class="mat-card">
+      <div class="mat-card-content">
+        <div class="mat-card-column_1">Con observaciones</div>
+        <div class="mat-card-column_2">{{ resumenGeneral()?.p_ConObservaciones }}</div>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>

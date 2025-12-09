@@ -1,24 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  validateRut,
-  formatRut,
-  RutFormat,
-  cleanRut,
-} from '@fdograph/rut-utilities';
+import { validateRut, formatRut, RutFormat, cleanRut } from '@fdograph/rut-utilities';
 import {
   IAsegurado,
   IAseguradoListaParametro,
@@ -28,7 +14,6 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
-
 
 @Component({
   selector: 'app-modifica-asegurado',
@@ -53,9 +38,7 @@ export class ModificaAseguradoComponent {
 
   aseguradoService = inject(AseguradoService);
 
-  private readonly dialogRef = inject(
-    MatDialogRef<ModificaAseguradoComponent>
-  );
+  private readonly dialogRef = inject(MatDialogRef<ModificaAseguradoComponent>);
 
   readonly data = inject<IAseguradoListaParametro>(MAT_DIALOG_DATA);
 
@@ -63,40 +46,31 @@ export class ModificaAseguradoComponent {
     Validators.required,
     this.validaRut,
   ]);
-  nombreAsegurado = new FormControl(
-    this.data.datoAseguradoPar.nombreRazonSocialAsegurado,
-    [Validators.required]
-  );
+  nombreAsegurado = new FormControl(this.data.datoAseguradoPar.nombreRazonSocialAsegurado, [
+    Validators.required,
+  ]);
   correoAsegurado = new FormControl(this.data.datoAseguradoPar.correoAsegurado, [
     Validators.required,
   ]);
-  telefonoAsegurado = new FormControl(
-    this.data.datoAseguradoPar.telefonoAsegurado,
-    [Validators.required]
-  );
-  regionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.regionAsegurado,
-    [Validators.required]
-  );
-  ciudadAsegurado = new FormControl(
-    this.data.datoAseguradoPar.ciudadAsegurado,
-    [Validators.required]
-  );
-  comunaAsegurado = new FormControl(
-    this.data.datoAseguradoPar.comunaAsegurado,
-    [Validators.required]
-  );
-  direccionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.direccionAsegurado,
-    [Validators.required]
-  );
-  numeroDireccionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.numeroDirAsegurado,
-    [Validators.required]
-  );
-  deptoDireccionAsegurado = new FormControl(
-    this.data.datoAseguradoPar.departamentoBlockAsegurado
-  );
+  telefonoAsegurado = new FormControl(this.data.datoAseguradoPar.telefonoAsegurado, [
+    Validators.required,
+  ]);
+  regionAsegurado = new FormControl(this.data.datoAseguradoPar.regionAsegurado, [
+    Validators.required,
+  ]);
+  ciudadAsegurado = new FormControl(this.data.datoAseguradoPar.ciudadAsegurado, [
+    Validators.required,
+  ]);
+  comunaAsegurado = new FormControl(this.data.datoAseguradoPar.comunaAsegurado, [
+    Validators.required,
+  ]);
+  direccionAsegurado = new FormControl(this.data.datoAseguradoPar.direccionAsegurado, [
+    Validators.required,
+  ]);
+  numeroDireccionAsegurado = new FormControl(this.data.datoAseguradoPar.numeroDirAsegurado, [
+    Validators.required,
+  ]);
+  deptoDireccionAsegurado = new FormControl(this.data.datoAseguradoPar.departamentoBlockAsegurado);
   casaAsegurado = new FormControl(this.data.datoAseguradoPar.casaAsegurado);
 
   modificaAsegurado = signal<FormGroup>(
@@ -112,7 +86,7 @@ export class ModificaAseguradoComponent {
       numeroDireccionAsegurado: this.numeroDireccionAsegurado,
       deptoDireccionAsegurado: this.deptoDireccionAsegurado,
       casaAsegurado: this.casaAsegurado,
-    })
+    }),
   );
 
   getErrorMessage(campo: string) {
@@ -120,48 +94,34 @@ export class ModificaAseguradoComponent {
       return this.rutAsegurado.hasError('required')
         ? 'Debes ingresar Rut Asegurado'
         : this.rutAsegurado.hasError('rutInvalido')
-        ? 'Rut Inválido'
-        : '';
+          ? 'Rut Inválido'
+          : '';
     }
     if (campo === 'nombreAsegurado') {
-      return this.nombreAsegurado.hasError('required')
-        ? 'Debes ingresar Nombre'
-        : '';
+      return this.nombreAsegurado.hasError('required') ? 'Debes ingresar Nombre' : '';
     }
 
     if (campo === 'correoAsegurado') {
-      return this.correoAsegurado.hasError('required')
-        ? 'Debes ingresar Teléfono'
-        : '';
+      return this.correoAsegurado.hasError('required') ? 'Debes ingresar Teléfono' : '';
     }
 
     if (campo === 'telefonoAsegurado') {
-      return this.telefonoAsegurado.hasError('required')
-        ? 'Debes ingresar Correo'
-        : '';
+      return this.telefonoAsegurado.hasError('required') ? 'Debes ingresar Correo' : '';
     }
 
     if (campo === 'regionAsegurado') {
-      return this.regionAsegurado.hasError('required')
-        ? 'Debes ingresar Región'
-        : '';
+      return this.regionAsegurado.hasError('required') ? 'Debes ingresar Región' : '';
     }
 
     if (campo === 'ciudadAsegurado') {
-      return this.ciudadAsegurado.hasError('required')
-        ? 'Debes ingresar Dirección'
-        : '';
+      return this.ciudadAsegurado.hasError('required') ? 'Debes ingresar Dirección' : '';
     }
     if (campo === 'comunaAsegurado') {
-      return this.comunaAsegurado.hasError('required')
-        ? 'Debes ingresar Comuna'
-        : '';
+      return this.comunaAsegurado.hasError('required') ? 'Debes ingresar Comuna' : '';
     }
 
     if (campo === 'direccionAsegurado') {
-      return this.direccionAsegurado.hasError('required')
-        ? 'Debes ingresar Dirección'
-        : '';
+      return this.direccionAsegurado.hasError('required') ? 'Debes ingresar Dirección' : '';
     }
 
     if (campo === 'numeroDireccionAsegurado') {
@@ -177,20 +137,17 @@ export class ModificaAseguradoComponent {
     }
 
     if (campo === 'casaAsegurado') {
-      return this.casaAsegurado.hasError('required')
-        ? 'Debes ingresar Número Asegurado'
-        : '';
+      return this.casaAsegurado.hasError('required') ? 'Debes ingresar Número Asegurado' : '';
     }
 
     return '';
   }
 
   validaRut(control: FormControl): { [s: string]: boolean } | null {
-    if (validateRut(control.value) === false) {
+    if (validateRut(control.value as string) === false) {
       return { rutInvalido: true };
     }
     return null;
-
   }
 
   //Éste es el método antiguo para formatear rut con puntos y guión
@@ -204,12 +161,12 @@ export class ModificaAseguradoComponent {
     }
   } */
 
-  async onBlurRutAsegurado(event: Event) {
+  onBlurRutAsegurado(event: Event) {
     const input = event.target as HTMLInputElement;
     const rut = input.value;
     if (validateRut(rut) === true) {
       //Mostrar en el input con puntos y guion
-      await this.modificaAsegurado()
+      this.modificaAsegurado()
         .get('rutAsegurado')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
@@ -220,36 +177,29 @@ export class ModificaAseguradoComponent {
   }
 
   modificar() {
-    const rutVisual = this.modificaAsegurado().get('rutAsegurado')!.value;
+    const rutVisual = this.modificaAsegurado().get('rutAsegurado')!.value as string;
     //Convertir a formato BD (sin puntos, con guion)
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     this.asegurado = {
       p_id_solicitud: Number(this.data.idSolicitud),
-      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario as string,
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario as string,
       //p_rut_asegurado: this.modificaAsegurado().get('rutAsegurado')!.value,
       p_rut_asegurado: rutParaBD,
-      p_nombre_razon_social_asegurado:
-        this.modificaAsegurado().get('nombreAsegurado')!.value,
-      p_mail_asegurado: this.modificaAsegurado().get('correoAsegurado')!.value,
-      p_telefono_asegurado:
-        this.modificaAsegurado().get('telefonoAsegurado')!.value,
-      p_region_asegurado:
-        this.modificaAsegurado().get('regionAsegurado')!.value,
-      p_ciudad_asegurado:
-        this.modificaAsegurado().get('ciudadAsegurado')!.value,
-      p_comuna_asegurado:
-        this.modificaAsegurado().get('comunaAsegurado')!.value,
-      p_direccion_asegurado:
-        this.modificaAsegurado().get('direccionAsegurado')!.value,
-      p_numero_dir_asegurado: this.modificaAsegurado().get(
-        'numeroDireccionAsegurado'
-      )!.value,
-      p_departamento_block_asegurado: this.modificaAsegurado().get(
-        'deptoDireccionAsegurado'
-      )!.value,
-      p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value,
+      p_nombre_razon_social_asegurado: this.modificaAsegurado().get('nombreAsegurado')!
+        .value as string,
+      p_mail_asegurado: this.modificaAsegurado().get('correoAsegurado')!.value as string,
+      p_telefono_asegurado: this.modificaAsegurado().get('telefonoAsegurado')!.value as string,
+      p_region_asegurado: this.modificaAsegurado().get('regionAsegurado')!.value as string,
+      p_ciudad_asegurado: this.modificaAsegurado().get('ciudadAsegurado')!.value as string,
+      p_comuna_asegurado: this.modificaAsegurado().get('comunaAsegurado')!.value as string,
+      p_direccion_asegurado: this.modificaAsegurado().get('direccionAsegurado')!.value as string,
+      p_numero_dir_asegurado: this.modificaAsegurado().get('numeroDireccionAsegurado')!
+        .value as string,
+      p_departamento_block_asegurado: this.modificaAsegurado().get('deptoDireccionAsegurado')!
+        .value as string,
+      p_casa_asegurado: this.modificaAsegurado().get('casaAsegurado')!.value as string,
     };
 
     //console.log('Asegurado Modificado:', this.asegurado);
@@ -261,7 +211,7 @@ export class ModificaAseguradoComponent {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible modificar al asegurado.');
+        void this.notificacioAlertnService.error('ERROR', 'No fue posible modificar al asegurado.');
       },
     });
   }

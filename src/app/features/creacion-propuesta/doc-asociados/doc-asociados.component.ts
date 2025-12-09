@@ -1,17 +1,21 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MatCard, MatCardHeader } from "@angular/material/card";
+import { MatCard, MatCardHeader } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatIcon } from "@angular/material/icon";
-import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
+import { MatIcon } from '@angular/material/icon';
+import {
+  DetalleSolicitudInterface,
+  IObservacion,
+  ISolicitud,
+} from '@features/detalle-solicitud/modelo/detalle-interface';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
-import { MatTooltip } from "@angular/material/tooltip";
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-doc-asociados',
   standalone: true,
   imports: [MatCard, MatCardHeader, MatIcon, MatTooltip],
   templateUrl: './doc-asociados.component.html',
-  styleUrl: './doc-asociados.component.css'
+  styleUrl: './doc-asociados.component.css',
 })
 export class DocAsociadosComponent {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
@@ -40,13 +44,12 @@ export class DocAsociadosComponent {
             id_estado_solicitud: dato.p_id_estado_solicitud,
             nombre_estado: dato.p_nombre_estado,
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
-            id_ejecutivo_banco: dato.p_id_ejecutivo_banco
+            id_ejecutivo_banco: dato.p_id_ejecutivo_banco,
           });
           //this.asegurados.set(dato.c_asegurados);
           //this.beneficiarios.set(dato.c_beneficiarios);
           this.observaciones.set(dato.c_observaciones);
         }
-
       },
       error: (error) => {
         console.log('ERROR INESPERADO', error);
@@ -55,12 +58,11 @@ export class DocAsociadosComponent {
     });
   }
 
-  async OnInit() {
+  OnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 
   verCotiPpta(IdSolicitud: number): void {
-
     //   const dialogConfig = new MatDialogConfig();
 
     //   dialogConfig.disableClose = true;
@@ -75,6 +77,5 @@ export class DocAsociadosComponent {
     //
     const pdfUrl = `assets/pdf/cotiPpta_${IdSolicitud}.pdf`;
     window.open(pdfUrl, '_blank');
-
   }
 }

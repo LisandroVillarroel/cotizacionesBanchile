@@ -22,12 +22,11 @@ import { ProgresoCarga } from '@core/auth/progesoCarga';
   template: `
     <app-header class="headerFijo" />
 
-    <app-menu  class="menuFijo"/>
-     @if (progresoCarga.isCargando()) {
-        <mat-progress-bar  class="cargaProgresoFijo" mode="indeterminate"/>
-     }
+    <app-menu class="menuFijo" />
+    @if (progresoCarga.isCargando()) {
+      <mat-progress-bar class="cargaProgresoFijo" mode="indeterminate" />
+    }
     <main>
-
       <router-outlet />
     </main>
     <app-footer class="footerFijo" />
@@ -80,5 +79,5 @@ main {
   `,
 })
 export default class PrincipalComponent {
-    readonly progresoCarga = inject(ProgresoCarga);
+  readonly progresoCarga = inject(ProgresoCarga);
 }

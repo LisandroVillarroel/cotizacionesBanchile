@@ -1,4 +1,3 @@
-
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -13,23 +12,13 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatProgressBarModule,
-    MatIcon,
-    MatTooltip,
-    MatDividerModule,
-  ],
+  imports: [MatButtonModule, MatProgressBarModule, MatIcon, MatTooltip, MatDividerModule],
   template: `
     <div class="container-fluid">
       <!-- Logo + Título -->
       <div style="display: flex">
         <a>
-          <img
-            src="assets/logo/bancochile.jpg"
-            alt="Logo"
-            class="logo-img me-2"
-          />
+          <img src="assets/logo/bancochile.jpg" alt="Logo" class="logo-img me-2" />
         </a>
         <mat-divider [vertical]="true"></mat-divider>
         <span class="titulo mb-0" style="color: white;">
@@ -37,7 +26,13 @@ import { Router } from '@angular/router';
         </span>
       </div>
       <div class="usuario-container">
-        <span class="usuarioLogin">{{_storage()?.usuarioLogin?.usuario + ' - ' + _storage()?.usuarioLogin?.perfilUsuario + ' - ' + _storage()?.usuarioLogin?.nombreUsuario}}</span>
+        <span class="usuarioLogin">{{
+          _storage()?.usuarioLogin?.usuario +
+            ' - ' +
+            _storage()?.usuarioLogin?.perfilUsuario +
+            ' - ' +
+            _storage()?.usuarioLogin?.nombreUsuario
+        }}</span>
         <button class="btn-salir" (click)="cerrarSesion()" matTooltip="Cerrar" matButton>
           <mat-icon>exit_to_app</mat-icon>
         </button>
@@ -116,8 +111,8 @@ export default class HeaderComponent {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
-    cerrarSesion(){
-      this.storage.remueve('sesion')
-       this.router.navigate(['/login']);
-    }
+  async cerrarSesion() {
+    this.storage.remueve('sesion');
+    await this.router.navigate(['/login']);
+  }
 }

@@ -18,13 +18,11 @@ export class ModificarRespuestaService {
 
   constructor(private http: HttpClient) {}
 
-  modificarRespuesta(
-    datos: IModificarRespuesta
-  ): Observable<InterfazModificarRespuesta> {
+  modificarRespuesta(datos: IModificarRespuesta): Observable<InterfazModificarRespuesta> {
     return this.http.post<InterfazModificarRespuesta>(
       `${environment.apiUrlConsumer}/modificarRespuestaCompania`,
       datos,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 }

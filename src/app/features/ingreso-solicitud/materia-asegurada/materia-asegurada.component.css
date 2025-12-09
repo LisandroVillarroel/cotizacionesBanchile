@@ -1,94 +1,91 @@
-.titulo{
+.titulo {
   text-align: center;
   color: aliceblue;
   background-color: rgb(6, 6, 45);
   font-size: 12px;
 }
 
-.subTitulo{
+.subTitulo {
   text-align: left;
   background-color: rgb(177, 176, 176);
-   display: flex;
+  display: flex;
   align-items: center;
 }
 
-.centraSubtitulo{
+.centraSubtitulo {
   font-size: 10px;
   font-weight: 600;
-
 }
 
- ::ng-deep  .estiloCampo .mat-mdc-form-field-subscript-wrapper{
+::ng-deep .estiloCampo .mat-mdc-form-field-subscript-wrapper {
   height: 0 !important;
 }
 
-
-.campoSelect{
-   /* Ajusta la altura del contenedor principal*/
-   --mat-form-field-container-height: 30px;
-   padding-top: 10px;
-   /*
+.campoSelect {
+  /* Ajusta la altura del contenedor principal*/
+  --mat-form-field-container-height: 30px;
+  padding-top: 10px;
+  /*
 padding-left: 30px;*/
-   /* Ajusta el padding para alinear el contenido verticalmente
+  /* Ajusta el padding para alinear el contenido verticalmente
    // Selecciona el wrapper para controlar el padding interno*/
-   .mat-mdc-form-field-flex {
-     padding-top: 0;
-     padding-bottom: 0;
-     height: 30px !important;
-   }
-
+  .mat-mdc-form-field-flex {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 30px !important;
+  }
 }
 
-   .estiloCampo.mat-mdc-form-field {
-      width: 100% !important;
-      padding-bottom: 5px;
-      font-size: 10px;
-padding-top: 5px;
-    }
+.estiloCampo.mat-mdc-form-field {
+  width: 100% !important;
+  padding-bottom: 5px;
+  font-size: 10px;
+  padding-top: 5px;
+}
 
 :host ::ng-deep .estiloCampo .mat-mdc-form-field-infix {
   min-height: var(--mat-form-field-container-height, 4px);
-    padding-top: var(--mat-form-field-filled-with-label-container-padding-top, 1px);
-    padding-bottom: var(--mat-form-field-filled-with-label-container-padding-bottom, 1px);
-      padding: 0 !important;
-
+  padding-top: var(--mat-form-field-filled-with-label-container-padding-top, 1px);
+  padding-bottom: var(--mat-form-field-filled-with-label-container-padding-bottom, 1px);
+  padding: 0 !important;
 }
 
 ::ng-deep .estiloCampo .mat-mdc-select-value-text {
-    font-size: 10px !important;
+  font-size: 10px !important;
 }
 
-.fuenteOption{
-   font-size: 10px;
+.fuenteOption {
+  font-size: 10px;
 }
 
 /* Cambia el placeholder del select*/
-::ng-deep  .estiloCampo  .mat-mdc-select-placeholder {
-    font-size: 10px;
+::ng-deep .estiloCampo .mat-mdc-select-placeholder {
+  font-size: 10px;
 }
 
 /*Permite cambiar el height*/
 
-::ng-deep  .estiloCampo .mdc-text-field--outlined .mdc-notched-outline {
-    height: 30px !important;
+::ng-deep .estiloCampo .mdc-text-field--outlined .mdc-notched-outline {
+  height: 30px !important;
 }
 
-::ng-deep  .estiloCampo .mat-mdc-text-field-wrapper {
-    height: 30px !important;
+::ng-deep .estiloCampo .mat-mdc-text-field-wrapper {
+  height: 30px !important;
 }
 
-
-::ng-deep .estiloCampo  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-    min-height: 5px !important;
+::ng-deep
+  .estiloCampo
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+  .mat-mdc-form-field-infix {
+  min-height: 5px !important;
 }
-
 
 .example-button-row {
   display: table-cell;
   width: 20%;
 }
 
-.tamanoBopton{
+.tamanoBopton {
   width: 100%;
   height: 40px;
 }

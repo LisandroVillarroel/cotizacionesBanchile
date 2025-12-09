@@ -6,23 +6,22 @@ import { DatosSolicitudesInterface } from './datosSolicitud-Interface';
 import { IRequestFecha } from '@shared/modelo/servicios-interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardService {
+  private http = inject(HttpClient);
 
-   private http = inject(HttpClient);
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  });
+  constructor() {}
 
-     headers: HttpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      });
-  constructor() { }
-
-   postListadoSolicitudes(filtro: IRequestFecha): Observable<DatosSolicitudesInterface> {
-      return this.http
-        .post<DatosSolicitudesInterface>(`${environment.apiUrlConsumer}/listarSolicitudes`,
-          filtro,
-          {headers: this.headers}
-        )
-    }
+  postListadoSolicitudes(filtro: IRequestFecha): Observable<DatosSolicitudesInterface> {
+    return this.http.post<DatosSolicitudesInterface>(
+      `${environment.apiUrlConsumer}/listarSolicitudes`,
+      filtro,
+      { headers: this.headers },
+    );
+  }
 }

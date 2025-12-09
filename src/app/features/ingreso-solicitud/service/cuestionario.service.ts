@@ -1,7 +1,4 @@
-import {
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -49,16 +46,13 @@ export class CuestionarioService {
     }));
   }
 
-  postAgregaDocumento(
-    agregaDocumento: IIngresarDocumento
-  ): Observable<IEstadoIngresarDocumento> {
+  postAgregaDocumento(agregaDocumento: IIngresarDocumento): Observable<IEstadoIngresarDocumento> {
     console.log('Agrega Documento Service:', agregaDocumento);
-    return this.http
-      .post<IEstadoIngresarDocumento>(
-        `${environment.apiUrlConsumer}/ingresarDocumento`,
-        agregaDocumento,
-        { headers: this.headers }
-      )
+    return this.http.post<IEstadoIngresarDocumento>(
+      `${environment.apiUrlConsumer}/ingresarDocumento`,
+      agregaDocumento,
+      { headers: this.headers },
+    );
   }
 
   /* postModificaDocumento(modificaDocumento: IAgregaAsegurado): Observable<any> {
@@ -74,11 +68,7 @@ export class CuestionarioService {
       .pipe(retry(1), catchError(this.errorHand));
   } */
 
-  postEliminaDocumento(
-    idSolicitud: number,
-    corr: number,
-    usuario: string
-  ): Observable<IResponse> {
+  postEliminaDocumento(idSolicitud: number, corr: number, usuario: string): Observable<IResponse> {
     return this.http.post<IResponse>(`${environment.apiUrlConsumer}/eliminarDocumentos`, {
       p_id_solicitud: idSolicitud,
       p_corr_documento: corr,
@@ -88,13 +78,11 @@ export class CuestionarioService {
   }
 
   postListadoDocumento(idSolicitud: number): Observable<DatosDocumentoInterface> {
-    const filtro = { p_id_solicitud: idSolicitud }
-    return this.http
-      .post<DatosDocumentoInterface>(
-        `${environment.apiUrlConsumer}/consultarDocumentos`,
-        filtro,
-        { headers: this.headers }
-      )
+    const filtro = { p_id_solicitud: idSolicitud };
+    return this.http.post<DatosDocumentoInterface>(
+      `${environment.apiUrlConsumer}/consultarDocumentos`,
+      filtro,
+      { headers: this.headers },
+    );
   }
-
 }

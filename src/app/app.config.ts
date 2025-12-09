@@ -6,7 +6,6 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
-
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { provideNgxMask } from 'ngx-mask';
@@ -15,22 +14,27 @@ import { errorInterceptor } from '@core/auth/interceptores/error.interceptor';
 import { datoInterceptor } from '@core/auth/interceptores/dato.interceptor';
 import { cargaProgresoInterceptor } from '@core/auth/interceptores/carga-progreso.interceptor';
 
-
 registerLocaleData(es);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(withFetch(),
-  withInterceptors([
-    authInterceptor,
-    errorInterceptor,
-    datoInterceptor,
-    cargaProgresoInterceptor
-  ])),  provideNgxMask(),
-{ provide: LOCALE_ID, useValue: 'es-ES' },
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        authInterceptor,
+        errorInterceptor,
+        datoInterceptor,
+        cargaProgresoInterceptor,
+      ]),
+    ),
+    provideNgxMask(),
+    { provide: LOCALE_ID, useValue: 'es-ES' },
 
-  {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-useValue: { appearance: 'outline', floatLabel: 'never', SubscripSizing:'dynamic' }
-  }
-
-  ]
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline', floatLabel: 'never', SubscripSizing: 'dynamic' },
+    },
+  ],
 };

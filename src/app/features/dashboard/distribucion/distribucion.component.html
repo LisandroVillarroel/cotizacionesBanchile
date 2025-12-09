@@ -1,18 +1,17 @@
 <div class="container-fluid justify-around p-2">
-  <mat-card style="width: 49%;">
-    <mat-card-header class="destacado" style="font-weight: bold;">Resumen Solicitudes por Rubro &nbsp;&nbsp;&nbsp;&nbsp;
-
+  <mat-card style="width: 49%">
+    <mat-card-header class="destacado" style="font-weight: bold"
+      >Resumen Solicitudes por Rubro &nbsp;&nbsp;&nbsp;&nbsp;
 
       <mat-form-field class="inputSelect cambiaTamano">
-        <mat-label class="cursiva gris-claro">Rubro</mat-label
-                      >
-      <mat-select  [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
-        @for(_rubros of datoRubros(); track _rubros){
-        <mat-option [value]="_rubros.p_id_rubro">
-          {{ _rubros.p_nombre_rubro }}
-        </mat-option>
-        }
-      </mat-select>
+        <mat-label class="cursiva gris-claro">Rubro</mat-label>
+        <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+          @for (_rubros of datoRubros(); track _rubros) {
+            <mat-option [value]="_rubros.p_id_rubro">
+              {{ _rubros.p_nombre_rubro }}
+            </mat-option>
+          }
+        </mat-select>
       </mat-form-field>
     </mat-card-header>
     <mat-card-content>
@@ -20,11 +19,15 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card style="width: 49%;">
-    <mat-card-header class="destacado" style="font-weight: bold;">Tiempo promedio en Gestión de Solicitudes (días
-      promedio)</mat-card-header>
-    <div style="margin-top: 20%; height: 100%; display: flex;">
-      <app-grafico-barra [datoResumenGeneral_Grafico]="resumenGeneral()" style="flex: 1; width: 100%; " />
+  <mat-card style="width: 49%">
+    <mat-card-header class="destacado" style="font-weight: bold"
+      >Tiempo promedio en Gestión de Solicitudes (días promedio)</mat-card-header
+    >
+    <div style="margin-top: 20%; height: 100%; display: flex">
+      <app-grafico-barra
+        [datoResumenGeneral_Grafico]="resumenGeneral()"
+        style="flex: 1; width: 100%"
+      />
     </div>
   </mat-card>
 </div>

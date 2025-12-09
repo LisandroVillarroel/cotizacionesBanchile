@@ -8,10 +8,9 @@ describe('ConfirmacionPptaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConfirmacionPptaComponent]
-    })
-    .compileComponents();
-    
+      imports: [ConfirmacionPptaComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ConfirmacionPptaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

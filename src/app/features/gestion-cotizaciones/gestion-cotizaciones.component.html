@@ -1,47 +1,57 @@
-  <div class="container-fluid d-flex justify-around p-0 mb-2">
-    <h1 mat-dialog-title class="titulo centraVertical">Gestión de Cotizaciones</h1>
-  </div>
-  <app-resumen-cotizaciones [inResumen]="resumenGestion()"/>
+<div class="container-fluid d-flex justify-around p-0 mb-2">
+  <h1 mat-dialog-title class="titulo centraVertical">Gestión de Cotizaciones</h1>
+</div>
+<app-resumen-cotizaciones [inResumen]="resumenGestion()" />
 
-<div  class="container-fluid fondoGris p-0 ">
-    <mat-tab-group>
-      @if(ejec()){
-        <mat-tab label="Cotizaciones Recibidas">
-          <div class="container-fluid">
-            <app-cotizaciones [cotizaciones]="recibidas()"
-              [estado]="'recibida'"
-              (retorno)="recibido($event)" />
-          </div>
-        </mat-tab>
-        <mat-tab label="Cotizaciones Aceptadas">
-          <div class="container-fluid ">
-            <app-cotizaciones [cotizaciones]="aceptadas()"
-              [estado]="'pendiente'"
-              (retorno)="recibido($event)" />
-          </div>
-        </mat-tab>
-        <mat-tab label="Propuestas con Firma Pendiente">
-          <div class="container-fluid ">
-            <app-cotizaciones [cotizaciones]="por_firmar()"
-              [estado]="'firma'"
-              (retorno)="recibido($event)"/>
-          </div>
-        </mat-tab>
-      }@else{
-        <mat-tab label="Propuestas Emitidas">
-          <div class="container-fluid ">
-            <app-cotizaciones [cotizaciones]="emitidas()"
-              [estado]="'emitida'"
-              (retorno)="recibido($event)" />
-          </div>
-        </mat-tab>
-        <mat-tab label="Propuestas Firmadas">
-          <div class="container-fluid ">
-            <app-cotizaciones [cotizaciones]="firmadas()"
-              [estado]="'terminada'"
-              (retorno)="recibido($event)" />
-          </div>
-        </mat-tab>
-      }
-    </mat-tab-group>
+<div class="container-fluid fondoGris p-0">
+  <mat-tab-group>
+    @if (ejec()) {
+      <mat-tab label="Cotizaciones Recibidas">
+        <div class="container-fluid">
+          <app-cotizaciones
+            [cotizaciones]="recibidas()"
+            [estado]="'recibida'"
+            (retorno)="recibido($event)"
+          />
+        </div>
+      </mat-tab>
+      <mat-tab label="Cotizaciones Aceptadas">
+        <div class="container-fluid">
+          <app-cotizaciones
+            [cotizaciones]="aceptadas()"
+            [estado]="'pendiente'"
+            (retorno)="recibido($event)"
+          />
+        </div>
+      </mat-tab>
+      <mat-tab label="Propuestas con Firma Pendiente">
+        <div class="container-fluid">
+          <app-cotizaciones
+            [cotizaciones]="por_firmar()"
+            [estado]="'firma'"
+            (retorno)="recibido($event)"
+          />
+        </div>
+      </mat-tab>
+    } @else {
+      <mat-tab label="Propuestas Emitidas">
+        <div class="container-fluid">
+          <app-cotizaciones
+            [cotizaciones]="emitidas()"
+            [estado]="'emitida'"
+            (retorno)="recibido($event)"
+          />
+        </div>
+      </mat-tab>
+      <mat-tab label="Propuestas Firmadas">
+        <div class="container-fluid">
+          <app-cotizaciones
+            [cotizaciones]="firmadas()"
+            [estado]="'terminada'"
+            (retorno)="recibido($event)"
+          />
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
 </div>

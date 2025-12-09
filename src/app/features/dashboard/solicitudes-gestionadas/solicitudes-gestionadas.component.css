@@ -1,15 +1,15 @@
-.alinea-card-gestion{
+.alinea-card-gestion {
   margin-bottom: 0.5rem;
   /* padding-bottom: 0px; */
   padding: 10px 16px 10px;
-  background-color: #E8E8EA !important;
+  background-color: #e8e8ea !important;
 }
 
 /*elimina el espacio que está debajo*/
 .mat-mdc-form-field {
-  flex-direction:initial;
+  flex-direction: initial;
 }
 
- h2 {
-    margin: 0px;
+h2 {
+  margin: 0px;
 }

@@ -1,81 +1,83 @@
-
 <div class="container-fluid d-flex justify-around p-0 mb-2">
   <h1 mat-dialog-title class="titulo centraVertical">Solicitudes asociadas a mi usuario</h1>
 </div>
 
-  <mat-card class="alinea-card-gestion">
-    <mat-card-content class="d-flex p-0 justify-around" style="width: 100%;">
-      <div class="container-fluid p-0">
-        <div [formGroup]="filtroFormulario()" class="box-form-fields p-2 mt-0 gap-2" style="align-items: center;">
-          <div class="gap-1" style="width: 7%; font-size: 14px !important;">
-            <span class="gris"> Filtrar por: </span>
-          </div>
-          <div style="width: 20%;">
-            <mat-form-field class="inputSelect">
-              <mat-label class="cursiva gris-claro">Coordinador</mat-label>
-              <mat-select [formControl]="coordinador">
-                @for(_coordinador of coordinadores(); track _coordinador){
-                  <mat-option [value]="_coordinador.p_nombre_coordinador">
-                    {{ _coordinador.p_nombre_coordinador }}
-                  </mat-option>
-                }
-                <input matInput  />
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div style="width: 20%;">
-            <mat-form-field class="inputSelect">
-              <mat-label class="cursiva gris-claro">Ejecutivo</mat-label>
-              <mat-select [formControl]="ejecutivo">
-                @for(_ejecutivo of ejecutivos(); track _ejecutivo){
-                  <mat-option [value]="_ejecutivo.nombre_ejecutivo_banco">
-                    {{ _ejecutivo.nombre_ejecutivo_banco }}
-                  </mat-option>
-                }
-                <input matInput  />
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div style="width: 15%;">
-            <mat-form-field class="inputSelect">
-              <mat-label class="cursiva gris-claro">Rubro</mat-label>
-              <mat-select [formControl]="rubro"
-                (selectionChange)="seleccionaRubro($event.value)">
-                @for(_rubros of datoRubros(); track _rubros){
+<mat-card class="alinea-card-gestion">
+  <mat-card-content class="d-flex p-0 justify-around" style="width: 100%">
+    <div class="container-fluid p-0">
+      <div
+        [formGroup]="filtroFormulario()"
+        class="box-form-fields p-2 mt-0 gap-2"
+        style="align-items: center"
+      >
+        <div class="gap-1" style="width: 7%; font-size: 14px !important">
+          <span class="gris"> Filtrar por: </span>
+        </div>
+        <div style="width: 20%">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Coordinador</mat-label>
+            <mat-select [formControl]="coordinador">
+              @for (_coordinador of coordinadores(); track _coordinador) {
+                <mat-option [value]="_coordinador.p_nombre_coordinador">
+                  {{ _coordinador.p_nombre_coordinador }}
+                </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 20%">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Ejecutivo</mat-label>
+            <mat-select [formControl]="ejecutivo">
+              @for (_ejecutivo of ejecutivos(); track _ejecutivo) {
+                <mat-option [value]="_ejecutivo.nombre_ejecutivo_banco">
+                  {{ _ejecutivo.nombre_ejecutivo_banco }}
+                </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 15%">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Rubro</mat-label>
+            <mat-select [formControl]="rubro" (selectionChange)="seleccionaRubro($event.value)">
+              @for (_rubros of datoRubros(); track _rubros) {
                 <mat-option [value]="_rubros">
                   {{ _rubros.nombre_rubro }}
                 </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div style="width: 15%;">
-            <mat-form-field class="inputSelect">
-              <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
-              <mat-select [formControl]="seguro">
-                @for(_seguros of rescatadoSeguro(); track _seguros){
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 15%">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Tipo de seguro</mat-label>
+            <mat-select [formControl]="seguro">
+              @for (_seguros of rescatadoSeguro(); track _seguros) {
                 <mat-option [value]="_seguros.nombre_tipo_seguro">
                   {{ _seguros.nombre_tipo_seguro }}
                 </mat-option>
-                }
-                <input matInput />
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div style="width: 15%;">
-            <mat-form-field class="inputSelect">
-              <mat-label class="cursiva gris-claro">Estado</mat-label>
-              <mat-select [formControl]="estado">
-                @for(_estados of datosEstados(); track _estados){
-                  <mat-option [value]="_estados.nombre_estado">
-                    {{ _estados.nombre_estado }}
-                  </mat-option>
-                }
-                <input matInput />
-              </mat-select>
-            </mat-form-field>
-          </div>
-  <!--         <div style="width: 20%;">
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 15%">
+          <mat-form-field class="inputSelect">
+            <mat-label class="cursiva gris-claro">Estado</mat-label>
+            <mat-select [formControl]="estado">
+              @for (_estados of datosEstados(); track _estados) {
+                <mat-option [value]="_estados.nombre_estado">
+                  {{ _estados.nombre_estado }}
+                </mat-option>
+              }
+              <input matInput />
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!--         <div style="width: 20%;">
             <mat-form-field class="inputSelect" style="width: 100%;">
               <mat-label class="cursiva gris-claro">Fecha</mat-label>
               <input matInput [matDatepicker]="picker" [formControl]="fecha">
@@ -83,24 +85,27 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div> -->
-          <div  style="width: 10%; align-items: center;">
-            <button (click)="limpiaFiltros()" mat-button class="button-link" style="width: 100%; font-size: 14px !important; align-items: center !important;">
-              Limpiar filtros
-            </button>
-          </div>
+        <div style="width: 10%; align-items: center">
+          <button
+            (click)="limpiaFiltros()"
+            mat-button
+            class="button-link"
+            style="width: 100%; font-size: 14px !important; align-items: center !important"
+          >
+            Limpiar filtros
+          </button>
         </div>
+      </div>
       <div class="mat-elevation-z8 mt-0">
         <mat-card-actions>
           <div class="botones-derecha">
-            <button type="button"
-              mat-raised-button
-              class="btn-info"
-              (click)="derivar()">Derivar
+            <button type="button" mat-raised-button class="btn-info" (click)="derivar()">
+              Derivar
             </button>
           </div>
         </mat-card-actions>
 
-  <!--         <table mat-table [dataSource]="dataSourceSolicitud()" multiTemplateDataRows matSort>
+        <!--         <table mat-table [dataSource]="dataSourceSolicitud()" multiTemplateDataRows matSort>
             <ng-container matColumnDef="selected">
               <th id="checkI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%">
                 Seleccionar
@@ -169,11 +174,11 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table> -->
-          @if(this.dataSourceSolicitud().data.length === 0 ){
-            <div class="info SinInfoTabla">No hay solicitudes para mostrar</div>
-          }
-          <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
-        </div>
+        @if (this.dataSourceSolicitud().data.length === 0) {
+          <div class="info SinInfoTabla">No hay solicitudes para mostrar</div>
+        }
+        <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </mat-card-content>
+</mat-card>

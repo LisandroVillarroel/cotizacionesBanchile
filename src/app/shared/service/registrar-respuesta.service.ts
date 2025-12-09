@@ -25,7 +25,6 @@
 //     })
 //     .pipe(retry(1), catchError(this.errorHandl));
 
-
 //   }
 //   errorHandl(error: HttpErrorResponse) {
 //     console.log('paso error banco: ', error);
@@ -42,29 +41,33 @@
 //   }
 // }
 
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable,  } from 'rxjs';
-import { InterfazRegistrarRespuesta, IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
+import { Observable } from 'rxjs';
+import {
+  InterfazRegistrarRespuesta,
+  IRegistrarRespuesta,
+} from '@shared/modelo/registrar-respuesta-interface';
 import { environment } from '@env/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegistrarRespuestaService {
-
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json',
   });
 
   constructor(private http: HttpClient) {}
 
   registrarRespuesta(datos: IRegistrarRespuesta): Observable<InterfazRegistrarRespuesta> {
-    return this.http
-      .post<InterfazRegistrarRespuesta>(`${environment.apiUrlConsumer}/registrarRespuestaCompania`, datos, {
-        headers: this.headers
-      })
+    return this.http.post<InterfazRegistrarRespuesta>(
+      `${environment.apiUrlConsumer}/registrarRespuestaCompania`,
+      datos,
+      {
+        headers: this.headers,
+      },
+    );
   }
 }

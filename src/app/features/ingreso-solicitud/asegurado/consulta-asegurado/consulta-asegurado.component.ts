@@ -9,15 +9,17 @@ import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 @Component({
   selector: 'app-consulta-asegurado',
   standalone: true,
-  imports: [MatInputModule,
-  MatIconModule,
-  MatDialogModule,
-  MatButtonModule,
-CabeceraPopupComponente],
+  imports: [
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    CabeceraPopupComponente,
+  ],
   templateUrl: './consulta-asegurado.component.html',
-  styleUrl: './consulta-asegurado.component.css'
+  styleUrl: './consulta-asegurado.component.css',
 })
 export class ConsultaAseguradoComponent {
-private readonly dialogRef = inject(MatDialogRef<ConsultaAseguradoComponent>);
+  private readonly dialogRef = inject(MatDialogRef<ConsultaAseguradoComponent>);
   public readonly data = inject<IAseguradoLista>(MAT_DIALOG_DATA);
 }

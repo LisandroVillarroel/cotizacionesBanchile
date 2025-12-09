@@ -1,17 +1,16 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DevolverSolicitudComponent } from './devolver-solicitud.component';
 
 describe('DevolverSolicitudComponent', () => {
   let component: DevolverSolicitudComponent;
   let fixture: ComponentFixture<DevolverSolicitudComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DevolverSolicitudComponent ]
-    })
-    .compileComponents();
-  }));
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DevolverSolicitudComponent],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DevolverSolicitudComponent);

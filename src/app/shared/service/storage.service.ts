@@ -4,10 +4,9 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { decrypt, encrypt } from '@shared/utils/encriptador';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
-
   get<T>(key: string): T | null {
     const value = localStorage.getItem(key);
     if (value !== null) {

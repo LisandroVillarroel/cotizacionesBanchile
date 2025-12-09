@@ -8,10 +8,9 @@ describe('CargarPropuestaIsolComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CargarPropuestaIsolComponent]
-    })
-    .compileComponents();
-    
+      imports: [CargarPropuestaIsolComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CargarPropuestaIsolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -8,10 +8,9 @@ describe('AgregaUsuarioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AgregaUsuarioComponent]
-    })
-    .compileComponents();
-    
+      imports: [AgregaUsuarioComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AgregaUsuarioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

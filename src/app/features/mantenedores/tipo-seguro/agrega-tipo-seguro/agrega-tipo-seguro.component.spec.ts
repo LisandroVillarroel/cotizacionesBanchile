@@ -8,10 +8,9 @@ describe('AgregaTipoSeguroComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AgregaTipoSeguroComponent]
-    })
-    .compileComponents();
-    
+      imports: [AgregaTipoSeguroComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AgregaTipoSeguroComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

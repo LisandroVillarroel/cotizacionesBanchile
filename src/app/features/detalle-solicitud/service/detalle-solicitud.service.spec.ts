@@ -6,7 +6,7 @@ import { DetalleSolicitudService } from './detalle-solicitud.service';
 describe('Service: DetalleSolicitud', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DetalleSolicitudService]
+      providers: [DetalleSolicitudService],
     });
   });
 

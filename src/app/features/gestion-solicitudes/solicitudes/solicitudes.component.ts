@@ -5,10 +5,15 @@ import { Component, input, inject, signal, ViewChild, output } from '@angular/co
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -24,9 +29,8 @@ import { TipoSeguroService } from '@shared/service/tipo-seguro.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import {  MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 
 @Component({
   selector: 'app-solicitudes',
@@ -42,16 +46,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatExpansionModule,
     MatDividerModule,
     MatTabsModule,
-  MatIconModule,
-  MatCardModule,
+    MatIconModule,
+    MatCardModule,
     MatGridListModule,
     CommonModule,
     MatFormFieldModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './solicitudes.component.html',
-  styleUrl: './solicitudes.component.css'
+  styleUrl: './solicitudes.component.css',
 })
 export class SolicitudesComponent {
   solicitudes = input.required<ISolicitudG[] | undefined>();
@@ -75,48 +79,54 @@ export class SolicitudesComponent {
   seguro = new FormControl();
   fecha = new FormControl<Date | null>(null);
 
-
-  filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante : this.contratante,
-    rubro : this.rubro,
-    seguro : this.seguro,
-    fecha : this.fecha
-    })
+  filtroFormulario = signal<FormGroup>(
+    new FormGroup({
+      contratante: this.contratante,
+      rubro: this.rubro,
+      seguro: this.seguro,
+      fecha: this.fecha,
+    }),
   );
 
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante??'';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
-    const tipoSeguro = this.filtroFormulario().value.seguro??'';
-    const fechaInicio_Inicial=this.filtroFormulario().value.fecha;
+    let aux: string = this.contratante.value as string;
+    const contratante = aux;
+    const auxRubro: IRubro = this.rubro.value as IRubro;
+    const rubro = auxRubro.p_nombre_rubro;
+    aux = this.seguro.value as string;
+    const tipoSeguro = aux;
+    const auxFecha: Date = this.fecha.value as Date;
+    const fechaInicio_Inicial = auxFecha;
 
-    let fechaInicio=new Date();
-    if (fechaInicio_Inicial!=null){
-         fechaInicio = new Date(this.filtroFormulario().value.fecha);
+    let fechaInicio = new Date();
+    if (fechaInicio_Inicial != null) {
+      fechaInicio = new Date(auxFecha);
     }
 
     this.formularioModificado();
-    return this.solicitudes()!.filter(item => {
-      const cumpleContratante = item.nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes( rubro.toLowerCase());
+    return this.solicitudes()!.filter((item) => {
+      const cumpleContratante = item.nombre_contratante
+        ?.toLowerCase()
+        .includes(contratante.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
-      let cumpleFecha=true;
+      let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);
 
-      if (fechaInicio_Inicial!=null){
-        cumpleFecha = !fechaInicio || (
-        fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-        fechaBase.getMonth() === fechaInicio.getMonth() &&
-        fechaBase.getDate() === fechaInicio.getDate()
-      );
-    }
-    return  cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
+      if (fechaInicio_Inicial != null) {
+        cumpleFecha =
+          !fechaInicio ||
+          (fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+            fechaBase.getMonth() === fechaInicio.getMonth() &&
+            fechaBase.getDate() === fechaInicio.getDate());
+      }
+      return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleFecha;
     });
   }
 
-  datosPaginados(){
-      const start = this.pagina() * this.pageSize;
-      return this.datosFiltrados()!.slice(start, start + this.pageSize);
+  datosPaginados() {
+    const start = this.pagina() * this.pageSize;
+    return this.datosFiltrados()!.slice(start, start + this.pageSize);
   }
 
   onPage(event: PageEvent) {
@@ -128,14 +138,14 @@ export class SolicitudesComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  async OnInit() {
+  OnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();
     this.formularioModificado.set(true);
     this.filtroFormulario().valueChanges.subscribe(() => {
-      this.datosFiltrados()
-      this.datosPaginados()
+      this.datosFiltrados();
+      this.datosPaginados();
     });
   }
 
@@ -145,18 +155,18 @@ export class SolicitudesComponent {
         if (dato.codigo === 200) {
           this.datoRubros.set(dato.p_cursor);
         }
-      }
+      },
     });
   }
 
   seleccionaRubro(datos: IRubro) {
     this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            this.rescatadoSeguro.set(dato.c_TipoSeguros);
-          }
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
-      });
+      },
+    });
   }
 
   limpiaFiltros() {
@@ -165,15 +175,20 @@ export class SolicitudesComponent {
 
   getCellClass(value: string): string {
     let salida = 'gris';
-    if(value !== null){
-      switch(value.toLowerCase()){
+    if (value !== null) {
+      switch (value.toLowerCase()) {
         case 'v':
-          salida = 'verde' ; break;
+          salida = 'verde';
+          break;
         case 'a':
-          salida = 'amarillo'; break;
+          salida = 'amarillo';
+          break;
         case 'r':
-          salida = 'rojo'; break;
-        default: salida = 'black'; break;
+          salida = 'rojo';
+          break;
+        default:
+          salida = 'black';
+          break;
       }
     }
     return salida;
@@ -191,15 +206,17 @@ export class SolicitudesComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = {
       idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
+      flagSoloCerrar: false,
     };
     dialogConfig.data = {
       idSolicitud: IdSolicitud,
-      flagSoloCerrar: false
+      flagSoloCerrar: false,
     };
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })
+      .subscribe(() => {
+        this.retorno.emit(true);
+      });
   }
 }

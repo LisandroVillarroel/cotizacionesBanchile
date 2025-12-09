@@ -1,9 +1,6 @@
-<app-cabecera-popup [titulo]="'Elimina Asegurado'"  />
+<app-cabecera-popup [titulo]="'Elimina Asegurado'" />
 <mat-dialog-content name="eliminaAsegurado" class="elimina-container">
-  <div
-    class="row form-con-titulo contenido-form mat-elevation-z6"
-    data-titulo="Eliminar Asegurado"
-  >
+  <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Eliminar Asegurado">
     <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
@@ -135,12 +132,7 @@
     </button>
   </div>
   <div class="ms-5">
-    <button
-      type="button"
-      class="colorFondoBotonEliminar"
-      mat-raised-button
-      (click)="eliminar()"
-    >
+    <button type="button" class="colorFondoBotonEliminar" mat-raised-button (click)="eliminar()">
       Eliminar
     </button>
   </div>

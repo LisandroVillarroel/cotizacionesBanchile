@@ -27,40 +27,41 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDivider,
     MatTooltipModule,
     ReactiveFormsModule,
-    CabeceraPopupComponente
+    CabeceraPopupComponente,
   ],
 })
 export class ConfirmaDerivarComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmaDerivarComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IRequestDeriva,
-  ) { }
+  ) {}
 
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   derivaService = inject(CarteraService);
   derivaRequest!: IRequestDeriva;
 
-
   cancelar(): void {
     this.dialogRef.close('cancelado');
   }
 
   derivar(): void {
-    this.derivaService.postDerivarCartera(this.data)
-      .subscribe({
-        next: async (dato) => {
-          if (dato.codigo === 200) {
-            const result = await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
-                      "La solicitud ha sido derivada exitosamente.");
-            if (result) {
-              this.dialogRef.close(true);
-            }
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.error('ERROR','No fue posible derivar la cartera de solicitudes.');
-        },
-      });
+    this.derivaService.postDerivarCartera(this.data).subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          void this.notificacioAlertnService.confirmacion(
+            'CONFIRMACIÓN',
+            'La solicitud ha sido derivada exitosamente.',
+          );
+          this.dialogRef.close(true);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible derivar la cartera de solicitudes.',
+        );
+      },
+    });
   }
 }

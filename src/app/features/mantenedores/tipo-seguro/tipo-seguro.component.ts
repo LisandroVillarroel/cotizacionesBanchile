@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { InterfazRubro, IRubro } from './tipo-seguro-interface';
+import { IRubro } from './tipo-seguro-interface';
 import { TipoSeguroService } from './tipo-seguro.service';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -17,13 +17,21 @@ import { ModificaTipoSeguroComponent } from './modifica-tipo-seguro/modifica-tip
 @Component({
   selector: 'app-tipo-seguro',
   standalone: true,
-  imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, MatIconModule, MatTooltipModule, MatInputModule],
+  imports: [
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatInputModule,
+  ],
   templateUrl: './tipo-seguro.component.html',
-  styleUrl: './tipo-seguro.component.css'
+  styleUrl: './tipo-seguro.component.css',
 })
 export default class TipoSeguroComponent {
-    notificacioAlertnService = inject(NotificacioAlertnService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   tipoRubro = signal<string>('');
   datoRubros = signal<IRubro[]>([]);
@@ -57,45 +65,36 @@ export default class TipoSeguroComponent {
   }
 
   dataSource = computed(() => {
-    const tabla = new MatTableDataSource<IRubro>(
-      this.datoRubros()
-    );
+    const tabla = new MatTableDataSource<IRubro>(this.datoRubros());
     tabla.paginator = this.paginator;
     tabla.sort = this.sort;
     return tabla;
   });
 
-  constructor() {
+  constructor() {}
 
-  }
-
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
 
-  async ngOnInit() {
+  OnInit() {
     this.rescataLista();
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataLista() {
-    const estructura_lista = {
-    };
-
-    this.rubroService
-      .postRubros()
-      .subscribe({
-        next: (dato) => {
-          if (dato.codigo === 200) {
-            console.log('Lista de Rubros:', dato.p_cursor);
-            this.datoRubros.set(dato.p_cursor);
-          }
-        },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
-        },
-      });
+    this.rubroService.postRubros().subscribe({
+      next: (dato) => {
+        if (dato.codigo === 200) {
+          console.log('Lista de Rubros:', dato.p_cursor);
+          this.datoRubros.set(dato.p_cursor);
+        }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      },
+    });
   }
 
   agregaNuevoRubro() {
@@ -132,8 +131,7 @@ export default class TipoSeguroComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoRubros;
 
-    this.dialog
-      .open(ModificaTipoSeguroComponent, dialogConfig)
+    this.dialog.open(ModificaTipoSeguroComponent, dialogConfig);
     //     .afterClosed()
     //     .subscribe((data) => {
     //       if (data === 'modificado') {
@@ -152,9 +150,7 @@ export default class TipoSeguroComponent {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoRubros;
 
-    this.dialog
-      .open(ConsultaTipoSeguroComponent, dialogConfig)
-      .afterClosed();
+    this.dialog.open(ConsultaTipoSeguroComponent, dialogConfig).afterClosed();
   }
 
   //eliminaRubro(datoRubros: IRubro) {

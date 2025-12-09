@@ -1,8 +1,17 @@
-import { Component, ViewChild, inject, signal, input, computed, OnInit, output } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  inject,
+  signal,
+  input,
+  computed,
+  OnInit,
+  output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -14,7 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import DetalleSolicitudComponent from '@features/detalle-solicitud/detalle-solicitud.component';
 import { RubroService } from '@shared/service/rubro.service';
@@ -50,9 +59,8 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     CommonModule,
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
-  styleUrl: './solicitudes-gestionadas.component.css'
+  styleUrl: './solicitudes-gestionadas.component.css',
 })
-
 export class SolicitudesGestionadasComponent implements OnInit {
   datosSolicitud = input.required<IListadoSolicitudes[] | undefined>();
   storage = inject(StorageService);
@@ -87,13 +95,14 @@ export class SolicitudesGestionadasComponent implements OnInit {
   estado = new FormControl();
   fecha = new FormControl<Date | null>(null);
 
-  filtroFormulario = signal<FormGroup>(new FormGroup({
-    contratante: this.contratante,
-    rubro: this.rubro,
-    seguro: this.seguro,
-    estado: this.estado,
-    fecha: this.fecha
-  })
+  filtroFormulario = signal<FormGroup>(
+    new FormGroup({
+      contratante: this.contratante,
+      rubro: this.rubro,
+      seguro: this.seguro,
+      estado: this.estado,
+      fecha: this.fecha,
+    }),
   );
 
   displayedColumns: string[] = [
@@ -103,11 +112,11 @@ export class SolicitudesGestionadasComponent implements OnInit {
     'rut_contratante',
     'nombre_razon_social_contratante',
     'nombre_rubro',
-    "nombre_tipo_seguro",
-    "nombre_ejecutivo_banco",
-    "nombre_coordinador",
-    "id_estado_solicitud",
-    "accion"
+    'nombre_tipo_seguro',
+    'nombre_ejecutivo_banco',
+    'nombre_coordinador',
+    'id_estado_solicitud',
+    'accion',
   ];
 
   dataSourceSolicitud = computed(() => {
@@ -133,21 +142,27 @@ export class SolicitudesGestionadasComponent implements OnInit {
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
   datosFiltrados() {
-    const contratante = this.filtroFormulario().value.contratante ?? '';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
-    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
-    const estado = this.filtroFormulario().value.estado ?? '';
-    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
+    let aux: string = this.contratante.value as string;
+    const contratante = aux;
+    const auxRubro: IRubro = this.rubro.value as IRubro;
+    const rubro = auxRubro.p_nombre_rubro;
+    aux = this.seguro.value as string;
+    const tipoSeguro = aux;
+    aux = this.estado.value as string;
+    const estado = aux;
+    const auxFecha: Date = this.fecha.value as Date;
+    const fechaInicio_Inicial = auxFecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
-      fechaInicio = new Date(this.filtroFormulario().value.fecha);
+      fechaInicio = new Date(auxFecha);
     }
 
     this.formularioModificado();
-    return this.datosSolicitud()!.filter(item => {
-
-      const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
+    return this.datosSolicitud()!.filter((item) => {
+      const cumpleContratante = item.nombre_razon_social_contratante
+        .toLowerCase()
+        .includes(contratante.toLowerCase());
       const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
       const cumpleEstado = item.descripcion_estado.includes(estado);
@@ -155,11 +170,11 @@ export class SolicitudesGestionadasComponent implements OnInit {
       const fechaBase = new Date(item.fecha_creacion);
 
       if (fechaInicio_Inicial != null) {
-        cumpleFecha = !fechaInicio || (
-          fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-          fechaBase.getMonth() === fechaInicio.getMonth() &&
-          fechaBase.getDate() === fechaInicio.getDate()
-        );
+        cumpleFecha =
+          !fechaInicio ||
+          (fechaBase.getFullYear() === fechaInicio.getFullYear() &&
+            fechaBase.getMonth() === fechaInicio.getMonth() &&
+            fechaBase.getDate() === fechaInicio.getDate());
       }
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
@@ -169,7 +184,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.filtroFormulario().reset();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();
@@ -177,19 +192,25 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
     this.formularioModificado.set(true);
     this.filtroFormulario().valueChanges.subscribe(() => {
-      this.datosFiltrados()
+      this.datosFiltrados();
       this.updateTableData();
     });
 
     switch (this.tipoUsuario) {
-      case "E":
-        this.verCoord = false; break;
-      case "C":
-        this.verEjec = false; break;
-      case "S":
-        this.verEjec = false; this.verCoord = false; break;
-      case "A":
-        this.verEjec = false; this.verCoord = false; break;
+      case 'E':
+        this.verCoord = false;
+        break;
+      case 'C':
+        this.verEjec = false;
+        break;
+      case 'S':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
+      case 'A':
+        this.verEjec = false;
+        this.verCoord = false;
+        break;
     }
   }
 
@@ -205,7 +226,10 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Rubros.');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de Rubros.',
+        );
       },
     });
   }
@@ -218,12 +242,15 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Estados');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de Estados',
+        );
       },
     });
   }
 
-  async seleccionaRubro(datos: IRubro) {
+  seleccionaRubro(datos: IRubro) {
     this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -231,7 +258,10 @@ export class SolicitudesGestionadasComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Tipos de Seguro');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de Tipos de Seguro',
+        );
       },
     });
   }
@@ -248,31 +278,31 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
     dialogConfig.data = {
       idSolicitud: IdSolicitud,
-      flagSoloCerrar: true
+      flagSoloCerrar: true,
     };
 
     this.dialog
       .open(DetalleSolicitudComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => { this.retorno.emit(true); })
+      .subscribe(() => {
+        this.retorno.emit(true);
+      });
   }
 
   getEstadoFiltrado(idEstado: number) {
-    return this.datosEstados().filter(item =>
-      item.id_estado_solicitud === idEstado
-    );
+    return this.datosEstados().filter((item) => item.id_estado_solicitud === idEstado);
   }
 
   getCellStyle(idEstado: number) {
     const estado = this.getEstadoFiltrado(idEstado)[0];
     return {
-      'color': estado?.color_estado,
+      color: estado?.color_estado,
       'background-color': estado?.background_estado,
-      'border': '1px solid' + estado?.color_estado,
-      'width': '141px',
+      border: '1px solid' + estado?.color_estado,
+      width: '141px',
       'text-align': 'center',
       'padding-left': '1%',
-      'padding-right': '1%'
+      'padding-right': '1%',
     };
   }
 }

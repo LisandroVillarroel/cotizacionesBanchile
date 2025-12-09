@@ -3,7 +3,7 @@ export interface IEstado {
   nombre_estado: string;
   color_estado: string;
   background_estado: string;
-/*   status_estado: string;
+  /*   status_estado: string;
   fecha_creacion: string;
   usuario_creacion: string;
   fecha_modificacion: string
