@@ -1,5 +1,5 @@
 import { IListadoSolicitudes } from './../datosSolicitud-Interface';
-import { Component, computed, input, inject, signal } from '@angular/core';
+import { Component, computed, input, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 
@@ -44,7 +44,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './distribucion.component.html',
   styleUrls: ['./distribucion.component.css'], // ✅ Corrección: debe ser "styleUrls" (plural)
 })
-export default class DistribucionComponent {
+export default class DistribucionComponent implements OnInit {
   listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
   resumenGeneral = computed(() => this.listadoSolicitudesGrafiico());
   resumenGeneral_Rubro = signal<IListadoSolicitudes[]>([]);
@@ -81,7 +81,7 @@ export default class DistribucionComponent {
     );
   }
 
-  OnInit() {
+  ngOnInit() {
     this.resumenGeneral_Rubro.set(this.resumenGeneral());
     this.cargaRubros();
   }

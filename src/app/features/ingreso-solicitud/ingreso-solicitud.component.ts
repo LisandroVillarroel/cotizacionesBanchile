@@ -91,7 +91,7 @@ import { IMateriaData } from './modelo/materia-Interface';
     },
   ],
 })
-export default class IngresoSolicitudComponent implements OnInit{
+export default class IngresoSolicitudComponent implements OnInit {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);

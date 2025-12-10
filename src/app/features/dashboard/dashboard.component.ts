@@ -1,5 +1,5 @@
 //import { es } from '@angular/common/locales/es';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatLabel } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -43,7 +43,7 @@ import { DashboardService } from './dashboard.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export default class DashboardComponent {
+export default class DashboardComponent implements OnInit {
   fechaActual = new FormControl<Date>(new Date());
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -57,10 +57,9 @@ export default class DashboardComponent {
     p_ConObservaciones: 0,
   });
   listadoSolicitudes = signal<IListadoSolicitudes[]>([]);
-
   tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
-  OnInit() {
+  ngOnInit() {
     this.seleccionaFecha();
   }
 
@@ -75,8 +74,6 @@ export default class DashboardComponent {
       fechaFiltrar = undefined;
     }
 
-    console.log('fechaValue:', fechaValue);
-    console.log('fechaFiltrar:', fechaFiltrar);
     const estructura_listaSolicitudes = {
       p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
       p_fecha: fechaFiltrar ?? '',
