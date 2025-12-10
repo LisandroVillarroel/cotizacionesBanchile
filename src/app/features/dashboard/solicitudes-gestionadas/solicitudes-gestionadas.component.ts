@@ -15,7 +15,6 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/mat
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -36,6 +35,7 @@ import { IEstado } from '@shared/modelo/estado-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-solicitudes-gestionadas',
@@ -145,7 +145,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
     let aux: string = this.contratante.value as string;
     const contratante = aux;
     const auxRubro: IRubro = this.rubro.value as IRubro;
-    const rubro = auxRubro.p_nombre_rubro;
+    let rubro: string = '';
+    /* if (auxRubro === null || auxRubro === undefined) rubro = '';
+    else */ rubro = auxRubro.p_nombre_rubro;
     aux = this.seguro.value as string;
     const tipoSeguro = aux;
     aux = this.estado.value as string;

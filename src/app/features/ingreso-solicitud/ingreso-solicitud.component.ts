@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, inject, signal, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, inject, signal, ViewChild, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -91,7 +91,7 @@ import { IMateriaData } from './modelo/materia-Interface';
     },
   ],
 })
-export default class IngresoSolicitudComponent {
+export default class IngresoSolicitudComponent implements OnInit{
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
@@ -205,7 +205,7 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-  OnInit() {
+  ngOnInit() {
     this.cargaRubro();
     this.materiaData.set({
       id_solicitud: 0,
@@ -250,12 +250,10 @@ export default class IngresoSolicitudComponent {
 
   buscarContratantePorRut() {
     let rutIngresado = this.rutCliente.value;
-
     if (rutIngresado && this.rutCliente.invalid) {
       void this.notificacioAlertnService.error('ERROR', 'RUT inválido');
       return;
     }
-
     if (!rutIngresado) {
       return;
     }
@@ -264,17 +262,14 @@ export default class IngresoSolicitudComponent {
       this.rutCliente.setValue(formatRut(cleanRut(rutIngresado), RutFormat.DOTS_DASH), {
         emitEvent: false,
       });
-
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
-
-    //console.log('RUT enviado al servicio:', rutIngresado);
 
     this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
         if (resp.codigo === 200 && resp.data) {
           const datos = resp.data;
-          if (datos.rutCliente !== '11898216-9') {
+          /* if (datos.rutCliente !== '11898216-9') {
             void this.notificacioAlertnService.error(
               'ERROR',
               'Este RUT no tiene datos disponibles',
@@ -283,7 +278,7 @@ export default class IngresoSolicitudComponent {
             this.emailContratante.set('');
             this.telefonoContratante.set('');
             return;
-          }
+          } */
           this.nombreRazonSocial.set(
             `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno}`,
           );
@@ -315,7 +310,10 @@ export default class IngresoSolicitudComponent {
         }
       },
       error: () => {
-        void this.notificacioAlertnService.error('ERROR', 'Error al consultar el servicio');
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'Error al consultar datos del contratante.',
+        );
       },
     });
   }
@@ -323,8 +321,8 @@ export default class IngresoSolicitudComponent {
   grabaContratanteAux() {}
 
   grabaContratante() {
-    /* console.log('form contratante:', this.agregaSolicitudContratante().value);
-    console.log(
+    /*console.log('form contratante:', this.agregaSolicitudContratante().value);
+     console.log(
       'aseguradeCheck:',
       this.agregaSolicitudContratante().get('aseguradeCheck')!.value
     ); */
@@ -344,8 +342,8 @@ export default class IngresoSolicitudComponent {
         departamento_block_contratante: 'a',
         casa_contratante: 'c',
       },
-      id_rubro: this.agregaSolicitudContratante().get('rubro')!.value as number,
-      id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value as number,
+      id_rubro: Number(this.rubro.value),
+      id_tipo_seguro: Number(this.seguro.value),
     };
     this.ingresoSolicitudService.postIngresoSolicitud(this.ingresoSolicitud).subscribe({
       next: (dato) => {
@@ -387,9 +385,7 @@ export default class IngresoSolicitudComponent {
 
   agregarAsegurado() {
     const rutVisual = this.ingresoSolicitud.contratante.rut_contratante;
-
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
-
     this.asegurado = {
       p_id_solicitud: Number(this.contratanteInfo().id),
       p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? '',
@@ -425,7 +421,6 @@ export default class IngresoSolicitudComponent {
   onBlurRutCliente(event: Event) {
     const input = event.target as HTMLInputElement;
     const rut = input.value;
-
     if (validateRut(rut) === true) {
       this.agregaSolicitudContratante()
         .get('rutCliente')!

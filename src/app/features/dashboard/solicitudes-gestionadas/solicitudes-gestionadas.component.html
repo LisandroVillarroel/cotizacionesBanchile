@@ -5,7 +5,7 @@
 
   <mat-card-content class="d-flex p-0 justify-around" style="width: 100%">
     <div class="container-fluid p-0">
-      <div
+      <form
         [formGroup]="filtroFormulario()"
         class="box-form-fields p-2 mt-0 gap-2"
         style="align-items: center"
@@ -76,7 +76,7 @@
             Limpiar filtros
           </button>
         </div>
-      </div>
+      </form>
       <div class="mat-elevation-z8 mt-0">
         <table mat-table [dataSource]="dataSourceSolicitud()" multiTemplateDataRows matSort>
           <ng-container matColumnDef="index">

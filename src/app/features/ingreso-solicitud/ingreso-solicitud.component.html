@@ -24,7 +24,7 @@
     <mat-step [stepControl]="agregaSolicitudContratante()">
       <!-- <form [formGroup]="agregaSolicitudContratante()">-->
       <ng-template matStepLabel>Información del Contratante</ng-template>
-      <mat-dialog-content
+      <form
         [formGroup]="agregaSolicitudContratante()"
         name="agregaSolicitudContratante"
         class="modifica-container"
@@ -174,7 +174,7 @@
             </div>
           </mat-card-content>
         </mat-card>
-      </mat-dialog-content>
+      </form>
     </mat-step>
 
     <mat-step [stepControl]="agregaAsegurado()" errorMessage="Valores Requeridos">

@@ -66,7 +66,7 @@ export class MateriaAseguradaComponent {
   materiaIngresa: IMateriaIngresa[] = [];
 
   constructor() {
-    effect(
+    /*  effect(
       () => {
         // Llamar al método cada vez que el valor cambie
         this.datoMateriaEstructura_arr = [];
@@ -84,7 +84,7 @@ export class MateriaAseguradaComponent {
         }
       },
       { allowSignalWrites: true },
-    );
+    ); */
   }
 
   /*   materiaForm = signal<FormGroup>(
