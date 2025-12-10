@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
+import { Component, input, inject, signal, ViewChild, output, OnInit } from '@angular/core';
 
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -31,6 +31,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 
 @Component({
   selector: 'app-solicitudes',
@@ -57,13 +58,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
 })
-export class SolicitudesComponent {
+export class SolicitudesComponent implements OnInit {
   solicitudes = input.required<ISolicitudG[] | undefined>();
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
   pagina = signal(0);
   pageSize = 4;
@@ -89,18 +91,14 @@ export class SolicitudesComponent {
   );
 
   datosFiltrados() {
-    let aux: string = this.contratante.value as string;
-    const contratante = aux;
-    const auxRubro: IRubro = this.rubro.value as IRubro;
-    const rubro = auxRubro.p_nombre_rubro;
-    aux = this.seguro.value as string;
-    const tipoSeguro = aux;
-    const auxFecha: Date = this.fecha.value as Date;
-    const fechaInicio_Inicial = auxFecha;
+    const contratante: string = this.filtroFormulario().value.contratante ?? '';
+    const rubro = this.filtroFormulario().value.rubro ?? '';
+    const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
+    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
-      fechaInicio = new Date(auxFecha);
+      fechaInicio = new Date(fechaInicio_Inicial);
     }
 
     this.formularioModificado();
@@ -108,8 +106,10 @@ export class SolicitudesComponent {
       const cumpleContratante = item.nombre_contratante
         ?.toLowerCase()
         .includes(contratante.toLowerCase());
-      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
-      const cumpleTipoSeguro = item.descripcion_tipo_seguro?.includes(tipoSeguro);
+      const cumpleRubro = item.rubro.toString()?.includes(rubro.toString());
+      const cumpleTipoSeguro = item.descripcion_tipo_seguro
+        ?.toLowerCase()
+        .includes(tipoSeguro.toLowerCase());
       let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);
 
@@ -138,7 +138,7 @@ export class SolicitudesComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  OnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();
@@ -156,15 +156,27 @@ export class SolicitudesComponent {
           this.datoRubros.set(dato.p_cursor);
         }
       },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de Rubros.',
+        );
+      },
     });
   }
 
-  seleccionaRubro(datos: IRubro) {
-    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
+  seleccionaRubro(id_rubro: number) {
+    this.tipoSeguroService.postTipoSeguro(id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
+      },
+      error: () => {
+        void this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible obtener el listado de Tipos de Seguro',
+        );
       },
     });
   }

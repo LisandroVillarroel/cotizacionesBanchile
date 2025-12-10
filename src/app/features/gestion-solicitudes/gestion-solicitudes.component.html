@@ -7,7 +7,7 @@
     @if (ejec()) {
       <mat-tab label="Solicitudes en Edición">
         <div class="container-fluid">
-          <app-solicitudes [solicitudes]="nuevas()" (retorno)="recibido($event)" />
+          <app-solicitudes [solicitudes]="en_edicion()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes Con Observaciones">
@@ -18,17 +18,12 @@
     } @else {
       <mat-tab label="Solicitudes Nuevas">
         <div class="container-fluid">
-          <app-solicitudes [solicitudes]="revisadas()" (retorno)="recibido($event)" />
-        </div>
-      </mat-tab>
-      <mat-tab label="Solicitudes Con Observaciones">
-        <div class="container-fluid">
-          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)" />
+          <app-solicitudes [solicitudes]="en_revision()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes en Cotización">
         <div class="container-fluid">
-          <app-solicitudes [solicitudes]="cotizadas()" (retorno)="recibido($event)" />
+          <app-solicitudes [solicitudes]="en_cotizacion()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
     }

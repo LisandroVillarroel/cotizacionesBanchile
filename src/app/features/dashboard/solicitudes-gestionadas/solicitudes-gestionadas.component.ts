@@ -165,7 +165,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
         .toLowerCase()
         .includes(contratante.toString().toLowerCase());
       const cumpleRubro = item.id_rubro.toString()?.includes(rubro.toString());
-      const cumpleTipoSeguro = item.nombre_tipo_seguro?.toLowerCase().includes(tipoSeguro.toLowerCase());
+      const cumpleTipoSeguro = item.nombre_tipo_seguro
+        ?.toLowerCase()
+        .includes(tipoSeguro.toLowerCase());
       const cumpleEstado = item.descripcion_estado.toLowerCase().includes(estado.toLowerCase());
       let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);

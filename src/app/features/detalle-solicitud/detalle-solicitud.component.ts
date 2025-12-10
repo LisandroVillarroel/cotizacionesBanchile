@@ -1,4 +1,4 @@
-import { Component, Inject, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,7 +27,7 @@ import {
   ISolicitud,
 } from './modelo/detalle-interface';
 import { IDatosCompania, IMinimoResponse } from './modelo/compania';
-//Servicios
+// Servicios
 import { DetalleSolicitudService } from './service/detalle-solicitud.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CompaniasContactadasService } from './service/companias-contactadas.service';
@@ -85,7 +85,7 @@ export interface DetalleSolicitudData {
   styleUrl: './detalle-solicitud.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export default class DetalleSolicitudComponent {
+export default class DetalleSolicitudComponent implements OnInit {
   datosCompanias = signal<IDatosCompania | undefined>(undefined);
   materiaData = signal<IMateriaData | undefined>(undefined);
 
@@ -129,9 +129,9 @@ export default class DetalleSolicitudComponent {
   flagCotizacion = true;
   flagAprobarCot = false;
 
-  flagSoloCerrar = false;
+  flagSoloCerrar = this.data.flagSoloCerrar;
 
-  OnInit() {
+  ngOnInit() {
     this.cargarSolicitud(this.data.idSolicitud);
     this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);
@@ -141,6 +141,14 @@ export default class DetalleSolicitudComponent {
       id_rubro: this.infoGral()?.id_rubro as number,
       id_tipo_seguro: this.infoGral()?.id_tipo_seguro as number,
       muestraConsulta: this.data.flagSoloCerrar as boolean,
+    });
+
+    this.datosCompanias.set({
+      infoGral: this.infoGral()!,
+      companias: this.companias()!,
+      verEjec: this.verEjec,
+      minimo: this.minimo,
+      flagSoloCerrar: this.data.flagSoloCerrar!,
     });
 
     switch (this.tipoUsuario) {
@@ -193,7 +201,6 @@ export default class DetalleSolicitudComponent {
           });
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
-          this.datosCompanias()!.infoGral = this.infoGral()!;
 
           /* Inicio BackEnd */
           if (
@@ -243,7 +250,6 @@ export default class DetalleSolicitudComponent {
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          this.datosCompanias()!.companias = this.companias()!;
           const dimension = this.companias()?.length ?? 0;
           if (dimension < this.minimo) {
             this.puedeEnviar = true;
@@ -264,7 +270,6 @@ export default class DetalleSolicitudComponent {
         if (dato.codigo === 200) {
           const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
-          this.datosCompanias()!.minimo = this.minimo;
           if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {

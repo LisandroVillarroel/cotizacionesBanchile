@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css',
 })
-export default class GestionSolicitudesComponent {
+export default class GestionSolicitudesComponent implements OnInit{
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
 
@@ -44,13 +44,13 @@ export default class GestionSolicitudesComponent {
   ejec = signal<boolean>(false);
   gestionService = inject(GestionSolicitudesService);
 
-  nuevas = computed(() => {
+  en_edicion = computed(() => {
     return this.datosSolicitud().filter((r) =>
       r.nombre_estado_solicitud?.toLowerCase()?.includes('edicion'),
     );
   });
 
-  revisadas = computed(() => {
+  en_revision = computed(() => {
     return this.datosSolicitud().filter((r) =>
       r.nombre_estado_solicitud?.toLowerCase()?.includes('revision'),
     );
@@ -62,13 +62,13 @@ export default class GestionSolicitudesComponent {
     );
   });
 
-  cotizadas = computed(() => {
+  en_cotizacion = computed(() => {
     return this.datosSolicitud()!.filter((r) =>
       r.nombre_estado_solicitud?.toLowerCase()?.includes('cotizacion'),
     );
   });
 
-  OnInit() {
+  ngOnInit() {
     if (this.perfil === 'E') {
       this.ejec.set(true);
     } else {
