@@ -1,9 +1,10 @@
-import { InterfazRubro } from './tipo-seguro-interface';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { InterfazTipoSeguro, ITipoSeguroUpdate, ITipoSeguro } from './tipo-seguro-interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
+import { IRequestGestion } from '@shared/modelo/servicios-interface';
 
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,24 +17,24 @@ private http = inject(HttpClient);
        'Accept': 'application/json'
      });
      constructor() { }
+postAgregaTipoSeguro(agregaTipoSeguro: ITipoSeguro): Observable<any> {
+    return this.http
+      .post<any>(`${environment.apiUrlConsumer}/crearTipoSeguro`, agregaTipoSeguro, {
+        headers: this.headers,
+      })
+  }
 
-     postRubros(): Observable<InterfazRubro> {
-       return this.http
-         .get<InterfazRubro>(`${environment.apiUrlConsumer}/listarRubros`,{headers: this.headers})
-         .pipe(retry(1), catchError(this.errorHandl));
-     }
+postModificaTipoSeguro(modificaTipoSeguro: ITipoSeguroUpdate): Observable<any> {
+    return this.http
+      .post<any>(`${environment.apiUrlConsumer}/modificarTipoSeguro`, modificaTipoSeguro, {
+        headers: this.headers,
+      })
+  }
 
-         errorHandl(error: HttpErrorResponse) {
-       console.log('paso error rubro: ', error);
-       let errorMessage = '';
-       if (error.error instanceof ErrorEvent) {
-         // Get client-side error
-         errorMessage = error.error.message;
-       } else {
-         // Get server-side error
-         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-       }
-       console.log('Error: ', errorMessage);
-       return throwError(errorMessage);
-     }
+    postTipoSeguro(postTipoSeguro: IRequestGestion): Observable<InterfazTipoSeguro> {
+        return this.http
+          .post<InterfazTipoSeguro>(`${environment.apiUrlConsumer}/listarTipoSeguros`,
+            postTipoSeguro,
+            { headers: this.headers })
+      }
    }

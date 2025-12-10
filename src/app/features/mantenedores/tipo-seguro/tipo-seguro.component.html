@@ -1,11 +1,13 @@
 <div class="table-con-titulo mat-elevation-z6" data-titulo="Tipo Seguro" style="margin-top: 32px">
   <table mat-table [dataSource]="dataSource()" multiTemplateDataRows matSort>
+    <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort> -->
     <ng-container matColumnDef="index">
       <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%">
         N°
       </th>
       <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 3%">
-        {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}
+        <!--  {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}-->
+          {{ i + 1 + (myPaginator?.pageIndex ?? 0) * (myPaginator?.pageSize ?? 0) }}
       </td>
     </ng-container>
 
@@ -19,28 +21,74 @@
     </ng-container>
 
     <ng-container matColumnDef="nombre_rubro">
-      <th id="_nombre_rubro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%">
+      <th id="_nombre_rubro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
         Rubro
       </th>
-      <td mat-cell *matCellDef="let row" style="width: 7%">
+      <td mat-cell *matCellDef="let row" style="width: 11%">
         {{ row.p_nombre_rubro }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="estado_rubro">
-      <th id="_estado_rubro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
-        Estado
+    <ng-container matColumnDef="id_tipo_seguro">
+      <th id="_id_tipo_seguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%">
+        Id Tipo Seguro
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 8%">
+        {{ row.p_id_tipo_seguro }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre_tipo_seguro">
+      <th id="_nombre_tipo_seguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
+        Tipo Seguro
       </th>
       <td mat-cell *matCellDef="let row" style="width: 11%">
-        {{ row.p_estado_rubro }}
+        {{ row.p_nombre_tipo_seguro }}
+      </td>
+    </ng-container>
+
+
+
+<ng-container matColumnDef="producto_isol">
+      <th id="_producto_isol" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
+        Producto Isol
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 11%">
+        {{ row.p_producto_isol }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nro_minimo_cotizaciones">
+      <th id="_nro_minimo_cotizaciones" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
+        Nro Mínimo Cotizaciones
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 11%">
+        {{ row.p_nro_minimo_cotizaciones }}
+      </td>
+    </ng-container>
+
+
+
+
+
+
+
+
+
+    <ng-container matColumnDef="estado_tipo_seguro">
+      <th id="_estado_tipo_seguro" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
+        Estado Tipo Seguro
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 11%">
+        {{ row.p_estado_tipo_seguro }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="fecha_creacion">
-      <th id="_fecha_creacion" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%">
+      <th id="_fecha_creacion" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 11%">
         Fecha Creación
       </th>
-      <td mat-cell *matCellDef="let row" style="width: 10%">
+      <td mat-cell *matCellDef="let row" style="width: 11%">
         {{ row.p_fecha_creacion }}
       </td>
     </ng-container>
@@ -75,7 +123,7 @@
     <ng-container matColumnDef="opciones">
       <th id="opcionesI" mat-header-cell *matHeaderCellDef style="width: 15%; text-align: center">
         <span class="agregar-texto" matTooltip="Agregar nuevo Rubro" matTooltipPosition="above"
-        (click)="agregaNuevoRubro()"
+        (click)="agregaNuevoTipoSeguro()"
           >
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
@@ -83,27 +131,28 @@
       </th>
 
       <td mat-cell *matCellDef="let row; let i = index" style="width: 15%; text-align: center">
-        <button type="button" matTooltip="Modificar" mat-icon-button class="tabla"  (click)="modificaRubro(row)">
+        <button type="button" matTooltip="Modificar" mat-icon-button class="tabla"  (click)="modificaTipoSeguro(row)">
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button type="button" matTooltip="Consultar" mat-icon-button class="tabla"  (click)="consultaRubro(row)">
+        <button type="button" matTooltip="Consultar" mat-icon-button class="tabla"  (click)="consultaTipoSeguro(row)">
           <mat-icon>visibility</mat-icon>
         </button>
-
-        <!-- <button type="button" matTooltip="Eliminar" mat-icon-button class="tabla" (click)="eliminaRubro(row)">
-          <mat-icon>delete</mat-icon>
-        </button> -->
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns" class="example-element-row"></tr>
+
+
   </table>
-  @if(this.datoRubros().length === 0 ){
-  <div class="info SinInfoTabla">
-    No hay datos para mostrar</div>
-  }
+
+
+@if (this.datoTipoSeguro().length === 0) {
+  <div class="info SinInfoTabla">No hay datos para mostrar</div>
+}
+
+
 </div>
 
 <mat-paginator #myPaginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>

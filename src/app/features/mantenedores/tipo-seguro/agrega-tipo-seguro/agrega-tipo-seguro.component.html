@@ -1,1 +1,75 @@
-<p>agrega-tipo-seguro works!</p>
+<app-cabecera-popup [titulo]="'Agregar Tipo Seguro'" />
+<mat-dialog-content name="consulta" class="consulta-container">
+  <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Agregar Tipo Seguro">
+    <div class="col-md-3">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Usuario Creación</mat-label>
+        <input matInput aria-label="usuario_creacion" value="{{ _storage()?.usuarioLogin?.nombreUsuario }}" disabled="true" />
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">ID Rubro</mat-label>
+        <input matInput aria-label="idRubro" [formControl]="idRubro" required/>
+        @if (idRubro.invalid) {
+        <mat-error>{{ getErrorMessage("idRubro") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field class="inputInput" style="visibility: hidden;">
+        <mat-label class="labelI" ></mat-label>
+        <input matInput aria-label="hd1"  disabled="true" />
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Tipo Seguro</mat-label>
+        <input matInput aria-label="nomTipoSeguro" [formControl]="nomTipoSeguro" required/>
+        @if (nomTipoSeguro.invalid) {
+          <mat-error>{{ getErrorMessage("nomTipoSeguro") }}</mat-error>
+      }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+<mat-form-field class="inputInput" style="visibility: hidden;">
+        <mat-label class="labelI" ></mat-label>
+        <input matInput aria-label="hd2"  disabled="true" />
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Producto Isol</mat-label>
+        <input matInput aria-label="prodIsol" [formControl]="prodIsol" required />
+        @if (prodIsol.invalid) {
+        <mat-error>{{ getErrorMessage("prodIsol") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field class="inputInput" style="visibility: hidden;">
+        <mat-label class="labelI" ></mat-label>
+        <input matInput aria-label="hd3"  disabled="true" />
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Cantidad Mínima de Cotizaciones</mat-label>
+        <input matInput aria-label="nroMinCotizaciones" [formControl]="nroMinCotizaciones" required />
+        @if (nroMinCotizaciones.invalid) {
+        <mat-error>{{ getErrorMessage("nroMinCotizaciones") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button type="button" mat-raised-button class="colorFondoBotonCerrar" mat-dialog-close [disabled]="false">
+      Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button type="button" mat-raised-button (click)="grabar()" [disabled]="agregaTipoSeguro().invalid" [ngClass]="{
+        colorFondoBotonGrabar: !agregaTipoSeguro().invalid
+      }">
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

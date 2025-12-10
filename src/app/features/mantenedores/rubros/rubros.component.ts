@@ -99,20 +99,21 @@ export default class RubrosComponent {
       p_id_usuario: 'adm042', // o desde storage
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_tipo_usuario: 'A',
-      p_id_rubro: 0,
-      p_nombre_rubro: '',
-      p_estado_rubro: '',
-      p_fecha_creacion: '',
-      p_usuario_creacion: '',
-      p_fecha_modificacion: '',
-      p_usuario_modificacion: ''
+       p_tipo_usuario: 'A',
+      // p_id_rubro: 0,
+      // p_nombre_rubro: '',
+      // p_estado_rubro: '',
+      // p_fecha_creacion: '',
+      // p_usuario_creacion: '',
+      // p_fecha_modificacion: '',
+      // p_usuario_modificacion: ''
     };
 
     this.rubroService
       .postRubros(estructura_lista)
       .subscribe({
         next: (dato) => {
+          console.log('Dato Rescata Lista Rubros:', dato);
           if (dato.codigo === 200) {
             console.log('Lista de Rubros:', dato.p_cursor);
             this.datoRubros.set(dato.p_cursor);

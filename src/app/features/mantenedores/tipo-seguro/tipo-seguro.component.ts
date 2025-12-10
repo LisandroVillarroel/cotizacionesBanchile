@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
-import { InterfazRubro, IRubro } from './tipo-seguro-interface';
+import { ITipoSeguroLista } from './tipo-seguro-interface';
 import { TipoSeguroService } from './tipo-seguro.service';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
@@ -28,96 +28,95 @@ import { RubrosService } from '../rubros/rubros.service';
 })
 export default class TipoSeguroComponent {
 
-     storage = inject(StorageService);
-      _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-    notificacioAlertnService = inject(NotificacioAlertnService);
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  notificacioAlertnService = inject(NotificacioAlertnService);
 
-    tipoRubro = signal<string>('');
-    datoRubros = signal<IRubroLista[]>([]);
-    rubroService = inject(RubrosService);
-     tipoUsuario = signal<string>('');
+  tipoSeguro = signal<string>('');
+  datoTipoSeguro = signal<ITipoSeguroLista[]>([]);
+  tipoSeguroService = inject(TipoSeguroService);
+  tipoUsuario = signal<string>('');
 
-    private readonly dialog = inject(MatDialog);
-    private matPaginatorIntl = inject(MatPaginatorIntl);
+  private readonly dialog = inject(MatDialog);
+  private matPaginatorIntl = inject(MatPaginatorIntl);
 
-    datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
-    { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
-    { p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
-    { p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
+  datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
+  { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
+  { p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
+  { p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
 
-    displayedColumns: string[] = [
-      'index',
-      'id_rubro',
-      'nombre_rubro',
-      'estado_rubro',
-      'fecha_creacion',
-      'usuario_creacion',
-      'fecha_modificacion',
-      'usuario_modificacion',
-      'opciones',
-    ];
+  displayedColumns: string[] = [
+    'index',
+    'id_rubro',
+    'nombre_rubro',
+    'id_tipo_seguro',
+    'nombre_tipo_seguro',
+    'producto_isol',
+    'nro_minimo_cotizaciones',
+    'estado_tipo_seguro',
+    'fecha_creacion',
+    'usuario_creacion',
+    'fecha_modificacion',
+    'usuario_modificacion',
+    'opciones',
+  ];
 
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource().filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource().filter = filterValue.trim().toLowerCase();
 
-      if (this.dataSource().paginator) {
-        this.dataSource().paginator!.firstPage();
-      }
+    if (this.dataSource().paginator) {
+      this.dataSource().paginator!.firstPage();
     }
 
-    dataSource = computed(() => {
-      const tabla = new MatTableDataSource<IRubroLista>(
-        this.datoRubros()
-      );
-      tabla.paginator = this.paginator;
-      tabla.sort = this.sort;
-      return tabla;
-    });
 
-    constructor() {
+  }
 
-    }
+  dataSource = computed(() => {
+    const tabla = new MatTableDataSource<ITipoSeguroLista>(
+      this.datoTipoSeguro()
+    );
+    tabla.paginator = this.paginator;
+    tabla.sort = this.sort;
+    return tabla;
+  });
 
-    ngAfterViewInit(): void {
-      this.dataSource().paginator = this.paginator;
-      this.dataSource().sort = this.sort;
-    }
+  constructor() {
 
-    async ngOnInit() {
-      this.rescataLista();
-      this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    }
+  }
 
-    rescataLista() {
+  ngAfterViewInit(): void {
+    this.dataSource().paginator = this.paginator;
+    this.dataSource().sort = this.sort;
+  }
+
+
+
+  async ngOnInit() {
+    this.rescataLista();
+    this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+  }
+
+  rescataLista() {
     const estructura_lista = {
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      //p_tipo_consulta: p_tipo_consulta_
-
       p_id_usuario: 'adm042', // o desde storage
-      //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       p_tipo_usuario: 'A',
-      p_id_rubro: 0,
-      p_nombre_rubro: '',
-      p_estado_rubro: '',
-      p_fecha_creacion: '',
-      p_usuario_creacion: '',
-      p_fecha_modificacion: '',
-      p_usuario_modificacion: ''
     };
 
-    this.rubroService
-      .postRubros(estructura_lista)
+    this.tipoSeguroService
+      .postTipoSeguro(estructura_lista)
       .subscribe({
         next: (dato) => {
+          console.log('Dato Rescata Lista Tipo Seguro:', dato);
           if (dato.codigo === 200) {
-            console.log('Lista de Rubros:', dato.p_cursor);
-            this.datoRubros.set(dato.p_cursor);
+            this.datoTipoSeguro.set(dato.p_cursor);
+            console.log('Lista Tipo Seguro:', this.datoTipoSeguro());
+
           }
         },
         error: (error) => {
@@ -126,86 +125,62 @@ export default class TipoSeguroComponent {
       });
   }
 
-    agregaNuevoRubro() {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '80%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = this.tipoRubro();
+  agregaNuevoTipoSeguro() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    //dialogConfig.data = this.tipoSeguro();
 
-      this.dialog
-        .open(AgregaTipoSeguroComponent, dialogConfig)
+    this.dialog
+      .open(AgregaTipoSeguroComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data === 'agregado') {
+          this.rescataLista();
+        }
+      });
+  }
+
+  modificaTipoSeguro(datoRubros: IRubroLista): void {
+    console.log('Dato Modificar:', datoRubros);
+    // const parametro: IUsuarioListaParametro = {
+    //   datoUsuarioPar: datoUsuarioPar,
+    //   tipoUsuario: this.tipoUsuario(),
+    // };
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = datoRubros;
+
+    this.dialog
+      .open(ModificaTipoSeguroComponent, dialogConfig)
         .afterClosed()
         .subscribe((data) => {
-          if (data === 'agregado') {
+          if (data === 'modificado') {
+            console.log('Modificación Confirmada:', data);
             this.rescataLista();
           }
         });
-    }
-
-    modificaRubro(datoRubros: IRubroLista): void {
-      console.log('Dato Modificar:', datoRubros);
-      // const parametro: IUsuarioListaParametro = {
-      //   datoUsuarioPar: datoUsuarioPar,
-      //   tipoUsuario: this.tipoUsuario(),
-      // };
-
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '80%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = datoRubros;
-
-      this.dialog
-        .open(ModificaTipoSeguroComponent, dialogConfig)
-      //     .afterClosed()
-      //     .subscribe((data) => {
-      //       if (data === 'modificado') {
-      //         console.log('Modificación Confirmada:', data);
-      //         this.rescataLista(this.tipoUsuario()!);
-      //       }
-      //     });
-    }
-
-    consultaRubro(datoRubros: IRubroLista) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = '80%';
-      dialogConfig.height = '80%';
-      dialogConfig.position = { top: '3%' };
-      dialogConfig.data = datoRubros;
-
-      this.dialog
-        .open(ConsultaTipoSeguroComponent, dialogConfig)
-        .afterClosed();
-    }
-
-    //eliminaRubro(datoRubros: IRubro) {
-    //    const parametro: IUsuarioListaParametro = {
-    //     datoUsuarioPar: datoUsuarioPar,
-    //     tipoUsuario: this.tipoUsuario(),
-    //   };
-
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.width = '80%';
-    // dialogConfig.height = '80%';
-    // dialogConfig.position = { top: '3%' };
-    // dialogConfig.data = datoRubros;
-
-    // this.dialog
-    //   .open(EliminaRubroComponent, dialogConfig)
-    //     .afterClosed()
-    //     .subscribe((data) => {
-    //       if (data === 'eliminado') {
-    //         this.rescataLista(this.tipoUsuario()!);
-    //       }
-    //     });
-    // }
   }
+
+  consultaTipoSeguro(datoTipoSeguro: ITipoSeguroLista) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = datoTipoSeguro;
+
+    this.dialog
+      .open(ConsultaTipoSeguroComponent, dialogConfig)
+      .afterClosed();
+  }
+}

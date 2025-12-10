@@ -2,6 +2,7 @@ import { InterfazRubro, IRubro, IRubroLista, IRubroUpdate } from './rubros-inter
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
+import { IRequestGestion } from '@shared/modelo/servicios-interface';
 
 import { catchError, Observable, retry, throwError } from 'rxjs';
 
@@ -31,30 +32,10 @@ export class RubrosService {
       })
   }
 
-  // postRubros(): Observable<InterfazRubro> {
-  //   return this.http
-  //     .get<InterfazRubro>(`${environment.apiUrlConsumer}/listarRubros`, { headers: this.headers })
-  //     .pipe(retry(1), catchError(this.errorHandl));
-  // }
-
-   postRubros(postRubros: IRubroLista): Observable<any> {
+   postRubros(postRubros: IRequestGestion): Observable<InterfazRubro> {
     return this.http
       .post<any>(`${environment.apiUrlConsumer}/listarRubrosMan`, postRubros, {
         headers: this.headers,
       })
-  }
-
-  errorHandl(error: HttpErrorResponse) {
-    console.log('paso error rubro: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(errorMessage);
   }
 }
