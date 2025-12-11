@@ -23,7 +23,8 @@
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Nombre</mat-label>
           <input matInput formControlName="nombre_rubro" required />
-          <mat-error *ngIf="nombre_rubro.invalid">{{ getErrorMessage('nombre_rubro') }}</mat-error>
+          <!-- <mat-error *ngIf="nombre_rubro.invalid">{{ getErrorMessage('nombre_rubro') }}</mat-error> -->
+           <mat-error>@if (nombre_rubro.invalid) {{{ getErrorMessage('nombre_rubro') }}}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="inputInput">
@@ -40,7 +41,8 @@
             <mat-option value="Vigente">Vigente</mat-option>
             <mat-option value="No Vigente">No Vigente</mat-option>
           </mat-select>
-          <mat-error *ngIf="estado_rubro.invalid">Debes seleccionar un estado</mat-error>
+          <!-- <mat-error *ngIf="estado_rubro.invalid">Debes seleccionar un estado</mat-error> -->
+           <mat-error>@if (estado_rubro.invalid) {{{ getErrorMessage('estado_rubro') }}}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="inputInput">

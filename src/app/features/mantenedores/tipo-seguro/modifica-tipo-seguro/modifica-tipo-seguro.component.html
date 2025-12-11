@@ -59,7 +59,8 @@
             <mat-option value="Vigente">Vigente</mat-option>
             <mat-option value="No Vigente">No Vigente</mat-option>
           </mat-select>
-          <mat-error *ngIf="estado_tipo_seguro.invalid">Debes seleccionar un estado</mat-error>
+          <!-- <mat-error *ngIf="estado_tipo_seguro.invalid">Debes seleccionar un estado</mat-error> -->
+           <mat-error>@if (estado_tipo_seguro.invalid) {{{ getErrorMessage('estado_tipo_seguro') }}}</mat-error>
         </mat-form-field>
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Creación</mat-label>
