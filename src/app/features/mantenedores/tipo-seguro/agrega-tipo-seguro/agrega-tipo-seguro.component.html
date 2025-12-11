@@ -24,8 +24,11 @@
   </mat-select>
 
   <!-- Mensaje de error -->
-  <mat-error *ngIf="idRubro.invalid && idRubro.touched">
+
+<mat-error>
+  @if (idRubro.invalid && idRubro.touched) {
     {{ getErrorMessage('idRubro') }}
+   }
   </mat-error>
 </mat-form-field>
 
