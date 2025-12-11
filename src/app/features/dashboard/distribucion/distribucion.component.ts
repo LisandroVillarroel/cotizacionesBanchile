@@ -86,9 +86,4 @@ export default class DistribucionComponent implements OnInit {
     this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
   }
 
-  ngOnInit() {
-    this.resumenGeneral_Rubro.set(this.resumenGeneral());
-    this.cargaRubros();
-  }
-
 }
