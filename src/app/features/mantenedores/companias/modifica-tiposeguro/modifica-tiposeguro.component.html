@@ -1,0 +1,65 @@
+<app-cabecera-popup [titulo]="'Modificar Tipo Seguro de Compañía'" />
+
+<mat-dialog-content
+  [formGroup]="modificaTipoSeguro()"
+  name="modificaTipoSeguro"
+  class="modifica-container"
+>
+  <div
+    class="row form-con-titulo contenido-form mat-elevation-z6"
+    data-titulo="Modificar Datos del Tipo Seguro"
+  >
+    <div class="col-md-6">
+      <!-- Rubro -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Rubro</mat-label>
+        <input matInput [value]="data.p_nombre_rubro" disabled />
+      </mat-form-field>
+
+      <!-- Tipo Seguro -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Tipo Seguro</mat-label>
+        <input matInput [value]="data.p_nombre_tipo_seguro" disabled />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Estado -->
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Estado Tipo Seguro</mat-label>
+        <mat-select [formControl]="estadoTipoSeguro" required>
+          <mat-option value="Vigente">Vigente</mat-option>
+          <mat-option value="No Vigente">No Vigente</mat-option>
+        </mat-select>
+        @if (estadoTipoSeguro.invalid) {
+        <mat-error>{{ getErrorMessage("estadoTipoSeguro") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="colorFondoBotonCerrar"
+    >
+      Cerrar
+    </button>
+  </div>
+
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="guardar()"
+      class="colorFondoBotonGrabar"
+      [disabled]="modificaTipoSeguro().invalid"
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

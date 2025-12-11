@@ -27,6 +27,7 @@ import { AgregaContactoComponent } from './agrega-contacto/agrega-contacto.compo
 import { AgregaTiposeguroComponent } from './agrega-tiposeguro/agrega-tiposeguro.component';
 import { ModificaCompaniaComponent } from './modifica-compania/modifica-compania.component';
 import { ModificaContactoComponent } from './modifica-contacto/modifica-contacto.component';
+import { ModificaTiposeguroComponent } from './modifica-tiposeguro/modifica-tiposeguro.component';
 
 @Component({
   selector: 'app-companias',
@@ -283,6 +284,29 @@ export default class CompaniasComponent {
       .subscribe((resp) => {
         if (resp === 'modificado' && this.selectedCompaniaId !== null) {
           this.cargarContactos(this.selectedCompaniaId);
+        }
+      });
+  }
+
+  modificaTipoSeguro(data: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '80%';
+    dialogConfig.position = { top: '3%' };
+
+    dialogConfig.data = {
+      ...data,
+      p_id_compania_seguro: this.selectedCompaniaId,
+    };
+
+    this.dialog
+      .open(ModificaTiposeguroComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp === 'modificado' && this.selectedCompaniaId !== null) {
+          this.cargarTiposSeguro(this.selectedCompaniaId);
         }
       });
   }

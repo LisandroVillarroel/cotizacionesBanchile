@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -13,9 +13,11 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+
 import { CompaniaService } from '../compania.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IContactoCompaniaModificar } from '../compania-Interface';
@@ -30,6 +32,7 @@ import { IContactoCompaniaModificar } from '../compania-Interface';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSelectModule,
     CabeceraPopupComponente,
   ],
   templateUrl: './modifica-contacto.component.html',
@@ -50,11 +53,15 @@ export class ModificaContactoComponent {
     Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
   ]);
 
-  // === Form Group con signal (mismo patrón) ===
+  estadoEjecutivo = new FormControl(this.data.p_estado_ejecutivo_cia, [
+    Validators.required,
+  ]);
+
   modificaContacto = signal<FormGroup>(
     new FormGroup({
       p_nombre_ejecutivo_cia: this.nombreEjecutivo,
       p_correo_ejecutivo_cia: this.correoEjecutivo,
+      p_estado_ejecutivo_cia: this.estadoEjecutivo,
     })
   );
 
@@ -74,6 +81,12 @@ export class ModificaContactoComponent {
       }
     }
 
+    if (campo === 'p_estado_ejecutivo_cia') {
+      return this.estadoEjecutivo.hasError('required')
+        ? 'Debe seleccionar Estado'
+        : '';
+    }
+
     return '';
   }
 
@@ -87,12 +100,13 @@ export class ModificaContactoComponent {
     }
 
     const payload: IContactoCompaniaModificar = {
-      p_id_usuario: 'adm001', // temporal
+      p_id_usuario: 'adm001',
       p_tipo_usuario: 'A',
       p_id_compania_seguro: this.data.idCompania,
       p_id_ejecutivo_cia: this.data.p_id_ejecutivo_cia,
       p_nombre_ejecutivo_cia: this.nombreEjecutivo.value!,
       p_correo_ejecutivo_cia: this.correoEjecutivo.value!,
+      p_estado_ejecutivo_cia: this.estadoEjecutivo.value!,
     };
 
     this.companiaService.postModificarContactoCompania(payload).subscribe({

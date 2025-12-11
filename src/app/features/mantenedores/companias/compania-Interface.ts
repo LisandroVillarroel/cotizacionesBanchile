@@ -134,6 +134,7 @@ export interface IContactoCompaniaModificar {
   p_id_ejecutivo_cia: number;
   p_nombre_ejecutivo_cia: string;
   p_correo_ejecutivo_cia: string;
+  p_estado_ejecutivo_cia: string;
 }
 
 export interface DatosContactoCompaniaModificar {
@@ -149,6 +150,7 @@ export interface ITipoSeguroCompaniaModificar {
   p_id_compania_seguro: number;
   p_id_rubro: number;
   p_id_tipo_seguro: number;
+  p_estado_tipo_seguro: string;
 }
 
 export interface DatosTipoSeguroCompaniaModificar {

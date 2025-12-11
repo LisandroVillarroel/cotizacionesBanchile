@@ -25,8 +25,13 @@ export class ListarTiposeguroComponent {
   @Input() tiposSeguro: ITipoSeguroCompania[] = [];
 
   @Output() agregarTipoSeguro = new EventEmitter<void>();
+  @Output() modificarTipoSeguro = new EventEmitter<any>();
 
   onAgregarTipoSeguro() {
     this.agregarTipoSeguro.emit();
+  }
+
+  onModificarTipoSeguro(row: ITipoSeguroCompania) {
+    this.modificarTipoSeguro.emit(row);
   }
 }
