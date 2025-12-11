@@ -1,4 +1,4 @@
-import { Component, inject, Inject, signal } from '@angular/core';
+import { Component, inject, Inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,7 +56,7 @@ export interface VerCompaniaData {
   templateUrl: './ver-compania.component.html',
   styleUrl: './ver-compania.component.css',
 })
-export class VerCompaniaComponent {
+export class VerCompaniaComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   datoCompanias = signal<ICompanias[]>([]);
@@ -83,16 +83,8 @@ export class VerCompaniaComponent {
 
   observaciones: string = '';
 
-  OnInit() {
-    /*  console.log('Data completa en ngOnInit:', this.data);
-    console.log('Detalle recibido:', this.data.p_id_detalle_solicitud_cotizacion);
- */
-    this.detalleControl.setValue(this.data.p_id_detalle_solicitud_cotizacion || '');
-    /* console.log(
-      'Valor en detalleControl después de setValue:',
-      this.detalleControl.value
-    ); */
-
+  ngOnInit() {
+    this.detalleControl.setValue(this.data.p_id_detalle_solicitud_cotizacion ?? '');
     this.cargarCompanias();
   }
 

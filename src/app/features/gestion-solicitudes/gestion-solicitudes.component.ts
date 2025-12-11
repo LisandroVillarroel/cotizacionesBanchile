@@ -33,7 +33,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css',
 })
-export default class GestionSolicitudesComponent implements OnInit{
+export default class GestionSolicitudesComponent implements OnInit {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
 
@@ -59,6 +59,12 @@ export default class GestionSolicitudesComponent implements OnInit{
   devueltas = computed(() => {
     return this.datosSolicitud()!.filter((r) =>
       r.nombre_estado_solicitud?.toLowerCase()?.includes('devuelta'),
+    );
+  });
+
+  aprobadas = computed(() => {
+    return this.datosSolicitud()!.filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('aprobada'),
     );
   });
 
@@ -96,6 +102,7 @@ export default class GestionSolicitudesComponent implements OnInit{
             };
           });
           this.datosSolicitud.set(res);
+          console.log('Solicitudes: ', res);
         }
       },
       error: () => {

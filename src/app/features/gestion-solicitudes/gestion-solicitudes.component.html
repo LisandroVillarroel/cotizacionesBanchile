@@ -21,6 +21,11 @@
           <app-solicitudes [solicitudes]="en_revision()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
+      <mat-tab label="Solicitudes Aprobadas">
+        <div class="container-fluid">
+          <app-solicitudes [solicitudes]="aprobadas()" (retorno)="recibido($event)" />
+        </div>
+      </mat-tab>
       <mat-tab label="Solicitudes en Cotización">
         <div class="container-fluid">
           <app-solicitudes [solicitudes]="en_cotizacion()" (retorno)="recibido($event)" />
