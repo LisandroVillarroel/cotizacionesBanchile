@@ -102,7 +102,6 @@ export default class GestionSolicitudesComponent implements OnInit {
             };
           });
           this.datosSolicitud.set(res);
-          console.log('Solicitudes: ', res);
         }
       },
       error: () => {

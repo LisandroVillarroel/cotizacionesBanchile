@@ -141,7 +141,6 @@ export class AgregarCompaniaComponent implements OnInit {
       p_id_usuario: this.data.p_id_usuario, //'EJ002',
       p_tipo_usuario: this.data.p_tipo_usuario,
     };
-
     this.CompaniasContactadasService.postAgregaCompania(payload).subscribe({
       next: (res) => {
         if (res.codigo === 200) {
