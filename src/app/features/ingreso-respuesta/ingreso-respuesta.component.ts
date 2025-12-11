@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   inject,
+  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -83,7 +84,7 @@ import { IRespuesta } from '@features/gestion-cotizaciones/gestionCotizacion-int
   ],
   templateUrl: './ingreso-respuesta.component.html',
 })
-export class IngresoRespuestaComponent {
+export class IngresoRespuestaComponent implements OnInit {
   public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
@@ -241,7 +242,7 @@ export class IngresoRespuestaComponent {
     });
   }
 
-  async OnInit() {
+  ngOnInit() {
     // Deshabilitar pTermino y pVencimiento inicialmente
     if(this.datos.flagAccion){
       this.titulo ="Ingresar";

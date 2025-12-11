@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -54,7 +55,7 @@ import { EliminaBeneficiarioComponent } from './elimina-beneficiario/elimina-ben
   templateUrl: './beneficiario.component.html',
   styleUrl: './beneficiario.component.css',
 })
-export class BeneficiarioComponent {
+export class BeneficiarioComponent implements OnInit {
   idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();
 
@@ -118,7 +119,7 @@ export class BeneficiarioComponent {
     this.dataSourceBeneficiario().sort = this.sortBeneficiario;
   }
 
-  async OnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
 
   }

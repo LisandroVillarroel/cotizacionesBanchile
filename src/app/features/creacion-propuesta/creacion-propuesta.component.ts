@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
 import { DetalleSolicitudInterface, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
@@ -34,7 +34,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   templateUrl: './creacion-propuesta.component.html',
   styleUrl: './creacion-propuesta.component.css'
 })
-export class CreacionPropuestaComponent {
+export class CreacionPropuestaComponent implements OnInit {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
 
@@ -74,7 +74,7 @@ export class CreacionPropuestaComponent {
     });
   }
 
-  async OnInit() {
+ ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 

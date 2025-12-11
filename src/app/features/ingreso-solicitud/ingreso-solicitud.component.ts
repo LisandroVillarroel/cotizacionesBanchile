@@ -4,6 +4,7 @@ import {
   inject,
   signal,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -105,7 +106,7 @@ import { DetalleSolicitudService } from '@features/detalle-solicitud/service/det
     },
   ],
 })
-export default class IngresoSolicitudComponent {
+export default class IngresoSolicitudComponent implements OnInit {
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
@@ -212,7 +213,7 @@ export default class IngresoSolicitudComponent {
     return '';
   }
 
-  OnInit() {
+  ngOnInit() {
     this.cargaRubro();
   }
 

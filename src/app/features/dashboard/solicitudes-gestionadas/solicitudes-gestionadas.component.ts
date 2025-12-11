@@ -169,7 +169,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.filtroFormulario().reset();
   }
 
-  async ngOnInit() {
+ ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();

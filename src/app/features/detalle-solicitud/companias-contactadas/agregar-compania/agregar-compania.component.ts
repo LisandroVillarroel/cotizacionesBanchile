@@ -1,4 +1,4 @@
-import { Component, inject, Inject, signal } from '@angular/core';
+import { Component, inject, Inject, OnInit, signal } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -69,7 +69,7 @@ export interface AgregarCompaniaData {
   templateUrl: './agregar-compania.component.html',
   styleUrl: './agregar-compania.component.css',
 })
-export class AgregarCompaniaComponent {
+export class AgregarCompaniaComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   datoCompanias = signal<ICompanias[]>([]);
@@ -97,7 +97,7 @@ export class AgregarCompaniaComponent {
 
   observaciones: string = '';
 
-  OnInit() {
+  ngOnInit() {
     this.cargarCompanias();
   }
 

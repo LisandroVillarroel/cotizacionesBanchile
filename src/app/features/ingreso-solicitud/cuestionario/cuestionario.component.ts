@@ -6,6 +6,7 @@ import {
   ElementRef,
   QueryList,
   inject,
+  OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,7 +47,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDivider,
   ],
 })
-export class CuestionarioComponent {
+export class CuestionarioComponent implements OnInit {
   idSolicitud = input.required<number>();
   documentosFiltrados = signal<IDocumentoLista[]>([]);
   notificacioAlertnService= inject(NotificacioAlertnService);
@@ -59,7 +60,7 @@ export class CuestionarioComponent {
   private cuestionarioService = inject(CuestionarioService);
   private storage = inject(StorageService);
 
-  OnInit() {
+  ngOnInit() {
     const base = this.cuestionarioService.getDocumentosBase();
     const id = Number(this.idSolicitud());
 
