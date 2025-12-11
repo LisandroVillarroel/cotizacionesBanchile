@@ -229,6 +229,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('Rubros cargados:', dato.p_cursor);
           this.datoRubros.set(dato.p_cursor);
         }
       },

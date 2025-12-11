@@ -1,11 +1,25 @@
 export interface IRubro {
-  id_rubro: number;
-  nombre_rubro: string;
-  estado_rubro: string;
-  fecha_creacion: string;
-  usuario_creacion: string;
-  fecha_modificacion: string;
-  usuario_modificacion: string;
+  p_id_usuario: string;
+  p_tipo_usuario: string;
+  p_nombre_rubro: string;
+}
+
+export interface IRubroUpdate {
+  p_id_rubro: number;
+  p_nombre_rubro: string;
+  p_estado_rubro: string;
+  p_id_usuario: string;
+  p_tipo_usuario: string;
+}
+
+export interface IRubroLista {
+  p_id_rubro: number;
+  p_nombre_rubro: string;
+  p_estado_rubro: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_fecha_modificacion: string;
+  p_usuario_modificacion: string;
 }
 
 export interface InterfazRubro {
@@ -13,5 +27,5 @@ export interface InterfazRubro {
   mensaje: string;
   vcEstado: string;
   vcEstadoCreacion: string;
-  p_cursor: IRubro[];
+  p_cursor: IRubroLista[];
 }

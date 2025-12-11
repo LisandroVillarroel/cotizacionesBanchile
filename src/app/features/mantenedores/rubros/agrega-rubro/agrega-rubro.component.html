@@ -20,22 +20,28 @@
 
     <div class="col-md-4">
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Nombre</mat-label>
+        <mat-label class="labelI">Nombre Rubro</mat-label>
         <input matInput aria-label="nombre_rubro" [formControl]="nombre_rubro" required />
         @if (nombre_rubro.invalid) {
           <mat-error>{{ getErrorMessage('nombre_rubro') }}</mat-error>
         }
       </mat-form-field>
-      <mat-form-field class="inputInput">
+    </div>
+    <div class="col-md-4">
+      <!-- <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Creación</mat-label>
         <input matInput aria-label="usuario_creacion" [formControl]="usuario_creacion" required />
         @if (nombre_rubro.invalid) {
           <mat-error>{{ getErrorMessage('usuario_creacion') }}</mat-error>
         }
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
+      </mat-form-field> -->
+
       <mat-form-field class="inputInput">
+        <mat-label class="labelI">Usuario Creación</mat-label>
+        <input matInput aria-label="usuario_creacion" value="{{ _storage()?.usuarioLogin?.nombreUsuario }}" disabled="true" />
+      </mat-form-field>
+
+      <!-- <mat-form-field class="inputInput">
         <mat-label class="labelI">Estado</mat-label>
         <mat-select aria-label="estado_rubro" [formControl]="estado_rubro" required>
           <mat-option value="1">Vigente</mat-option>
@@ -44,8 +50,8 @@
         @if (estado_rubro.invalid) {
           <mat-error>{{ getErrorMessage('estado_rubro') }}</mat-error>
         }
-      </mat-form-field>
-      <mat-form-field class="inputInput">
+      </mat-form-field> -->
+      <!-- <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Modificación</mat-label>
         <input
           matInput
@@ -56,9 +62,9 @@
         @if (fecha_modificacion.invalid) {
           <mat-error>{{ getErrorMessage('fecha_modificacion') }}</mat-error>
         }
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Creación</mat-label>
         <input matInput aria-label="fCreacion" [formControl]="fCreacion" required />
@@ -78,7 +84,7 @@
           <mat-error>{{ getErrorMessage('usuario_modificacion') }}</mat-error>
         }
       </mat-form-field>
-    </div>
+    </div> -->
   </div>
 </mat-dialog-content>
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
@@ -91,6 +97,13 @@
       [disabled]="false"
     >
       Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button type="button" mat-raised-button (click)="grabar()" [disabled]="agregaRubro().invalid" [ngClass]="{
+        colorFondoBotonGrabar: !agregaRubro().invalid
+      }">
+      Grabar
     </button>
   </div>
 </mat-dialog-actions>
