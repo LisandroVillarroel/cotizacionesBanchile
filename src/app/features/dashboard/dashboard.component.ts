@@ -9,7 +9,7 @@ import { ResumenGeneralComponent } from './resumen-general/resumen-general.compo
 import { SolicitudesGestionadasComponent } from './solicitudes-gestionadas/solicitudes-gestionadas.component';
 import DistribucionComponent from './distribucion/distribucion.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl} from '@angular/forms';
 import { CUSTOM_DATE_FORMATS } from '@shared/ui/formatoFecha';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
@@ -36,9 +36,7 @@ import { DashboardService } from './dashboard.service';
     SolicitudesGestionadasComponent,
     DistribucionComponent,
     MatToolbarModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FormsModule,
+
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
