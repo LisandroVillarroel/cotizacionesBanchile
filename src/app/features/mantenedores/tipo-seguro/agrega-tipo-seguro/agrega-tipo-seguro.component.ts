@@ -14,6 +14,9 @@ import { MatSelectModule } from "@angular/material/select";
 import { CommonModule } from '@angular/common';
 import { ITipoSeguro } from '../tipo-seguro-interface';
 import { TipoSeguroService } from '../tipo-seguro.service';
+import { IRubroLista } from '../../rubros/rubros-interface';
+import { RubrosService } from '../../rubros/rubros.service';
+
 
 @Component({
   selector: 'app-agrega-tipo-seguro',
@@ -44,11 +47,14 @@ export class AgregaTipoSeguroComponent {
 
   notificacioAlertnService = inject(NotificacioAlertnService);
 
-  //public readonly data = inject<string>(MAT_DIALOG_DATA);
-  //public readonly data = inject<IRubroLista>(MAT_DIALOG_DATA);
-  public readonly data = inject<ITipoSeguro>(MAT_DIALOG_DATA);
+  // public readonly data = inject<ITipoSeguro>(MAT_DIALOG_DATA);
+   tipoSeguroService = inject(TipoSeguroService);
 
-  tipoSeguroService = inject(TipoSeguroService);
+  rubrosService = inject(RubrosService);
+
+
+
+
 
   tipoSeguro!: ITipoSeguro;
   private readonly dialogRef = inject(
@@ -70,6 +76,30 @@ export class AgregaTipoSeguroComponent {
       minCotizaciones: this.nroMinCotizaciones,
     })
   );
+
+  rubrosLista = signal<IRubroLista[]>([]);
+
+  ngOnInit() {
+    const estructura_lista = {
+      p_id_usuario: 'adm042',
+      //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_tipo_usuario: 'A',
+    };
+    this.rubrosService.postRubros(estructura_lista).subscribe({
+      next: dato=> {
+        if (dato?.codigo === 200 && Array.isArray(dato?.p_cursor)) {
+          this.rubrosLista.set(dato.p_cursor);
+        } else {
+          this.notificacioAlertnService.warning('Atención', 'No se encontraron rubros');
+        }
+      },
+      error: () => {
+        this.notificacioAlertnService.error('Error', 'Error al cargar los rubros');
+      },
+    });
+  }
+
 
   getErrorMessage(campo: string) {
     if (campo === 'nomTipoSeguro') {
@@ -103,10 +133,10 @@ export class AgregaTipoSeguroComponent {
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       p_tipo_usuario: 'A',
-      p_id_rubro: this.agregaTipoSeguro().get('idRubro')!.value,
-      p_nombre_tipo_seguro: this.agregaTipoSeguro().get('nomTipoSeguro')!.value,
-      p_prodcuto_isol: this.agregaTipoSeguro().get('prodIsol')!.value,
-      p_nro_minimo_cotizaciones: this.agregaTipoSeguro().get('minCotizaciones')!.value,
+      p_id_rubro: this.agregaTipoSeguro().get('idRubro')!.value as number,
+      p_nombre_tipo_seguro: this.agregaTipoSeguro().get('nomTipoSeguro')!.value as string,
+      p_prodcuto_isol: this.agregaTipoSeguro().get('prodIsol')!.value as string,
+      p_nro_minimo_cotizaciones: this.agregaTipoSeguro().get('minCotizaciones')!.value as number,
     };
     console.log('Tipo Seguro a grabar:', this.tipoSeguro);
 

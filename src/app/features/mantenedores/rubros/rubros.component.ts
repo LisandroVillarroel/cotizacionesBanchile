@@ -100,13 +100,6 @@ export default class RubrosComponent {
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
       //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
        p_tipo_usuario: 'A',
-      // p_id_rubro: 0,
-      // p_nombre_rubro: '',
-      // p_estado_rubro: '',
-      // p_fecha_creacion: '',
-      // p_usuario_creacion: '',
-      // p_fecha_modificacion: '',
-      // p_usuario_modificacion: ''
     };
 
     this.rubroService
