@@ -63,10 +63,16 @@ export default class DistribucionComponent implements OnInit {
   constructor(){
   }
 
+    ngOnInit() {
+    this.resumenGeneral_Rubro.set(this.resumenGeneral());
+    this.cargaRubros();
+  }
+
   cargaRubros() {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('Rubros cargados22222:', dato.p_cursor);
           this.datoRubros.set(dato.p_cursor);
         }
       },
