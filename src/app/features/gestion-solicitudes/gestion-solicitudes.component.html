@@ -17,14 +17,14 @@
       </mat-tab>
     }
     @else{
-      <mat-tab label="Solicitudes Nuevas">
+      <mat-tab label="Solicitudes en Revisión">
         <div class="container-fluid">
           <app-solicitudes [solicitudes]="revisadas()" (retorno)="recibido($event)" />
         </div>
       </mat-tab>
-      <mat-tab label="Solicitudes Con Observaciones">
+      <mat-tab label="Solicitudes Aprobadas">
         <div class="container-fluid ">
-          <app-solicitudes [solicitudes]="devueltas()" (retorno)="recibido($event)"/>
+          <app-solicitudes [solicitudes]="aprobadas()" (retorno)="recibido($event)"/>
         </div>
       </mat-tab>
       <mat-tab label="Solicitudes en Cotización">
