@@ -56,7 +56,7 @@
     [disabled]="materiaForm().invalid"> -->
 
     <button  class='btn-primary tamanoBopton mt-3' mat-flat-button (click)="grabarMateria()"
-  [hidden]="muestraConsulta()">
+  [hidden]="this.materiaData()?.muestraConsulta!">
       Grabar
     </button>
   </div>

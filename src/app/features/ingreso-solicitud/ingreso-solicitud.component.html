@@ -275,12 +275,13 @@
 
     <mat-step>
       <ng-template matStepLabel>Materia Asegurada</ng-template>
-      <app-materia-asegurada
+      <!--<app-materia-asegurada
         [idSolicitud]="idSolicitud"
         [idRubro]="contratanteInfo().idRubro"
         [idSeguro]="contratanteInfo().idSeguro"
         [muestraConsulta]="false"
-      />
+      /> -->
+      <app-materia-asegurada [materiaData]="materiaData()" />
       <div class="alinear-botones">
         <div class="botones-izquierda">
           <button

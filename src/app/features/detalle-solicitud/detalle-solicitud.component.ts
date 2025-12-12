@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   Inject,
   inject,
   OnInit,
@@ -53,6 +54,7 @@ import { DevolverSolicitudComponent } from './devolver-solicitud/devolver-solici
 import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compania/agregar-compania.component';
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
+import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interface';
 
 export interface seleccionada{
   id_compania_seguro: number;
@@ -60,7 +62,7 @@ export interface seleccionada{
 }
 
 export interface DetalleSolicitudData
-{ idSolicitud: number; flagSoloCerrar?: boolean }
+{ idSolicitud: number, flagSoloCerrar?: boolean }
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -91,6 +93,18 @@ export interface DetalleSolicitudData
 })
 export default class DetalleSolicitudComponent implements OnInit {
   datosCompanias = signal<IDatosCompania | undefined>(undefined);
+  //materiaData = signal<IMateriaData | undefined>(undefined);
+  materiaData = computed(() => {
+    const materia: IMateriaData = {
+    id_solicitud: this.datosCompanias()?.infoGral.id_solicitud as number,
+    id_rubro: this.datosCompanias()?.infoGral.id_rubro as number,
+    id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro as number,
+    muestraConsulta: this.datosCompanias()?.flagSoloCerrar as boolean,
+    };
+    return materia;
+  });
+
+
 
   cotizacionSeleccionada: number | null = null;
   private readonly dialog = inject(MatDialog);
@@ -157,7 +171,6 @@ export default class DetalleSolicitudComponent implements OnInit {
         this.verCoord = false;
         break;
     }
-
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -191,7 +204,6 @@ export default class DetalleSolicitudComponent implements OnInit {
           });
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
-          this.datosCompanias()!.infoGral = this.infoGral()!;
 
           /* Inicio BackEnd */
           if (
@@ -223,14 +235,13 @@ export default class DetalleSolicitudComponent implements OnInit {
             }
           }
           if (this.edoSolicitud()! === 'Propuesta Pendiente') {
-            //console.log('edoSolicitud',this.edoSolicitud());
             this.flagPropuesta = false;
           }
           /* Fin BackEnd */
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener  el detalle de la solicitud.');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el detalle de la solicitud.');
       },
     });
   }
@@ -244,7 +255,6 @@ export default class DetalleSolicitudComponent implements OnInit {
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          this.datosCompanias()!.companias = this.companias()!;
           const dimension = this.companias()?.length ?? 0;
           if(dimension < this.minimo){
             this.puedeEnviar = true;
@@ -254,7 +264,7 @@ export default class DetalleSolicitudComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener las compañías a contactar.');
       },
     });
   }
@@ -265,7 +275,6 @@ export default class DetalleSolicitudComponent implements OnInit {
         if (dato.codigo === 200) {
           const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
-          this.datosCompanias()!.minimo = this.minimo;
           if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {
@@ -275,7 +284,7 @@ export default class DetalleSolicitudComponent implements OnInit {
       },
       error: () => {
         this.notificacioAlertnService.
-          error('ERROR', 'No fue posible obtener  el mínimo de compañías a contactar.');
+          error('ERROR', 'No fue posible obtener el mínimo de compañías a contactar.');
       },
     });
   }
@@ -361,7 +370,7 @@ export default class DetalleSolicitudComponent implements OnInit {
       .subscribe(() => { this.recargar(); });
   }
 
-  async enviarCoordinador(): Promise<void> {
+  async enviarCoordinador() {
     if (this.flagSoloCerrar) return;
     const request = {
       p_id_solicitud: this.data.idSolicitud,
@@ -514,9 +523,7 @@ export default class DetalleSolicitudComponent implements OnInit {
 
     if(aprobada)
     {
-    this.gestionCotService
-      .postApruebaCotizacion(request)
-      .subscribe({
+      this.gestionCotService.postApruebaCotizacion(request).subscribe({
         next: async (dato) => {
           if (dato.codigo === 200) {
             await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
