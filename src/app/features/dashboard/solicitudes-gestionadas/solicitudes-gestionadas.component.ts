@@ -142,16 +142,19 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
-      fechaInicio = new Date(this.filtroFormulario().value.fecha);
+      fechaInicio = new Date(fechaInicio_Inicial);
     }
 
     this.formularioModificado();
     return this.datosSolicitud()!.filter(item => {
-
-      const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
-      const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
-      const cumpleEstado = item.descripcion_estado.includes(estado);
+      const cumpleContratante = item.nombre_razon_social_contratante
+        .toLowerCase()
+        .includes(contratante.toString().toLowerCase());
+      const cumpleRubro = item.id_rubro.toString()?.includes(rubro.toString());
+      const cumpleTipoSeguro = item.nombre_tipo_seguro
+        ?.toLowerCase()
+        .includes(tipoSeguro.toLowerCase());
+      const cumpleEstado = item.descripcion_estado.toLowerCase().includes(estado.toLowerCase());
       let cumpleFecha = true;
       const fechaBase = new Date(item.fecha_creacion);
 
@@ -225,8 +228,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
     });
   }
 
-  async seleccionaRubro(datos: IRubro) {
-    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
+  async seleccionaRubro(id_rubro: number) {
+    this.tipoSeguroService.postTipoSeguro(id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
