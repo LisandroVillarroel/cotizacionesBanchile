@@ -6,39 +6,22 @@
         <mat-label class="labelI">Usuario Creación</mat-label>
         <input matInput aria-label="usuario_creacion" value="{{ _storage()?.usuarioLogin?.nombreUsuario }}" disabled="true" />
       </mat-form-field>
-
-
-
 <mat-form-field class="inputInput">
   <mat-label class="cursiva gris-claro">Rubro</mat-label>
   <mat-select [formControl]="idRubro" placeholder="Seleccione un rubro" class="labelI">
-    <!-- Opción para no filtrar -->
     <mat-option [value]="null">(Seleccione)</mat-option>
-
-    <!-- Iteración con track por id -->
     @for (_rubros of rubrosLista(); track _rubros.p_id_rubro) {
       <mat-option [value]="_rubros.p_id_rubro">
         {{ _rubros.p_nombre_rubro }}
       </mat-option>
     }
   </mat-select>
-
-  <!-- Mensaje de error -->
-
 <mat-error>
   @if (idRubro.invalid && idRubro.touched) {
     {{ getErrorMessage('idRubro') }}
    }
   </mat-error>
 </mat-form-field>
-
-      <!-- <mat-form-field class="inputInput">
-        <mat-label class="labelI">ID Rubro</mat-label>
-        <input matInput aria-label="idRubro" [formControl]="idRubro" required/>
-        @if (idRubro.invalid) {
-        <mat-error>{{ getErrorMessage("idRubro") }}</mat-error>
-        }
-      </mat-form-field> -->
     </div>
     <div class="col-md-3">
       <mat-form-field class="inputInput" style="visibility: hidden;">
@@ -53,7 +36,6 @@
       }
       </mat-form-field>
     </div>
-
     <div class="col-md-3">
 <mat-form-field class="inputInput" style="visibility: hidden;">
         <mat-label class="labelI" ></mat-label>
@@ -67,7 +49,6 @@
         }
       </mat-form-field>
     </div>
-
     <div class="col-md-3">
       <mat-form-field class="inputInput" style="visibility: hidden;">
         <mat-label class="labelI" ></mat-label>
@@ -83,7 +64,6 @@
     </div>
   </div>
 </mat-dialog-content>
-
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button type="button" mat-raised-button class="colorFondoBotonCerrar" mat-dialog-close [disabled]="false">

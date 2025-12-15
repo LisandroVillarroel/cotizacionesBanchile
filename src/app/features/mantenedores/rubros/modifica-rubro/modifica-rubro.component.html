@@ -4,36 +4,27 @@
 <mat-dialog-content name="consulta" class="consulta-container">
 
     <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Modificación de Rubro">
-
-      <!-- Columna 1 -->
       <div class="col-md-3">
         <mat-form-field class="inputInput">
           <mat-label class="labelI">ID</mat-label>
           <input matInput formControlName="id_rubro"/>
         </mat-form-field>
-
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Fecha Creación</mat-label>
           <input matInput [disabled]="true" [value]="data_.p_fecha_creacion" />
         </mat-form-field>
       </div>
-
-      <!-- Columna 2 -->
       <div class="col-md-3">
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Nombre</mat-label>
           <input matInput formControlName="nombre_rubro" required />
-          <!-- <mat-error *ngIf="nombre_rubro.invalid">{{ getErrorMessage('nombre_rubro') }}</mat-error> -->
            <mat-error>@if (nombre_rubro.invalid) {{{ getErrorMessage('nombre_rubro') }}}</mat-error>
         </mat-form-field>
-
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Usuario Creación</mat-label>
           <input matInput [disabled]="true" [value]="data_.p_usuario_creacion" />
         </mat-form-field>
       </div>
-
-      <!-- Columna 3 -->
       <div class="col-md-3">
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Estado</mat-label>
@@ -41,29 +32,23 @@
             <mat-option value="Vigente">Vigente</mat-option>
             <mat-option value="No Vigente">No Vigente</mat-option>
           </mat-select>
-          <!-- <mat-error *ngIf="estado_rubro.invalid">Debes seleccionar un estado</mat-error> -->
            <mat-error>@if (estado_rubro.invalid) {{{ getErrorMessage('estado_rubro') }}}</mat-error>
         </mat-form-field>
-
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Fecha Modificación</mat-label>
           <input matInput [disabled]="true" [value]="data_.p_fecha_modificacion" />
         </mat-form-field>
       </div>
-
-      <!-- Columna 4 -->
       <div class="col-md-3">
         <mat-form-field class="inputInput" style="visibility: hidden;">
           <input matInput [disabled]="true" />
         </mat-form-field>
-
         <mat-form-field class="inputInput">
           <mat-label class="labelI">Usuario Modificación</mat-label>
           <input matInput [disabled]="true" [value]="_storage()?.usuarioLogin?.nombreUsuario" />
         </mat-form-field>
       </div>
     </div>
-
 </mat-dialog-content>
 </form>
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
