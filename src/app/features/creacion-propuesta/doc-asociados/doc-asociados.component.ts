@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatCard, MatCardHeader } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
@@ -13,7 +13,7 @@ import { MatTooltip } from "@angular/material/tooltip";
   templateUrl: './doc-asociados.component.html',
   styleUrl: './doc-asociados.component.css'
 })
-export class DocAsociadosComponent {
+export class DocAsociadosComponent implements OnInit {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   idSol = computed(() => this.idSolicitud.toString());
   detalleService = inject(DetalleSolicitudService);
@@ -55,7 +55,7 @@ export class DocAsociadosComponent {
     });
   }
 
-  async OnInit() {
+  ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 

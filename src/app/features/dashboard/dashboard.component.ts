@@ -1,5 +1,5 @@
 //import { es } from '@angular/common/locales/es';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatLabel } from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -40,7 +40,7 @@ import { DashboardService } from './dashboard.service';
   styleUrls: ['./dashboard.component.css']
 })
 
-export default class DashboardComponent {
+export default class DashboardComponent implements OnInit {
   fechaActual = new FormControl<Date>(new Date());
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -57,7 +57,7 @@ export default class DashboardComponent {
 
   tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
-  async OnInit() {
+  ngOnInit() {
     this.seleccionaFecha();
   }
 

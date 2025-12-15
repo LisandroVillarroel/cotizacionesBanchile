@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/ma
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -48,6 +48,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDividerModule,
     MatCardModule,
     CommonModule,
+     FormsModule,
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
@@ -169,7 +170,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.filtroFormulario().reset();
   }
 
-  async ngOnInit() {
+ ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();
@@ -201,6 +202,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('Rubros cargados:', dato.p_cursor);
           this.datoRubros.set(dato.p_cursor);
         }
       },

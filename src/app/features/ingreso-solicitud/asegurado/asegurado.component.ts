@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  OnInit,
   output,
   signal,
   ViewChild,
@@ -54,7 +55,7 @@ import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado
   templateUrl: './asegurado.component.html',
   styleUrl: './asegurado.component.css',
 })
-export class AseguradoComponent {
+export class AseguradoComponent implements OnInit {
   idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();  //Es llamado de varios componentes ve si es consulta o ingreso
   datoEmitidoAsegurado = output<boolean>();
@@ -131,7 +132,7 @@ export class AseguradoComponent {
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
-  async OnInit() {
+  ngOnInit() {
     console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }

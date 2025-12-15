@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, input, inject, signal, ViewChild, output } from '@angular/core';
+import { Component, input, inject, signal, ViewChild, output, OnInit } from '@angular/core';
 
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -53,7 +53,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css'
 })
-export class SolicitudesComponent {
+export class SolicitudesComponent implements OnInit  {
   solicitudes = input.required<ISolicitudG[] | undefined>();
 
   rubroService = inject(RubroService);
@@ -128,7 +128,7 @@ export class SolicitudesComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  async OnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();

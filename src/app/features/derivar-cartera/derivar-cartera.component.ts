@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild,computed,inject, output, signal } from '@angular/core';
+import { Component, OnInit, ViewChild,computed,inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -56,7 +56,7 @@ import { CarteraService } from './cartera.service';
     CommonModule,
   ],
 })
-export default class DerivarCarteraComponent{
+export default class DerivarCarteraComponent implements OnInit {
   solicitudes = signal<ISolicitudCartera[] | undefined>([]);
   coordinadores = signal<ICoordinador[] | undefined>([]);
   ejecutivos = signal<IEjecutivo[] | undefined>([]);
@@ -186,7 +186,7 @@ export default class DerivarCarteraComponent{
     this.filtroFormulario().reset();
   }
 
-  async OnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaCoordinadores();
     this.cargaEjecutivos();

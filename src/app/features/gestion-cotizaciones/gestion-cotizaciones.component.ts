@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -36,7 +36,7 @@ import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
 ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })
-export default class GestionCotizacionesComponent{
+export default class GestionCotizacionesComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -59,7 +59,7 @@ export default class GestionCotizacionesComponent{
   firmadas = signal<IGestionCotizacion[] >([]);
   por_firmar = signal<IGestionCotizacion[] >([]);
 
-  async OnInit(){
+  ngOnInit(){
     if(this.tipo_usuario === "E"){
       this.ejec.set(true);
     }else{

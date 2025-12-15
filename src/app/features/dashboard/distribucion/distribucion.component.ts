@@ -1,5 +1,5 @@
 import { IListadoSolicitudes } from './../datosSolicitud-Interface';
-import { Component, computed, input, inject, signal } from '@angular/core';
+import { Component, computed, input, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 
@@ -44,7 +44,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrls: ['./distribucion.component.css'] // ✅ Corrección: debe ser "styleUrls" (plural)
 })
 
-export default class DistribucionComponent {
+export default class DistribucionComponent implements OnInit {
   listadoSolicitudesGrafiico = input.required<IListadoSolicitudes[]>();
   resumenGeneral= computed(() => this.listadoSolicitudesGrafiico());
   resumenGeneral_Rubro =signal<IListadoSolicitudes[]>([]);
@@ -63,10 +63,16 @@ export default class DistribucionComponent {
   constructor(){
   }
 
+    ngOnInit() {
+    this.resumenGeneral_Rubro.set(this.resumenGeneral());
+    this.cargaRubros();
+  }
+
   cargaRubros() {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('Rubros cargados22222:', dato.p_cursor);
           this.datoRubros.set(dato.p_cursor);
         }
       },
@@ -78,11 +84,6 @@ export default class DistribucionComponent {
 
   seleccionaRubro(_codigoRubro: number) {
     this.resumenGeneral_Rubro.set(this.resumenGeneral()?.filter(valor=>valor.id_rubro==_codigoRubro));
-  }
-
-  async OnInit() {
-    this.resumenGeneral_Rubro.set(this.resumenGeneral());
-    this.cargaRubros();
   }
 
 }

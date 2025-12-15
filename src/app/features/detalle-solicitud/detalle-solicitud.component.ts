@@ -2,6 +2,7 @@ import {
   Component,
   Inject,
   inject,
+  OnInit,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -88,7 +89,7 @@ export interface DetalleSolicitudData
   styleUrl: './detalle-solicitud.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export default class DetalleSolicitudComponent {
+export default class DetalleSolicitudComponent implements OnInit {
   datosCompanias = signal<IDatosCompania | undefined>(undefined);
 
   cotizacionSeleccionada: number | null = null;
@@ -133,7 +134,7 @@ export default class DetalleSolicitudComponent {
 
   flagSoloCerrar = false;
 
-  async OnInit() {
+  ngOnInit() {
     this.cargarSolicitud(this.data.idSolicitud);
     this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);

@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css'
 })
-export default class GestionSolicitudesComponent {
+export default class GestionSolicitudesComponent implements OnInit {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
 
@@ -60,7 +60,7 @@ export default class GestionSolicitudesComponent {
     r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
   });
 
-  async OnInit(){
+  ngOnInit(){
     if(this.perfil === "E"){
       this.ejec.set(true);
     }else{

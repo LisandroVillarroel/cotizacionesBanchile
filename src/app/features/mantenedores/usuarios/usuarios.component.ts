@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -42,7 +42,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 })
 
 
-export default class UsuariosComponent {
+export default class UsuariosComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -105,7 +105,7 @@ export default class UsuariosComponent {
     this.dataSource().sort = this.sort;
   }
 
-  async OnInit() {
+  ngOnInit() {
     this.LitaPerfiles();
     this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
