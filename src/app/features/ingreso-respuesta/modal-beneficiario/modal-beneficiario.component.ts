@@ -1,8 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/beneficiario.component";
+import { DetalleSolicitudData } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-modal-beneficiario',
@@ -12,6 +13,13 @@ import { BeneficiarioComponent } from "@features/ingreso-solicitud/beneficiario/
   styleUrl: './modal-beneficiario.component.css'
 })
 export class ModalBeneficiarioComponent {
-  public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-  idSol = computed(() => this.idSolicitud);
+  private readonly dialog = inject(MatDialog);
+
+  constructor(
+    public dialogRef: MatDialogRef<ModalBeneficiarioComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DetalleSolicitudData
+   ) {}
+
+  idSolicitud = this.data.idSolicitud;
+
 }

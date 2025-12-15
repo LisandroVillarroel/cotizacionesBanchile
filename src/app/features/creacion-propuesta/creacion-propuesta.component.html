@@ -1,20 +1,20 @@
-<app-cabecera-popup [titulo]="'Creación Propuesta - '+this.idSolicitud" />
+<app-cabecera-popup [titulo]="'Creación Propuesta - '+this.data.id_solicitud" />
 <mat-dialog-content class="container-fluid mat-card-detalle p-0">
 
   <div class="container-fluid mt-3">
     <app-informacion-general [infoGral]="infoGral()" />
   </div>
   <div class="container-fluid mt-3">
-    <app-asegurado [idSolicitud]="idSolicitud" [mostrarSoloConsulta]="true" />
+    <app-asegurado [inSolicitud]="datos" />
   </div>
   <div class="container-fluid mt-3">
-    <app-beneficiario [idSolicitud]="idSolicitud" [mostrarSoloConsulta]="true" />
+    <app-beneficiario [inSolicitud]="datos" />
   </div>
   <div class="container-fluid mt-3">
     <div class="table-con-titulo mat-elevation-z6" data-titulo="Datos Materia Asegurada" style="margin-top: 32px">
     <!-- <app-materia-asegurada [idSolicitud]="idSolicitud" [idRubro]="infoGral()?.id_rubro!"
         [idSeguro]="infoGral()?.id_tipo_seguro!" [muestraConsulta]="true" /> -->
-      <app-materia-asegurada [materiaData]="materiaData()" />
+      <app-materia-asegurada [materiaData]="data" />
     </div>
   </div>
     <div class="container-fluid mt-3">

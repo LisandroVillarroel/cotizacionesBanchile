@@ -1,8 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { Component, Inject, inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from '@angular/material/button';
 import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegurado.component";
+import { DetalleSolicitudData } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 @Component({
   selector: 'app-modal-asegurado',
@@ -12,6 +13,13 @@ import { AseguradoComponent } from "@features/ingreso-solicitud/asegurado/asegur
   styleUrl: './modal-asegurado.component.css'
 })
 export default class ModalAseguradoComponent {
-  public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-  idSol = computed(() => this.idSolicitud);
+  private readonly dialog = inject(MatDialog);
+
+  constructor(
+    public dialogRef: MatDialogRef<ModalAseguradoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DetalleSolicitudData
+   ) {}
+
+  idSolicitud = this.data.idSolicitud;
+
 }

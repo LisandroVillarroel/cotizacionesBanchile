@@ -1,6 +1,8 @@
+import { DetalleSolicitudData } from './../ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import {
   Component,
   ElementRef,
+  Inject,
   inject,
   OnInit,
   signal,
@@ -85,33 +87,25 @@ import { IRespuesta } from '@features/gestion-cotizaciones/gestionCotizacion-int
   templateUrl: './ingreso-respuesta.component.html',
 })
 export class IngresoRespuestaComponent implements OnInit {
-  public readonly datos = inject<IRespuesta>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
+
+  constructor(
+    public dialogRef: MatDialogRef<IngresoRespuestaComponent>,
+    @Inject(MAT_DIALOG_DATA) public datos: IRespuesta
+  ) {}
+
   public readonly idSolicitud = this.datos.infoGral.id_solicitud;
   public readonly modoEdicion = !this.datos.flagAccion; // false = edición
   public titulo: string = '';
-
-  verDetalleAse() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.datos.infoGral.id_solicitud;
-    this.dialog.open(ModalAseguradoComponent, dialogConfig).afterClosed();
-  }
-
-  verDetalleBen() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '80%';
-    dialogConfig.height = '90%';
-    dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.datos.infoGral.id_solicitud;
-    this.dialog.open(ModalBeneficiarioComponent, dialogConfig).afterClosed();
-  }
+  monedaService = inject(MonedaService);
+  medioPagoService = inject(MedioPagoService);
+  bancoService = inject(BancoService);
+  tipoCuentaService = inject(TipoCuentaService);
+  registrarRespuestaService = inject(RegistrarRespuestaService);
+  modificarRespuestaService = inject(ModificarRespuestaService);
+  notificacioAlertnService = inject(NotificacioAlertnService);
+  storage = inject(StorageService);
+  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   moneda = new FormControl('', [Validators.required]);
   primaNeta = new FormControl('', [Validators.required]);
@@ -145,14 +139,6 @@ export class IngresoRespuestaComponent implements OnInit {
     })
   );
 
-  monedaService = inject(MonedaService);
-  medioPagoService = inject(MedioPagoService);
-  bancoService = inject(BancoService);
-  tipoCuentaService = inject(TipoCuentaService);
-  notificacioAlertnService = inject(NotificacioAlertnService);
-  storage = inject(StorageService);
-  _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-
   datosMoneda = signal<IMoneda[]>([]);
   datosMedioPago = signal<IMedioPago[]>([]);
   datosBanco = signal<IBanco[]>([]);
@@ -179,16 +165,7 @@ export class IngresoRespuestaComponent implements OnInit {
   nombreArchivoPropuesta: string = '';
   nombreArchivoCompania: string = '';
   habilitarModificar = false;
-  tipoUsuario: string;
-
-  constructor(
-    private registrarRespuestaService: RegistrarRespuestaService,
-    private modificarRespuestaService: ModificarRespuestaService,
-    private dialogRef: MatDialogRef<IngresoRespuestaComponent>
-  ) {
-    const sesion = this._storage();
-    this.tipoUsuario = sesion?.usuarioLogin?.tipoUsuario ?? "";
-  }
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
   cargaMoneda() {
     this.monedaService.postMoneda().subscribe({
@@ -271,7 +248,6 @@ export class IngresoRespuestaComponent implements OnInit {
 
     // Prellenar formulario si está en modo edición
     if (!this.datos.flagAccion) {
-      // flagAccion = false → modo modificar
       const respuesta = this.datos.compania;
       this.formRespuesta().patchValue({
         moneda: respuesta.p_id_moneda,
@@ -385,9 +361,9 @@ export class IngresoRespuestaComponent implements OnInit {
       p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
     };
     this.registrarRespuestaService.registrarRespuesta(datos).subscribe({
-      next: async (res) => {
+      next: (res) => {
         if (res.codigo === 200) {
-          await this.notificacioAlertnService.confirmacion(
+          this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
             'La respuesta se ha registrado exitosamente.'
           );
@@ -443,9 +419,9 @@ export class IngresoRespuestaComponent implements OnInit {
     };
 
     this.modificarRespuestaService.modificarRespuesta(datos).subscribe({
-      next: async (res) => {
+      next: (res) => {
         if (res.codigo === 200) {
-          await this.notificacioAlertnService.confirmacion(
+          this.notificacioAlertnService.confirmacion(
             'CONFIRMACIÓN',
             'La respuesta se ha modificado exitosamente.'
           );
@@ -453,7 +429,6 @@ export class IngresoRespuestaComponent implements OnInit {
         }
       },
       error: () => {
-        //console.error('Error en modificarRespuesta:', error);
         this.notificacioAlertnService.
           error('ERROR', 'No fue posible modificar la respuesta de la compañía.');
       },
@@ -534,4 +509,35 @@ export class IngresoRespuestaComponent implements OnInit {
     }
     return '';
   }
+
+  verDetalleAse() {
+    const aux: DetalleSolicitudData = {
+      idSolicitud: this.datos.infoGral.id_solicitud,
+      flagSoloCerrar: true,
+    };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = aux;
+    this.dialog.open(ModalAseguradoComponent, dialogConfig).afterClosed();
+  }
+
+  verDetalleBen() {
+    const aux: DetalleSolicitudData = {
+      idSolicitud: this.datos.infoGral.id_solicitud,
+      flagSoloCerrar: true,
+    };
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = aux;
+    this.dialog.open(ModalBeneficiarioComponent, dialogConfig).afterClosed();
+  }
+
 }

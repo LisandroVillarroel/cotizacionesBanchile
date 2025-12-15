@@ -1,6 +1,5 @@
 import {
   Component,
-  computed,
   Inject,
   inject,
   OnInit,
@@ -55,14 +54,12 @@ import { AgregarCompaniaComponent } from './companias-contactadas/agregar-compan
 import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacion-propuesta.component';
 import { CompaniasContactadasComponent } from './companias-contactadas/companias-contactadas.component';
 import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interface';
+import { DetalleSolicitudData } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 
 export interface seleccionada{
   id_compania_seguro: number;
   nombre_compania: string;
 }
-
-export interface DetalleSolicitudData
-{ idSolicitud: number, flagSoloCerrar?: boolean }
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -93,18 +90,13 @@ export interface DetalleSolicitudData
 })
 export default class DetalleSolicitudComponent implements OnInit {
   datosCompanias = signal<IDatosCompania | undefined>(undefined);
-  //materiaData = signal<IMateriaData | undefined>(undefined);
-  materiaData = computed(() => {
-    const materia: IMateriaData = {
-    id_solicitud: this.datosCompanias()?.infoGral.id_solicitud as number,
-    id_rubro: this.datosCompanias()?.infoGral.id_rubro as number,
-    id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro as number,
-    muestraConsulta: this.datosCompanias()?.flagSoloCerrar as boolean,
-    };
-    return materia;
-  });
 
-
+  materiaData = signal<IMateriaData>({
+    id_solicitud: this.data.idSolicitud,
+    id_rubro: 0,
+    id_tipo_seguro: 0,
+    muestraConsulta: true,
+    });
 
   cotizacionSeleccionada: number | null = null;
   private readonly dialog = inject(MatDialog);
@@ -146,22 +138,19 @@ export default class DetalleSolicitudComponent implements OnInit {
   flagCotizacion = true;
   flagAprobarCot = false;
 
-  flagSoloCerrar = false;
+  flagSoloCerrar = this.data.flagSoloCerrar;
 
   ngOnInit() {
     this.cargarSolicitud(this.data.idSolicitud);
     this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);
-
+    console.log('Solo cerrar: ', this.data.flagSoloCerrar);
     switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
         this.verEjec = true;
         break;
       case 'C':
-        this.verEjec = false;
-        this.verCoord = true;
-        break;
       case 'S':
         this.verEjec = false;
         this.verCoord = true;
@@ -205,6 +194,12 @@ export default class DetalleSolicitudComponent implements OnInit {
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
 
+          this.materiaData.set({
+            id_solicitud: this.data.idSolicitud,
+            id_rubro: this.infoGral()!.id_rubro,
+            id_tipo_seguro: this.infoGral()!.id_tipo_seguro,
+            muestraConsulta: this.data.flagSoloCerrar!,
+          });
           /* Inicio BackEnd */
           if (
             this.edoSolicitud()! !== 'Anulada' &&
@@ -247,7 +242,7 @@ export default class DetalleSolicitudComponent implements OnInit {
   }
 
   soloConsulta(){
-    return !(this.verEjec && !this.flagCoordinador);
+    return !(this.verEjec && !this.flagCoordinador) && this.data.flagSoloCerrar!;
   }
 
   cargarCompanias(idSolicitud: number) {
@@ -334,9 +329,9 @@ export default class DetalleSolicitudComponent implements OnInit {
     if(aprobada)
     {
       this.solicitudService.postApruebaSolicitud(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
               "La solicitud ha sido aprobada exitosamente.");
             this.recargar();
           }
@@ -391,9 +386,9 @@ export default class DetalleSolicitudComponent implements OnInit {
     if(enviada)
     {
       this.solicitudService.postEnviaSolicitud(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
               "La solicitud ha sido enviada exitosamente.");
             this.recargar();
           }
@@ -454,9 +449,9 @@ export default class DetalleSolicitudComponent implements OnInit {
     if(enviada)
     {
       this.companiasService.postEnviaSolicitud(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
               "La solicitud ha sido enviada exitosamente.");
             this.recargar();
           }
@@ -467,7 +462,6 @@ export default class DetalleSolicitudComponent implements OnInit {
       });
     }
   }
-
 
   crearPropuesta(): void {
     if (this.flagSoloCerrar) return;
@@ -487,7 +481,7 @@ export default class DetalleSolicitudComponent implements OnInit {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.data.idSolicitud;
+    dialogConfig.data = this.materiaData();
     this.dialog
       .open(CreacionPropuestaComponent, dialogConfig)
       .afterClosed()
@@ -524,9 +518,9 @@ export default class DetalleSolicitudComponent implements OnInit {
     if(aprobada)
     {
       this.gestionCotService.postApruebaCotizacion(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
               "La cotización ha sido aprobada exitosamente.");
             this.recargar();
           }

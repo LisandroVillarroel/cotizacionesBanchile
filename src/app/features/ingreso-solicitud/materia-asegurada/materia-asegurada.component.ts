@@ -36,11 +36,6 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 })
 export class MateriaAseguradaComponent {
   materiaData = input.required<IMateriaData | undefined>();
-  /* idSolicitud = input.required<number>();
-  idRubro = input.required<number>();
-  idSeguro = input.required<number>();
-  muestraConsulta = input<boolean>();
-  mostrarSoloConsulta = input.required<boolean>(); */
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -57,7 +52,6 @@ export class MateriaAseguradaComponent {
   materiaIngresa: IMateriaIngresa[] = [];
 
   constructor() {
-
     /*effect(() => {
       // Llamar al método cada vez que el valor cambie
        this.datoMateriaEstructura_arr = [];

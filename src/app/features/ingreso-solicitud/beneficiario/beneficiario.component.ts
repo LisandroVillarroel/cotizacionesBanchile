@@ -26,6 +26,7 @@ import {
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   DatosBeneficiariosInterface,
+  DetalleSolicitudData,
   IBeneficiario,
   IBeneficiarioLista,
   IBeneficiarioListaParametro,
@@ -56,8 +57,9 @@ import { EliminaBeneficiarioComponent } from './elimina-beneficiario/elimina-ben
   styleUrl: './beneficiario.component.css',
 })
 export class BeneficiarioComponent implements OnInit {
-  idSolicitud = input.required<number>();
-  mostrarSoloConsulta = input.required<boolean>();
+  inSolicitud = input.required<DetalleSolicitudData>();
+  idSolicitud = 0;
+  mostrarSoloConsulta = true;
 
   notificacioAlertnService= inject(NotificacioAlertnService);
 
@@ -67,8 +69,8 @@ export class BeneficiarioComponent implements OnInit {
   constructor() {
       effect(() => {
         // Llamar al método cada vez que el valor cambie
-        if (this.idSolicitud() !== 0){
-          this.rescataListaBeneficiarios(this.idSolicitud()!);
+        if (this.idSolicitud !== 0){
+          this.rescataListaBeneficiarios(this.idSolicitud!);
         }
       }, { allowSignalWrites: true });
     }
@@ -121,7 +123,8 @@ export class BeneficiarioComponent implements OnInit {
 
   ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-
+    this.idSolicitud = this.inSolicitud().idSolicitud;
+    this.mostrarSoloConsulta = this.inSolicitud().flagSoloCerrar!;
   }
 
   rescataListaBeneficiarios(idSolicitud: number) {
@@ -148,14 +151,14 @@ export class BeneficiarioComponent implements OnInit {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud();
+    dialogConfig.data = this.idSolicitud;
 
     this.dialog
       .open(AgregaBeneficiarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataListaBeneficiarios(this.idSolicitud());
+          this.rescataListaBeneficiarios(this.idSolicitud);
         }
       });
   }
@@ -165,7 +168,7 @@ export class BeneficiarioComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
  const parametro:IBeneficiarioListaParametro={
       datoBeneficiarioPar: datoBeneficiarioPar,
-      idSolicitud: this.idSolicitud(),
+      idSolicitud: this.idSolicitud,
     };
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -178,8 +181,7 @@ export class BeneficiarioComponent implements OnInit {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
-          //console.log('Modificación Confirmada:', data);
-          this.rescataListaBeneficiarios(this.idSolicitud());
+          this.rescataListaBeneficiarios(this.idSolicitud);
         }
       });
   }
@@ -203,7 +205,7 @@ export class BeneficiarioComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     const parametro:IBeneficiarioListaParametro={
       datoBeneficiarioPar: datoBeneficiarioPar,
-      idSolicitud: this.idSolicitud(),
+      idSolicitud: this.idSolicitud,
     };
 
     dialogConfig.disableClose = true;
@@ -218,7 +220,7 @@ export class BeneficiarioComponent implements OnInit {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataListaBeneficiarios(this.idSolicitud());
+          this.rescataListaBeneficiarios(this.idSolicitud);
         }
       });
   }

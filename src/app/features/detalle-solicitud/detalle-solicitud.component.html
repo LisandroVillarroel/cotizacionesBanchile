@@ -61,28 +61,16 @@
         </mat-tab>
         <mat-tab label="Asegurados">
           <div class="container-fluid">
-            <app-asegurado
-              [idSolicitud]="data.idSolicitud"
-              [mostrarSoloConsulta]="soloConsulta()"
-            />
+            <app-asegurado [inSolicitud]="data" />
           </div>
         </mat-tab>
         <mat-tab label="Beneficiarios">
           <div class="container-fluid">
             <!-- <app-beneficiario [idSolicitud]="idSol()" /> -->
-            <app-beneficiario
-              [idSolicitud]="data.idSolicitud"
-              [mostrarSoloConsulta]="soloConsulta()"
-            />
+            <app-beneficiario [inSolicitud]="data" />
           </div>
         </mat-tab>
         <mat-tab label="Materia Asegurada">
-<!--           <app-materia-asegurada
-            [idSolicitud]="data.idSolicitud"
-            [idRubro]="infoGral()?.id_rubro!"
-            [idSeguro]="infoGral()?.id_tipo_seguro!"
-            [muestraConsulta]="soloConsulta()"
-          /> -->
           <app-materia-asegurada [materiaData]="materiaData()" />
         </mat-tab>
         <mat-tab label="Documentos Asociados">

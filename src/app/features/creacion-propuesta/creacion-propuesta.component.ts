@@ -1,5 +1,6 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
+import { DetalleSolicitudData } from './../ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { Component, Inject, inject, OnInit, signal } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent, MatDialogRef } from "@angular/material/dialog";
 import { DetalleSolicitudInterface, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
 import { MatDialogClose } from '@angular/material/dialog';
@@ -36,12 +37,18 @@ import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interfa
   styleUrl: './creacion-propuesta.component.css'
 })
 export class CreacionPropuestaComponent implements OnInit {
-  public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
-  private readonly dialog = inject(MatDialog);
 
-  idSol = computed(() => this.idSolicitud.toString());
+  private readonly dialog = inject(MatDialog);
+  constructor(
+    public dialogRef: MatDialogRef<CreacionPropuestaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: IMateriaData
+  ) {}
+
   infoGral = signal<ISolicitud | undefined>(undefined);
-  materiaData = signal<IMateriaData | undefined>(undefined);
+  datos: DetalleSolicitudData = {
+    idSolicitud: this.data.id_solicitud,
+    flagSoloCerrar: true
+  };
 
   detalleService = inject(DetalleSolicitudService);
   generarService = inject(GenerarPropuestaService);
@@ -54,7 +61,7 @@ export class CreacionPropuestaComponent implements OnInit {
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
           this.infoGral.set({
-            id_solicitud: this.idSolicitud,
+            id_solicitud: this.data.id_solicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
             nombre_razon_social_contratante: dato.p_nombre_razon_social_contratante,
@@ -71,18 +78,18 @@ export class CreacionPropuestaComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el detalle de la solicitud.');
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener el detalle de la solicitud.');
       }
     });
   }
 
  ngOnInit() {
-    this.cargarSolicitud(this.idSolicitud);
+    this.cargarSolicitud(this.data.id_solicitud);
   }
 
   crearPpta(): void {
     const dato = {
-      p_id_solicitud: this.idSolicitud,
+      p_id_solicitud: this.data.id_solicitud,
       p_id_usuario: this._storage()?.usuarioLogin?.usuario,
       p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario
     };
@@ -99,7 +106,7 @@ export class CreacionPropuestaComponent implements OnInit {
      .open(ConfirmacionPptaComponent, dialogConfig)
      .afterClosed()
      .subscribe(() => {
-       this.cargarSolicitud(this.idSolicitud);
+       this.cargarSolicitud(this.data.id_solicitud);
      });
   }
 }

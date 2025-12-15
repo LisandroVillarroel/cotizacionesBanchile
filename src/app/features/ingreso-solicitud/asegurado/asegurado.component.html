@@ -208,7 +208,7 @@
           matTooltip="Agregar nuevo asegurado"
           matTooltipPosition="above"
           (click)="agregaNuevoAsegurado()"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
@@ -226,7 +226,7 @@
           mat-icon-button
           class="tabla"
           (click)="modificaAsegurado(row)"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -247,7 +247,7 @@
           mat-icon-button
           class="tabla"
           (click)="eliminaAsegurado(row)"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -270,5 +270,5 @@
 <mat-paginator
   #myPaginator
   [pageSizeOptions]="[10, 20, 30, 100]"
-  [hidden]="mostrarSoloConsulta()"
+  [hidden]="mostrarSoloConsulta"
 ></mat-paginator>

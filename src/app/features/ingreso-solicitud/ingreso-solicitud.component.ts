@@ -35,6 +35,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import {
+  DetalleSolicitudData,
   IAsegurado,
   IIngresoSolicitud,
 } from './modelo/ingresoSolicitud-Interface';
@@ -137,6 +138,11 @@ export default class IngresoSolicitudComponent implements OnInit {
     id_rubro: 0,
     id_tipo_seguro: 0,
     muestraConsulta: true,
+  });
+
+  data = signal<DetalleSolicitudData>({
+    idSolicitud: 0,
+    flagSoloCerrar: true,
   });
 
   private readonly dialog = inject(MatDialog);
@@ -375,6 +381,10 @@ export default class IngresoSolicitudComponent implements OnInit {
               id_rubro: this.agregaSolicitudContratante().get('rubro')!.value as number,
               id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value as number,
               muestraConsulta: false,
+            });
+            this.data.set({
+              idSolicitud: this.idSolicitud,
+              flagSoloCerrar: false,
             });
           }
         },

@@ -306,3 +306,8 @@ export interface DatosDocumentoInterface {
   vcEstado: string;
   vcEstadoCreacion: string;
 }
+
+export interface DetalleSolicitudData {
+  idSolicitud: number,
+  flagSoloCerrar?: boolean,
+}

@@ -209,7 +209,7 @@
           matTooltip="Agregar nuevo beneficiario"
           matTooltipPosition="above"
           (click)="agregaNuevoBeneficiario()"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
@@ -227,7 +227,7 @@
           mat-icon-button
           class="tabla"
           (click)="modificaBeneficiario(row)"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -246,7 +246,7 @@
           mat-icon-button
           class="tabla"
           (click)="eliminaBeneficiario(row)"
-          [hidden]="mostrarSoloConsulta()"
+          [hidden]="mostrarSoloConsulta"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -269,5 +269,5 @@
 <mat-paginator
   #myPaginator
   [pageSizeOptions]="[10, 20, 30, 100]"
-  [hidden]="mostrarSoloConsulta()"
+  [hidden]="mostrarSoloConsulta"
 ></mat-paginator>
