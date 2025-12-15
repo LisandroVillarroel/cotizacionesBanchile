@@ -22,7 +22,7 @@
             <mat-select [formControl]="rubro"
               (selectionChange)="seleccionaRubro($event.value)">
               @for(_rubros of datoRubros(); track _rubros){
-              <mat-option [value]="_rubros">
+              <mat-option [value]="_rubros.p_id_rubro">
                 {{ _rubros.p_nombre_rubro }}
               </mat-option>
               }

@@ -1,6 +1,6 @@
 import { Component, input, signal, inject, effect } from '@angular/core';
 import { MateriaService } from '../service/materia.service';
-import { IMateria, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaTiene } from '../modelo/materia-Interface';
+import { IMateria, IMateriaData, IMateriaEnvia, IMateriaEstructura, IMateriaIngresa, IMateriaTiene } from '../modelo/materia-Interface';
 import { NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,11 +35,12 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   styleUrl: './materia-asegurada.component.css',
 })
 export class MateriaAseguradaComponent {
-  idSolicitud = input.required<number>();
+  materiaData = input.required<IMateriaData | undefined>();
+  /* idSolicitud = input.required<number>();
   idRubro = input.required<number>();
   idSeguro = input.required<number>();
   muestraConsulta = input<boolean>();
-  //mostrarSoloConsulta = input.required<boolean>();
+  mostrarSoloConsulta = input.required<boolean>(); */
 
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
@@ -57,19 +58,49 @@ export class MateriaAseguradaComponent {
 
   constructor() {
 
-    effect(() => {
+    /*effect(() => {
       // Llamar al método cada vez que el valor cambie
-      this.datoMateriaEstructura_arr = [];
+       this.datoMateriaEstructura_arr = [];
       this.materiaForm().get('flagSinInfo')?.setValue(this.muestraConsulta())
       if (this.idRubro()!=null && this.idSeguro()!=null && this.idRubro()!=0 && this.idSeguro()!=0){
         this.rescataListaMaterias(this.idRubro(), this.idSeguro());
       }
-    }, { allowSignalWrites: true });
+    }, { allowSignalWrites: true }); */
+      effect(
+      () => {
+        // Llamar al método cada vez que el valor cambie
+        this.datoMateriaEstructura_arr = [];
+        this.materiaForm().get('flagSinInfo')?.setValue(this.materiaData()!.muestraConsulta);
+        if (
+          this.materiaData()!.id_rubro != null &&
+          this.materiaData()!.id_tipo_seguro != null &&
+          this.materiaData()!.id_rubro != 0 &&
+          this.materiaData()!.id_tipo_seguro != 0
+        ) {
+          this.rescataListaMaterias(
+            this.materiaData()!.id_rubro,
+            this.materiaData()!.id_tipo_seguro,
+          );
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
-  materiaForm = signal<FormGroup>(new FormGroup({
+/*   materiaForm = signal<FormGroup>(new FormGroup({
     flagSinInfo:  new FormControl(this.muestraConsulta(), [Validators.required])
-  }));
+  })); */
+
+  materiaForm = signal<FormGroup>(
+    new FormGroup({
+      // lee el signal (¡sin envolver en una función!)
+      // flagSinInfo: new FormControl<boolean>(this.materiaData()!.muestraConsulta, {
+      flagSinInfo: new FormControl(
+        () => this.materiaData()!.muestraConsulta,
+        [Validators.required],
+      ),
+    }),
+  );
 
   rescataListaMaterias(idRubro: number, idSeguro: number) {
     this.materiaService
@@ -78,7 +109,8 @@ export class MateriaAseguradaComponent {
         next: (dato) => {
           if (dato.codigo === 200) {
             this.datoMateria.set(dato.p_cursor);
-            this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro)
+            //this.rescataTieneMateria(this.idSolicitud(), idRubro, idSeguro)
+            this.rescataTieneMateria(this.materiaData()!.id_solicitud, idRubro, idSeguro);
           }
         },
         error: () => {
@@ -249,9 +281,12 @@ export class MateriaAseguradaComponent {
     }
 
     const envioMateria: IMateriaEnvia = {
-      p_id_solicitud: this.idSolicitud(),
+      p_id_solicitud: this.materiaData()!.id_solicitud,
+      p_id_rubro: this.materiaData()!.id_rubro,
+      p_id_tipo_seguro: this.materiaData()!.id_tipo_seguro,
+      /* p_id_solicitud: this.idSolicitud(),
       p_id_rubro: this.idRubro(),
-      p_id_tipo_seguro: this.idSeguro(),
+      p_id_tipo_seguro: this.idSeguro(), */
       items: this.materiaIngresa
     }
 

@@ -63,6 +63,7 @@ import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
+import { IMateriaData } from './modelo/materia-Interface';
 
 
 @Component({
@@ -131,6 +132,13 @@ export default class IngresoSolicitudComponent implements OnInit {
 
   esIgualAlAsegurado: boolean = false;
 
+  materiaData = signal<IMateriaData>({
+    id_solicitud: 0,
+    id_rubro: 0,
+    id_tipo_seguro: 0,
+    muestraConsulta: true,
+  });
+
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
 
@@ -147,6 +155,13 @@ export default class IngresoSolicitudComponent implements OnInit {
   seguro = new FormControl('', [Validators.required]);
   aseguradeCheck = new FormControl(false, [Validators.required]);
 
+  validaQueSeaVerdadero = (control: AbstractControl): ValidationErrors | null => {
+    if (control.value !== true) {
+      return { isTrue: true }; // La clave del error es 'isTrue'
+    }
+    return null;
+  };
+
   flagAsegurado = new FormControl(false, [
     Validators.required,
     this.validaQueSeaVerdadero,
@@ -160,7 +175,6 @@ export default class IngresoSolicitudComponent implements OnInit {
   cuestionarioComponent!: CuestionarioComponent;
 
   @ViewChild('stepper') stepper!: MatStepper;
-
   //Declara los datos del contratante para panel
   contratanteInfo = signal({
     id: 0,
@@ -207,7 +221,7 @@ export default class IngresoSolicitudComponent implements OnInit {
     }
 
     if (campo === 'seguro') {
-      return this.seguro.hasError('required') ? 'Debes ingresar seguro' : '';
+      return this.seguro.hasError('required') ? 'Debes seleccionar un tipo de seguro' : '';
     }
 
     return '';
@@ -231,7 +245,6 @@ export default class IngresoSolicitudComponent implements OnInit {
   }
 
   async seleccionaRubro(_codigoRubro: number) {
-    //const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
     this.tipoSeguroService.postTipoSeguro(_codigoRubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
@@ -265,23 +278,10 @@ export default class IngresoSolicitudComponent implements OnInit {
       rutIngresado = formatRut(cleanRut(rutIngresado), RutFormat.DASH);
     }
 
-    //console.log('RUT enviado al servicio:', rutIngresado);
-
     this.ingresoSolicitudService.getDatosContratante(rutIngresado).subscribe({
       next: (resp) => {
         if (resp.codigo === 200 && resp.data) {
           const datos = resp.data;
-
-          if (datos.rutCliente !== '11898216-9') {
-            this.notificacioAlertnService.error(
-              'ERROR',
-              'Este RUT no tiene datos disponibles'
-            );
-            this.nombreRazonSocial.set('');
-            this.emailContratante.set('');
-            this.telefonoContratante.set('');
-            return;
-          }
 
           this.nombreRazonSocial.set(
             `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno}`
@@ -317,7 +317,7 @@ export default class IngresoSolicitudComponent implements OnInit {
       error: () => {
         this.notificacioAlertnService.error(
           'ERROR',
-          'Error al consultar el servicio'
+          'Error al consultar datos del contratante.',
         );
       },
     });
@@ -325,12 +325,7 @@ export default class IngresoSolicitudComponent implements OnInit {
 
   grabaContratanteAux() {}
 
-  async grabaContratante() {
-    /* console.log('form contratante:', this.agregaSolicitudContratante().value);
-    console.log(
-      'aseguradeCheck:',
-      this.agregaSolicitudContratante().get('aseguradeCheck')!.value
-    ); */
+  grabaContratante() {
     this.ingresoSolicitud = {
       p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
       p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
@@ -373,10 +368,14 @@ export default class IngresoSolicitudComponent implements OnInit {
               this.agregarAsegurado();
             } else {
               this.idSolicitud = dato.p_id_solicitud;
-              //this.idSolicitud.set(dato.p_id_solicitud);
             }
-            //this.idSolicitud.set(dato.p_id_solicitud);
             this.idSolicitud = dato.p_id_solicitud;
+            this.materiaData.set({
+              id_solicitud: this.idSolicitud,
+              id_rubro: this.agregaSolicitudContratante().get('rubro')!.value as number,
+              id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value as number,
+              muestraConsulta: false,
+            });
           }
         },
         error: () => {
@@ -389,9 +388,8 @@ export default class IngresoSolicitudComponent implements OnInit {
        this.agregaAsegurado().get('flagAsegurado')?.setValue(dato)
   }
 
-  async agregarAsegurado() {
+  agregarAsegurado() {
     const rutVisual = this.ingresoSolicitud.contratante.rut_contratante;
-
     const rutParaBD = formatRut(cleanRut(rutVisual), RutFormat.DASH);
 
     this.asegurado = {
@@ -416,7 +414,7 @@ export default class IngresoSolicitudComponent implements OnInit {
       p_casa_asegurado: this.ingresoSolicitud.contratante.casa_contratante,
     };
 
-    await this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
+    this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           //this.idSolicitud.set(this.contratanteInfo().id);
@@ -447,13 +445,6 @@ export default class IngresoSolicitudComponent implements OnInit {
     }
     return null;
 
-  }
-
-  validaQueSeaVerdadero(control: AbstractControl): ValidationErrors | null {
-    if (control.value !== true) {
-      return { isTrue: true }; // La clave del error es 'isTrue'
-    }
-    return null;
   }
 
   puedeEnviar(): boolean {

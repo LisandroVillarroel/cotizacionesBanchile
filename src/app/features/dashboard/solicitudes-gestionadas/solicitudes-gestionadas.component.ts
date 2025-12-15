@@ -143,7 +143,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
-      fechaInicio = new Date(this.filtroFormulario().value.fecha);
+      fechaInicio = new Date(fechaInicio_Inicial);
     }
 
     this.formularioModificado();
@@ -228,8 +228,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
     });
   }
 
-  async seleccionaRubro(datos: IRubro) {
-    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
+  async seleccionaRubro(id_rubro: number) {
+    this.tipoSeguroService.postTipoSeguro(id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
