@@ -23,8 +23,8 @@ export interface IGestionCotizacion{
   p_cotizaciones_recibidas?: number,
   p_fecha_aceptacion_solicitud?: string,
   p_fecha_emision_propuesta?:string,
-  p_doc_propuesta?: string,
   p_fecha_firma_propuesta?: string,
+  p_ruta_cotizacion_propuesta?: string,
   selected?: boolean
 }
 
@@ -34,13 +34,13 @@ export interface IGestionResponse{
   ps_cursorRec: IGestionCotizacion[],
   ps_cursorPen: IGestionCotizacion[],
   ps_cursorProGen: IGestionCotizacion[],
-  ps_cursorProFir: IGestionCotizacion[],
   ps_cursorFirPen: IGestionCotizacion[],
+  ps_cursorProFir: IGestionCotizacion[],
   p_nro_cotiz_reg: number,
   p_nro_prop_pend: number,
   p_nro_prop_gene: number,
+  p_nro_prop_FirPen: number
   p_nro_prop_firm: number,
-  p_nro_prop_firm_pend: number
   vcEstado: string,
   vcEstadoCreacion: string
 }

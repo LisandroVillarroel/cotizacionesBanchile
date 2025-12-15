@@ -80,8 +80,8 @@ export default class GestionCotizacionesComponent implements OnInit {
             recibidas: dato.p_nro_cotiz_reg,
             aceptadas: dato.p_nro_prop_pend,
             emitidas: dato.p_nro_prop_gene,
+            por_firmar: dato.p_nro_prop_FirPen,
             firmadas: dato.p_nro_prop_firm,
-            por_firmar: dato.p_nro_prop_firm_pend
           });
           this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
           this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
