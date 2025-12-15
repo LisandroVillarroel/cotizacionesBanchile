@@ -131,12 +131,13 @@ export default class IngresoSolicitudComponent implements OnInit {
   solicitudService = inject(DetalleSolicitudService);
 
   esIgualAlAsegurado: boolean = false;
-  materiaData: IMateriaData = {
+
+  materiaData = signal<IMateriaData>({
     id_solicitud: 0,
     id_rubro: 0,
     id_tipo_seguro: 0,
     muestraConsulta: true,
-  };
+  });
 
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
@@ -367,15 +368,14 @@ export default class IngresoSolicitudComponent implements OnInit {
               this.agregarAsegurado();
             } else {
               this.idSolicitud = dato.p_id_solicitud;
-              //this.idSolicitud.set(dato.p_id_solicitud);
             }
             this.idSolicitud = dato.p_id_solicitud;
-            this.materiaData = {
+            this.materiaData.set({
               id_solicitud: this.idSolicitud,
               id_rubro: this.agregaSolicitudContratante().get('rubro')!.value as number,
               id_tipo_seguro: this.agregaSolicitudContratante().get('seguro')!.value as number,
               muestraConsulta: false,
-            };
+            });
           }
         },
         error: () => {

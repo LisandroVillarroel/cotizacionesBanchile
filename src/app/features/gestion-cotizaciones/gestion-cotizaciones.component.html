@@ -35,6 +35,13 @@
               (retorno)="recibido($event)" />
           </div>
         </mat-tab>
+        <mat-tab label="Propuestas Emitidas">
+          <div class="container-fluid ">
+            <app-cotizaciones [cotizaciones]="por_firmar()"
+              [estado]="'emitida'"
+              (retorno)="recibido($event)" />
+          </div>
+        </mat-tab>
         <mat-tab label="Propuestas Firmadas">
           <div class="container-fluid ">
             <app-cotizaciones [cotizaciones]="firmadas()"
