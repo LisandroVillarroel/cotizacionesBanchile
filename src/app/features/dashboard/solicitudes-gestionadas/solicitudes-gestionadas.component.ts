@@ -135,7 +135,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
   datosFiltrados() {
     const contratante = this.filtroFormulario().value.contratante ?? '';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const rubroObj = this.filtroFormulario().value.rubro;
+    const rubro = rubroObj && rubroObj.p_nombre_rubro ? rubroObj.p_nombre_rubro : '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const estado = this.filtroFormulario().value.estado ?? '';
     const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
@@ -147,21 +148,19 @@ export class SolicitudesGestionadasComponent implements OnInit {
 
     this.formularioModificado();
     return this.datosSolicitud()!.filter(item => {
-      const cumpleContratante = item.nombre_razon_social_contratante
-        .toLowerCase()
-        .includes(contratante.toString().toLowerCase());
-      const cumpleRubro = item.id_rubro.toString()?.includes(rubro.toString());
-      const cumpleTipoSeguro = item.nombre_tipo_seguro
-        ?.toLowerCase()
-        .includes(tipoSeguro.toLowerCase());
-      const cumpleEstado = item.descripcion_estado.toLowerCase().includes(estado.toLowerCase());
+
+
+      const cumpleContratante = item.nombre_razon_social_contratante.toLowerCase().includes(contratante.toLowerCase());
+      const cumpleRubro = item.nombre_rubro.toLocaleLowerCase().includes(rubro.toLocaleLowerCase());
+      const cumpleTipoSeguro = item.nombre_tipo_seguro?.includes(tipoSeguro);
+      const cumpleEstado = item.descripcion_estado.includes(estado);
       let cumpleFecha = true;
-      const fechaBase = new Date(item.fecha_creacion);
+      const fechaBase = new Date(item.fecha_creacion+'T00:00:00');
 
       if (fechaInicio_Inicial != null) {
         cumpleFecha = !fechaInicio || (
           fechaBase.getFullYear() === fechaInicio.getFullYear() &&
-          fechaBase.getMonth() === fechaInicio.getMonth() &&
+          fechaBase.getMonth()+1 === fechaInicio.getMonth()+1 &&
           fechaBase.getDate() === fechaInicio.getDate()
         );
       }
@@ -195,6 +194,8 @@ export class SolicitudesGestionadasComponent implements OnInit {
       case "A":
         this.verEjec = false; this.verCoord = false; break;
     }
+
+
   }
 
   private updateTableData(): void {
