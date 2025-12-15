@@ -5,7 +5,9 @@ import { Observable } from 'rxjs';
 import {
   IBeneficiario,
   DatosBeneficiariosInterface,
+  IDatosPersona,
 } from '../modelo/ingresoSolicitud-Interface';
+import { IResponse } from '@shared/modelo/servicios-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +21,8 @@ export class BeneficiarioService {
   });
 
   constructor() {}
-  postAgregaBeneficiario(agregaBeneficiario: IBeneficiario): Observable<any> {
-    return this.http.post<any>(
+  postAgregaBeneficiario(agregaBeneficiario: IBeneficiario): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/ingresarBeneficiario`,
       agregaBeneficiario,
       {
@@ -31,8 +33,8 @@ export class BeneficiarioService {
 
   postModificaBeneficiario(
     modificaBeneficiario: IBeneficiario
-  ): Observable<any> {
-    return this.http.post<any>(
+  ): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/modificarBeneficiario`,
       modificaBeneficiario,
       {
@@ -44,13 +46,13 @@ export class BeneficiarioService {
   postEliminaBeneficiario(
     isolicitud: number,
     rutBeneficiario: string
-  ): Observable<any> {
+  ): Observable<IResponse> {
     const parametro = {
       p_id_solicitud: isolicitud,
       p_rut_beneficiario: rutBeneficiario,
     };
 
-    return this.http.post<any>(
+    return this.http.post<IResponse>(
       `${environment.apiUrlConsumer}/eliminarBeneficiario`,
       parametro,
       {
@@ -59,9 +61,8 @@ export class BeneficiarioService {
     );
   }
 
-  postListadoBeneficiario(
-    filtro: any
-  ): Observable<DatosBeneficiariosInterface> {
+  postListadoBeneficiario(idSolicitud: number): Observable<DatosBeneficiariosInterface> {
+    const filtro = { p_id_solicitud: idSolicitud };
     return this.http.post<DatosBeneficiariosInterface>(
       `${environment.apiUrlConsumer}/listarBeneficiarios`,
       filtro,
@@ -70,9 +71,10 @@ export class BeneficiarioService {
   }
 
   //Servicio para traer datos del mock a beneficiario
-  getDatosBenficiario(rut: string): Observable<any> {
-    return this.http.get(
-      `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`
-    );
-  }
+  getDatosBenficiario(rut: string): Observable<IDatosPersona> {
+      return this.http.get<IDatosPersona>(
+        `http://192.168.1.36:8082/ms-pseg-cotizaciones/cotizaciones/clientesQms_pruebalocal/${rut}`,
+        { headers: this.headers }
+      );
+    }
 }

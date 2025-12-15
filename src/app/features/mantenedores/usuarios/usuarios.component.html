@@ -1,4 +1,20 @@
 <div class="table-con-titulo mat-elevation-z6" data-titulo="Usuarios" style="margin-top: 32px">
+  <div class="buscar ml-2 mr-2">
+    <mat-form-field class="inputBuscar">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+    </mat-form-field>
+    <mat-form-field class="inputSelect">
+      <mat-label class="cursiva gris-claro">Selecciona Tipo Usuario</mat-label>
+      <mat-select [formControl]="tipoUsuarioSelect" (selectionChange)="seleccionaTipoUsuario($event.value)">
+        @for(_tipoUsuario of datoPerfilesUsuarios(); track _tipoUsuario){
+        <mat-option [value]="_tipoUsuario.p_codigo_perfil">
+          {{ _tipoUsuario.p_nombre_perfil }}
+        </mat-option>|
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
   <table mat-table [dataSource]="dataSource()" multiTemplateDataRows matSort>
     <ng-container matColumnDef="index">
       <th id="indexI" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%">
@@ -101,11 +117,13 @@
 
     <ng-container matColumnDef="opciones">
       <th id="opcionesI" mat-header-cell *matHeaderCellDef style="width: 15%; text-align: center">
-        <span class="agregar-texto" matTooltip="Agregar nuevo Usuario" matTooltipPosition="above"
+        <button class="agregar-texto"
+          matTooltip="Agregar nuevo Usuario"
+          matTooltipPosition="above"
           (click)="agregaNuevo()">
           <mat-icon style="vertical-align: middle">add</mat-icon>
           Agregar
-        </span>
+        </button>
       </th>
 
       <td mat-cell *matCellDef="let row; let i = index" style="width: 15%; text-align: center">
@@ -127,8 +145,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns" class="example-element-row"></tr>
   </table>
   @if(this.datoUsuarios().length === 0 ){
-  <div class="info SinInfoTabla">
-    No hay usuarios para mostrar</div>
+  <div class="info SinInfoTabla">No hay usuarios para mostrar</div>
   }
 </div>
 

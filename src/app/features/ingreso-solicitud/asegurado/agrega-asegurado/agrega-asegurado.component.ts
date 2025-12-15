@@ -21,7 +21,7 @@ import {
 } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
 import { AseguradoService } from '@features/ingreso-solicitud/service/asegurado.service';
-import { IAsegurado } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAsegurado, IDatosPersona } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
@@ -197,8 +197,9 @@ export class AgregaAseguradoComponent {
   } */
 
   //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutAsegurado(event: any) {
-    const rut = event.target.value;
+  async onBlurRutAsegurado(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const rut = input.value;
 
     if (validateRut(rut) === true) {
       // Formatear el RUT visualmente
@@ -213,7 +214,7 @@ export class AgregaAseguradoComponent {
 
       if (rutParaBD === '11898216-9') {
         this.aseguradoService.getDatosAsegurado(rutParaBD).subscribe({
-          next: (response: any) => {
+          next: (response: IDatosPersona) => {
             if (response.codigo === 200 && response.data) {
               const data = response.data;
 
@@ -255,11 +256,12 @@ export class AgregaAseguradoComponent {
     }
   }
 
-  validaRut(control: FormControl): { [s: string]: boolean } {
+  validaRut(control: FormControl): { [s: string]: boolean } | null {
     if (validateRut(control.value) === false) {
       return { rutInvalido: true };
     }
-    return null as any;
+    return null;
+
   }
 
   grabar() {
@@ -270,8 +272,8 @@ export class AgregaAseguradoComponent {
 
     this.asegurado = {
       p_id_solicitud: Number(this.data),
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",
       //p_rut_asegurado: this.agregaAsegurado().get('rutAsegurado')!.value,
       p_rut_asegurado: rutParaBD,
       p_nombre_razon_social_asegurado:
@@ -293,18 +295,18 @@ export class AgregaAseguradoComponent {
       p_casa_asegurado: this.agregaAsegurado().get('casaAsegurado')!.value,
     };
 
-    console.log('Asegurado Grabado:', this.asegurado);
+    //console.log('Asegurado Grabado:', this.asegurado);
 
     this.aseguradoService.postAgregaAsegurado(this.asegurado).subscribe({
       next: (dato) => {
-        console.log('dato:', dato);
+      //  console.log('dato:', dato);
         if (dato.codigo === 200) {
           //alert('Grabó Asegurado Bien');
           this.dialogRef.close('agregado');
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar al asegurado.');
       },
     });
   }

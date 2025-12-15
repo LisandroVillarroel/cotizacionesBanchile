@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from "@angular/material/tooltip";
 
-import { ISolicitudG } from './gestionSolicitud-interface';
+import { IGestionResponse, ISolicitudG } from './gestionSolicitud-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionSolicitudesService } from './gestion-solicitudes.service';
@@ -33,14 +33,14 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
   templateUrl: './gestion-solicitudes.component.html',
   styleUrl: './gestion-solicitudes.component.css'
 })
-export default class GestionSolicitudesComponent {
+export default class GestionSolicitudesComponent implements OnInit {
   fechaActual: Date = new Date();
   datosSolicitud = signal<ISolicitudG[]>([]);
 
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  perfil = this._storage()?.usuarioLogin.tipoUsuario!;
+  perfil = this._storage()?.usuarioLogin?.tipoUsuario;
   ejec = signal<boolean>(false);
   gestionService = inject(GestionSolicitudesService);
 
@@ -60,7 +60,7 @@ export default class GestionSolicitudesComponent {
     r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
   });
 
-  async ngOnInit(){
+  ngOnInit(){
     if(this.perfil === "E"){
       this.ejec.set(true);
     }else{
@@ -71,13 +71,13 @@ export default class GestionSolicitudesComponent {
 
   cargarSolicitudes() {
     const request = {
-      p_id_usuario:  this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this.perfil
+      p_id_usuario:  this._storage()?.usuarioLogin?.usuario ?? "",
+      p_tipo_usuario: this.perfil ?? ""
     };
     this.gestionService.postListaGestion(request).subscribe({
-      next: (dato: any) => {
+      next: (dato: IGestionResponse) => {
         if (dato.codigo === 200) {
-          let res = dato.ps_cursor;
+          const res = dato.ps_cursor;
           res.map((valor: ISolicitudG)=> {
             return {
               ...valor, // Copiamos las propiedades originales
@@ -88,7 +88,7 @@ export default class GestionSolicitudesComponent {
           this.datosSolicitud.set(res);
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de solicitudes.');
       },
     });

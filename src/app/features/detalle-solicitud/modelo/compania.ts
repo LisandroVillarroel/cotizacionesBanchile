@@ -1,3 +1,5 @@
+import { ISolicitud, ICompania } from "./detalle-interface";
+
 export interface IAgregaCompania {
   p_id_solicitud: number;
   p_id_compania_seguro: number;
@@ -35,3 +37,11 @@ export interface botonCompania{
   // mostrar: boolean,
   accion: (id: number) => void,
 }[]
+
+export interface IDatosCompania{
+  infoGral: ISolicitud,
+  companias: ICompania[],
+  verEjec: boolean,
+  minimo: number,
+  flagSoloCerrar: boolean
+}

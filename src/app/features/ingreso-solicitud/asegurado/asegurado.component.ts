@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  OnInit,
   output,
   signal,
   ViewChild,
@@ -54,7 +55,7 @@ import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado
   templateUrl: './asegurado.component.html',
   styleUrl: './asegurado.component.css',
 })
-export class AseguradoComponent {
+export class AseguradoComponent implements OnInit {
   idSolicitud = input.required<number>();
   mostrarSoloConsulta = input.required<boolean>();  //Es llamado de varios componentes ve si es consulta o ingreso
   datoEmitidoAsegurado = output<boolean>();
@@ -125,24 +126,20 @@ export class AseguradoComponent {
 
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     console.log('entro a asegurado ngAfterViewInit', this.idSolicitud());
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
   rescataListaAsegurados(p_id_solicitud: number) {
-    const estructura_listaAsegurados = {
-      p_id_solicitud: p_id_solicitud,
-    };
-
     this.aseguradoService
-      .postListadoAsegurado(estructura_listaAsegurados)
+      .postListadoAsegurado(p_id_solicitud)
       .subscribe({
         next: (dato: DatosAseguradosInterface) => {
           if (dato.codigo === 200) {
@@ -150,8 +147,8 @@ export class AseguradoComponent {
             this.hayAsegurados.set(dato.p_cursor.length > 0);
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible obtener el listado de asegurados.');
         },
       });
   }
@@ -215,7 +212,7 @@ export class AseguradoComponent {
       .afterClosed();
   }
 
-  eliminaAsegurado(datoAseguradoPar: any) {
+  eliminaAsegurado(datoAseguradoPar: IAseguradoLista) {
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),

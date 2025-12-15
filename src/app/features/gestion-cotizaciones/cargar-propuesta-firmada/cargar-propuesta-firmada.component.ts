@@ -1,9 +1,9 @@
-import { Component, ElementRef, Inject, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import CabeceraPopupComponente from "../../../shared/ui/cabeceraPopup.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef } from "@angular/material/dialog";
 import { MatCard, MatCardHeader, MatCardContent, MatCardActions } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from "@angular/material/icon";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { MatInput, MatInputModule } from '@angular/material/input';
@@ -93,26 +93,29 @@ export class CargarPropuestaFirmadaComponent {
     this.fileInputDocuAdicional.nativeElement.click();
   }
 
-  onFileSelectedPptaFirmada(event: any) {
-    const filePptaFirmada: File = event.target.files[0];
-    if (filePptaFirmada) {
+  onFileSelectedPptaFirmada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const filePptaFirmada: File = input.files[0];
       this.selectedPptaFirmadaFile = filePptaFirmada;
       this.nombrePptaFirmada = filePptaFirmada.name;
       this.habilitarCards = true;
     }
   }
 
-  onFileSelectedFactura(event: any) {
-    const fileFactura: File = event.target.files[0];
-    if (fileFactura) {
+  onFileSelectedFactura(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const fileFactura: File = input.files[0];
       this.selectedFacturaFile = fileFactura;
       this.nombreFactura = fileFactura.name;
     }
   }
 
-  onFileSelectedDocuAdicinal(event: any) {
-    const fileDocuAdicional: File = event.target.files[0];
-    if (fileDocuAdicional) {
+  onFileSelectedDocuAdicinal(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      const fileDocuAdicional: File = input.files[0];
       this.selectedDocuAdicionalFile = fileDocuAdicional;
       this.nombreDocuAdicional = fileDocuAdicional.name;
     }
@@ -142,6 +145,4 @@ export class CargarPropuestaFirmadaComponent {
   cancelar(): void {
     this.dialogRef.close('cancelado');
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogContent } from "@angular/material/dialog";
 import { DetalleSolicitudInterface, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { InformacionGeneralComponent } from "@features/detalle-solicitud/informacion-general/informacion-general.component";
@@ -34,7 +34,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   templateUrl: './creacion-propuesta.component.html',
   styleUrl: './creacion-propuesta.component.css'
 })
-export class CreacionPropuestaComponent {
+export class CreacionPropuestaComponent implements OnInit {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialog);
 
@@ -68,21 +68,21 @@ export class CreacionPropuestaComponent {
           });
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  el detalle de la solicitud.');
       }
     });
   }
 
-  async ngOnInit() {
+ ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 
   crearPpta(): void {
     const dato = {
       p_id_solicitud: this.idSolicitud,
-      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario,
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario
     };
     const dialogConfig = new MatDialogConfig();
 

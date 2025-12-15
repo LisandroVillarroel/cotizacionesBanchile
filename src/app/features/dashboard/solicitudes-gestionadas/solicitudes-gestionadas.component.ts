@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, } from '@angular/ma
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -48,6 +48,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
     MatDividerModule,
     MatCardModule,
     CommonModule,
+     FormsModule,
   ],
   templateUrl: './solicitudes-gestionadas.component.html',
   styleUrl: './solicitudes-gestionadas.component.css'
@@ -65,7 +66,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
   tipoSeguroService = inject(TipoSeguroService);
   estadoService = inject(EstadoService);
 
-  tipoUsuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
   datoRubros = signal<IRubro[]>([]);
   rescatadoSeguro = signal<ITipoSeguro[]>([]);
@@ -110,19 +111,9 @@ export class SolicitudesGestionadasComponent implements OnInit {
     "accion"
   ];
 
-  // solicitudesCoord(){
-  //   return this.datosSolicitud()?.filter(item =>{
-  //     return !item.descripcion_estado?.toLowerCase().includes("edicion")})
-  // }
-
   dataSourceSolicitud = computed(() => {
-    // console.log('Grilla', this.datosSolicitud());
-    var tabla = new MatTableDataSource<IListadoSolicitudes>();
-    // if(this.tipoUsuario === "C"){
-    //   tabla.data = this.solicitudesCoord()!;
-    // }else{
+    const tabla = new MatTableDataSource<IListadoSolicitudes>();
     tabla.data = this.datosSolicitud()!;
-    // }
     this.setSortingAndPagination(tabla);
     return tabla;
   });
@@ -130,7 +121,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.setSortingAndPagination(this.dataSourceSolicitud());
   }
 
@@ -142,13 +133,12 @@ export class SolicitudesGestionadasComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  // Señal computada para los datos filtrados
   datosFiltrados() {
     const contratante = this.filtroFormulario().value.contratante ?? '';
     const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const estado = this.filtroFormulario().value.estado ?? '';
-    let fechaInicio_Inicial = this.filtroFormulario().value.fecha;
+    const fechaInicio_Inicial = this.filtroFormulario().value.fecha;
 
     let fechaInicio = new Date();
     if (fechaInicio_Inicial != null) {
@@ -174,13 +164,13 @@ export class SolicitudesGestionadasComponent implements OnInit {
       }
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleEstado && cumpleFecha;
     });
-  };
+  }
 
   limpiaFiltros() {
     this.filtroFormulario().reset();
   }
 
-  async ngOnInit() {
+ ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.cargaEstados();
@@ -212,11 +202,12 @@ export class SolicitudesGestionadasComponent implements OnInit {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
+          console.log('Rubros cargados:', dato.p_cursor);
           this.datoRubros.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Rubros.');
       },
     });
   }
@@ -228,23 +219,21 @@ export class SolicitudesGestionadasComponent implements OnInit {
           this.datosEstados.set(dato.p_cursor);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Estados');
       },
     });
   }
 
   async seleccionaRubro(datos: IRubro) {
-    const _codigoRubro = datos.p_id_rubro
-    const estructura_codigoRubro = { p_id_rubro: _codigoRubro };
-    this.tipoSeguroService.postTipoSeguro(estructura_codigoRubro).subscribe({
+    this.tipoSeguroService.postTipoSeguro(datos.p_id_rubro).subscribe({
       next: (dato) => {
         if (dato.codigo === 200) {
           this.rescatadoSeguro.set(dato.c_TipoSeguros);
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR', 'No fue posible obtener el listado de Tipos de Seguro');
       },
     });
   }
@@ -282,7 +271,7 @@ export class SolicitudesGestionadasComponent implements OnInit {
       'color': estado?.color_estado,
       'background-color': estado?.background_estado,
       'border': '1px solid' + estado?.color_estado,
-      'width': '141px',//'fit-content',
+      'width': '141px',
       'text-align': 'center',
       'padding-left': '1%',
       'padding-right': '1%'

@@ -56,8 +56,8 @@ export class ConfirmacionPptaComponent {
             }
           }
         },
-        error: (error) => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+        error: () => {
+          this.notificacioAlertnService.error('ERROR','No fue posible emitir la propuesta.');
         },
       });
   }

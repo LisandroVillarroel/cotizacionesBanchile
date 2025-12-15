@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -12,7 +12,6 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 
-import { IRequestGestion } from '@shared/modelo/servicios-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 
@@ -37,12 +36,12 @@ import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
 ],
   styleUrls: ['./gestion-cotizaciones.component.css']
 })
-export default class GestionCotizacionesComponent{
+export default class GestionCotizacionesComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
-  id_usuario = this._storage()?.usuarioLogin.usuario!;
-  tipo_usuario = this._storage()?.usuarioLogin.tipoUsuario!;
+  id_usuario = this._storage()?.usuarioLogin?.usuario;
+  tipo_usuario = this._storage()?.usuarioLogin?.tipoUsuario;
   ejec = signal<boolean>(false);
 
   gestionService = inject(GestionCotizacionesService)
@@ -60,7 +59,7 @@ export default class GestionCotizacionesComponent{
   firmadas = signal<IGestionCotizacion[] >([]);
   por_firmar = signal<IGestionCotizacion[] >([]);
 
-  async ngOnInit(){
+  ngOnInit(){
     if(this.tipo_usuario === "E"){
       this.ejec.set(true);
     }else{
@@ -70,10 +69,9 @@ export default class GestionCotizacionesComponent{
   }
 
   cargarSolicitudes() {
-    var entrada: IRequestGestion;
-    entrada = {
-      p_id_usuario: this.id_usuario,
-      p_tipo_usuario: this.tipo_usuario
+    const entrada = {
+      p_id_usuario: this.id_usuario ?? "",
+      p_tipo_usuario: this.tipo_usuario ?? ""
     };
     this.gestionService.postListadoSolicitudes(entrada).subscribe({
       next: (dato: IGestionResponse) => {
@@ -88,12 +86,12 @@ export default class GestionCotizacionesComponent{
           this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
           this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
           this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
-          this.por_firmar.set(this.cargaLista(dato.ps_cursorPorFir));
+          this.por_firmar.set(this.cargaLista(dato.ps_cursorFirPen));
           this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
         }
       },
-      error: (error) => {
-        this.notificacioAlertnService.error('ERROR','No fue posible obtener listado de cotizaciones.');
+      error: () => {
+        this.notificacioAlertnService.error('ERROR','No fue posible obtener  listado de cotizaciones.');
       },
     });
   }

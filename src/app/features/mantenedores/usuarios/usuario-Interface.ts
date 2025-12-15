@@ -37,6 +37,24 @@ export interface DatosUsuarioLista {
 }
 
 export interface IUsuarioListaParametro  {
-  datoUsuarioPar: IUsuario,
-  tipoUsuario: string,
-};
+  datoUsuarioPar: IUsuario;
+  tipoUsuario: string;
+}
+
+export interface IUsuarioPerfile  {
+  p_id_perfil: string;
+  p_nombre_perfil: string;
+  p_codigo_perfil: string;
+  p_fecha_creacion: string;
+  p_usuario_creacion: string;
+  p_fecha_modificacion: string;
+  p_usuario_modificacion: string;
+}
+
+export interface IUsuarioListaPerfiles  {
+  codigo: number;
+  mensaje: string;
+  perfiles: IUsuarioPerfile[];
+  vcEstado: string;
+  vcEstadoCreacion: string;
+}

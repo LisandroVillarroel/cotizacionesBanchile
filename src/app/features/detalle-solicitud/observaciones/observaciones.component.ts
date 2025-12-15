@@ -1,4 +1,4 @@
-import { Component, computed, input, OnInit } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { IObservacion } from '../modelo/detalle-interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from "@angular/material/divider";
@@ -13,13 +13,10 @@ import { MatDividerModule } from "@angular/material/divider";
     MatDividerModule
   ],
 })
-export class ObservacionesComponent implements OnInit {
+export class ObservacionesComponent {
 
   observaciones = input.required<IObservacion[] | undefined>();
   obsFiltradas = computed(()=> this.observaciones());
 
   constructor() { }
-
-  ngOnInit() {
-  }
 }

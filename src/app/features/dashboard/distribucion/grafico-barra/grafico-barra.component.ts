@@ -35,7 +35,7 @@ export class GraficoBarraComponent implements OnInit {
       const resumen = this.resumenGeneral();
      // console.log('grafico BArra', this.resumenGeneral());
       if (!resumen) return;
-      let arrTotales = [];
+      const arrTotales = [];
       for (let i = 0; i < this.datoEstadoNombre().length; i++) {
         arrTotales[i] = this.resumenGeneral()!.filter(item => item.descripcion_estado.toString() === this.datoEstadoNombre()[i])
           .reduce((contador) => contador = contador + 1, 0);
@@ -74,7 +74,7 @@ export class GraficoBarraComponent implements OnInit {
           this.datoEstadoNombre.set(dato.p_cursor.map(x => x.nombre_estado))
         }
       },
-      error: (error) => {
+      error: () => {
         this.notificacioAlertnService.error('ERROR','Error Inesperado');
       },
     });

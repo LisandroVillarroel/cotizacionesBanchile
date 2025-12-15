@@ -44,8 +44,8 @@
 
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable,  } from 'rxjs';
 import { InterfazRegistrarRespuesta, IRegistrarRespuesta } from '@shared/modelo/registrar-respuesta-interface';
 import { environment } from '@env/environment';
 
@@ -66,21 +66,5 @@ export class RegistrarRespuestaService {
       .post<InterfazRegistrarRespuesta>(`${environment.apiUrlConsumer}/registrarRespuestaCompania`, datos, {
         headers: this.headers
       })
-      .pipe(
-        retry(1),
-        catchError(this.errorHandl)
-      );
-  }
-
-  private errorHandl(error: HttpErrorResponse) {
-    console.log('paso error banco: ', error);
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log('Error: ', errorMessage);
-    return throwError(() => new Error(errorMessage));
   }
 }

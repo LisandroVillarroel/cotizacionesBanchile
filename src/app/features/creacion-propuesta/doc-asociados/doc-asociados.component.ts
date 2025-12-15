@@ -1,19 +1,19 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatCard, MatCardHeader } from "@angular/material/card";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatIcon } from "@angular/material/icon";
 import { DetalleSolicitudInterface, IObservacion, ISolicitud } from '@features/detalle-solicitud/modelo/detalle-interface';
 import { DetalleSolicitudService } from '@features/detalle-solicitud/service/detalle-solicitud.service';
-import { ModalBeneficiarioComponent } from '@features/ingreso-respuesta/modal-beneficiario/modal-beneficiario.component';
+import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-doc-asociados',
   standalone: true,
-  imports: [MatCard, MatCardHeader, MatIcon],
+  imports: [MatCard, MatCardHeader, MatIcon, MatTooltip],
   templateUrl: './doc-asociados.component.html',
   styleUrl: './doc-asociados.component.css'
 })
-export class DocAsociadosComponent {
+export class DocAsociadosComponent implements OnInit {
   public readonly idSolicitud = inject<number>(MAT_DIALOG_DATA);
   idSol = computed(() => this.idSolicitud.toString());
   detalleService = inject(DetalleSolicitudService);
@@ -55,7 +55,7 @@ export class DocAsociadosComponent {
     });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.cargarSolicitud(this.idSolicitud);
   }
 

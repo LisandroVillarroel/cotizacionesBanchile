@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { IAsegurado, IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
+import { IAseguradoLista } from '@features/ingreso-solicitud/modelo/ingresoSolicitud-Interface';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 
 @Component({
