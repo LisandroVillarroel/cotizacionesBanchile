@@ -11,13 +11,13 @@ export default [
   },
    {
     path: 'rubros',
-    canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+    canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/rubros/rubros.component'),
   },
   {
     path: 'tipo-seguro',
-    canActivate: [guardRoles(['ejec_bco','sup_corr'])],
+    canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/tipo-seguro/tipo-seguro.component'),
   },
