@@ -57,3 +57,8 @@ export interface IRespuesta {
   compania: ICompania;
   flagAccion: boolean;
 }
+
+export interface ICotizacionesxEstado {
+  cotizaciones: IGestionCotizacion[],
+  estado: string,
+}

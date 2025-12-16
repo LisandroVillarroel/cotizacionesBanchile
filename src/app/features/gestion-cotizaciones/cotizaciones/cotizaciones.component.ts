@@ -19,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CargarPropuestaFirmadaComponent } from '../cargar-propuesta-firmada/cargar-propuesta-firmada.component';
 
-import { IGestionCotizacion } from '../gestionCotizacion-interface';
+import { ICotizacionesxEstado, IGestionCotizacion } from '../gestionCotizacion-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
@@ -58,8 +58,8 @@ import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacio
 })
 
 export class CotizacionesComponent implements OnInit {
-  cotizaciones = input.required<IGestionCotizacion[] | undefined>();
-  estado = input.required<string>();
+  cotizaciones = input.required<ICotizacionesxEstado | undefined>();
+  //estado = input.required<string>();
   retorno = output<boolean>();
 
   storage = inject(StorageService);
@@ -68,11 +68,17 @@ export class CotizacionesComponent implements OnInit {
   tipoUsuario = this._storage()?.usuarioLogin?.tipoUsuario;
 
 //flags
-  registradas = signal<boolean>(false);
+/*   registradas = signal<boolean>(false);
   aceptadas = signal<boolean>(false);
   emitidas = signal<boolean>(false);
   pendientes = signal<boolean>(false);
-  firmadas = signal<boolean>(false);
+  firmadas = signal<boolean>(false); */
+
+  registradas = false;
+  aceptadas = false;
+  emitidas = false;
+  pendientes = false;
+  firmadas = false;
 
   rubroService = inject(RubroService);
   tipoSeguroService = inject(TipoSeguroService);
@@ -108,7 +114,7 @@ export class CotizacionesComponent implements OnInit {
     const solicitud = this.filtroFormulario().value.solicitud ?? '';
 
     this.formularioModificado();
-    return this.cotizaciones()!.filter(item => {
+    return this.cotizaciones()!.cotizaciones.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
       const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
       const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
@@ -120,7 +126,7 @@ export class CotizacionesComponent implements OnInit {
 
   datosPaginados() {
     const start = this.pagina() * this.pageSize;
-    return this.datosFiltrados()!.slice(start, start + this.pageSize);
+    return this.datosFiltrados().slice(start, start + this.pageSize);
   }
 
   onPage(event: PageEvent) {
@@ -130,7 +136,7 @@ export class CotizacionesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  async ngOnInit() {
+  ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     this.cargaRubros();
     this.limpiaFiltros();
@@ -140,20 +146,21 @@ export class CotizacionesComponent implements OnInit {
       this.datosPaginados()
     });
 
-    if(this.estado().toLowerCase()==="recibida"){
-      this.registradas.set(true);
+    if(this.cotizaciones()!.estado.toLowerCase()==="recibida"){
+    //if(this.estado().toLowerCase()==="recibida"){
+      this.registradas = true;
     }
-    if(this.estado().toLowerCase()==="pendiente"){
-      this.aceptadas.set(true);
+    if(this.cotizaciones()!.estado.toLowerCase()==="pendiente"){
+      this.aceptadas = true;
     }
-    if(this.estado().toLowerCase()==="emitida"){
-      this.emitidas.set(true);
+    if(this.cotizaciones()!.estado.toLowerCase()==="emitida"){
+      this.emitidas = true;
     }
-    if(this.estado().toLowerCase()==="firma"){
-      this.pendientes.set(true);
+    if(this.cotizaciones()!.estado.toLowerCase()==="firma"){
+      this.pendientes = true;
     }
-    if(this.estado().toLowerCase()==="terminada"){
-      this.firmadas.set(true);
+    if(this.cotizaciones()!.estado.toLowerCase()==="terminada"){
+      this.firmadas = true;
     }
   }
 
