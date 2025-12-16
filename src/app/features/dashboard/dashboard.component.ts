@@ -64,8 +64,10 @@ export default class DashboardComponent implements OnInit {
   seleccionaFecha() {
     let fechaFiltrar: string | undefined;
     const fechaValue = this.fechaActual.value;
+    console.log('fechaValue inicial:', fechaValue);
     // Forzar conversión a Date
     const fechaDate = new Date(fechaValue as Date);
+    console.log('fechaValue inicial:', fechaValue);
     if (!isNaN(fechaDate.getTime())) {
       fechaFiltrar = fechaDate.toLocaleDateString('es-BO');
     } else {

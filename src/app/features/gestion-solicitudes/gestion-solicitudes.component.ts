@@ -52,12 +52,17 @@ export default class GestionSolicitudesComponent implements OnInit {
     r.nombre_estado_solicitud?.toLowerCase()?.includes("revision"))
   });
 
-  devueltas = computed(() => { return this.datosSolicitud()!.filter(r =>
+  devueltas = computed(() => { return this.datosSolicitud().filter(r =>
     r.nombre_estado_solicitud?.toLowerCase()?.includes("devuelta"))
   });
 
-  cotizadas = computed(() => { return this.datosSolicitud()!.filter(r =>
+  cotizadas = computed(() => { return this.datosSolicitud().filter(r =>
     r.nombre_estado_solicitud?.toLowerCase()?.includes("cotizacion"))
+  });
+
+  aprobadas = computed(() => { return this.datosSolicitud().filter((r) =>
+      r.nombre_estado_solicitud?.toLowerCase()?.includes('aprobada'),
+    );
   });
 
   ngOnInit(){

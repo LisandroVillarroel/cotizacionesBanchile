@@ -65,3 +65,10 @@ export interface IMateriaTiene {
   vcEstado: string
   vcEstadoCreacion: string;
 }
+
+export interface IMateriaData {
+  id_solicitud: number;
+  id_rubro: number;
+  id_tipo_seguro: number;
+  muestraConsulta: boolean;
+}

@@ -16,6 +16,7 @@ import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { GenerarPropuestaService } from './generar-propuesta.service';
 import { StorageService } from '@shared/service/storage.service';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
+import { IMateriaData } from '@features/ingreso-solicitud/modelo/materia-Interface';
 
 @Component({
   selector: 'app-creacion-propuesta',
@@ -40,6 +41,7 @@ export class CreacionPropuestaComponent implements OnInit {
 
   idSol = computed(() => this.idSolicitud.toString());
   infoGral = signal<ISolicitud | undefined>(undefined);
+  materiaData = signal<IMateriaData | undefined>(undefined);
 
   detalleService = inject(DetalleSolicitudService);
   generarService = inject(GenerarPropuestaService);

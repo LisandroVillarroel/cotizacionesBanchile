@@ -127,13 +127,13 @@ export class AseguradoComponent implements OnInit {
   //l=computed(() => this.rescataListaAsegurados(this.idSolicitud()));
 
   AfterViewInit(): void {
-    console.log('entro a asegurado ngAfterViewInit', this.idSolicitud());
+    //console.log('entro a asegurado ngAfterViewInit', this.idSolicitud());
     this.dataSourceAsegurado().paginator = this.paginatorAsegurado;
     this.dataSourceAsegurado().sort = this.sortAsegurado;
   }
 
   ngOnInit() {
-    console.log('entro a asegurado', this.idSolicitud());
+    //console.log('entro a asegurado', this.idSolicitud());
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
   }
 
