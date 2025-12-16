@@ -1,0 +1,82 @@
+<div
+  class="table-con-titulo mat-elevation-z6"
+  data-titulo="Tipos de Seguro"
+  style="margin-top: 32px"
+>
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+    <!-- N° -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef style="width: 5%">N°</th>
+      <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 5%">
+        {{ i + 1 }}
+      </td>
+    </ng-container>
+
+    <!-- Rubro -->
+    <ng-container matColumnDef="p_nombre_rubro">
+      <th mat-header-cell *matHeaderCellDef style="width: 30%">Rubro</th>
+      <td mat-cell *matCellDef="let row">{{ row.p_nombre_rubro }}</td>
+    </ng-container>
+
+    <!-- Tipo Seguro -->
+    <ng-container matColumnDef="p_nombre_tipo_seguro">
+      <th mat-header-cell *matHeaderCellDef style="width: 30%">Tipo Seguro</th>
+      <td mat-cell *matCellDef="let row">{{ row.p_nombre_tipo_seguro }}</td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="p_estado_tipo_seguro">
+      <th mat-header-cell *matHeaderCellDef style="width: 25%">Estado</th>
+      <td mat-cell *matCellDef="let row">{{ row.p_estado_tipo_seguro }}</td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="opciones">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="width: 15%; text-align: center"
+      >
+        <span
+          class="agregar-texto"
+          matTooltip="Agregar nuevo Tipo de Seguro"
+          matTooltipPosition="above"
+          (click)="onAgregarTipoSeguro()"
+        >
+          <mat-icon style="vertical-align: middle">add</mat-icon>
+          Agregar
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 15%; text-align: center">
+        <!-- Botones de acción (comentados) -->
+
+        <button
+          matTooltip="Modificar"
+          mat-icon-button
+          class="tabla"
+          (click)="onModificarTipoSeguro(row)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <!--
+        <button matTooltip="Consultar" mat-icon-button class="tabla" (click)="consultaTipoSeguro(row)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  @if(tiposSeguro.length === 0){
+  <div class="info SinInfoTabla">No hay tipos de seguro para mostrar</div>
+  }
+</div>
+
+<!-- Paginador -->
+<mat-paginator
+  #myPaginator
+  [pageSizeOptions]="[10, 20, 30, 100]"
+></mat-paginator>

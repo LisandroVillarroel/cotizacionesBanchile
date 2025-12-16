@@ -1,6 +1,6 @@
 {
   "name": "cotizaciones-banchile",
-  "version": "23.0.0",
+  "version": "24.0.0",
   "scripts": {
     "ng": "ng",
     "start:dev": "ng serve --configuration=dev",
@@ -24,6 +24,7 @@
     "npm": ">=8.19.0"
   },
   "dependencies": {
+    "@angular-eslint/schematics": "^17.5.3",
     "@angular/animations": "^17.3.0",
     "@angular/cdk": "^17.3.10",
     "@angular/common": "^17.3.0",
@@ -60,6 +61,10 @@
     "@angular-eslint/template-parser": "17.0.1",
     "@angular/cli": "^17.3.17",
     "@angular/compiler-cli": "^17.3.0",
+    "@eslint/css": "^0.14.1",
+    "@eslint/js": "^9.39.1",
+    "@eslint/json": "^0.14.0",
+    "@eslint/markdown": "^7.5.1",
     "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^30.0.0",
@@ -73,6 +78,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "typescript-eslint": "^8.48.0"
   }
 }

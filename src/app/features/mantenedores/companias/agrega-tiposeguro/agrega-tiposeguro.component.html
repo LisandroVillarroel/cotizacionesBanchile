@@ -1,0 +1,74 @@
+<app-cabecera-popup [titulo]="'Ingreso Tipo de Seguro'"></app-cabecera-popup>
+
+<mat-dialog-content [formGroup]="agregaTipoSeguro()" class="agrega-container">
+  <div
+    class="row form-con-titulo contenido-form mat-elevation-z6"
+    data-titulo="Agregar Tipo de Seguro"
+  >
+    <!-- Columna 1: Rubro -->
+    <div class="col-md-6">
+      <mat-form-field class="inputSelect">
+        <mat-label>Selecciona un rubro</mat-label>
+        <mat-select
+          [formControl]="idRubro"
+          (selectionChange)="onSeleccionaRubro($event.value)"
+        >
+          @for (_rubro of datoRubros(); track _rubro) {
+          <mat-option [value]="_rubro.p_id_rubro">
+            {{ _rubro.p_nombre_rubro }}
+          </mat-option>
+          }
+        </mat-select>
+        @if (idRubro.invalid && (idRubro.touched || idRubro.dirty)) {
+        <mat-error>{{ getErrorMessage("idRubro") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Columna 2: Tipo de Seguro -->
+    <div class="col-md-6">
+      <mat-form-field class="inputSelect">
+        <mat-label>Selecciona un tipo de seguro</mat-label>
+
+        <mat-select [formControl]="idTipoSeguro">
+          @for (_seguro of datoTiposSeguro(); track _seguro) {
+          <mat-option [value]="_seguro.id_tipo_seguro">
+            {{ _seguro.nombre_tipo_seguro }}
+          </mat-option>
+          }
+        </mat-select>
+
+        @if (idTipoSeguro.invalid && (idTipoSeguro.touched ||
+        idTipoSeguro.dirty)) {
+        <mat-error>{{ getErrorMessage("idTipoSeguro") }}</mat-error>
+
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      class="colorFondoBotonCerrar"
+      mat-dialog-close
+    >
+      Cerrar
+    </button>
+  </div>
+
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="grabar()"
+      [disabled]="agregaTipoSeguro().invalid"
+      [ngClass]="{ colorFondoBotonGrabar: !agregaTipoSeguro().invalid }"
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,149 @@
+<div
+  class="table-con-titulo mat-elevation-z6"
+  data-titulo="Compañías de Seguros"
+  style="margin-top: 32px"
+>
+  <mat-radio-group [(ngModel)]="selectedCompaniaId">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+      <!-- Selección -->
+      <ng-container matColumnDef="seleccion">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 1%; text-align: center"
+        >
+          Sel.
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          style="width: 1%; text-align: center"
+        >
+          <mat-radio-button
+            [value]="row.p_id_compania_seguro"
+            (change)="onCompaniaChange(row.p_id_compania_seguro)"
+          >
+          </mat-radio-button>
+        </td>
+      </ng-container>
+
+      <!-- Rut -->
+      <ng-container matColumnDef="p_rut_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Rut
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_rut_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="p_nombre_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Nombre
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_nombre_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Dirección -->
+      <ng-container matColumnDef="p_direccion_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Dirección
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_direccion_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Teléfono -->
+      <ng-container matColumnDef="p_telefono_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Teléfono
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_telefono_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="p_estado_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Estado
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_estado_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Correo -->
+      <ng-container matColumnDef="p_correo_compania_seguro">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%">
+          Correo
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 5%">
+          {{ row.p_correo_compania_seguro }}
+        </td>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="opciones">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 14%; text-align: center"
+        >
+          <span
+            class="agregar-texto"
+            matTooltip="Agregar nueva Compañía"
+            matTooltipPosition="above"
+            (click)="onAgregarCompania()"
+          >
+            <mat-icon style="vertical-align: middle">add</mat-icon>
+            Agregar
+          </span>
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          style="width: 14%; text-align: center"
+        >
+          <!-- Botones de acción (comentados) -->
+
+          <button
+            matTooltip="Modificar"
+            mat-icon-button
+            class="tabla"
+            (click)="onModificarCompania(row)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <!--
+          <button matTooltip="Consultar" mat-icon-button class="tabla" (click)="consultaCompania(row)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          -->
+        </td>
+      </ng-container>
+
+      <!-- Filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="example-element-row"
+      ></tr>
+    </table>
+  </mat-radio-group>
+
+  @if(datoCompanias.length === 0){
+  <div class="info SinInfoTabla">No hay compañías para mostrar</div>
+  }
+</div>
+
+<!-- Paginador -->
+<mat-paginator
+  #myPaginator
+  [pageSizeOptions]="[10, 20, 30, 100]"
+></mat-paginator>

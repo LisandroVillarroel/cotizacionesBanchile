@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-7">
+      <app-listar-compania
+        [dataSource]="dataSource()"
+        [displayedColumns]="displayedColumns"
+        [datoCompanias]="datoCompanias()"
+        (companiaSeleccionada)="
+          selectedCompaniaId = $event; cargarContactos($event)
+        "
+        (agregarCompania)="agregaNuevaCompania()"
+        (modificarCompania)="modificaCompania($event)"
+      ></app-listar-compania>
+    </div>
+
+    <div class="col-md-5">
+      <app-listar-contacto
+        [dataSource]="dataSourceContactos()"
+        [displayedColumns]="displayedColumnsContactos"
+        [contactos]="datoContactos()"
+        (agregarContacto)="agregaNuevoContacto()"
+        (modificarContacto)="modificaContacto($event)"
+      ></app-listar-contacto>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <app-listar-tiposeguro
+        [dataSource]="dataSourceTiposSeguro()"
+        [displayedColumns]="displayedColumnsTiposSeguro"
+        [tiposSeguro]="datoTiposSeguro()"
+        (agregarTipoSeguro)="agregaNuevoTipoSeguro()"
+        (modificarTipoSeguro)="modificaTipoSeguro($event)"
+      ></app-listar-tiposeguro>
+    </div>
+  </div>
+</div>

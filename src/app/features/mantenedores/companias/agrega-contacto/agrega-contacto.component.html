@@ -1,0 +1,54 @@
+<app-cabecera-popup [titulo]="'Ingreso Contacto de Compañía'" />
+
+<mat-dialog-content [formGroup]="agregaContacto()" class="agrega-container">
+  <div
+    class="row form-con-titulo contenido-form mat-elevation-z6"
+    data-titulo="Agregar Datos del Contacto"
+  >
+    <!-- Columna 1 -->
+    <div class="col-md-6">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Contacto</mat-label>
+        <input matInput [formControl]="nombreContacto" required />
+        @if (nombreContacto.invalid) {
+        <mat-error>{{ getErrorMessage("nombreContacto") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Columna 2 -->
+    <div class="col-md-6">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Correo Contacto</mat-label>
+        <input matInput [formControl]="correoContacto" required />
+        @if (correoContacto.invalid) {
+        <mat-error>{{ getErrorMessage("correoContacto") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button
+      type="button"
+      mat-raised-button
+      class="colorFondoBotonCerrar"
+      mat-dialog-close
+    >
+      Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="grabar()"
+      [disabled]="agregaContacto().invalid"
+      [ngClass]="{ colorFondoBotonGrabar: !agregaContacto().invalid }"
+    >
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>

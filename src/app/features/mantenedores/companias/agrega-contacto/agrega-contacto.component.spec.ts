@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import RubrosComponent from './rubros.component';
 
+import { AgregaContactoComponent } from './agrega-contacto.component';
 
-describe('RubrosComponent', () => {
-  let component: RubrosComponent;
-  let fixture: ComponentFixture<RubrosComponent>;
+describe('AgregaContactoComponent', () => {
+  let component: AgregaContactoComponent;
+  let fixture: ComponentFixture<AgregaContactoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RubrosComponent]
+      imports: [AgregaContactoComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(RubrosComponent);
+    
+    fixture = TestBed.createComponent(AgregaContactoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
