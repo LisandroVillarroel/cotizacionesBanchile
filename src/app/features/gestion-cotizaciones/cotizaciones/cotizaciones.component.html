@@ -132,20 +132,6 @@
               </button>
             </div>
           }
-          <!-- @if(emitidas()){
-            <div class="p-2" style="width: 5%; align-content: center;">
-              <button (click)="verPropuesta(item.p_id_Solicitud)"
-                mat-icon-button
-                matTooltip="Ver propuesta">
-                <mat-icon class="destacado">preview</mat-icon>
-              </button>
-              <button (click)="cargarPropuesta(item)"
-                mat-icon-button
-                matTooltip="Cargar propuesta firmada">
-                <mat-icon class="destacado">upload_file</mat-icon>
-              </button>
-            </div>
-          } -->
           @if(pendientes){
             <div class="p-2" style="width: 10%; align-content: center;">
               <button (click)="verPropuesta(item.p_id_Solicitud)"
@@ -174,7 +160,7 @@
         </mat-card-content>
       </mat-card>
     }
-    @if(this.cotizaciones()?.cotizaciones!.length === 0 ){
+    @if(this.cotizaciones()?.length === 0 ){
       <div class="info SinInfoTabla">
         No hay solicitudes para mostrar</div>
     }

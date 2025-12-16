@@ -13,7 +13,7 @@ import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { ICotizacionesxEstado, IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
+import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
@@ -53,11 +53,11 @@ export default class GestionCotizacionesComponent implements OnInit {
     por_firmar: 0
   });
   solicitudes = signal<IGestionCotizacion[] >([]);
-  recibidas = signal<ICotizacionesxEstado | undefined>(undefined);
-  aceptadas = signal<ICotizacionesxEstado | undefined>(undefined);
-  emitidas = signal<ICotizacionesxEstado | undefined>(undefined);
-  firmadas = signal<ICotizacionesxEstado | undefined>(undefined);
-  por_firmar = signal<ICotizacionesxEstado | undefined>(undefined);
+  recibidas = signal<IGestionCotizacion[] | undefined>(undefined);
+  aceptadas = signal<IGestionCotizacion[] | undefined>(undefined);
+  emitidas = signal<IGestionCotizacion[] | undefined>(undefined);
+  firmadas = signal<IGestionCotizacion[] | undefined>(undefined);
+  por_firmar = signal<IGestionCotizacion[] | undefined>(undefined);
 
   ngOnInit(){
     if(this.tipo_usuario === "E"){
@@ -83,26 +83,11 @@ export default class GestionCotizacionesComponent implements OnInit {
             por_firmar: dato.p_nro_prop_FirPen,
             firmadas: dato.p_nro_prop_firm,
           });
-          this.recibidas.set({
-            cotizaciones: this.cargaLista(dato.ps_cursorRec),
-            estado: 'recibida',
-          });
-          this.aceptadas.set({
-            cotizaciones: this.cargaLista(dato.ps_cursorPen),
-            estado: 'pendiente',
-          });
-          this.emitidas.set({
-            cotizaciones: this.cargaLista(dato.ps_cursorProGen),
-            estado: 'emitida',
-          });
-          this.por_firmar.set({
-            cotizaciones: this.cargaLista(dato.ps_cursorFirPen),
-            estado: 'firma pendiente',
-          });
-          this.firmadas.set({
-            cotizaciones: this.cargaLista(dato.ps_cursorProFir),
-            estado: 'firmada',
-          });
+          this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
+          this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
+          this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
+          this.por_firmar.set(this.cargaLista(dato.ps_cursorFirPen));
+          this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
         }
       },
       error: () => {

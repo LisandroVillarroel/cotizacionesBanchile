@@ -144,7 +144,6 @@ export default class DetalleSolicitudComponent implements OnInit {
     this.cargarSolicitud(this.data.idSolicitud);
     this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);
-    console.log('Solo cerrar: ', this.data.flagSoloCerrar);
     switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
@@ -154,6 +153,7 @@ export default class DetalleSolicitudComponent implements OnInit {
       case 'S':
         this.verEjec = false;
         this.verCoord = true;
+        this.data.flagSoloCerrar = this.data.flagSoloCerrar || this.verCoord;
         break;
       case 'A':
         this.verEjec = false;
