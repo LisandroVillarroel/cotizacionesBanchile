@@ -160,7 +160,7 @@
         </mat-card-content>
       </mat-card>
     }
-    @if(this.cotizaciones()?.length === 0 ){
+    @if(this.solicitudes()?.cotizaciones!.length === 0 ){
       <div class="info SinInfoTabla">
         No hay solicitudes para mostrar</div>
     }

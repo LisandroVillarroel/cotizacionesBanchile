@@ -13,7 +13,7 @@ import { StorageService } from '@shared/service/storage.service';
 import { GestionCotizacionesService } from './gestion-cotizaciones.service';
 
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
-import { IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
+import { ICotizacionesxEstado, IGestionCotizacion, IGestionResponse, IResumenCotizaciones } from './gestionCotizacion-interface';
 
 import { ResumenCotizacionesComponent } from './resumen-cotizaciones/resumen-cotizaciones.component';
 import { CotizacionesComponent } from './cotizaciones/cotizaciones.component';
@@ -53,11 +53,28 @@ export default class GestionCotizacionesComponent implements OnInit {
     por_firmar: 0
   });
   solicitudes = signal<IGestionCotizacion[] >([]);
-  recibidas = signal<IGestionCotizacion[] | undefined>(undefined);
-  aceptadas = signal<IGestionCotizacion[] | undefined>(undefined);
-  emitidas = signal<IGestionCotizacion[] | undefined>(undefined);
-  firmadas = signal<IGestionCotizacion[] | undefined>(undefined);
-  por_firmar = signal<IGestionCotizacion[] | undefined>(undefined);
+
+  recibidas: ICotizacionesxEstado = {
+    cotizaciones: [],
+    estado: 'recibida',
+  };
+  aceptadas: ICotizacionesxEstado = {
+    cotizaciones: [],
+    estado: 'pendiente',
+  };
+
+  emitidas:  ICotizacionesxEstado = {
+    cotizaciones: [],
+    estado: 'emitida',
+  };
+  firmadas: ICotizacionesxEstado = {
+    cotizaciones: [],
+    estado: 'terminada',
+  };
+  por_firmar: ICotizacionesxEstado = {
+    cotizaciones: [],
+    estado: 'por_firmar',
+  };
 
   ngOnInit(){
     if(this.tipo_usuario === "E"){
@@ -83,11 +100,11 @@ export default class GestionCotizacionesComponent implements OnInit {
             por_firmar: dato.p_nro_prop_FirPen,
             firmadas: dato.p_nro_prop_firm,
           });
-          this.recibidas.set(this.cargaLista(dato.ps_cursorRec));
-          this.aceptadas.set(this.cargaLista(dato.ps_cursorPen));
-          this.emitidas.set(this.cargaLista(dato.ps_cursorProGen));
-          this.por_firmar.set(this.cargaLista(dato.ps_cursorFirPen));
-          this.firmadas.set(this.cargaLista(dato.ps_cursorProFir));
+          this.recibidas.cotizaciones = this.cargaLista(dato.ps_cursorRec);
+          this.aceptadas.cotizaciones = this.cargaLista(dato.ps_cursorPen);
+          this.emitidas.cotizaciones = this.cargaLista(dato.ps_cursorProGen);
+          this.por_firmar.cotizaciones = this.cargaLista(dato.ps_cursorFirPen);
+          this.firmadas.cotizaciones = this.cargaLista(dato.ps_cursorProFir);
         }
       },
       error: () => {

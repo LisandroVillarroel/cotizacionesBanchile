@@ -19,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CargarPropuestaFirmadaComponent } from '../cargar-propuesta-firmada/cargar-propuesta-firmada.component';
 
-import { IGestionCotizacion } from '../gestionCotizacion-interface';
+import { ICotizacionesxEstado, IGestionCotizacion } from '../gestionCotizacion-interface';
 import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { IRubro } from '@shared/modelo/rubro-interface';
 import { ITipoSeguro } from '@shared/modelo/tipoSeguro-interface';
@@ -58,8 +58,7 @@ import { CreacionPropuestaComponent } from '@features/creacion-propuesta/creacio
 })
 
 export class CotizacionesComponent implements OnInit {
-  cotizaciones = input.required<IGestionCotizacion[] | undefined>();
-  estado = input.required<string>();
+  solicitudes = input.required<ICotizacionesxEstado | undefined>();
   retorno = output<boolean>();
 
   storage = inject(StorageService);
@@ -102,15 +101,21 @@ export class CotizacionesComponent implements OnInit {
 
   datosFiltrados() {
     const contratante = this.filtroFormulario().value.contratante ?? '';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro ?? '';
+    const aux = this.filtroFormulario().value.rubro;
+    let rubro: string ="";
+    if (aux !== null){
+      rubro = aux.p_nombre_rubro.toString();
+    }else{
+      rubro ="";
+    }
     const tipoSeguro = this.filtroFormulario().value.seguro ?? '';
     const solicitud = this.filtroFormulario().value.solicitud ?? '';
 
     this.formularioModificado();
-    return this.cotizaciones()!.filter(item => {
+    return this.solicitudes()!.cotizaciones.filter(item => {
       const cumpleContratante = item.p_nombre_contratante?.toLowerCase().includes(contratante.toLowerCase());
-      const cumpleRubro = item.p_nombre_rubro.toLowerCase()?.includes(rubro.toLowerCase());
-      const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.includes(tipoSeguro);
+      const cumpleRubro = item.p_nombre_rubro?.toLowerCase().includes(rubro.toLowerCase());
+      const cumpleTipoSeguro = item.p_nombre_tipo_seguro?.toLowerCase().includes(tipoSeguro.toLowerCase());
       const cumpleSolicitud = item.p_id_Solicitud?.toString().toLowerCase().includes(solicitud.toString().toLowerCase());
 
       return cumpleContratante && cumpleRubro && cumpleTipoSeguro && cumpleSolicitud;
@@ -139,19 +144,19 @@ export class CotizacionesComponent implements OnInit {
       this.datosPaginados()
     });
 
-    if(this.estado().toLowerCase()==="recibida"){
+    if(this.solicitudes()!.estado.toLowerCase()==="recibida"){
       this.registradas = true;
     }
-    if(this.estado().toLowerCase()==="pendiente"){
+    if(this.solicitudes()!.estado.toLowerCase()==="pendiente"){
       this.aceptadas = true;
     }
-    if(this.estado().toLowerCase()==="emitida"){
+    if(this.solicitudes()!.estado.toLowerCase()==="emitida"){
       this.emitidas = true;
     }
-    if(this.estado().toLowerCase()==="firma"){
+    if(this.solicitudes()!.estado.toLowerCase()==="firma"){
       this.pendientes = true;
     }
-    if(this.estado().toLowerCase()==="terminada"){
+    if(this.solicitudes()!.estado.toLowerCase()==="terminada"){
       this.firmadas = true;
     }
   }

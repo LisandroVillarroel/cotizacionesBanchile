@@ -89,14 +89,14 @@ export interface seleccionada{
   encapsulation: ViewEncapsulation.None,
 })
 export default class DetalleSolicitudComponent implements OnInit {
-  datosCompanias = signal<IDatosCompania | undefined>(undefined);
+  //datosCompanias = signal<IDatosCompania | undefined>(undefined);
 
   materiaData = signal<IMateriaData>({
     id_solicitud: this.data.idSolicitud,
     id_rubro: 0,
     id_tipo_seguro: 0,
     muestraConsulta: true,
-    });
+  });
 
   cotizacionSeleccionada: number | null = null;
   private readonly dialog = inject(MatDialog);
@@ -127,7 +127,13 @@ export default class DetalleSolicitudComponent implements OnInit {
   observaciones = signal<IObservacion[] | undefined>(undefined);
   companias = signal<ICompania[] | undefined>(undefined);
   edoSolicitud = signal<string | undefined>(undefined);
-
+  datosCompanias: IDatosCompania = {
+    infoGral: this.infoGral()!,
+    companias: this.companias()!,
+    minimo: this.minimo,
+    verEjec: this.verEjec,
+    flagSoloCerrar: this.data.flagSoloCerrar!,
+  };
   //flags para habilitar/deshabilitar botones
   flagAnular = true;
   flagDevolver = true;
@@ -142,8 +148,9 @@ export default class DetalleSolicitudComponent implements OnInit {
 
   ngOnInit() {
     this.cargarSolicitud(this.data.idSolicitud);
-    this.obtenerMinimo(this.data.idSolicitud);
     this.cargarCompanias(this.data.idSolicitud);
+    this.obtenerMinimo(this.data.idSolicitud);
+
     switch (this.tipoUsuario) {
       case 'E':
         this.verCoord = false;
@@ -160,6 +167,7 @@ export default class DetalleSolicitudComponent implements OnInit {
         this.verCoord = false;
         break;
     }
+    this.datosCompanias.verEjec = this.verEjec;
   }
 
   cargarSolicitud(idSolicitud: number) {
@@ -172,10 +180,11 @@ export default class DetalleSolicitudComponent implements OnInit {
     this.flagCotizacion = true;
     this.flagAprobarCot = true;
 
+    let auxInfo: ISolicitud;
     this.solicitudService.postDetalle(idSolicitud).subscribe({
       next: (dato: DetalleSolicitudInterface) => {
         if (dato.codigo === 200) {
-          this.infoGral.set({
+          auxInfo = {
             id_solicitud: this.data.idSolicitud,
             fecha_creacion_solicitud: dato.p_fecha_creacion_solicitud,
             rut_contratante: dato.p_rut_contratante,
@@ -190,7 +199,8 @@ export default class DetalleSolicitudComponent implements OnInit {
             nombre_estado: dato.p_nombre_estado,
             nombre_ejecutivo_banco: dato.p_nombre_ejecutivo_banco,
             id_ejecutivo_banco: dato.p_id_ejecutivo_banco,
-          });
+          };
+          this.infoGral.set(auxInfo);
           this.observaciones.set(dato.c_observaciones);
           this.edoSolicitud.set(dato.p_nombre_estado);
 
@@ -200,6 +210,7 @@ export default class DetalleSolicitudComponent implements OnInit {
             id_tipo_seguro: this.infoGral()!.id_tipo_seguro,
             muestraConsulta: this.data.flagSoloCerrar!,
           });
+          this.datosCompanias.infoGral = auxInfo;
           /* Inicio BackEnd */
           if (
             this.edoSolicitud()! !== 'Anulada' &&
@@ -250,12 +261,7 @@ export default class DetalleSolicitudComponent implements OnInit {
       next: (dato: ICompaniaResponse) => {
         if (dato.codigo === 200) {
           this.companias.set(dato.p_cursor);
-          const dimension = this.companias()?.length ?? 0;
-          if(dimension < this.minimo){
-            this.puedeEnviar = true;
-          }else{
-            this.puedeEnviar = false;
-          }
+          this.datosCompanias.companias = dato.p_cursor;
         }
       },
       error: () => {
@@ -270,6 +276,7 @@ export default class DetalleSolicitudComponent implements OnInit {
         if (dato.codigo === 200) {
           const dimension = this.companias()?.length ?? 0;
           this.minimo = dato.p_minimo_cotizaciones;
+          this.datosCompanias.minimo = dato.p_minimo_cotizaciones;
           if (dimension < this.minimo) {
             this.puedeEnviar = true;
           } else {

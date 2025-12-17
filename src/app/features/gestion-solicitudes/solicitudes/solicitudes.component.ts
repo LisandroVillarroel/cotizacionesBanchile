@@ -86,7 +86,13 @@ export class SolicitudesComponent implements OnInit  {
 
   datosFiltrados() {
     const contratante = this.filtroFormulario().value.contratante??'';
-    const rubro = this.filtroFormulario().value.rubro?.nombre_rubro??'';
+        const aux = this.filtroFormulario().value.rubro;
+    let rubro: string ="";
+    if (aux !== null){
+      rubro = aux.p_nombre_rubro.toString();
+    }else{
+      rubro ="";
+    }
     const tipoSeguro = this.filtroFormulario().value.seguro??'';
     const fechaInicio_Inicial=this.filtroFormulario().value.fecha;
 
