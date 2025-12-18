@@ -135,12 +135,12 @@ export class VerCompaniaComponent implements OnInit {
       // Si no hay ID, buscar por nombre
       cia = this.datoCompanias()?.find(
         (item) =>
-          item.nombre_compania_seguro === this.data.nombre_compania_seguro
+          item.nombre_compania === this.data.nombre_compania_seguro
       );
     }
 
-    const correoLimpio = cia?.correo_compania_seguro
-      ? cia.correo_compania_seguro.replace(/&nbsp;/g, '').trim()
+    const correoLimpio = cia?.correo_compania
+      ? cia.correo_compania.replace(/&nbsp;/g, '').trim()
       : '';
 
     //console.log('Correo encontrado:', correoLimpio);
@@ -157,8 +157,8 @@ export class VerCompaniaComponent implements OnInit {
 
     console.log('Compañía encontrada:', cia);
 
-    const correoLimpio = cia?.correo_compania_seguro
-      ? cia.correo_compania_seguro.replace(/&nbsp;/g, '').trim()
+    const correoLimpio = cia?.correo_compania
+      ? cia.correo_compania.replace(/&nbsp;/g, '').trim()
       : '';
 
    // console.log('Correo encontrado:', correoLimpio);

@@ -1,4 +1,4 @@
-import { Component, input, inject, signal } from '@angular/core';
+import { Component, input, inject, signal , Output, EventEmitter, OnInit, computed } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Output, EventEmitter } from '@angular/core';
+
 import { StorageService } from '@shared/service/storage.service';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { CompaniasContactadasService } from '../service/companias-contactadas.service';
@@ -38,19 +38,20 @@ import { IDatosCompania, IEliminaCompania } from '../modelo/compania';
     MatDivider,
   ],
 })
-export class CompaniasContactadasComponent {
+export class CompaniasContactadasComponent implements OnInit {
 /*   @Input() verEjec: boolean = true;
   @Input() minimo: number = 0;
   @Input() flagSoloCerrar: boolean = false; */
   //@Input() cotizacionSeleccionada: number | null = null;
   datosCompanias = input.required<IDatosCompania | undefined>();
 
+  companias = computed(() =>{ return this.datosCompanias()?.companias; });
+  infoGral =  computed(() =>{ return this.datosCompanias()?.infoGral; });
+
   @Output() cotizacionSeleccionadaEvent = new EventEmitter<number>();
   @Output() actualizarDatos = new EventEmitter<void>();
 
   panelOpenState = false;
-/*   infoGral = input.required<ISolicitud | undefined>();
-  companias = input.required<ICompania[] | undefined>(); */
 
   idCompania = 0;
   compania = signal<ICompania | undefined>(undefined);
@@ -64,7 +65,20 @@ export class CompaniasContactadasComponent {
   dialog = inject(MatDialog);
 
   constructor() {
-   }
+  }
+
+  ngOnInit() {
+    console.log("Entrada: ", this.datosCompanias()!);
+  }
+
+  mostrar(cia: ICompania){
+    if(cia.p_nombre_compania_seguro === null
+      || cia.p_id_fecha_envio_cotizacion === null
+      || cia.p_id_nombre_estado_cotizacion === null){
+      return false;
+    }
+    return true;
+  }
 
   getCellStyle(estado: number) {
     let color: string;
@@ -105,14 +119,11 @@ export class CompaniasContactadasComponent {
   }
 
   verCotiPropuesta(idCompania: number): void {
-/*     this.compania.set(this.companias()?.find(
-      (c) => c.p_id_compania_seguro === idCompania));
- */
-    this.compania.set(this.datosCompanias()?.companias!.find(
+    this.compania.set(this.companias()!.find(
       (c) => c.p_id_compania_seguro === idCompania));
 
     const dato = {
-      infoGral: this.datosCompanias()?.infoGral, //this.infoGral()!,
+      infoGral: this.infoGral()!, //this.infoGral()!,
       compania: this.compania()!,
       flagAccion: false, // false indica modo edición
       modo: 'modificar', // opcional para diferenciar
@@ -140,7 +151,7 @@ export class CompaniasContactadasComponent {
     );
 
     if (ciaSeleccionada) {
-      this.verCompania(ciaSeleccionada!);
+      this.verCompania(ciaSeleccionada);
     } else {
       this.notificacioAlertnService.error('error','No se encontró la compañía con el ID: '+ id);
     }
@@ -154,19 +165,19 @@ export class CompaniasContactadasComponent {
       p_tipo_usuario: this.tipoUsuario!,
     };
 
-    const eliminada = await this.notificacioAlertnService.confirmacionSelectiva(
+    const eliminada = this.notificacioAlertnService.confirmacionSelectiva(
       'Eliminar Compañía',
       'Esta compañía será desvinculada de la solicitud nro. '+ request.p_id_solicitud +'.'+
       '\n\n ¿Deseas continuar?',
       'Eliminar compañía', 'Cancelar'
     );
 
-    if(eliminada)
+    if(await eliminada)
     {
       this.companiasService.postEliminaCompania(request).subscribe({
-        next: async (dato) => {
+        next: (dato) => {
           if (dato.codigo === 200) {
-            await this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
+            this.notificacioAlertnService.confirmacion("CONFIRMACIÓN",
               "La compañía ha sido eliminada exitosamente.");
             this.actualizarDatos.emit();
           }
@@ -179,18 +190,16 @@ export class CompaniasContactadasComponent {
   }
 
   seleccionarCotizacion(id: number) {
-    //this.cotizacionSeleccionada = id;
-    //console.log('Cotización seleccionada:', id);
     this.cotizacionSeleccionadaEvent.emit(id);
   }
 
   verCompania(companiaSeleccionada: ICompania): void {
     const dato = {
-      p_id_solicitud: this.datosCompanias()?.infoGral.id_solicitud,//this.infoGral()?.id_solicitud,
-      fecha: this.datosCompanias()?.infoGral.fecha_creacion_solicitud,//this.infoGral()?.fecha_creacion_solicitud,
-      ejecutivo: this.datosCompanias()?.infoGral.nombre_ejecutivo_banco,//this.infoGral()?.nombre_ejecutivo_banco,
-      id_rubro: this.datosCompanias()?.infoGral.id_rubro,//this.infoGral()?.id_rubro,
-      id_tipo_seguro: this.datosCompanias()?.infoGral.id_tipo_seguro,//this.infoGral()?.id_tipo_seguro,
+      p_id_solicitud: this.infoGral()!.id_solicitud,//this.infoGral()?.id_solicitud,
+      fecha: this.infoGral()!.fecha_creacion_solicitud,//this.infoGral()?.fecha_creacion_solicitud,
+      ejecutivo: this.infoGral()!.nombre_ejecutivo_banco,//this.infoGral()?.nombre_ejecutivo_banco,
+      id_rubro: this.infoGral()!.id_rubro,//this.infoGral()?.id_rubro,
+      id_tipo_seguro: this.infoGral()!.id_tipo_seguro,//this.infoGral()?.id_tipo_seguro,
       p_id_usuario: this.id_usuario,
       p_tipo_usuario: this.tipoUsuario,
 
@@ -228,7 +237,6 @@ export class CompaniasContactadasComponent {
 
   pendiente(estado: string){
     if(estado.toLowerCase()==='pendiente' && !this.datosCompanias()?.verEjec){
-    //if(estado.toLowerCase()==='pendiente' && !this.verEjec){
       return false;
     }
     return true;
@@ -236,19 +244,17 @@ export class CompaniasContactadasComponent {
 
   enviada(estado: string){
     if(estado.toLowerCase()==='enviada' && !this.datosCompanias()?.verEjec){
-
-//    if(estado.toLowerCase()==='enviada' && !this.verEjec){
       return false;
     }
     return true;
   }
 
   cotizar(idCompania: number, accion: boolean): void {
-    this.compania.set(this.datosCompanias()?.companias!.find(
+    this.compania.set(this.companias()!.find(
       (c) => c.p_id_compania_seguro === idCompania));
 
     const dato = {
-      infoGral: !this.datosCompanias()?.infoGral,//this.infoGral()!,
+      infoGral: this.infoGral()!,//this.infoGral()!,
       compania: this.compania()!,
       flagAccion: accion
     };

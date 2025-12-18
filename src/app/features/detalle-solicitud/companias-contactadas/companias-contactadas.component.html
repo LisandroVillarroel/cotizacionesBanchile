@@ -7,8 +7,9 @@
 
 <div class="container-fluid fondoGris p-2 mt-3" style="padding: 10px 10px 10px">
   <mat-radio-group [value]="cotizacionSeleccionadaEvent" (change)="seleccionarCotizacion($event.value)">
-    @for (obj of datosCompanias()!.companias; track obj; let i = $index) {
+    @for (obj of companias()!; track obj; let i = $index) {
       <mat-card class="alinea-card-gestion">
+      @if(mostrar(obj)){
         <mat-card-content class="d-flex p-0">
           <div class="p-2" style="width: 20%">
             <p class="fontSmall">Compañía</p>
@@ -75,6 +76,12 @@
             </div>
           }
         </mat-card-content>
+      }
+      @else{
+        <mat-card-content class="d-flex p-0" style="justify-content: center;">
+          <span>No es posible mostrar el resumen de esta compañía</span>
+        </mat-card-content>
+      }
       </mat-card>
     }
   </mat-radio-group>

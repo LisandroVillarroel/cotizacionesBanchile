@@ -134,7 +134,7 @@ export class AgregarCompaniaComponent implements OnInit {
         .includes(companiaSeleccionada.toString());
     });
     const correoLimpio =
-      cia[0].correo_compania_seguro?.replace(/&nbsp;/g, '').trim() || '';
+      cia[0].correo_compania?.replace(/&nbsp;/g, '').trim() || '';
 
     this.correoCompania.set(correoLimpio);
     //this.data.id_compania_seguro = companiaSeleccionada.id_compania_seguro; // si necesitas guardar el ID

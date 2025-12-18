@@ -50,20 +50,25 @@ export interface ICompania {
   p_usuario_modificacion: string;
 }
 
+export interface IEjecutivo {
+  id_ejecutivo: number,
+  nombre: string,
+  correo: string,
+  estado: string,
+}
+
 export interface ICompanias {
-  id_compania_seguro: number;
-  rut_compania_seguro: string;
-  nombre_compania_seguro: string;
-  direccion_compania_seguro: string;
-  telefono_compania_seguro: string;
-  correo_compania_seguro: string;
-  id_ejecutivo_cia: number;
-  nombre_ejecutivo_cia: string;
-  correo_ejecutivo_cia: string;
-  fecha_creacion: string;
-  usuario_creacion: string;
-  fecha_modificacion: string;
-  usuario_modificacion: string;
+  id_compania_seguro: number,
+  rut_compania: string,
+  nombre_compania: string,
+  direccion_compania: string,
+  telefono_compania: string,
+  correo_compania: string,
+  ejecutivos: IEjecutivo[],
+  fecha_creacion: string,
+  usuario_creacion: string,
+  fecha_modificacion: string,
+  usuario_modificacion: string,
 }
 
 export interface ICompaniaResponse {

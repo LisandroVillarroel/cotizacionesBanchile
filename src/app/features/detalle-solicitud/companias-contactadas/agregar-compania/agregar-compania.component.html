@@ -34,7 +34,7 @@
             (selectionChange)="actualizarCorreo($event.value)">
             @for (_compania of datoCompanias(); track _compania) {
               <mat-option [value]="_compania.id_compania_seguro">
-                {{ _compania.nombre_compania_seguro }}
+                {{ _compania.nombre_compania }}
               </mat-option>
             }
           </mat-select>
