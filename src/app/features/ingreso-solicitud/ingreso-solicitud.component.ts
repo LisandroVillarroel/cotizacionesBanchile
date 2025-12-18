@@ -136,12 +136,12 @@ export default class IngresoSolicitudComponent implements OnInit {
     id_solicitud: 0,
     id_rubro: 0,
     id_tipo_seguro: 0,
-    muestraConsulta: true,
+    muestraConsulta: false,
   });
 
   data = signal<DetalleSolicitudData>({
     idSolicitud: 0,
-    flagSoloCerrar: true,
+    flagSoloCerrar: false,
   });
 
   private readonly dialog = inject(MatDialog);
@@ -239,9 +239,7 @@ export default class IngresoSolicitudComponent implements OnInit {
   cargaRubro() {
     this.rubroService.postRubro().subscribe({
       next: (dato) => {
-        console.log('RUBROS RECIBIDOS:', dato);
         if (dato.codigo === 200) {
-          console.log(dato.codigo)
           this.datoRubros.set(dato.p_cursor);
         }
       },
