@@ -58,7 +58,7 @@ import { EliminaAseguradoComponent } from './elimina-asegurado/elimina-asegurado
 })
 export class AseguradoComponent implements OnInit {
   inSolicitud = input.required<DetalleSolicitudData>();
-  idSolicitud = 0;
+  idSolicitud = computed(() => this.inSolicitud().idSolicitud);
   mostrarSoloConsulta = true;
 
   datoEmitidoAsegurado = output<boolean>();
@@ -118,8 +118,8 @@ export class AseguradoComponent implements OnInit {
   constructor() {
     effect(() => {
       // Llamar al método cada vez que el valor cambie
-      if (this.idSolicitud !== 0){
-        this.rescataListaAsegurados(this.idSolicitud);
+      if (this.idSolicitud() !== 0){
+        this.rescataListaAsegurados(this.idSolicitud());
       }
 
        this.datoEmitidoAsegurado.emit(this.hayAsegurados())
@@ -133,7 +133,6 @@ export class AseguradoComponent implements OnInit {
 
   ngOnInit() {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    this.idSolicitud = this.inSolicitud().idSolicitud;
     this.mostrarSoloConsulta = this.inSolicitud().flagSoloCerrar!;
   }
 
@@ -160,14 +159,14 @@ export class AseguradoComponent implements OnInit {
     dialogConfig.width = '80%';
     dialogConfig.height = '80%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = this.idSolicitud;
+    dialogConfig.data = this.idSolicitud();
 
     this.dialog
       .open(AgregaAseguradoComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
         if (data === 'agregado') {
-          this.rescataListaAsegurados(this.idSolicitud!);
+          this.rescataListaAsegurados(this.idSolicitud());
         }
       });
   }
@@ -176,7 +175,7 @@ export class AseguradoComponent implements OnInit {
     console.log('Dato Modificar:', datoAseguradoPar);
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
-      idSolicitud: this.idSolicitud,
+      idSolicitud: this.idSolicitud(),
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -193,7 +192,7 @@ export class AseguradoComponent implements OnInit {
       .subscribe((data) => {
         if (data === 'modificado') {
           console.log('Modificación Confirmada:', data);
-          this.rescataListaAsegurados(this.idSolicitud!);
+          this.rescataListaAsegurados(this.idSolicitud());
         }
       });
   }
@@ -215,7 +214,7 @@ export class AseguradoComponent implements OnInit {
   eliminaAsegurado(datoAseguradoPar: IAseguradoLista) {
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
-      idSolicitud: this.idSolicitud,
+      idSolicitud: this.idSolicitud(),
     };
 
     const dialogConfig = new MatDialogConfig();
@@ -231,7 +230,7 @@ export class AseguradoComponent implements OnInit {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'eliminado') {
-          this.rescataListaAsegurados(this.idSolicitud!);
+          this.rescataListaAsegurados(this.idSolicitud());
         }
       });
   }
