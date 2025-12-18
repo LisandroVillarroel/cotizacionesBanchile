@@ -90,19 +90,19 @@
       <!-- Acciones -->
       <ng-container matColumnDef="opciones">
         <th
+          id="opcionesI"
           mat-header-cell
           *matHeaderCellDef
           style="width: 16%; text-align: center"
         >
-          <span
-            class="agregar-texto"
+          <button class="agregar-texto"
             matTooltip="Agregar nueva Compañía"
             matTooltipPosition="above"
             (click)="onAgregarCompania()"
           >
             <mat-icon style="vertical-align: middle">add</mat-icon>
             Agregar
-          </span>
+          </button>
         </th>
         <td
           mat-cell
