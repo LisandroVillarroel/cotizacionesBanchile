@@ -57,9 +57,7 @@ export class EliminaAseguradoComponent {
       )
       .subscribe({
         next: (dato) => {
-          //console.log('dato:', dato);
           if (dato.codigo === 200) {
-            //alert('Eliminó Asegurado Bien');
             this.dialogRef.close('eliminado');
           }
         },

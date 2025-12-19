@@ -67,7 +67,7 @@ export class ModificaAseguradoComponent {
     this.data.datoAseguradoPar.nombreRazonSocialAsegurado,
     [Validators.required]
   );
-  correoAsegurado = new FormControl(this.data.datoAseguradoPar.correoAsegurado, [
+  correoAsegurado = new FormControl(this.data.datoAseguradoPar.mailAsegurado, [
     Validators.required,
   ]);
   telefonoAsegurado = new FormControl(
