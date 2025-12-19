@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,9 +22,17 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [MatFormFieldModule, MatDialogModule, MatTableModule, MatSortModule,
-      MatPaginatorModule, MatIconModule, MatTooltipModule,  MatInputModule,
-      MatSelectModule,ReactiveFormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule],
   templateUrl: './usuarios.component.html',
   styles: `
     table {
@@ -44,16 +52,34 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 
 export default class UsuariosComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
- storage = inject(StorageService);
+  storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
+  usuarioService = inject(UsuarioService);
+private readonly dialog = inject(MatDialog);
+  private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  tipoConsulta:string = 'E';
   datoUsuarios = signal<IUsuarioLista[]>([]);
   datoPerfilesUsuarios = signal<IUsuarioPerfile[]>([]);
-  usuarioService = inject(UsuarioService);
+  loading = signal(false);
+  errorMsg = signal<string | null>(null);
 
-  private readonly dialog = inject(MatDialog);
-  private matPaginatorIntl = inject(MatPaginatorIntl);
+
+
+
+  // Estado de selección (arranca sin seleccionar)
+  tipoConsulta: string = '';
+
+  //tipoConsulta:string = 'E';
+
+  //tipoUsuarioSelect = new FormControl('', Validators.required);
+  tipoUsuarioSelect = new FormControl<string>('', { nonNullable: true });
+  agregaSolicitudContratante = signal<FormGroup>(
+    new FormGroup({
+      tipoUsuario: this.tipoUsuarioSelect,
+    })
+  );
+
+
 
 
   displayedColumns: string[] = [
@@ -73,72 +99,83 @@ export default class UsuariosComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<IUsuarioLista>([]);
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource().filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource().paginator) {
-      this.dataSource().paginator!.firstPage();
-    }
-  }
-
-  dataSource = computed(() => {
-    const tabla = new MatTableDataSource<IUsuarioLista>(
-      this.datoUsuarios()
-    );
-    tabla.paginator = this.paginator;
-    tabla.sort = this.sort;
-    return tabla;
-  });
-
-
-  tipoUsuarioSelect = new FormControl('', Validators.required);
-  agregaSolicitudContratante = signal<FormGroup>(
-    new FormGroup({
-      tipoUsuario: this.tipoUsuarioSelect,
-    })
-  );
-
-  AfterViewInit(): void {
-    this.dataSource().paginator = this.paginator;
-    this.dataSource().sort = this.sort;
-  }
-
-  ngOnInit() {
+ngOnInit() {
     this.LitaPerfiles();
-    this.rescataLista(this.tipoConsulta);
+    //this.rescataLista(this.tipoConsulta);
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
+
+// Reaccionar al cambio del combo (además del (selectionChange) del template)
+    this.tipoUsuarioSelect.valueChanges.subscribe((val) => {
+      this.seleccionaTipoUsuario(val);
+    });
   }
 
-  rescataLista(tipoConsulta:string) {
 
- /*   let tipo ="E";
-    if(consulta=="E"){
-      tipo ="Ejecutivos";
-    }else if(consulta=="C"){
-      tipo = "Coordinadores";
-    }else { //if(consulta=="S")
-      tipo = "Ejecutivos y Coordinadores";
-    }
-*/
+ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    // Predicate de filtro (opcional)
+    this.dataSource.filterPredicate = (data, filter) => {
+      const texto = filter.trim().toLowerCase();
+      return [
+        data.p_nombre_usuario,
+        data.p_apellido_paterno_usuario,
+        data.p_apellido_materno_usuario,
+        data.p_mail_usuario,
+        data.p_rut_usuario,
+      ]
+        .filter(Boolean)
+        .map((x) => String(x).toLowerCase())
+        .some((campo) => campo.includes(texto));
+    };
+  }
+
+
+
+applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.paginator?.firstPage();
+  }
+
+
+
+ private rescataLista(tipo: string) {
+       this.loading.set(true);
+    this.errorMsg.set(null);
+
     this.usuarioService
-      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
+      .postListadoUsuario(
+        this._storage()!.usuarioLogin.usuario,
+        this._storage()!.usuarioLogin.tipoUsuario!,
+        tipo
+      )
       .subscribe({
         next: (dato: DatosUsuarioLista) => {
-          if (dato.codigo === 200) {
-            //console.log('Lista de Usuarios:', dato.p_cursor);
-            this.datoUsuarios.set(dato.p_cursor);
-          }
+          const registros = dato.codigo === 200 ? (dato.p_cursor ?? []) : [];
+          this.datoUsuarios.set(registros);
+          this.dataSource.data = registros;
+          this.dataSource.paginator?.firstPage();
+          this.loading.set(false);
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          this.errorMsg.set('Error Inesperado');
+          this.datoUsuarios.set([]);
+          this.dataSource.data = [];
+          this.dataSource.paginator?.firstPage();
+          this.loading.set(false);
+          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
         },
       });
   }
 
- LitaPerfiles() {
-  this.usuarioService
+
+
+  LitaPerfiles() {
+    this.usuarioService
       .postListaPerfiles(this._storage()!.usuarioLogin.usuario!, this._storage()!.usuarioLogin.tipoUsuario!)
       .subscribe({
         next: (dato: IUsuarioListaPerfiles) => {
@@ -147,15 +184,15 @@ export default class UsuariosComponent implements OnInit {
           }
         },
         error: () => {
-          this.notificacioAlertnService.error('ERROR','Error Inesperado');
+          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
         },
       });
   }
 
 
   agregaNuevo() {
-    const datoUsuarioPar={
-      tipoConsulta:this.tipoConsulta
+    const datoUsuarioPar = {
+      tipoConsulta: this.tipoConsulta
     }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -173,14 +210,10 @@ export default class UsuariosComponent implements OnInit {
           this.rescataLista(this.tipoConsulta);
         }
       });
-  }
+   }
 
   modificaUsuario(datoUsuarioPar: IUsuario): void {
     console.log('Dato Modificar:', datoUsuarioPar);
-  //  const parametro: IUsuarioListaParametro = {
-   //   datoUsuarioPar: datoUsuarioPar,
- //     tipoUsuario: this.tipoUsuario(),
- //   };
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -195,11 +228,10 @@ export default class UsuariosComponent implements OnInit {
       .afterClosed()
       .subscribe((data) => {
         if (data === 'modificado') {
-          //console.log('Modificación Confirmada:', data);
           this.rescataLista(this.tipoConsulta);
         }
       });
-  }
+   }
 
   consultaUsuario(datoUsuarioPar: IUsuario) {
     const dialogConfig = new MatDialogConfig();
@@ -216,7 +248,7 @@ export default class UsuariosComponent implements OnInit {
   }
 
   eliminaUsuario(datoUsuarioPar: IUsuario) {
-     const parametro: IUsuarioListaParametro = {
+    const parametro: IUsuarioListaParametro = {
       datoUsuarioPar: datoUsuarioPar,
       tipoUsuario: this._storage()!.usuarioLogin.tipoUsuario,
     };
@@ -237,10 +269,21 @@ export default class UsuariosComponent implements OnInit {
           this.rescataLista(this.tipoConsulta);
         }
       });
-  }
+   }
 
-  seleccionaTipoUsuario(_tipoConsulta: string) {
-    this.tipoConsulta = _tipoConsulta;
-    this.rescataLista(this.tipoConsulta);
+
+seleccionaTipoUsuario(valor: string) {
+  console.log('Tipo Usuario Seleccionado:', valor);
+  this.tipoConsulta = valor; // siempre string
+  if (!valor) {
+    this.datoUsuarios.set([]);
+    this.dataSource.data = [];
+    this.dataSource.paginator?.firstPage();
+    return;
   }
+  this.rescataLista(valor); // OK: espera string
+}
+
+
+
 }

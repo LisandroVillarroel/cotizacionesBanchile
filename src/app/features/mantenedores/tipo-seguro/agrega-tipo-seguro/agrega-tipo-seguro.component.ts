@@ -46,9 +46,7 @@ export class AgregaTipoSeguroComponent {
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
 
   notificacioAlertnService = inject(NotificacioAlertnService);
-
-  // public readonly data = inject<ITipoSeguro>(MAT_DIALOG_DATA);
-   tipoSeguroService = inject(TipoSeguroService);
+  tipoSeguroService = inject(TipoSeguroService);
 
   rubrosService = inject(RubrosService);
 
@@ -63,7 +61,6 @@ export class AgregaTipoSeguroComponent {
 
   idRubro = new FormControl('', [Validators.required]);
   nomTipoSeguro = new FormControl('', [Validators.required]);
-  //usuario_creacion = new FormControl('', [Validators.required]);
   prodIsol = new FormControl('', [Validators.required]);
   nroMinCotizaciones = new FormControl('', [Validators.required]);
 
@@ -71,7 +68,6 @@ export class AgregaTipoSeguroComponent {
     new FormGroup({
       idRubro: this.idRubro,
       nomTipoSeguro: this.nomTipoSeguro,
-      //usuario_creacion: this.usuario_creacion,
       prodIsol: this.prodIsol,
       minCotizaciones: this.nroMinCotizaciones,
     })
@@ -80,6 +76,10 @@ export class AgregaTipoSeguroComponent {
   rubrosLista = signal<IRubroLista[]>([]);
 
   ngOnInit() {
+    this.cargaRubros();
+  }
+
+  cargaRubros() {
     const estructura_lista = {
       p_id_usuario: 'adm042',
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
@@ -87,7 +87,7 @@ export class AgregaTipoSeguroComponent {
       p_tipo_usuario: 'A',
     };
     this.rubrosService.postRubros(estructura_lista).subscribe({
-      next: dato=> {
+      next: dato => {
         if (dato?.codigo === 200 && Array.isArray(dato?.p_cursor)) {
           this.rubrosLista.set(dato.p_cursor);
         } else {
@@ -99,7 +99,6 @@ export class AgregaTipoSeguroComponent {
       },
     });
   }
-
 
   getErrorMessage(campo: string) {
     if (campo === 'nomTipoSeguro') {
@@ -125,9 +124,6 @@ export class AgregaTipoSeguroComponent {
     return '';
   }
   grabar() {
-    //Convertir a formato BD (sin puntos, con guion)
-    // const rutParaBD = formatRut(cleanRut(this.agregaUsuario().get('rutUsuarioNuevo')!.value), RutFormat.DASH);
-
     this.tipoSeguro = {
       p_id_usuario: 'adm042',
       //p_id_usuario: this._storage()?.usuarioLogin.usuario!,

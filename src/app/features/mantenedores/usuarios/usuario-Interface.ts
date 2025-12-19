@@ -8,7 +8,7 @@ export interface IUsuario {
   p_mail_usuario_nuevo: string;// Correo electrónico del nuevo usuario
   p_telefono_usuario_nuevo: string;// Teléfono del nuevo usuario
   p_id_dependencia_usuario_nuevo: string;// ID de la dependencia del nuevo usuario, llamar el servicio y mostrar los corr o sup dependiendo
-  //p_id_perfil: string;// ID del perfil del nuevo usuario
+  p_id_perfil: string;// ID del perfil del nuevo usuario
   p_id_usuario: string;  // Usuario que realiza la acción
   p_tipo_usuario: string// Tipo de usuario que realiza la acción
 

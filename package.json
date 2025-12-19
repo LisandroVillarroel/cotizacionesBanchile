@@ -1,6 +1,6 @@
 {
   "name": "cotizaciones-banchile",
-  "version": "24.0.0",
+  "version": "25.0.0",
   "scripts": {
     "ng": "ng",
     "start:dev": "ng serve --configuration=dev",
