@@ -20,7 +20,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { ICompanias, ICompaniasResponse } from '@features/detalle-solicitud/modelo/detalle-interface';
+import {
+  ICompanias,
+  ICompaniasResponse,
+} from '@features/detalle-solicitud/modelo/detalle-interface';
 import { IAgregaCompania } from '@features/detalle-solicitud/modelo/compania';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
 import { CompaniasContactadasService } from '@features/detalle-solicitud/service/companias-contactadas.service';
@@ -73,6 +76,7 @@ export class AgregarCompaniaComponent implements OnInit {
   notificacioAlertnService = inject(NotificacioAlertnService);
 
   datoCompanias = signal<ICompanias[]>([]);
+  ejecutivosVigentes = signal<string[]>([]);
   correoCompania = signal<string>('');
 
   compania = new FormControl<number | null>(null, Validators.required);
@@ -102,22 +106,24 @@ export class AgregarCompaniaComponent implements OnInit {
   }
 
   cargarCompanias(): void {
-    this.CompaniasContactadasService.
-    postCompaniasTipoSeguro(this.data.id_rubro, this.data.id_tipo_seguro).
-      subscribe({
-        next: (dato: ICompaniasResponse) => {
-          if (dato.codigo === 200) {
-            //console.log("Dato: ",dato);
-            this.datoCompanias.set(dato.p_cursor);
-            //console.log("Compañías",this.datoCompanias());
-          }
-        },
-        error: () => {
-          this.notificacioAlertnService.
-            error('ERROR', 'No fue posible carga el listado de Compañías Contactadas.');
-        },
-      }
-    );
+    this.CompaniasContactadasService.postCompaniasTipoSeguro(
+      this.data.id_rubro,
+      this.data.id_tipo_seguro
+    ).subscribe({
+      next: (dato: ICompaniasResponse) => {
+        if (dato.codigo === 200) {
+          //console.log("Dato: ",dato);
+          this.datoCompanias.set(dato.p_cursor);
+          //console.log("Compañías",this.datoCompanias());
+        }
+      },
+      error: () => {
+        this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible carga el listado de Compañías Contactadas.'
+        );
+      },
+    });
   }
 
   getErrorMessage(control: FormControl): string {
@@ -128,16 +134,26 @@ export class AgregarCompaniaComponent implements OnInit {
   }
 
   actualizarCorreo(companiaSeleccionada: number): void {
-    const cia = this.datoCompanias()?.filter((item) => {
-      return item.id_compania_seguro
-        ?.toString()
-        .includes(companiaSeleccionada.toString());
-    });
-    const correoLimpio =
-      cia[0].correo_compania?.replace(/&nbsp;/g, '').trim() || '';
+    const cia = this.datoCompanias().find(
+      (c) => c.id_compania_seguro === companiaSeleccionada
+    );
 
+    if (!cia) {
+      this.correoCompania.set('');
+      this.ejecutivosVigentes.set([]);
+      return;
+    }
+
+    const correoLimpio =
+      cia.correo_compania?.replace(/&nbsp;/g, '').trim() || '';
     this.correoCompania.set(correoLimpio);
-    //this.data.id_compania_seguro = companiaSeleccionada.id_compania_seguro; // si necesitas guardar el ID
+
+    const correosEjecutivos =
+      cia.ejecutivos
+        ?.filter((e) => e.estado === 'Vigente')
+        .map((e) => `${e.nombre} - ${e.correo}`) ?? [];
+
+    this.ejecutivosVigentes.set(correosEjecutivos);
   }
 
   guardarCompania(): void {
@@ -160,7 +176,10 @@ export class AgregarCompaniaComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificacioAlertnService.error('ERROR', 'No fue posible agregar la compañía.');
+        this.notificacioAlertnService.error(
+          'ERROR',
+          'No fue posible agregar la compañía.'
+        );
       },
     });
   }
