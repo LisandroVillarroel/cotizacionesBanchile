@@ -1,15 +1,13 @@
-<app-cabecera-popup [titulo]="'Ingreso Usuario'" />
+<app-cabecera-popup [titulo]="'Ingreso Usuario ' + nombrePerfEnviado"/>
 <mat-dialog-content [formGroup]="agregaUsuario()" name="agregaUsuario" class="agrega-container">
   <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Agregar Datos del Usuario">
-
       <mat-form-field class="inputInput">
-        <mat-label class="labelI">Id Usuario</mat-label>
+        <mat-label class="labelI">Id Usuario Nuevo</mat-label>
         <input matInput aria-label="Id Usuario" [formControl]="idUsuarioNuevo" required />
         @if (idUsuarioNuevo.invalid) {
         <mat-error>{{ getErrorMessage("idUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
         <input matInput id="rutUsuarioNuevo" aria-label="Rut" class="input-rut rut"
@@ -19,7 +17,6 @@
         <mat-error>{{ getErrorMessage("rutUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
         <input matInput aria-label="Nombre" [formControl]="nombreUsuarioNuevo" required />
@@ -27,7 +24,6 @@
         <mat-error>{{ getErrorMessage("nombreUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Paterno</mat-label>
         <input matInput aria-label="Apellido Paterno" [formControl]="apePaternoUsuarioNuevo" required />
@@ -35,7 +31,6 @@
         <mat-error>{{ getErrorMessage("apePaternoUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Materno</mat-label>
         <input matInput aria-label="Apellido Materno" [formControl]="apeMaternoUsuarioNuevo" required />
@@ -43,7 +38,6 @@
         <mat-error>{{ getErrorMessage("apeMaternoUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
         <input matInput aria-label="Correo" [formControl]="mailUsuarioNuevo" required />
@@ -51,7 +45,6 @@
         <mat-error>{{ getErrorMessage("mailUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
         <input matInput aria-label="Teléfono" [formControl]="telefonoUsuarioNuevo" required />
@@ -59,13 +52,11 @@
         <mat-error>{{ getErrorMessage("telefonoUsuarioNuevo") }}</mat-error>
         }
       </mat-form-field>
-
-
-    <mat-form-field class="inputSelect">
+    <mat-form-field class="inputInput">
       <mat-label class="cursiva gris-claro">Selecciona Dependencia</mat-label>
       <mat-select [formControl]="dependenciaUsuarioNuevo" >
-        @for(_dependencia of dependencia(); track _dependencia){
-        <mat-option [value]="_dependencia">
+        @for(_dependencia of dependencia(); track _dependencia.p_id_usuario){
+        <mat-option [value]="_dependencia.p_id_usuario">
           {{ _dependencia.p_nombre_usuario + ' ' + _dependencia.p_apellido_paterno_usuario + ' ' +
           _dependencia.p_apellido_materno_usuario}}
         </mat-option>
@@ -75,11 +66,8 @@
       <mat-error>{{ getErrorMessage("dependenciaUsuarioNuevo") }}</mat-error>
       }
     </mat-form-field>
-
-
   </div>
 </mat-dialog-content>
-
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
   <div class="me-5">
     <button type="button" mat-raised-button class="colorFondoBotonCerrar" mat-dialog-close [disabled]="false">

@@ -191,6 +191,7 @@ export class ModificaUsuarioComponent implements OnInit {
       p_mail_usuario_nuevo: this.modificaUsuario().get('mailUsuarioNuevo')!.value,
       p_telefono_usuario_nuevo: this.modificaUsuario().get('telefonoUsuarioNuevo')!.value,
       p_id_dependencia_usuario_nuevo: this.modificaUsuario().get('dependenciaUsuarioNuevo')!.value,
+      p_id_perfil: "", //No se modifica el perfil en esta pantalla
       p_id_usuario: this._storage()?.usuarioLogin.usuario ?? "",
       p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario ?? ""
     };

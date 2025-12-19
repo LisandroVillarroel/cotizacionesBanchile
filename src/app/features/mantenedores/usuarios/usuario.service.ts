@@ -55,7 +55,7 @@ export class UsuarioService {
       p_tipo_usuario: p_tipo_usuario,//"S",
       p_tipo_consulta: tipoConsulta//"E"
     };
-    console.log('parametro listado usuarios:', estructura_lista);
+    console.log('parametro listado usuarios Usuario Service:', estructura_lista);
     return this.http
       .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, estructura_lista, { headers: this.headers } )
   }
