@@ -1,10 +1,7 @@
-
 <app-cabecera-popup [titulo]="'Modifica Tipo de Seguro'" />
 <form [formGroup]="modificaTipoSeguro()">
 <mat-dialog-content name="consulta" class="consulta-container">
-
     <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Modificación de Tipo de Seguro">
-
         <div class="col-md-3">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">ID Tipo Seguro</mat-label>
@@ -15,43 +12,34 @@
         <input matInput formControlName="prodIsol" />
       </mat-form-field>
     </div>
-
     <div class="col-md-3">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre Rubro</mat-label>
         <input matInput aria-label="nombreRubro" value="{{ data_.p_nombre_rubro }}" disabled="true" />
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nro. Mínimo Cotizaciones</mat-label>
         <input matInput formControlName="minCotizaciones" />
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Modificación</mat-label>
         <input matInput aria-label="fModificacion" value="{{ data_.p_fecha_modificacion }}" disabled="true" />
       </mat-form-field>
     </div>
-
     <div class="col-md-3">
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre Tipo Seguro</mat-label>
         <input matInput formControlName="nombre_tipo_seguro" />
       </mat-form-field>
-
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Fecha Creación</mat-label>
         <input matInput aria-label="fCreacion" value="{{ data_.p_fecha_creacion }}" disabled="true" />
       </mat-form-field>
-
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Modificación</mat-label>
         <input matInput aria-label="usuarioModificacion" value="{{ data_.p_usuario_modificacion }}" disabled="true" />
       </mat-form-field>
     </div>
-
-
     <div class="col-md-3">
       <mat-form-field class="inputInput">
           <mat-label class="labelI">Estado</mat-label>
@@ -59,21 +47,17 @@
             <mat-option value="Vigente">Vigente</mat-option>
             <mat-option value="No Vigente">No Vigente</mat-option>
           </mat-select>
-          <!-- <mat-error *ngIf="estado_tipo_seguro.invalid">Debes seleccionar un estado</mat-error> -->
            <mat-error>@if (estado_tipo_seguro.invalid) {{{ getErrorMessage('estado_tipo_seguro') }}}</mat-error>
         </mat-form-field>
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Usuario Creación</mat-label>
         <input matInput aria-label="usuarioCreacion" value="{{ data_.p_usuario_creacion }}" disabled="true" />
       </mat-form-field>
-
       <mat-form-field class="inputInput" style="visibility: hidden;">
           <input matInput formControlName="id_rubro" />
         </mat-form-field>
-
     </div>
   </div>
-
 </mat-dialog-content>
 </form>
 <mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
