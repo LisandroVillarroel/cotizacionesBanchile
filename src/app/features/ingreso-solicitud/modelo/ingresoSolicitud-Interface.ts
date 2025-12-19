@@ -71,7 +71,7 @@ export interface IAseguradoLista {
   usuarioModificacion?: string;
 }
 
-export interface IPersona {
+export interface ICliente {
     codigoRetorno: string,
     rutCliente: string,
     nombre: string,
@@ -172,24 +172,6 @@ export interface IAseguradoListaParametro {
   idSolicitud: number;
 }
 
-/* export interface IAgregaAsegurado {
-  p_id_solicitud?: number;
-  p_id_usuario?: string;
-  p_tipo_usuario?: string;
-  p_rut_asegurado: string;
-  p_nombre_razon_social_asegurado: string;
-  p_mail_asegurado: string;
-  p_telefono_asegurado: string;
-  p_region_asegurado: string;
-  p_ciudad_asegurado: string;
-  p_comuna_asegurado: string;
-  p_direccion_asegurado: string;
-  p_numero_dir_asegurado: string;
-  p_departamento_block_asegurado: string;
-  p_casa_asegurado: string;
-  p_usuario_modificacion?: string;
-} */
-
 export interface DatosAseguradosInterface {
   codigo: number;
   mensaje: string;
@@ -201,7 +183,7 @@ export interface DatosAseguradosInterface {
 export interface IDatosPersona {
   codigo: number;
   mensaje: string;
-  data: IPersona;
+  data: ICliente;
 }
 
 export interface IBeneficiario {
@@ -238,24 +220,6 @@ export interface IBeneficiarioLista {
   fecha_modificacion?: string;
   usuario_modificacion?: string;
 }
-
-/* export interface IAgregaBeneficiario {
-  p_id_solicitud?: number;
-  p_id_usuario?: string;
-  p_tipo_usuario?: string;
-  p_rut_beneficiario: string;
-  p_nombre_razon_social_beneficiario: string;
-  p_mail_beneficiario: string;
-  p_telefono_beneficiario: string;
-  p_region_beneficiario: string;
-  p_ciudad_beneficiario: string;
-  p_comuna_beneficiario: string;
-  p_direccion_beneficiario: string;
-  p_numero_dir_beneficiario: string;
-  p_departamento_block_beneficiario: string;
-  p_casa_beneficiario: string;
-  p_usuario_modificacion?: string;
-} */
 
 export interface IBeneficiarioListaParametro {
   datoBeneficiarioPar: IBeneficiarioLista;
