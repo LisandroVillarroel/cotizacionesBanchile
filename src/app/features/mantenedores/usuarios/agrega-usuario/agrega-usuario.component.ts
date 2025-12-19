@@ -59,9 +59,10 @@ export class AgregaUsuarioComponent implements OnInit {
   );
   codPerfil: string = "";               //tipo usuario dependencia   "E","C,"S","A"
   perfilUsuario: string = "";           //
-  nombrePerfilUsuario: string = "";     //perfil usuario de la dependencia "adm_corr","sup_corr","coord_corr","ejec_bco"
-  codPerfEnviado: string = "";             //tipo usuario a crear "E","C,"S","A"
-  nombrePerfEnviado: string = "";       //perfil usuario a crear "adm_corr","sup_corr","coord_corr","ejec_bco"
+  nombrePerfilUsuario: string = "";     //perfil usuario de la dependencia "admnistrador","supervisor","coordinador","ejecutivo banco"
+  codPerfEnviado: string = "";          //tipo usuario a crear "E","C,"S","A"
+  perfUsuarioEnviado: string = "";      //perfil usuario a crear "adm_corr","sup_corr","coord_corr","ejec_bco"
+  nombrePerfEnviado: string = "";       //perfil usuario a crear "admnistrador","supervisor","coordinador","ejecutivo banco"
 
 ngOnInit() {
   const anterior = this.jerarquia.jerarquiaAnterior(this.data.tipoConsulta);
@@ -73,6 +74,7 @@ ngOnInit() {
   const nombrePerfil = anterior?.p_nombre_perfil   ?? 'Perfil actual';
 
   const codPerfilEnviado = posterior?.p_codigo_perfil ?? this.data.tipoConsulta;
+  const perfilUsuarioEnviado = posterior?.p_id_perfil ?? this.data.tipoConsulta;
   const nombrePerfilEnviado = posterior?.p_nombre_perfil ?? this.data.tipoConsulta;
 
   this.codPerfil = codigoPerfil;
@@ -80,6 +82,7 @@ ngOnInit() {
   this.nombrePerfilUsuario = nombrePerfil;
 
   this.codPerfEnviado = codPerfilEnviado;   //tipo usuario a crear "E","C,"S","A"
+  this.perfUsuarioEnviado = perfilUsuarioEnviado; //perfil usuario a crear "adm_corr","sup_corr","coord_corr","ejec_bco"
   this.nombrePerfEnviado = nombrePerfilEnviado;   //se mostra en el título "Ingreso Usuario xxx"
   this.rescataLista(codigoPerfil);
 }
@@ -220,7 +223,7 @@ ngOnInit() {
       p_mail_usuario_nuevo: this.agregaUsuario().get('mailUsuarioNuevo')!.value,
       p_telefono_usuario_nuevo: this.agregaUsuario().get('telefonoUsuarioNuevo')!.value,
       p_id_dependencia_usuario_nuevo: this.agregaUsuario().get('dependenciaUsuarioNuevo')!.value,
-      p_id_perfil: this.codPerfil,                                         //perfil usuario nuevo a crear "adm_corr","sup_corr","coord_corr","ejec_bco"
+      p_id_perfil: this.perfUsuarioEnviado,                                         //perfil usuario nuevo a crear "adm_corr","sup_corr","coord_corr","ejec_bco"
       p_id_usuario: this._storage()?.usuarioLogin?.usuario ?? "",          //usuario que está haciendo la inserción
       p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario ?? "",    //tipo usuario que está haciendo la inserción
     };
