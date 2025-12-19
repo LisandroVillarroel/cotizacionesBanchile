@@ -56,7 +56,7 @@ export interface IAsegurado {
 export interface IAseguradoLista {
   rutAsegurado: string;
   nombreRazonSocialAsegurado: string;
-  correoAsegurado: string;
+  mailAsegurado: string;
   telefonoAsegurado: string;
   regionAsegurado: string;
   ciudadAsegurado: string;

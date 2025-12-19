@@ -172,7 +172,7 @@ export class AseguradoComponent implements OnInit {
   }
 
   modificaAsegurado(datoAseguradoPar: IAseguradoLista): void {
-    console.log('Dato Modificar:', datoAseguradoPar);
+    //console.log('Dato Modificar:', datoAseguradoPar);
     const parametro: IAseguradoListaParametro = {
       datoAseguradoPar: datoAseguradoPar,
       idSolicitud: this.idSolicitud(),

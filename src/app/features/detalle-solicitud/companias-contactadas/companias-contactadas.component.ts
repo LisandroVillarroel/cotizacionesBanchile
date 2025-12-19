@@ -72,6 +72,7 @@ export class CompaniasContactadasComponent implements OnInit {
   }
 
   mostrar(cia: ICompania){
+    console.log("Compañia: ", cia);
     if(cia.p_nombre_compania_seguro === null
       || cia.p_id_fecha_envio_cotizacion === null
       || cia.p_id_nombre_estado_cotizacion === null){
