@@ -57,7 +57,7 @@ export class UsuarioService {
     };
     console.log('parametro listado usuarios Usuario Service:', estructura_lista);
     return this.http
-      .post<DatosUsuarioLista>(`${environment.apiUrlConsumer}/listarUsuarios`, estructura_lista, { headers: this.headers } )
+      .post<DatosUsuarioLista>(`${environment.apiUrlConsumerBff}/listarUsuarios`, estructura_lista, { headers: this.headers } )
   }
 
    postListaPerfiles(p_id_usuario: string, p_tipo_usuario: string): Observable<IUsuarioListaPerfiles> {
