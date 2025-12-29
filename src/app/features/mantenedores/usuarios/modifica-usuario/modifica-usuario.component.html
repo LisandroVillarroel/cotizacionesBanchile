@@ -4,79 +4,77 @@
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Id Usuario</mat-label>
-        <input matInput aria-label="Id Usuario" [formControl]="idUsuarioNuevo" required />
-        @if (idUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("idUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Id Usuario" formControlName="idUsuario"  />
+        @if (idUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("idUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Rut</mat-label>
-        <input matInput id="rutUsuarioNuevo" aria-label="Rut" class="input-rut rut"
-          [formControl]="rutUsuarioNuevo" oninput="this.value = this.value.toUpperCase()"
-          (blur)="onBlurRutUsuarioNuevo($event)" validaRut required />
-        @if (rutUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("rutUsuarioNuevo") }}</mat-error>
+        <input matInput id="rutUsuario" aria-label="Rut" class="input-rut rut"
+          [formControl]="rutUsuario" oninput="this.value = this.value.toUpperCase()"
+          (blur)="onBlurRutUsuario($event)" validaRut required/>
+        @if (rutUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("rutUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Nombre</mat-label>
-        <input matInput aria-label="Nombre" [formControl]="nombreUsuarioNuevo" required />
-        @if (nombreUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("nombreUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Nombre" [formControl]="nombreUsuario" required />
+        @if (nombreUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("nombreUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Paterno</mat-label>
-        <input matInput aria-label="Apellido Paterno" [formControl]="apePaternoUsuarioNuevo" required />
-        @if (apePaternoUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("apePaternoUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Apellido Paterno" [formControl]="apePaternoUsuario" required />
+        @if (apePaternoUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("apePaternoUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Apellido Materno</mat-label>
-        <input matInput aria-label="Apellido Materno" [formControl]="apeMaternoUsuarioNuevo" required />
-        @if (apeMaternoUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("apeMaternoUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Apellido Materno" [formControl]="apeMaternoUsuario" required />
+        @if (apeMaternoUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("apeMaternoUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Correo</mat-label>
-        <input matInput aria-label="Correo" [formControl]="mailUsuarioNuevo" required />
-        @if (mailUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("mailUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Correo" [formControl]="mailUsuario" required />
+        @if (mailUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("mailUsuario") }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="inputInput">
         <mat-label class="labelI">Teléfono</mat-label>
-        <input matInput aria-label="Teléfono" [formControl]="telefonoUsuarioNuevo" required />
-        @if (telefonoUsuarioNuevo.invalid) {
-        <mat-error>{{ getErrorMessage("telefonoUsuarioNuevo") }}</mat-error>
+        <input matInput aria-label="Teléfono" [formControl]="telefonoUsuario" required />
+        @if (telefonoUsuario.invalid) {
+        <mat-error>{{ getErrorMessage("telefonoUsuario") }}</mat-error>
         }
       </mat-form-field>
 
 
     <mat-form-field class="inputInput">
       <mat-label class="cursiva gris-claro">Selecciona Dependencia</mat-label>
-      <mat-select [formControl]="dependenciaUsuarioNuevo">
-        @for(_dependencia of dependencia(); track _dependencia){
-        <mat-option [value]="_dependencia">
-          {{ _dependencia.p_nombre_usuario || '' || _dependencia.p_apellido_paterno_usuario || '' ||
+      <mat-select [formControl]="dependenciaUsuario" >
+        @for(_dependencia of dependencia(); track _dependencia.p_id_usuario){
+        <mat-option [value]="_dependencia.p_id_usuario">
+          {{ _dependencia.p_nombre_usuario + ' ' + _dependencia.p_apellido_paterno_usuario + ' ' +
           _dependencia.p_apellido_materno_usuario}}
         </mat-option>
         }
       </mat-select>
-      @if(dependenciaUsuarioNuevo.invalid){
-      <mat-error>{{ getErrorMessage("dependenciaUsuarioNuevo") }}</mat-error>
+      @if(dependenciaUsuario.invalid){
+      <mat-error>{{ getErrorMessage("dependenciaUsuario") }}</mat-error>
       }
     </mat-form-field>
-
-
   </div>
 </mat-dialog-content>
 

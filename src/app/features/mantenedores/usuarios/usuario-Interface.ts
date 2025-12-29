@@ -11,7 +11,21 @@ export interface IUsuario {
   p_id_perfil: string;// ID del perfil del nuevo usuario
   p_id_usuario: string;  // Usuario que realiza la acción
   p_tipo_usuario: string// Tipo de usuario que realiza la acción
+}
 
+export interface IUsuarioUpd {
+  p_id_usuario: string;// ID del usuario
+  p_tipo_usuario: string;// Tipo del usuario, aca hay que llamar un servicio que muestre si es ejec, coor o sup
+  p_id_usuario_modif: string;  // Usuario que realiza la acción
+  p_tipo_usuario_modif: string// Tipo de usuario que realiza la acción
+  p_rut_usuario: string; // Rut del  usuario
+  p_nombre_usuario: string;// Nombre del usuario
+  p_apellido_paterno_usuario: string;// Apellido paterno del usuario
+  p_apellido_materno_usuario: string;// Apellido materno del usuario
+  p_mail_usuario: string;// Correo electrónico del nuevo usuario
+  p_telefono_usuario: string;// Teléfono del nuevo usuario
+  p_id_dependencia_usuario: string;// ID de la dependencia del usuario, llamar el servicio y mostrar los corr o sup dependiendo
+  p_estado_usuario: string;// Vigente o No Vigente
 }
 
 export interface IUsuarioLista {

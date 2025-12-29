@@ -112,10 +112,8 @@ export class ModificaTipoSeguroComponent {
 
     grabar(): void {
       const tipoSeguro: ITipoSeguroUpdate = {
-        p_id_usuario: 'adm042', // o desde storage
-        //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-        //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-        p_tipo_usuario: 'A',
+        p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+        p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
         p_id_rubro: this.modificaTipoSeguro().get('id_rubro')!.value,
         p_id_tipo_seguro: this.modificaTipoSeguro().get('id_tipo_seguro')!.value,
         p_nombre_tipo_seguro: this.modificaTipoSeguro().get('nombre_tipo_seguro')!.value,
@@ -123,9 +121,6 @@ export class ModificaTipoSeguroComponent {
         p_nro_minimo_cotizaciones: this.modificaTipoSeguro().get('minCotizaciones')!.value,
         p_estado_tipo_seguro: this.modificaTipoSeguro().get('estado_tipo_seguro')!.value
       };
-
-      console.log('Actualizar:', tipoSeguro);
-
       this.tipoSeguroService.postModificaTipoSeguro(tipoSeguro).subscribe({
         next: (dato: any) => {
           console.log('dato:', dato);
