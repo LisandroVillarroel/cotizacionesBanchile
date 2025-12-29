@@ -4,7 +4,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { StorageService } from '@shared/service/storage.service';
 import { UsuarioService } from '../usuario.service';
-import { IUsuario, IUsuarioLista } from '../usuario-Interface';
+import { DatosUsuarioLista, IUsuario, IUsuarioLista, IUsuarioUpd } from '../usuario-Interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { cleanRut, formatRut, RutFormat, validateRut } from '@fdograph/rut-utilities';
 import { CommonModule } from '@angular/common';
@@ -13,21 +13,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import CabeceraPopupComponente from '@shared/ui/cabeceraPopup.component';
+import { Jerarquia } from '@shared/utils/jerarquia';
 
 
 @Component({
   selector: 'app-modifica-usuario',
   standalone: true,
   imports: [CommonModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatSelectModule,
-        CabeceraPopupComponente],
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatSelectModule,
+    CabeceraPopupComponente],
   templateUrl: './modifica-usuario.component.html',
-   styles: `
+  styles: `
     .mat-mdc-form-field {
     width: 50% !important;
     padding-bottom: 25px;
@@ -44,127 +45,138 @@ export class ModificaUsuarioComponent implements OnInit {
 
   private readonly dialogRef = inject(MatDialogRef<ModificaUsuarioComponent>);
 
-   readonly data = inject<IUsuario>(MAT_DIALOG_DATA);
+  jerarquia = inject(Jerarquia);
+
+  readonly data = inject(MAT_DIALOG_DATA);
 
   usuarioService = inject(UsuarioService);
 
   dependencia = signal<IUsuarioLista[]>([]);
 
-  usuario!: IUsuario;
-
+  usuarioUpd!: IUsuarioUpd;
+  codPerfil: string = "";
 
   ngOnInit() {
-    console.log('data recibida:', this.data);
+    this.idUsuario.setValue(String(this.data.p_id_usuario));
+    this.idUsuario.disable();
+    this.rutUsuario.setValue(this.data.p_rut_usuario);
+    this.rutUsuario.disable();
+    this.nombreUsuario.setValue(this.data.p_nombre_usuario);
+    this.apePaternoUsuario.setValue(this.data.p_apellido_paterno_usuario);
+    this.apeMaternoUsuario.setValue(this.data.p_apellido_materno_usuario);
+    this.mailUsuario.setValue(this.data.p_mail_usuario);
+    this.telefonoUsuario.setValue(this.data.p_telefono_usuario);
+    this.tipoUsuario.setValue(this.data.p_tipo_usuario);
+    this.dependenciaUsuario.setValue(this.data.p_id_dependencia_usuario);
+
+    const anterior = this.jerarquia.jerarquiaAnterior(this.data.p_tipo_usuario);
+    const codigoPerfil = anterior?.p_codigo_perfil ?? this.data.p_tipo_usuario;
+    this.codPerfil = codigoPerfil;
+    this.rescataLista(codigoPerfil);
   }
 
-  idUsuarioNuevo = new FormControl(this.data.p_id_usuario_nuevo, [Validators.required]);
-  rutUsuarioNuevo = new FormControl(this.data.p_rut_usuario_nuevo, [Validators.required, this.validaRut]);
-  nombreUsuarioNuevo = new FormControl(this.data.p_nombre_usuario_nuevo, [Validators.required]);
-  apePaternoUsuarioNuevo = new FormControl(this.data.p_apellido_paterno_usuario_nuevo, [Validators.required]);
-  apeMaternoUsuarioNuevo = new FormControl(this.data.p_apellido_materno_usuario_nuevo, [Validators.required]);
-  mailUsuarioNuevo = new FormControl(this.data.p_mail_usuario_nuevo, [
+  idUsuario = new FormControl(this.data.p_id_usuario, [Validators.required]);
+  rutUsuario = new FormControl(this.data.p_rut_usuario, [Validators.required, this.validaRut]);
+  nombreUsuario = new FormControl(this.data.p_nombre_usuario, [Validators.required]);
+  apePaternoUsuario = new FormControl(this.data.p_apellido_paterno_usuario, [Validators.required]);
+  apeMaternoUsuario = new FormControl(this.data.p_apellido_materno_usuario, [Validators.required]);
+  mailUsuario = new FormControl(this.data.p_mail_usuario, [
     Validators.required,
     Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
   ]);
-  telefonoUsuarioNuevo = new FormControl(this.data.p_telefono_usuario_nuevo, [
+  telefonoUsuario = new FormControl(this.data.p_telefono_usuario, [
     Validators.required,
     Validators.pattern(/^(9\d{8}|22\d{7})$/),
   ]);
-  tipoUsuarioNuevo = new FormControl(this.data.p_tipo_usuario_nuevo, [Validators.required]);
-  dependenciaUsuarioNuevo = new FormControl(this.data.p_id_dependencia_usuario_nuevo, [Validators.required]);
+  tipoUsuario = new FormControl(this.data.p_tipo_usuario, [Validators.required]);
+  dependenciaUsuario = new FormControl(this.data.p_id_dependencia_usuario, [Validators.required]);
+  estadoUsuario = new FormControl(this.data.p_estado_usuario, [Validators.required]);
 
 
   modificaUsuario = signal<FormGroup>(
     new FormGroup({
-      idUsuarioNuevo: this.idUsuarioNuevo,
-      rutUsuarioNuevo: this.rutUsuarioNuevo,
-      nombreUsuarioNuevo: this.nombreUsuarioNuevo,
-      apePaternoUsuarioNuevo: this.apePaternoUsuarioNuevo,
-      apeMaternoUsuarioNuevo: this.apeMaternoUsuarioNuevo,
-      mailUsuarioNuevo: this.mailUsuarioNuevo,
-      telefonoUsuarioNuevo: this.telefonoUsuarioNuevo,
-      dependenciaUsuarioNuevo: this.dependenciaUsuarioNuevo,
-      tipoUsuarioNuevo: this.tipoUsuarioNuevo,
-
+      idUsuario: this.idUsuario,
+      rutUsuario: this.rutUsuario,
+      nombreUsuario: this.nombreUsuario,
+      apePaternoUsuario: this.apePaternoUsuario,
+      apeMaternoUsuario: this.apeMaternoUsuario,
+      mailUsuario: this.mailUsuario,
+      telefonoUsuario: this.telefonoUsuario,
+      dependenciaUsuario: this.dependenciaUsuario,
+      tipoUsuario: this.tipoUsuario,
     })
   );
 
   getErrorMessage(campo: string) {
-     if (campo === 'idUsuarioNuevo') {
-      return this.idUsuarioNuevo.hasError('required')
+    if (campo === 'idUsuario') {
+      return this.idUsuario.hasError('required')
         ? 'Debes ingresar Id Usuario'
         : '';
     }
-     if (campo === 'rutUsuarioNuevo') {
-      return this.rutUsuarioNuevo.hasError('required')
+    if (campo === 'rutUsuario') {
+      return this.rutUsuario.hasError('required')
         ? 'Debes ingresar Rut Usuario '
         : '';
     }
-     if (campo === 'nombreUsuarioNuevo') {
-      return this.nombreUsuarioNuevo.hasError('required')
+    if (campo === 'nombreUsuario') {
+      return this.nombreUsuario.hasError('required')
         ? 'Debes ingresar Nombre Usuario'
         : '';
     }
-     if (campo === 'apePaternoUsuarioNuevo') {
-      return this.apePaternoUsuarioNuevo.hasError('required')
+    if (campo === 'apePaternoUsuario') {
+      return this.apePaternoUsuario.hasError('required')
         ? 'Debes ingresar Apellido Paterno'
         : '';
     }
-     if (campo === 'apeMaternoUsuarioNuevo') {
-      return this.apeMaternoUsuarioNuevo.hasError('required')
+    if (campo === 'apeMaternoUsuario') {
+      return this.apeMaternoUsuario.hasError('required')
         ? 'Debes ingresar Apellido Materno'
         : '';
     }
 
-    if (campo === 'mailUsuarioNuevo') {
-      if (this.mailUsuarioNuevo.hasError('required')) {
+    if (campo === 'mailUsuario') {
+      if (this.mailUsuario.hasError('required')) {
         return 'Debes ingresar Correo';
       }
-      if (this.mailUsuarioNuevo.hasError('pattern')) {
+      if (this.mailUsuario.hasError('pattern')) {
         return 'Debes ingresar un Correo válido';
       }
     }
 
-    if (campo === 'telefonoUsuarioNuevo') {
-      if (this.telefonoUsuarioNuevo.hasError('required')) {
+    if (campo === 'telefonoUsuario') {
+      if (this.telefonoUsuario.hasError('required')) {
         return 'Debes ingresar Teléfono';
       }
-      if (this.telefonoUsuarioNuevo.hasError('pattern')) {
+      if (this.telefonoUsuario.hasError('pattern')) {
         return 'Formato de Teléfono inválido. Usa 9XXXXXXXX o 22XXXXXXX';
       }
     }
 
-    if (campo === 'dependenciaUsuarioNuevo') {
-      return this.dependenciaUsuarioNuevo.hasError('required')
+    if (campo === 'dependenciaUsuario') {
+      return this.dependenciaUsuario.hasError('required')
         ? 'Debes seleccionar Dependencia'
         : '';
     }
 
-    if (campo === 'tipoUsuarioNuevo') {
-      return this.tipoUsuarioNuevo.hasError('required')
+    if (campo === 'tipoUsuario') {
+      return this.tipoUsuario.hasError('required')
         ? 'Debes seleccionar Tipo de Usuario'
         : '';
     }
-
     return '';
   }
 
 
 
-  //Éste es el método formatear rut con puntos y guión, guarda el rut sin puntos y con guion en BD y carga datos del mock en agregar asegurado
-  async onBlurRutUsuarioNuevo(event: Event) {
+  async onBlurRutUsuario(event: Event) {
     const rut = (event.target as HTMLInputElement).value;
 
     if (validateRut(rut) === true) {
-      // Formatear el RUT visualmente
       await this.modificaUsuario()
-        .get('rutUsuarioNuevo')!
+        .get('rutUsuario')!
         .setValue(formatRut(cleanRut(rut), RutFormat.DOTS_DASH), {
           emitEvent: false,
         });
-
-      // Formato para BD
-     // const rutParaBD = formatRut(cleanRut(rut), RutFormat.DASH);
     }
   }
 
@@ -177,31 +189,44 @@ export class ModificaUsuarioComponent implements OnInit {
 
   }
 
+  rescataLista(tipoConsulta: string) {
+    this.usuarioService
+      .postListadoUsuario(this._storage()!.usuarioLogin.usuario, this._storage()!.usuarioLogin.tipoUsuario!, tipoConsulta)
+      .subscribe({
+        next: (dato: DatosUsuarioLista) => {
+          if (dato.codigo === 200) {
+            console.log('Lista de Usuarios (modifica-usuario):', dato.p_cursor);
+            this.dependencia.set(dato.p_cursor);
+          }
+        },
+        error: () => {
+          this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
+        },
+      });
+  }
+
+
   grabar() {
-    //Convertir a formato BD (sin puntos, con guion)
-    const rutParaBD = formatRut(cleanRut(this.modificaUsuario().get('rutUsuarioNuevo')!.value), RutFormat.DASH);
+    const rutParaBD = formatRut(cleanRut(this.modificaUsuario().get('rutUsuario')!.value), RutFormat.DASH);
 
-    this.usuario = {
-      p_id_usuario_nuevo: this.modificaUsuario().get('idUsuarioNuevo')!.value,
-      p_tipo_usuario_nuevo: this.modificaUsuario().get('tipoUsuarioNuevo')!.value,
-      p_rut_usuario_nuevo: rutParaBD,
-      p_nombre_usuario_nuevo: this.modificaUsuario().get('nombreUsuarioNuevo')!.value,
-      p_apellido_paterno_usuario_nuevo: this.modificaUsuario().get('apePaternoUsuarioNuevo')!.value,
-      p_apellido_materno_usuario_nuevo: this.modificaUsuario().get('apeMaternoUsuarioNuevo')!.value,
-      p_mail_usuario_nuevo: this.modificaUsuario().get('mailUsuarioNuevo')!.value,
-      p_telefono_usuario_nuevo: this.modificaUsuario().get('telefonoUsuarioNuevo')!.value,
-      p_id_dependencia_usuario_nuevo: this.modificaUsuario().get('dependenciaUsuarioNuevo')!.value,
-      p_id_perfil: "", //No se modifica el perfil en esta pantalla
+    this.usuarioUpd = {
       p_id_usuario: this._storage()?.usuarioLogin.usuario ?? "",
-      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario ?? ""
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario ?? "",
+      p_id_usuario_modif: this.modificaUsuario().get('idUsuario')!.value,
+      p_tipo_usuario_modif: this.modificaUsuario().get('tipoUsuario')!.value,
+      p_rut_usuario: rutParaBD,
+      p_nombre_usuario: this.modificaUsuario().get('nombreUsuario')!.value,
+      p_apellido_paterno_usuario: this.modificaUsuario().get('apePaternoUsuario')!.value,
+      p_apellido_materno_usuario: this.modificaUsuario().get('apeMaternoUsuario')!.value,
+      p_mail_usuario: this.modificaUsuario().get('mailUsuario')!.value,
+      p_telefono_usuario: this.modificaUsuario().get('telefonoUsuario')!.value,
+      p_id_dependencia_usuario: this.modificaUsuario().get('dependenciaUsuario')!.value,
+      p_estado_usuario: "Vigente",
     };
+    this.usuarioService.postModificaUsuario(this.usuarioUpd).subscribe({
 
-
-    this.usuarioService.postAgregaUsuario(this.usuario).subscribe({
-      next: (dato) => {
-        console.log('dato:', dato);
-        if (dato.codigo === 200) {
-          //alert('Grabó Usuario Bien');
+      next: (dato: any) => {
+        if (Number(dato.codigo) === 200) {
           this.dialogRef.close('modificado');
         }
       },

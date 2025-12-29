@@ -35,7 +35,6 @@ import { Jerarquia } from '@shared/utils/jerarquia';
     padding-right: 10px;
   }
   `
-
 })
 
 export class AgregaUsuarioComponent implements OnInit {

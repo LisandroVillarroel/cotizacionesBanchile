@@ -89,17 +89,12 @@ ngOnInit(): void {
 
   grabar(): void {
     const rubro: IRubroUpdate = {
-      p_id_usuario: 'adm042', // o desde storage
-      //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_tipo_usuario: 'A',
+      p_id_usuario: this._storage()?.usuarioLogin.usuario!,
+      p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
       p_id_rubro: this.modificaRubro().get('id_rubro')!.value,
       p_nombre_rubro: this.modificaRubro().get('nombre_rubro')!.value,
       p_estado_rubro: this.modificaRubro().get('estado_rubro')!.value
     };
-
-    console.log('Actualizar:', rubro);
-
     this.rubroService.postModificaRubro(rubro).subscribe({
       next: (dato: any) => {
         console.log('dato:', dato);

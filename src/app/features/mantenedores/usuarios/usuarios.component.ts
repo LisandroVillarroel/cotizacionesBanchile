@@ -213,8 +213,6 @@ applyFilter(event: Event) {
    }
 
   modificaUsuario(datoUsuarioPar: IUsuario): void {
-    console.log('Dato Modificar:', datoUsuarioPar);
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -227,6 +225,7 @@ applyFilter(event: Event) {
       .open(ModificaUsuarioComponent, dialogConfig)
       .afterClosed()
       .subscribe((data) => {
+        console.log('data modifica usuario:', data);
         if (data === 'modificado') {
           this.rescataLista(this.tipoConsulta);
         }
