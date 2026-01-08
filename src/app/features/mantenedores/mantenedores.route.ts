@@ -8,7 +8,7 @@ export default [
     loadComponent: () =>
       import('@features/mantenedores/usuarios/usuarios.component'),
   },
-   {
+  {
     path: 'rubros',
     canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
@@ -25,6 +25,12 @@ export default [
     canActivate: [guardRoles(['adm_corr'])],
     loadComponent: () =>
       import('@features/mantenedores/companias/companias.component'),
+  },
+  {
+    path: 'parametros',
+    canActivate: [guardRoles(['adm_corr'])],
+    loadComponent: () =>
+      import('@features/mantenedores/parametros/parametros.component'),
   },
 
   {
