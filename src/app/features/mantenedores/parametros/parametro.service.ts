@@ -2,7 +2,7 @@ import { InterfazParametro, IParametro, IParametroUpdate } from './parametro-Int
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { IRequestGestion } from '@shared/modelo/servicios-interface';
+import { IRequestSm, IResponse } from '@shared/modelo/servicios-interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,22 +18,22 @@ export class ParametrosService {
   });
   constructor() { }
 
-  postAgregaParametro(agregaParametro: IParametro): Observable<any> {
+  postAgregaParametro(agregaParametro: IParametro): Observable<IResponse> {
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/crearParametro`, agregaParametro, {
+      .post<IResponse>(`${environment.apiUrlConsumer}/crearParametro`, agregaParametro, {
         headers: this.headers,
       })
   }
-  postModificaParametro(modificaParametro: IParametroUpdate): Observable<any> {
+  postModificaParametro(modificaParametro: IParametroUpdate): Observable<IResponse> {
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/modificarParametro`, modificaParametro, {
+      .post<IResponse>(`${environment.apiUrlConsumer}/modificarParametro`, modificaParametro, {
         headers: this.headers,
       })
   }
 
-   postParametros(postParametros: IRequestGestion): Observable<InterfazParametro> {
+   postParametros(postParametros: IRequestSm): Observable<InterfazParametro> {
     return this.http
-      .post<any>(`${environment.apiUrlConsumer}/listarParametros`, postParametros, {
+      .post<InterfazParametro>(`${environment.apiUrlConsumer}/listarParametros`, postParametros, {
         headers: this.headers,
       })
   }

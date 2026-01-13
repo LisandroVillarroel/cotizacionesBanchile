@@ -1,3 +1,4 @@
+
 export interface IParametro {
   p_id_usuario: string;
   p_tipo_usuario: string;

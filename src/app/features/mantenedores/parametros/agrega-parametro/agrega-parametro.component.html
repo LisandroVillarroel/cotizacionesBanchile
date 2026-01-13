@@ -1,1 +1,36 @@
-<p>agrega-parametro works!</p>
+<app-cabecera-popup [titulo]="'Agregar Parámetro'" />
+<mat-dialog-content name="consulta" class="consulta-container">
+  <div class="row form-con-titulo contenido-form mat-elevation-z6" data-titulo="Agregar Rubro">
+    <div class="col-md-4">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Parámetro</mat-label>
+        <input matInput aria-label="nombre_rubro" [formControl]="nombre_parametro" required />
+        @if (nombre_parametro.invalid) {
+        <mat-error>{{ getErrorMessage("nombre_rubro") }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Usuario Creación</mat-label>
+        <input matInput aria-label="usuario_creacion" value="{{ _storage()?.usuarioLogin?.nombreUsuario }}" disabled="true" />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="barra-botones-form d-flex justify-content-center">
+  <div class="me-5">
+    <button type="button" mat-raised-button class="colorFondoBotonCerrar" mat-dialog-close [disabled]="false">
+      Cerrar
+    </button>
+  </div>
+  <div class="ms-5">
+    <button type="button" mat-raised-button (click)="grabar()" [disabled]="agregaParametro().invalid" [ngClass]="{
+        colorFondoBotonGrabar: !agregaParametro().invalid
+      }">
+      Grabar
+    </button>
+  </div>
+</mat-dialog-actions>
+
+

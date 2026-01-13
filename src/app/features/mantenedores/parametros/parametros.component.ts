@@ -2,16 +2,8 @@ import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular
 import { NotificacioAlertnService } from '@shared/service/notificacionAlert';
 import { IParametroLista } from './parametro-Interface';
 import { ParametrosService } from './parametro.service';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogModule,
-} from '@angular/material/dialog';
-import {
-  MatPaginator,
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,6 +33,7 @@ import { ISesionInterface } from '@shared/modelo/sesion-interface';
   styleUrl: './parametros.component.css',
 })
 export default class ParametrosComponent implements OnInit {
+
   storage = inject(StorageService);
   _storage = signal(this.storage.get<ISesionInterface>('sesion'));
   notificacioAlertnService = inject(NotificacioAlertnService);
@@ -53,12 +46,10 @@ export default class ParametrosComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  datoTipoUsuario = signal([
-    { p_tipo_usuario: 'A', descripcion: 'Administrador' },
-    { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
-    { p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
-    { p_tipo_usuario: 'C', descripcion: 'Coordinador' },
-  ]);
+  datoTipoUsuario = signal([{ p_tipo_usuario: 'A', descripcion: 'Administrador' },
+  { p_tipo_usuario: 'S', descripcion: 'Supervisor' },
+  { p_tipo_usuario: 'E', descripcion: 'Ejecutivo' },
+  { p_tipo_usuario: 'C', descripcion: 'Coordinador' },]);
 
   displayedColumns: string[] = [
     'index',
@@ -94,7 +85,7 @@ export default class ParametrosComponent implements OnInit {
 
   constructor() {}
 
-  ngAfterViewInit(): void {
+  AfterViewInit(): void {
     this.dataSource().paginator = this.paginator;
     this.dataSource().sort = this.sort;
   }
@@ -106,25 +97,19 @@ export default class ParametrosComponent implements OnInit {
 
   rescataLista() {
     const estructura_lista = {
-      //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      //p_tipo_consulta: p_tipo_consulta_
-
-      p_id_usuario: 'adm042', // o desde storage
-      //p_id_usuario: this._storage()?.usuarioLogin.usuario!,
-      //p_tipo_usuario: this._storage()?.usuarioLogin.tipoUsuario!,
-      p_tipo_usuario: 'A',
+      p_id_usuario: this._storage()?.usuarioLogin?.usuario as string,
+      p_tipo_usuario: this._storage()?.usuarioLogin?.tipoUsuario as string,
     };
 
-    this.parametroService.postParametros(estructura_lista).subscribe({
-      next: (dato) => {
-        console.log('Dato Rescata Lista Parametros:', dato);
-        if (dato.codigo === 200) {
-          console.log('Lista de Parametros:', dato.p_cursor);
-          this.datoParametros.set(dato.p_cursor);
-        }
-      },
-      error: (error) => {
+    this.parametroService
+      .postParametros(estructura_lista)
+      .subscribe({
+        next: (dato) => {
+          if (dato.codigo === 200) {
+            this.datoParametros.set(dato.p_cursor);
+          }
+        },
+      error: () => {
         this.notificacioAlertnService.error('ERROR', 'Error Inesperado');
       },
     });
@@ -150,12 +135,6 @@ export default class ParametrosComponent implements OnInit {
   }
 
   modificaParametro(datoParametros: IParametroLista): void {
-    console.log('Dato Modificar:', datoParametros);
-    // const parametro: IUsuarioListaParametro = {
-    //   datoUsuarioPar: datoUsuarioPar,
-    //   tipoUsuario: this.tipoUsuario(),
-    // };
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -166,13 +145,12 @@ export default class ParametrosComponent implements OnInit {
 
     this.dialog
       .open(ModificaParametroComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        if (data === 'modificado') {
-          console.log('Modificación Confirmada:', data);
-          this.rescataLista();
-        }
-      });
+        .afterClosed()
+        .subscribe((data) => {
+          if (data === 'modificado') {
+            this.rescataLista();
+          }
+        });
   }
 
   consultaParametro(datoParametros: IParametroLista) {
@@ -184,6 +162,7 @@ export default class ParametrosComponent implements OnInit {
     dialogConfig.position = { top: '3%' };
     dialogConfig.data = datoParametros;
 
-    this.dialog.open(ConsultaParametroComponent, dialogConfig).afterClosed();
+    this.dialog.open(ConsultaParametroComponent, dialogConfig)
+    .afterClosed();
   }
 }
